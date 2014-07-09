@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.google.openrtb</groupId>
+  <artifactId>openrtb-parent</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>Google OpenRTB Libraries</name>
+
+  <modules>
+    <module>openrtb-core</module>
+  </modules>
+
+  <properties>
+    <findBugsJsr305Version>2.0.3</findBugsJsr305Version>
+    <guavaVersion>17.0</guavaVersion>
+    <guiceVersion>3.0</guiceVersion>
+    <httpClientVersion>4.3.3</httpClientVersion>
+    <fasterxmlJacksonVersion>2.4.1</fasterxmlJacksonVersion>
+    <fasterxmlJacksonDatabindVersion>2.4.1.1</fasterxmlJacksonDatabindVersion>
+    <junitVersion>4.11</junitVersion>
+    <metricsVersion>3.0.2</metricsVersion>
+    <protobufVersion>2.5.0</protobufVersion>
+    <slf4jVersion>1.7.7</slf4jVersion>
+
+    <!-- Plugin versions -->
+    <buildHelperMavenPluginVersion>1.8</buildHelperMavenPluginVersion>
+    <coberturaMavenPluginVersion>2.6</coberturaMavenPluginVersion>
+    <compilerMavenPluginVersion>3.1</compilerMavenPluginVersion>
+    <dependencyMavenPluginVersion>2.8</dependencyMavenPluginVersion>
+    <gitCommitIdPluginVersion>2.1.7</gitCommitIdPluginVersion>
+    <jarMavenPluginVersion>2.5</jarMavenPluginVersion>
+    <javadocMavenPluginVersion>2.9.1</javadocMavenPluginVersion>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <releaseMavenPluginVersion>2.5</releaseMavenPluginVersion>
+    <siteMavenPluginVersion>3.3</siteMavenPluginVersion>
+    <surefireMavenPluginVersion>2.17</surefireMavenPluginVersion>
+
+    <!-- Protobuf properties -->
+    <generatedSources>${project.basedir}/target/generated-sources</generatedSources>
+    <protobufSource>${project.basedir}/src/main/protobuf</protobufSource>
+    <protobufGenerated>${generatedSources}/protobuf</protobufGenerated>
+
+    <!-- Cobertura properties -->
+    <cobertura.maxmem>1G</cobertura.maxmem>
+  </properties>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>${coberturaMavenPluginVersion}</version>
+        <configuration>
+          <aggregate>true</aggregate>
+          <format>xml</format>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+
+  <scm>
+    <developerConnection>scm:git:</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>${siteMavenPluginVersion}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>${dependencyMavenPluginVersion}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${surefireMavenPluginVersion}</version>
+        <configuration>
+          <redirectTestOutputToFile>true</redirectTestOutputToFile>
+          <argLine>-Djava.util.logging.config.file=src/test/resources/logging.properties</argLine>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>${coberturaMavenPluginVersion}</version>
+        <configuration>
+          <format>xml</format>
+          <format>html</format>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${javadocMavenPluginVersion}</version>
+        <configuration>
+          <windowtitle>${project.name}</windowtitle>
+          <notimestamp>true</notimestamp>
+          <excludePackageNames></excludePackageNames>
+          <groups>
+            <group>
+              <title>OpenRTB</title>
+              <packages>com.google.openrtb:com.google.openrtb.json:com.google.openrtb.mapper:com.google.openrtb.snippet:com.google.openrtb.util</packages>
+            </group>
+          </groups>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>${releaseMavenPluginVersion}</version>
+        <configuration>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <preparationGoals>clean verify javadoc:aggregate</preparationGoals>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>${compilerMavenPluginVersion}</version>
+            <configuration>
+              <source>1.7</source>
+              <target>1.7</target>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>error-prone</id>
+      <activation>
+        <property>
+          <name>!m2e.version</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>${compilerMavenPluginVersion}</version>
+            <configuration>
+              <source>1.7</source>
+              <target>1.7</target>
+            </configuration>
+            <executions>
+              <execution>
+                <id>default-compile</id>
+                <configuration>
+                  <compilerId>javac-with-errorprone</compilerId>
+                  <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                </configuration>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>com.google.errorprone</groupId>
+                <artifactId>error_prone_core</artifactId>
+                <version>1.1.2</version>
+              </dependency>
+              <dependency>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-compiler-javac</artifactId>
+                <version>2.3</version>
+              </dependency>
+              <dependency>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-compiler-javac-errorprone</artifactId>
+                <version>2.3</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>

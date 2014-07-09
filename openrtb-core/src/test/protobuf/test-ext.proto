@@ -1,0 +1,90 @@
+/*
+ * Copyright 2014 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+syntax = "proto2";
+package com.google.openrtb;
+option java_outer_classname = "TestExt";
+
+import "openrtb.proto";
+
+message Test1 {
+  required string test1 = 1;
+}
+message Test2 {
+  required string test2 = 1;
+}
+extend com.google.openrtb.BidRequest {
+  optional Test1 testRequest1 = 110;
+  optional Test2 testRequest2 = 111;
+}
+extend com.google.openrtb.BidRequest.App {
+  optional Test1 testApp = 110;
+}
+extend com.google.openrtb.BidRequest.Content {
+  optional Test1 testContent = 110;
+}
+extend com.google.openrtb.BidRequest.Data {
+  optional Test1 testData = 110;
+}
+extend com.google.openrtb.BidRequest.Data.Segment {
+  optional Test1 testSegment = 110;
+}
+extend com.google.openrtb.BidRequest.Device {
+  optional Test1 testDevice = 110;
+}
+extend com.google.openrtb.BidRequest.Geo {
+  optional Test1 testGeo = 110;
+}
+extend com.google.openrtb.BidRequest.Impression {
+  optional Test1 testImp = 110;
+}
+extend com.google.openrtb.BidRequest.Impression.Banner {
+  optional Test1 testBanner = 110;
+}
+extend com.google.openrtb.BidRequest.Impression.PMP {
+  optional Test1 testPmp = 110;
+}
+extend com.google.openrtb.BidRequest.Impression.PMP.DirectDeal {
+  optional Test1 testDeal = 110;
+}
+extend com.google.openrtb.BidRequest.Impression.Video {
+  optional Test1 testVideo = 110;
+}
+extend com.google.openrtb.BidRequest.Producer {
+  optional Test1 testProducer = 110;
+}
+extend com.google.openrtb.BidRequest.Publisher {
+  optional Test1 testPublisher = 110;
+}
+extend com.google.openrtb.BidRequest.Regulations {
+  optional Test1 testRegs = 110;
+}
+extend com.google.openrtb.BidRequest.Site {
+  optional Test1 testSite = 110;
+}
+extend com.google.openrtb.BidRequest.User {
+  optional Test1 testUser = 110;
+}
+extend com.google.openrtb.BidResponse {
+  optional Test1 testResponse1 = 110;
+  optional Test2 testResponse2 = 111;
+}
+extend com.google.openrtb.BidResponse.SeatBid {
+  optional Test1 testSeat = 110;
+}
+extend com.google.openrtb.BidResponse.SeatBid.Bid {
+  optional Test1 testBid = 110;
+}
