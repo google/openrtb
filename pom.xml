@@ -1,19 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 <modelVersion>4.0.0</modelVersion>
-
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
   <groupId>com.google.openrtb</groupId>
   <artifactId>openrtb-parent</artifactId>
   <packaging>pom</packaging>
   <version>0.7-SNAPSHOT</version>
   <name>Google OpenRTB Libraries</name>
+  <description>
+    OpenRTB model for Java and other languages via protobuf;
+    Helper OpenRTB libraries for Java including JSON serialization
+  </description>
+  <url>https://github.com/google/openrtb</url>
+  <organization>
+    <name>Google, Inc.</name>
+    <url>http://www.google.com</url>
+  </organization>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <issueManagement>
+    <system>Github</system>
+    <url>https://github.com/google/openrtb/issues</url>
+  </issueManagement>
+
+  <distributionManagement>
+    <repository>
+      <id>sonatype-nexus-staging</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
 
   <modules>
     <module>openrtb-core</module>
   </modules>
 
+  <prerequisites>
+    <maven>3.2</maven>
+  </prerequisites>
+
   <properties>
     <findBugsJsr305Version>2.0.3</findBugsJsr305Version>
+    <gpg.skip>false</gpg.skip>
     <guavaVersion>17.0</guavaVersion>
     <guiceVersion>3.0</guiceVersion>
     <httpClientVersion>4.3.3</httpClientVersion>
@@ -30,6 +68,7 @@
     <compilerMavenPluginVersion>3.1</compilerMavenPluginVersion>
     <dependencyMavenPluginVersion>2.8</dependencyMavenPluginVersion>
     <gitCommitIdPluginVersion>2.1.7</gitCommitIdPluginVersion>
+    <gpgMavenPluginVersion>1.5</gpgMavenPluginVersion>
     <jarMavenPluginVersion>2.5</jarMavenPluginVersion>
     <javadocMavenPluginVersion>2.9.1</javadocMavenPluginVersion>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -62,7 +101,7 @@
   </reporting>
 
   <scm>
-    <developerConnection>scm:git:</developerConnection>
+    <connection>scm:git:https://github.com/google/openrtb.git</connection>
     <tag>HEAD</tag>
   </scm>
 
@@ -125,6 +164,18 @@
           <autoVersionSubmodules>true</autoVersionSubmodules>
           <preparationGoals>clean verify javadoc:aggregate</preparationGoals>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>${gpgMavenPluginVersion}</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals><goal>sign</goal></goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
