@@ -102,6 +102,7 @@
 
   <scm>
     <connection>scm:git:https://github.com/google/openrtb.git</connection>
+    <developerConnection>scm:git:https://github.com/google/openrtb.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
