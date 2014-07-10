@@ -51,7 +51,7 @@
 
   <properties>
     <findBugsJsr305Version>2.0.3</findBugsJsr305Version>
-    <gpg.skip>false</gpg.skip>
+    <gpg.skip>true</gpg.skip>
     <guavaVersion>17.0</guavaVersion>
     <guiceVersion>3.0</guiceVersion>
     <httpClientVersion>4.3.3</httpClientVersion>
