@@ -11,3 +11,8 @@ target/*
 *.ipr
 *.iws
 .idea
+
+# NetBeans specific
+nbproject/*
+nbactions.xml
+nb-configuration.xml

@@ -202,7 +202,7 @@
       </build>
     </profile>
     <profile>
-      <id>error-prone</id>
+      <id>full</id>
       <activation>
         <property>
           <name>!m2e.version</name>
