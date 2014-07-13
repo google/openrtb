@@ -74,7 +74,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <releaseMavenPluginVersion>2.5</releaseMavenPluginVersion>
-    <siteMavenPluginVersion>3.3</siteMavenPluginVersion>
+    <siteMavenPluginVersion>3.4</siteMavenPluginVersion>
     <surefireMavenPluginVersion>2.17</surefireMavenPluginVersion>
 
     <!-- Protobuf properties -->
