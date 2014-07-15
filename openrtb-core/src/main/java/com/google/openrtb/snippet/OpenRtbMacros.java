@@ -22,6 +22,23 @@ import java.util.Map;
 
 /**
  * OpenRTB 4.6: Standard OpenRTB macros.
+ * <p>
+ * All {@code Bid} properties of type String can use macros. Important notes about macro expansion:
+ *
+ * <ul><li>All properties can safely use macros that refer to values from the request:
+ *         {@code AUCTION_ID, AUCTION_CURRENCY, AUCTION_IMP_ID, AUCTION_SEAT_ID}.</li>
+ *     <li>All properties can also safely use macros that refer to properties that have
+ *         non-String type, so they cannot contain macros: {@code AUCTION_PRICE}.
+ *     <li>Properties are processed in two stages. The first stage resolves properties that can
+ *         contain macros AND feed other macros; {@code adid => AUCTION_AD_ID, id => AUCTION_BID_ID}
+ *         are currently the only items in this group. In the second stage, we process the
+ *         properties that support macros but don't provide values for any macro, which are:
+ *         {@code adm}, {@code cid}, {@code crid}, {@code dealid}, {@code iurl}, {@code nurl}.</li>
+ *     <li>Notice that {code impid} is expected to be set to {@code AUCTION_IMP_ID}; you can
+ *         use the macro or set the value manually but in the latter case they should match.
+ *         All other properties that use the macro {@code AUCTION_IMP_ID} will resolve that
+ *         to the bid's {code Impression.id}, not to the bid's own {code impid} property.</li>
+ * </ul>
  */
 public enum OpenRtbMacros implements SnippetMacroType {
   /**

@@ -93,7 +93,7 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
         }
 
         case AUCTION_SEAT_ID: {
-          SeatBidOrBuilder seatBid = findSeat(ctx);
+          SeatBidOrBuilder seatBid = findSeat(ctx, macroDef);
           if (seatBid.hasSeat()) {
             sb.append(seatBid.getSeat());
           }
@@ -105,22 +105,21 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
 
   /**
    * Processes the context's response in-place, modifying properties that may contain macros.
-   * <p>
-   * WARNING: These macros can be self-referential; for example, some bid might set the
-   * {@code adid} property to ${AUCTION_BID_ID} which comes from the {@code id} property
-   * of the same {code @Bid} object. But if this {@code id} is also set using a macro,
-   * this would only work if the properties are processed in the "right" order.
-   * You could even have cyclic dependencies, which wouldn't be possible to process in any order.
-   * Therefore, DO NOT create responses with macro-to-macro dependencies, even non-cyclic.
    */
   public void process(BidRequest request, BidResponse.Builder response) {
     for (SeatBid.Builder seat : response.getSeatbidBuilderList()) {
       for (Bid.Builder bid : seat.getBidBuilderList()) {
         SnippetProcessorContext bidCtx = new SnippetProcessorContext(request, response, bid);
 
+        // Properties that can also be in the RHS of macros used by other properties.
+
         if (bid.hasAdid()) {
           bid.setAdid(process(bidCtx, bid.getAdid()));
         }
+        bid.setId(process(bidCtx, bid.getId()));
+
+        // Properties that are NOT the RHS of any macro.
+
         if (bid.hasAdm()) {
           bid.setAdm(process(bidCtx, bid.getAdm()));
         }
@@ -133,12 +132,7 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
         if (bid.hasDealid()) {
           bid.setDealid(process(bidCtx, bid.getDealid()));
         }
-        if (bid.hasId()) {
-          bid.setId(process(bidCtx, bid.getId()));
-        }
-        if (bid.hasImpid()) {
-          bid.setImpid(process(bidCtx, bid.getImpid()));
-        }
+        bid.setImpid(process(bidCtx, bid.getImpid()));
         if (bid.hasIurl()) {
           bid.setIurl(process(bidCtx, bid.getIurl()));
         }
@@ -149,7 +143,7 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
     }
   }
 
-  private SeatBidOrBuilder findSeat(SnippetProcessorContext ctx) {
+  private SeatBidOrBuilder findSeat(SnippetProcessorContext ctx, SnippetMacroType macro) {
     for (SeatBidOrBuilder seatBid : ctx.response().getSeatbidOrBuilderList()) {
       for (BidOrBuilder lookupBid : seatBid.getBidOrBuilderList()) {
         if (lookupBid == ctx.bid()) {
@@ -159,23 +153,17 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
     }
 
     throw new UndefinedMacroException(
-        OpenRtbMacros.AUCTION_SEAT_ID, "Bid doesn't belong to this request");
+        macro, "Bid doesn't belong to this request");
   }
 
   protected ImpressionOrBuilder findImp(SnippetProcessorContext ctx, SnippetMacroType macro) {
-    Impression matchingImp = null;
     for (Impression imp : ctx.request().getImpList()) {
       if (imp.getId().equals(ctx.bid().getImpid())) {
-        matchingImp = imp;
-        break;
+        return imp;
       }
     }
 
-    if (matchingImp == null) {
-      throw new UndefinedMacroException(macro,
-          "Bid's impression id: " + ctx.bid().getImpid() + " doesn't match request");
-    }
-
-    return matchingImp;
+    throw new UndefinedMacroException(macro,
+        "Bid's impression id: " + ctx.bid().getImpid() + " doesn't match request");
   }
 }
