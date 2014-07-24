@@ -54,7 +54,6 @@
     <gpg.skip>true</gpg.skip>
     <guavaVersion>17.0</guavaVersion>
     <fasterxmlJacksonVersion>2.4.1</fasterxmlJacksonVersion>
-    <fasterxmlJacksonDatabindVersion>2.4.1.1</fasterxmlJacksonDatabindVersion>
     <injectVersion>1</injectVersion>
     <junitVersion>4.11</junitVersion>
     <metricsVersion>3.0.2</metricsVersion>

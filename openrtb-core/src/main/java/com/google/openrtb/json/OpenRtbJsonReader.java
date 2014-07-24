@@ -871,7 +871,7 @@ public class OpenRtbJsonReader {
    */
   public BidResponse readBidResponse(InputStream is) throws IOException {
     try {
-      return readBidResponse(factory.getObjectMapper().getFactory().createParser(is)).build();
+      return readBidResponse(factory.getJsonFactory().createParser(is)).build();
     } finally {
       Closeables.closeQuietly(is);
     }
