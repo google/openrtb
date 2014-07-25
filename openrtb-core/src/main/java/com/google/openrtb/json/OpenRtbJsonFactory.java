@@ -27,7 +27,6 @@ import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
 import com.google.protobuf.Message;
 
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Collection;
 import java.util.Map;
@@ -37,7 +36,6 @@ import java.util.Map;
  */
 public class OpenRtbJsonFactory {
   private JsonFactory jsonFactory;
-  private ObjectMapper mapper;
   private final Multimap<String, OpenRtbJsonExtReader<?>> extReaders;
   private final Map<String, OpenRtbJsonExtWriter<?>> extWriters;
 
@@ -45,25 +43,22 @@ public class OpenRtbJsonFactory {
    * Creates a new factory with default configuration
    */
   public static OpenRtbJsonFactory create() {
-    return new OpenRtbJsonFactory(null, null,
+    return new OpenRtbJsonFactory(null,
         LinkedListMultimap.<String, OpenRtbJsonExtReader<?>>create(),
         Maps.<String, OpenRtbJsonExtWriter<?>>newLinkedHashMap());
   }
 
   private OpenRtbJsonFactory(
       JsonFactory jsonFactory,
-      ObjectMapper mapper,
       Multimap<String, OpenRtbJsonExtReader<?>> extReaders,
       Map<String, OpenRtbJsonExtWriter<?>> extWriters) {
     this.jsonFactory = jsonFactory;
-    this.mapper = mapper;
     this.extReaders = checkNotNull(extReaders);
     this.extWriters = checkNotNull(extWriters);
   }
 
   public OpenRtbJsonFactory setJsonFactory(JsonFactory jsonFactory) {
     this.jsonFactory = checkNotNull(jsonFactory);
-    this.mapper = null;
     return this;
   }
 
@@ -93,9 +88,8 @@ public class OpenRtbJsonFactory {
    * Creates an {@link OpenRtbJsonWriter}, configured to the current state of this factory.
    */
   public OpenRtbJsonWriter newWriter() {
-    initObjectMapper();
     return new OpenRtbJsonWriter(new OpenRtbJsonFactory(
-        jsonFactory, mapper,
+        getJsonFactory(),
         ImmutableMultimap.copyOf(extReaders),
         ImmutableMap.copyOf(extWriters)));
   }
@@ -104,9 +98,8 @@ public class OpenRtbJsonFactory {
    * Creates an {@link OpenRtbJsonWriter}, configured to the current state of this factory.
    */
   public OpenRtbJsonReader newReader() {
-    initObjectMapper();
     return new OpenRtbJsonReader(new OpenRtbJsonFactory(
-        jsonFactory, mapper,
+        getJsonFactory(),
         ImmutableMultimap.copyOf(extReaders),
         ImmutableMap.copyOf(extWriters)));
   }
@@ -122,18 +115,10 @@ public class OpenRtbJsonFactory {
     return (OpenRtbJsonExtWriter<M>) extWriters.get(path);
   }
 
-  void initObjectMapper() {
-    if (mapper == null) {
-      mapper = new ObjectMapper(jsonFactory);
-      jsonFactory = mapper.getFactory();
+  public JsonFactory getJsonFactory() {
+    if (jsonFactory == null) {
+      jsonFactory = new JsonFactory();
     }
-  }
-
-  JsonFactory getJsonFactory() {
     return jsonFactory;
-  }
-
-  ObjectMapper getObjectMapper() {
-    return mapper;
   }
 }
