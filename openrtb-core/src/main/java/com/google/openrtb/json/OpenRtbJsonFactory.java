@@ -89,7 +89,7 @@ public class OpenRtbJsonFactory {
    */
   public OpenRtbJsonWriter newWriter() {
     return new OpenRtbJsonWriter(new OpenRtbJsonFactory(
-        jsonFactory,
+        getJsonFactory(),
         ImmutableMultimap.copyOf(extReaders),
         ImmutableMap.copyOf(extWriters)));
   }
@@ -99,7 +99,7 @@ public class OpenRtbJsonFactory {
    */
   public OpenRtbJsonReader newReader() {
     return new OpenRtbJsonReader(new OpenRtbJsonFactory(
-        jsonFactory,
+        getJsonFactory(),
         ImmutableMultimap.copyOf(extReaders),
         ImmutableMap.copyOf(extWriters)));
   }
@@ -115,7 +115,10 @@ public class OpenRtbJsonFactory {
     return (OpenRtbJsonExtWriter<M>) extWriters.get(path);
   }
 
-  JsonFactory getJsonFactory() {
+  public JsonFactory getJsonFactory() {
+    if (jsonFactory == null) {
+      jsonFactory = new JsonFactory();
+    }
     return jsonFactory;
   }
 }
