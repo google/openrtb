@@ -588,7 +588,7 @@ message BidRequest {
     /*
      * Bid floor for this impression (in CPM of bidfloorcur).
      */
-    optional float bidfloor = 8 [default = 0];
+    optional double bidfloor = 8 [default = 0];
     /*
      * If bid floor is specified and multiple currencies supported per bid request,
      * then currency should be specified here using ISO-4217 alphabetic codes.
@@ -948,7 +948,7 @@ message BidRequest {
         /*
          * Bid floor for this impression (in CPM of bidfloorcur).
          */
-        optional float bidfloor = 2 [default = 0];
+        optional double bidfloor = 2 [default = 0];
         /*
          * If bid floor is specified and multiple currencies supported per bid request,
          * then currency should be specified here using ISO-4217 alphabetic codes. Notes.
@@ -1479,12 +1479,12 @@ message BidRequest {
      * Latitude from -90 to 90. South is negative. This should only be passed if known
      * to be accurate (For example, not the centroid of a postal code).
      */
-    optional float lat = 1;
+    optional double lat = 1;
     /*
      * Longitude from -180 to 180. West is negative. This should only be passed if known
      * to be accurate (For example, not the centroid of a postal code).
      */
-    optional float lon = 2;
+    optional double lon = 2;
     /*
      * Country using ISO-3166-1 Alpha-3.
      */
@@ -1685,7 +1685,7 @@ message BidResponse {
        * Bid price in CPM. WARNING/Best Practice Note: Although this value is a float,
        * OpenRTB strongly suggests using integer math for accounting to avoid rounding errors.
        */
-      required float price = 3;
+      required double price = 3;
       /*
        * ID that references the ad to be served if the bid wins.
        */

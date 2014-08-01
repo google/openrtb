@@ -19,7 +19,7 @@ package com.google.openrtb.json;
 import static com.google.openrtb.json.OpenRtbJsonUtils.endArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.endObject;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
-import static com.google.openrtb.json.OpenRtbJsonUtils.nextFloatValue;
+import static com.google.openrtb.json.OpenRtbJsonUtils.nextDoubleValue;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
@@ -204,7 +204,7 @@ public class OpenRtbJsonReader {
           imp.setTagid(par.nextTextValue());
           break;
         case "bidfloor":
-          imp.setBidfloor(nextFloatValue(par));
+          imp.setBidfloor(nextDoubleValue(par));
           break;
         case "bidfloorcur":
           imp.setBidfloorcur(par.nextTextValue());
@@ -253,7 +253,7 @@ public class OpenRtbJsonReader {
           deal.setId(par.nextTextValue());
           break;
         case "bidfloor":
-          deal.setBidfloor(nextFloatValue(par));
+          deal.setBidfloor(nextDoubleValue(par));
           break;
         case "bidfloorcur":
           deal.setBidfloorcur(par.nextTextValue());
@@ -743,10 +743,10 @@ public class OpenRtbJsonReader {
     for (startObject(par); endObject(par); par.nextToken()) {
       switch (getCurrentName(par)) {
         case "lat":
-          geo.setLat(nextFloatValue(par));
+          geo.setLat(nextDoubleValue(par));
           break;
         case "lon":
-          geo.setLon(nextFloatValue(par));
+          geo.setLon(nextDoubleValue(par));
           break;
         case "country":
           geo.setCountry(par.nextTextValue());
@@ -940,7 +940,7 @@ public class OpenRtbJsonReader {
           bid.setImpid(par.nextTextValue());
           break;
         case "price":
-          bid.setPrice(nextFloatValue(par));
+          bid.setPrice(nextDoubleValue(par));
           break;
         case "adid":
           bid.setAdid(par.nextTextValue());

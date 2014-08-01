@@ -62,9 +62,9 @@ public class OpenRtbJsonUtils {
     return par.getCurrentToken() != JsonToken.END_ARRAY;
   }
 
-  public static float nextFloatValue(JsonParser par) throws IOException, JsonParseException {
+  public static double nextDoubleValue(JsonParser par) throws IOException, JsonParseException {
     par.nextToken();
-    return Float.parseFloat(par.getText());
+    return Double.parseDouble(par.getText());
   }
 
   public static void writeStrings(String fieldName, List<String> data, JsonGenerator gen)
