@@ -5,6 +5,8 @@ This library supports the OpenRTB specification, providing
 bindings for all protobuf-supported languages, and additional
 support for Java such as JSON serialization and validation.
 
+See our [wiki](https://github.com/google/openrtb/wiki) to get started!
+
 
 BUILDING NOTES
 ----------------------------------------------------------------------
