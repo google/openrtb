@@ -21,13 +21,17 @@ Building via Maven will NOT work with JDK 8, because the projects
 use error-prone which is not yet JDK 8-compatible.  You can work
 around this by defining the property m2e.version to any value
 (error-prone doesn't play well with m2e either, and we cannot use
-a proper profile rule for <jdk>!1.8</jdk> because, you guessed,
+a proper profile rule for `<jdk>!1.8</jdk>` because, you guessed,
 this also breaks m2e). JDK 8 support is coming soon for error-prone
 so this hack for non-Eclipse builds should be temporary.
 
 
 RELEASE NOTES
 ----------------------------------------------------------------------
+
+## Version 0.6.3, 02-08-2014
+
+* Fix floating-point fields to double precision.
 
 ## Version 0.6.2, 25-07-2014
 
