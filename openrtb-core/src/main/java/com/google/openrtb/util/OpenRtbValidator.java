@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Validates a pair of {@link BidRequest} and its corresponding
@@ -45,9 +46,9 @@ import javax.inject.Inject;
  * Fatal validation errors (that would likely cause the bid to be rejected by the exchange)
  * will also be removed from the response.
  */
+@Singleton
 public class OpenRtbValidator {
-  private static final Logger logger =
-      LoggerFactory.getLogger(OpenRtbValidator.class);
+  private static final Logger logger = LoggerFactory.getLogger(OpenRtbValidator.class);
 
   private final Counter unmatchedImp = new Counter();
   private final Counter invalidCreatAttr = new Counter();
@@ -63,65 +64,80 @@ public class OpenRtbValidator {
         invalidAdv);
   }
 
-  public void validate(final BidRequest request, final BidResponse.Builder response) {
-    OpenRtbUtils.filterBids(response, new Predicate<Bid>() {
+  public boolean validate(final BidRequest request, final BidResponse.Builder response) {
+    return !OpenRtbUtils.filterBids(response, new Predicate<Bid>() {
       @Override public boolean apply(Bid bid) {
-        assert bid != null;
-        Impression imp = OpenRtbUtils.impWithId(request, bid.getImpid());
-        if (imp == null) {
-          unmatchedImp.inc();
-          if (logger.isDebugEnabled()) {
-            logger.warn("Impresson id doesn't match any AdSlot (impression): {}", bid.getImpid());
-          }
-          return false;
-        }
-        boolean goodBid = true;
-
-        List<String> badAdvs = check(request.getBadvList(), bid.getAdomainList());
-        if (!badAdvs.isEmpty()) {
-          logger.debug("Bid rejected, contains excluded advertisers {}:\n{}", badAdvs, bid);
-          invalidAdv.inc();
-          goodBid = false;
-        }
-
-        if (imp.hasBanner()) {
-          List<CreativeAttribute> badCreats =
-              check(imp.getBanner().getBattrList(), bid.getAttrList());
-          if (!badCreats.isEmpty()) {
-            logger.debug("Bid rejected, banner contains excluded creative attributes {}:\n{}",
-                badCreats, bid);
-            invalidCreatAttr.inc();
-            goodBid = false;
-          }
-        } else if (imp.hasVideo()) {
-          List<CreativeAttribute> badCreats =
-              check(imp.getVideo().getBattrList(), bid.getAttrList());
-          if (!badCreats.isEmpty()) {
-            logger.debug("Bid rejected, video contains excluded creative attributes {}:\n{}",
-                badCreats, bid);
-            invalidCreatAttr.inc();
-            goodBid = false;
-          }
-
-          for (Banner companion : imp.getVideo().getCompanionadList()) {
-            List<CreativeAttribute> badCompCreats =
-                check(companion.getBattrList(), bid.getAttrList());
-            if (!badCompCreats.isEmpty()) {
-              logger.debug("Bid rejected, video's companion banner {}"
-                  + " contains excluded creative attributes {}:\n{}",
-                  companion.getId(), badCreats, bid);
-              invalidCreatAttr.inc();
-              goodBid = false;
-            }
-          }
-        }
-
-        return goodBid;
-      }
-    });
+        return validate(request, response, bid);
+      }});
   }
 
-  private static <T> List<T> check(List<T> reqAttrs, List<T> respAttrs) {
+  public boolean validate(BidRequest request, BidResponse.Builder response, Bid bid) {
+    Impression imp = OpenRtbUtils.impWithId(request, bid.getImpid());
+    if (imp == null) {
+      unmatchedImp.inc();
+      if (logger.isDebugEnabled()) {
+        logger.debug("{} rejected, unmatched impid: {}",
+            logId(bid), bid.getImpid());
+      }
+      return false;
+    }
+    boolean goodBid = true;
+
+    List<String> badAdvs = check(request.getBadvList(), bid.getAdomainList());
+    if (!badAdvs.isEmpty()) {
+      logger.debug("{} rejected, blocked adomain values: {}",
+          logId(bid), badAdvs);
+      invalidAdv.inc();
+      goodBid = false;
+    }
+
+    if (imp.hasBanner()) {
+      List<CreativeAttribute> badCreats =
+          check(imp.getBanner().getBattrList(), bid.getAttrList());
+      if (!badCreats.isEmpty()) {
+        logger.debug("{} rejected, blocked attr values: {}",
+            logId(bid), badCreats);
+        invalidCreatAttr.inc();
+        goodBid = false;
+      }
+    } else if (imp.hasVideo()) {
+      List<CreativeAttribute> badCreats =
+          check(imp.getVideo().getBattrList(), bid.getAttrList());
+      if (!badCreats.isEmpty()) {
+        logger.debug("{} rejected, blocked attr values: {}",
+            logId(bid), badCreats);
+        invalidCreatAttr.inc();
+        goodBid = false;
+      }
+
+      for (Banner companion : imp.getVideo().getCompanionadList()) {
+        List<CreativeAttribute> badCompCreats =
+            check(companion.getBattrList(), bid.getAttrList());
+        if (!badCompCreats.isEmpty()) {
+          logger.debug("{} rejected, blocked attr values: {}",
+              logId(bid), badCreats);
+          invalidCreatAttr.inc();
+          goodBid = false;
+        }
+      }
+    }
+
+    return goodBid;
+  }
+
+  protected static String logId(Bid bid) {
+    if (bid.hasId()) {
+      return "Bid " + bid.getId();
+    }
+    StringBuilder sb = new StringBuilder()
+        .append("Bid (impid ").append(bid.getImpid());
+    if (bid.hasAdid()) {
+      sb.append(", adid ").append(bid.getAdid());
+    }
+    return sb.append(')').toString();
+  }
+
+  protected static <T> List<T> check(List<T> reqAttrs, List<T> respAttrs) {
     List<T> bad = null;
 
     if (!respAttrs.isEmpty()) {
