@@ -81,7 +81,7 @@ public final class ProtoUtils {
    * returns a new list that contains only the elements that pass the filter.
    * If all elements pass the filter, returns the same, unmodified input list.
    */
-  public static <M extends MessageLite>
+  public static <M extends MessageLiteOrBuilder>
   List<M> filter(List<M> objs, Predicate<M> filter) {
     for (ListIterator<M> iter = objs.listIterator(); iter.hasNext(); ) {
       if (!filter.apply(iter.next())) {

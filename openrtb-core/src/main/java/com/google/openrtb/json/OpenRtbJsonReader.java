@@ -69,6 +69,7 @@ import com.fasterxml.jackson.core.JsonParser;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.Collection;
 
 /**
@@ -82,14 +83,28 @@ public class OpenRtbJsonReader {
   }
 
   /**
-   * Desserializes a BidRequest from a JSON string.
+   * Desserializes a {@link BidRequest} from a JSON string, provided as a {@link ByteString}.
    */
   public BidRequest readBidRequest(ByteString bs) throws IOException {
     return readBidRequest(bs.newInput());
   }
 
   /**
-   * Desserializes a BidRequest from a JSON stream.
+   * Desserializes a {@link BidRequest} from a JSON string, provided as a {@link CharSequence}.
+   */
+  public BidRequest readBidRequest(CharSequence chars) throws IOException {
+    return readBidRequest(new CharSequenceReader(chars));
+  }
+
+  /**
+   * Desserializes a {@link BidRequest} from JSON, streamed from a {@link Reader}.
+   */
+  public BidRequest readBidRequest(Reader reader) throws IOException {
+    return readBidRequest(factory.getJsonFactory().createParser(reader)).build();
+  }
+
+  /**
+   * Desserializes a {@link BidRequest} from JSON, streamed from an {@link InputStream}.
    */
   public BidRequest readBidRequest(InputStream is) throws IOException {
     try {
@@ -99,6 +114,10 @@ public class OpenRtbJsonReader {
     }
   }
 
+  /**
+   * Desserializes a {@link BidRequest} from JSON, with a provided {@link JsonParser}
+   * which allows several choices of input and encoding.
+   */
   public BidRequest.Builder readBidRequest(JsonParser par) throws IOException {
     BidRequest.Builder req = BidRequest.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
@@ -860,14 +879,28 @@ public class OpenRtbJsonReader {
   }
 
   /**
-   * Desserializes a BidResponse from a JSON string.
+   * Desserializes a {@link BidResponse} from a JSON string, provided as a {@link ByteString}.
    */
   public BidResponse readBidResponse(ByteString bs) throws IOException {
     return readBidResponse(bs.newInput());
   }
 
   /**
-   * Desserializes a BidResponse from a JSON stream.
+   * Desserializes a {@link BidResponse} from a JSON string, provided as a {@link CharSequence}.
+   */
+  public BidResponse readBidResponse(CharSequence chars) throws IOException {
+    return readBidResponse(new CharSequenceReader(chars));
+  }
+
+  /**
+   * Desserializes a {@link BidResponse} from JSON, streamed from a {@link Reader}.
+   */
+  public BidResponse readBidResponse(Reader reader) throws IOException {
+    return readBidResponse(factory.getJsonFactory().createParser(reader)).build();
+  }
+
+  /**
+   * Desserializes a {@link BidResponse} from JSON, streamed from an {@link InputStream}.
    */
   public BidResponse readBidResponse(InputStream is) throws IOException {
     try {
@@ -877,6 +910,10 @@ public class OpenRtbJsonReader {
     }
   }
 
+  /**
+   * Desserializes a {@link BidResponse} from JSON, with a provided {@link JsonParser}
+   * which allows several choices of input and encoding.
+   */
   public BidResponse.Builder readBidResponse(JsonParser par) throws IOException {
     BidResponse.Builder resp = BidResponse.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {

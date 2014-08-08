@@ -40,7 +40,7 @@ public class OpenRtbJsonFactory {
   private final Map<String, OpenRtbJsonExtWriter<?>> extWriters;
 
   /**
-   * Creates a new factory with default configuration
+   * Creates a new factory with default configuration.
    */
   public static OpenRtbJsonFactory create() {
     return new OpenRtbJsonFactory(null,
@@ -57,6 +57,9 @@ public class OpenRtbJsonFactory {
     this.extWriters = checkNotNull(extWriters);
   }
 
+  /**
+   * Use a specific {@link JsonFactory}. A default factory will created if this is never called.
+   */
   public OpenRtbJsonFactory setJsonFactory(JsonFactory jsonFactory) {
     this.jsonFactory = checkNotNull(jsonFactory);
     return this;
@@ -64,6 +67,10 @@ public class OpenRtbJsonFactory {
 
   /**
    * Register a desserializer extension.
+   * See {@link #register(OpenRtbJsonExtWriter, Class, String...)} about {@code paths}.
+   *
+   * @param extReader code to desserialize some extension properties
+   * @param paths Paths in the OpenRTB model
    */
   public <EB extends ExtendableBuilder<?, EB>> OpenRtbJsonFactory register(
       OpenRtbJsonExtReader<EB> extReader, String... paths) {
@@ -74,7 +81,17 @@ public class OpenRtbJsonFactory {
   }
 
   /**
-   * Register a serializer extension.
+   * Register a serializer extension. Each of these is registered for a specific
+   * "path" inside the OpenRTB model; for example, "BidRequest.device.geo" registers
+   * extensions for the {@code Geo} object inside the request's device object.
+   * You need this path, not just the leaf message type like {@code Geo}, because
+   * you might have the same message in a different place in the model (in this case,
+   * there's also "BidRequest.user.geo") but you may not want the same extension
+   * properties to be supported in both places.
+   *
+   * @param extWriter code to serialize some {@code extKlass}'s properties
+   * @param extKlass class of container message, e.g. {@code MyImpression.class}
+   * @param paths Paths in the OpenRTB model
    */
   public <M extends Message> OpenRtbJsonFactory register(
       OpenRtbJsonExtWriter<M> extWriter, Class<M> extKlass, String... paths) {

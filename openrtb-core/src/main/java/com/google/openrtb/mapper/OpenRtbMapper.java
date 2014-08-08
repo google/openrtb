@@ -31,10 +31,10 @@ import javax.annotation.Nullable;
 public interface OpenRtbMapper<Req, Resp> {
 
   /**
-   * Converts an OpenRTB response builder to native.
+   * Converts an OpenRTB response to native.
    *
-   * @param request The corresponding request, if necessary for context or validations
-   * @param response The response builder
+   * @param request OpenRTB request, if necessary for context or validations
+   * @param response OpenRTB response
    * @return Native response
    */
   Resp toNative(@Nullable BidRequest request, BidResponse response);
@@ -43,7 +43,24 @@ public interface OpenRtbMapper<Req, Resp> {
    * Converts a native request to OpenRTB.
    *
    * @param request Native request
-   * @return OpenRTB response
+   * @return OpenRTB request
    */
   OpenRtb.BidRequest toOpenRtb(Req request);
+
+  /**
+   * Converts an OpenRTB request to native.
+   *
+   * @param request OpenRTB request
+   * @return Native request
+   */
+  Req toNative(@Nullable BidRequest request);
+
+  /**
+   * Converts a native response to OpenRTB.
+   *
+   * @param request native request, if necessary for context or validations
+   * @param response The response
+   * @return OpenRTB response
+   */
+  OpenRtb.BidResponse toOpenRtb(@Nullable Req request, Req response);
 }
