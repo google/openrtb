@@ -5,6 +5,11 @@ This library supports the OpenRTB specification, providing
 bindings for all protobuf-supported languages, and additional
 support for Java such as JSON serialization and validation.
 
+See our [wiki](https://github.com/google/openrtb/wiki) to get started!
+For questions and general discussion, please join [openrtb-doubleclick]
+(https://groups.google.com/forum/#!forum/openrtb-doubleclick).
+Use the Github project's issue tracker for bug reports or RFEs.
+
 
 BUILDING NOTES
 ----------------------------------------------------------------------
