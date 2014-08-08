@@ -34,6 +34,11 @@ so this hack for non-Eclipse builds should be temporary.
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 0.6.4, 08-08-2014
+
+* OpenRtbJson API review and javadocs.
+* OpenRtbValidator reviews, improved logging.
+
 ## Version 0.6.3, 02-08-2014
 
 * Fix floating-point fields to double precision.

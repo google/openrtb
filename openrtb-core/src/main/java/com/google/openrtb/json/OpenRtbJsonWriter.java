@@ -39,14 +39,17 @@ import com.google.openrtb.OpenRtb.BidRequest.User;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
-import com.google.protobuf.ByteString;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.GeneratedMessage.ExtendableMessage;
 import com.google.protobuf.Message;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Map;
 
 /**
@@ -61,17 +64,41 @@ public class OpenRtbJsonWriter {
   }
 
   /**
-   * Serializes a {@link BidRequest} to JSON.
+   * Serializes a {@link BidRequest} to JSON, returned as a {@String}.
    */
-  public ByteString writeBidRequest(BidRequest req) throws IOException {
-    try (ByteString.Output bso = ByteString.newOutput();
-        JsonGenerator gen = factory.getJsonFactory().createGenerator(bso)) {
-      writeBidRequest(req, gen);
-      gen.flush();
-      return bso.toByteString();
+  public String writeBidRequest(BidRequest req) throws IOException {
+    try (StringWriter writer = new StringWriter()) {
+      writeBidRequest(req, writer);
+      return writer.toString();
     }
   }
 
+  /**
+   * Serializes a {@link BidRequest} to JSON, streamed into an {@link Writer}.
+   *
+   * @see JsonFactory#createGenerator(Writer)
+   */
+  public void writeBidRequest(BidRequest req, Writer writer) throws IOException {
+    JsonGenerator gen = factory.getJsonFactory().createGenerator(writer);
+    writeBidRequest(req, gen);
+    gen.flush();
+  }
+
+  /**
+   * Serializes a {@link BidRequest} to JSON, streamed into an {@link OutputStream}.
+   *
+   * @see JsonFactory#createGenerator(OutputStream)
+   */
+  public void writeBidRequest(BidRequest req, OutputStream os) throws IOException {
+    JsonGenerator gen = factory.getJsonFactory().createGenerator(os);
+    writeBidRequest(req, gen);
+    gen.flush();
+  }
+
+  /**
+   * Serializes a {@link BidRequest} to JSON, with a provided {@link JsonGenerator}
+   * which allows several choices of output and encoding.
+   */
   public void writeBidRequest(BidRequest req, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (checkRequired(req.hasId())) {
@@ -648,17 +675,41 @@ public class OpenRtbJsonWriter {
   }
 
   /**
-   * Serializes a {@link BidResponse} to JSON.
+   * Serializes a {@link BidResponse} to JSON, returned as a {@link String}.
    */
-  public ByteString writeBidResponse(BidResponse resp) throws IOException {
-    try (ByteString.Output bso = ByteString.newOutput();
-        JsonGenerator gen = factory.getJsonFactory().createGenerator(bso)) {
-      writeBidResponse(resp, gen);
-      gen.flush();
-      return bso.toByteString();
+  public String writeBidResponse(BidResponse resp) throws IOException {
+    try (StringWriter writer = new StringWriter()) {
+      writeBidResponse(resp, writer);
+      return writer.toString();
     }
   }
 
+  /**
+   * Serializes a {@link BidResponse} to JSON, streamed to a {@link OutputStream}.
+   *
+   * @see JsonFactory#createGenerator(OutputStream)
+   */
+  public void writeBidResponse(BidResponse resp, OutputStream os) throws IOException {
+    JsonGenerator gen = factory.getJsonFactory().createGenerator(os);
+    writeBidResponse(resp, gen);
+    gen.flush();
+  }
+
+  /**
+   * Serializes a {@link BidResponse} to JSON, streamed to a {@link Writer}.
+   *
+   * @see JsonFactory#createGenerator(Writer)
+   */
+  public void writeBidResponse(BidResponse resp, Writer writer) throws IOException {
+    JsonGenerator gen = factory.getJsonFactory().createGenerator(writer);
+    writeBidResponse(resp, gen);
+    gen.flush();
+  }
+
+  /**
+   * Serializes a {@link BidResponse} to JSON, with a provided {@link JsonGenerator}
+   * which allows several choices of output and encoding.
+   */
   public void writeBidResponse(BidResponse resp, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (resp.hasId()) {

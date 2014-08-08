@@ -62,7 +62,6 @@ import com.google.openrtb.OpenRtb.Flag;
 import com.google.openrtb.TestExt;
 import com.google.openrtb.TestExt.Test1;
 import com.google.openrtb.TestExt.Test2;
-import com.google.protobuf.ByteString;
 import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
 import com.google.protobuf.GeneratedMessage.GeneratedExtension;
 
@@ -172,15 +171,15 @@ public class OpenRtbJsonTest {
   }
 
   static void testRequest(OpenRtbJsonFactory jsonFactory, BidRequest req) throws IOException {
-    ByteString jsonReq = jsonFactory.newWriter().writeBidRequest(req);
-    logger.info(jsonReq.toStringUtf8());
+    String jsonReq = jsonFactory.newWriter().writeBidRequest(req);
+    logger.info(jsonReq);
     BidRequest req2 = jsonFactory.newReader().readBidRequest(jsonReq);
     assertEquals(req, req2);
   }
 
   static void testResponse(OpenRtbJsonFactory jsonFactory, BidResponse resp) throws IOException {
-    ByteString jsonResp = jsonFactory.newWriter().writeBidResponse(resp);
-    logger.info(jsonResp.toStringUtf8());
+    String jsonResp = jsonFactory.newWriter().writeBidResponse(resp);
+    logger.info(jsonResp);
     OpenRtb.BidResponse resp2 = jsonFactory.newReader().readBidResponse(jsonResp);
     assertEquals(resp, resp2);
   }

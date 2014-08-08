@@ -115,7 +115,7 @@ public class OpenRtbValidator {
             check(companion.getBattrList(), bid.getAttrList());
         if (!badCompCreats.isEmpty()) {
           logger.debug("{} rejected, blocked attr values: {}",
-              logId(bid), badCreats);
+              logId(bid), badCompCreats);
           invalidCreatAttr.inc();
           goodBid = false;
         }
