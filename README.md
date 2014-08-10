@@ -14,25 +14,19 @@ BUILDING NOTES
 
 You need: JDK 7, Maven 3.2, Protocol buffers (protoc) 2.5.0.
 Building is supported from the command line with Maven and
-from any IDE that can load Maven projects (on Eclipse, use m2e).
+from any IDE that can load Maven projects.
 
-Recommended to run 'mvn clean install' after checkout, this is
-important for the code generation steps that may not be performed
-by some IDEs (Eclipse/m2e in particular).
-
-Building via Maven will NOT work with JDK 8, because the projects
-use error-prone which is not yet JDK 8-compatible.  You can work
-around this by defining the property m2e.version to any value
-(error-prone doesn't play well with m2e either, and we cannot use
-a proper profile rule for `<jdk>!1.8</jdk>` because, you guessed,
-this also breaks m2e). JDK 8 support is coming soon for error-prone
-so this hack for non-Eclipse builds should be temporary.
+On Eclipse, the latest m2e is recommended but it can't run the code
+generation step, so you need to run a "mvn install" from the command
+line after checkout or after any mvn clean. Building with JDK 8 will
+also not work, because we use the error-prone lint tool which is not
+yet compatible with JDK 8 (once built, the library works with JDK 8).
 
 
 RELEASE NOTES
 ----------------------------------------------------------------------
 
-## Version 0.6.4, 08-08-2014
+## Version 0.6.4, 10-08-2014
 
 * OpenRtbJson API review and javadocs.
 * OpenRtbValidator reviews, improved logging.
