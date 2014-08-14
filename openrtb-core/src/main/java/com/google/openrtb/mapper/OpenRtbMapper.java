@@ -16,7 +16,6 @@
 
 package com.google.openrtb.mapper;
 
-import com.google.openrtb.OpenRtb;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidResponse;
 
@@ -25,10 +24,12 @@ import javax.annotation.Nullable;
 /**
  * Converts between OpenRTB and exchange-specific requests/response.
  *
- * @param <Req> Type for the exchange-specific bid request model
- * @param <Resp> Type for the exchange-specific bid response model
+ * @param <ReqIn> Type for the exchange-specific bid request model (input)
+ * @param <RespIn> Type for the exchange-specific bid response model (input)
+ * @param <ReqOut> Type for the exchange-specific bid request model (output)
+ * @param <RespOut> Type for the exchange-specific bid response model (output)
  */
-public interface OpenRtbMapper<Req, Resp> {
+public interface OpenRtbMapper<ReqIn, RespIn, ReqOut, RespOut> {
 
   /**
    * Converts an OpenRTB response to native.
@@ -37,7 +38,7 @@ public interface OpenRtbMapper<Req, Resp> {
    * @param response OpenRTB response
    * @return Native response
    */
-  Resp toNative(@Nullable BidRequest request, BidResponse response);
+  RespOut toNativeBidResponse(@Nullable BidRequest request, BidResponse response);
 
   /**
    * Converts a native request to OpenRTB.
@@ -45,7 +46,7 @@ public interface OpenRtbMapper<Req, Resp> {
    * @param request Native request
    * @return OpenRTB request
    */
-  OpenRtb.BidRequest toOpenRtb(Req request);
+  BidRequest.Builder toOpenRtbBidRequest(ReqIn request);
 
   /**
    * Converts an OpenRTB request to native.
@@ -53,7 +54,7 @@ public interface OpenRtbMapper<Req, Resp> {
    * @param request OpenRTB request
    * @return Native request
    */
-  Req toNative(@Nullable BidRequest request);
+  ReqOut toNativeBidRequest(@Nullable BidRequest request);
 
   /**
    * Converts a native response to OpenRTB.
@@ -62,5 +63,5 @@ public interface OpenRtbMapper<Req, Resp> {
    * @param response The response
    * @return OpenRTB response
    */
-  OpenRtb.BidResponse toOpenRtb(@Nullable Req request, Req response);
+  BidResponse.Builder toOpenRtbBidResponse(@Nullable ReqIn request, RespIn response);
 }
