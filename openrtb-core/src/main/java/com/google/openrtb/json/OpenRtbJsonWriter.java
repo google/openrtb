@@ -64,7 +64,7 @@ public class OpenRtbJsonWriter {
   }
 
   /**
-   * Serializes a {@link BidRequest} to JSON, returned as a {@String}.
+   * Serializes a {@link BidRequest} to JSON, returned as a {@code String}.
    */
   public String writeBidRequest(BidRequest req) throws IOException {
     try (StringWriter writer = new StringWriter()) {

@@ -138,7 +138,7 @@ public final class ProtoUtils {
   }
 
   /**
-   * Returns a copy of a {@link Message} that contains only fields that pass a predicate.
+   * Returns a copy of a {@link Message} that contains only fields that pass a filter.
    * This will be executed recursively for fields which are child messages.
    *
    * @param msg Message object
@@ -152,15 +152,15 @@ public final class ProtoUtils {
    * or a default instance of {@code msg}'s message type if {@code clearEmpty==false}
    */
   public static @Nullable <M extends Message> M filter(
-      M msg, boolean clearEmpty, Predicate<FieldDescriptor> predicate) {
+      M msg, boolean clearEmpty, Predicate<FieldDescriptor> filter) {
 
     int i = 0;
     for (Map.Entry<FieldDescriptor, Object> entry : msg.getAllFields().entrySet()) {
       FieldDescriptor fd = entry.getKey();
 
-      if (!predicate.apply(fd)) {
+      if (!filter.apply(fd)) {
         // At least one discarded field, go to slow-path.
-        return filterFrom(msg, clearEmpty, predicate, i);
+        return filterFrom(msg, clearEmpty, filter, i);
       }
 
       ++i;
@@ -171,7 +171,7 @@ public final class ProtoUtils {
   }
 
   private static @Nullable <M extends Message> M filterFrom(
-      M msg, boolean clearEmpty, Predicate<FieldDescriptor> predicate, int firstDiscarded) {
+      M msg, boolean clearEmpty, Predicate<FieldDescriptor> filter, int firstDiscarded) {
 
     // At least one field was discarded; we have to work harder and maybe create
     // a new message that will contain only the retained filters. Use a lazy-allocated
@@ -181,7 +181,7 @@ public final class ProtoUtils {
     Iterator<Map.Entry<FieldDescriptor, Object>> iter = msg.getAllFields().entrySet().iterator();
 
     for (int i = 0; i < firstDiscarded; ++i) {
-      filterValue(clearEmpty, predicate, builder, iter.next());
+      filterValue(clearEmpty, filter, builder, iter.next());
     }
 
     iter.next(); // Ignore object at firstDiscarded position
@@ -189,9 +189,9 @@ public final class ProtoUtils {
     while (iter.hasNext()) {
       Map.Entry<FieldDescriptor, Object> entry = iter.next();
 
-      if (predicate.apply(entry.getKey())) {
+      if (filter.apply(entry.getKey())) {
         builder = (builder == null) ? msg.newBuilderForType() : builder;
-        filterValue(clearEmpty, predicate, builder, entry);
+        filterValue(clearEmpty, filter, builder, entry);
       }
     }
 
@@ -210,7 +210,7 @@ public final class ProtoUtils {
     }
   }
 
-  protected static void filterValue(boolean clearEmpty, Predicate<FieldDescriptor> predicate,
+  protected static void filterValue(boolean clearEmpty, Predicate<FieldDescriptor> filter,
       Message.Builder builder, Map.Entry<FieldDescriptor, Object> entry) {
     FieldDescriptor fd = entry.getKey();
     Object value = entry.getValue();
@@ -218,13 +218,13 @@ public final class ProtoUtils {
     if (fd.getType() == FieldDescriptor.Type.MESSAGE) {
       if (fd.isRepeated()) {
         for (Object obj : ((Iterable<?>) value)) {
-          Message child = filter((Message) obj, clearEmpty, predicate);
+          Message child = filter((Message) obj, clearEmpty, filter);
           if (child != null) {
             builder.addRepeatedField(fd, child);
           }
         }
       } else {
-        Message child = filter((Message) value, clearEmpty, predicate);
+        Message child = filter((Message) value, clearEmpty, filter);
         if (child != null) {
           builder.setField(fd, child);
         }
