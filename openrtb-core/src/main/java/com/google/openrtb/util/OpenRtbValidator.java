@@ -76,8 +76,7 @@ public class OpenRtbValidator {
     if (imp == null) {
       unmatchedImp.inc();
       if (logger.isDebugEnabled()) {
-        logger.debug("{} rejected, unmatched impid: {}",
-            logId(bid), bid.getImpid());
+        logger.debug("{} rejected, unmatched impid: {}", logId(bid), bid.getImpid());
       }
       return false;
     }
@@ -85,8 +84,9 @@ public class OpenRtbValidator {
 
     List<String> badAdvs = check(request.getBadvList(), bid.getAdomainList());
     if (!badAdvs.isEmpty()) {
-      logger.debug("{} rejected, blocked adomain values: {}",
-          logId(bid), badAdvs);
+      if (logger.isDebugEnabled()) {
+        logger.debug("{} rejected, blocked adomain values: {}", logId(bid), badAdvs);
+      }
       invalidAdv.inc();
       goodBid = false;
     }
@@ -95,8 +95,9 @@ public class OpenRtbValidator {
       List<CreativeAttribute> badCreats =
           check(imp.getBanner().getBattrList(), bid.getAttrList());
       if (!badCreats.isEmpty()) {
-        logger.debug("{} rejected, blocked attr values: {}",
-            logId(bid), badCreats);
+        if (logger.isDebugEnabled()) {
+          logger.debug("{} rejected, blocked attr values: {}", logId(bid), badCreats);
+        }
         invalidCreatAttr.inc();
         goodBid = false;
       }
@@ -104,8 +105,9 @@ public class OpenRtbValidator {
       List<CreativeAttribute> badCreats =
           check(imp.getVideo().getBattrList(), bid.getAttrList());
       if (!badCreats.isEmpty()) {
-        logger.debug("{} rejected, blocked attr values: {}",
-            logId(bid), badCreats);
+        if (logger.isDebugEnabled()) {
+          logger.debug("{} rejected, blocked attr values: {}", logId(bid), badCreats);
+        }
         invalidCreatAttr.inc();
         goodBid = false;
       }
@@ -114,8 +116,9 @@ public class OpenRtbValidator {
         List<CreativeAttribute> badCompCreats =
             check(companion.getBattrList(), bid.getAttrList());
         if (!badCompCreats.isEmpty()) {
-          logger.debug("{} rejected, blocked attr values: {}",
-              logId(bid), badCompCreats);
+          if (logger.isDebugEnabled()) {
+            logger.debug("{} rejected, blocked attr values: {}", logId(bid), badCompCreats);
+          }
           invalidCreatAttr.inc();
           goodBid = false;
         }
