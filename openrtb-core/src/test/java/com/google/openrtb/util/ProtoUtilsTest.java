@@ -23,11 +23,13 @@ import static org.junit.Assert.assertTrue;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.Impression;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
 import com.google.openrtb.TestExt;
+import com.google.protobuf.Descriptors.FieldDescriptor;
 
 import org.junit.Test;
 
@@ -60,6 +62,10 @@ public class ProtoUtilsTest {
         .setExtension(TestExt.testRequest2, test2)
         .build();
     BidRequest reqDiff = reqPlainClear.toBuilder().setId("1").build();
+    assertSame(reqExt, ProtoUtils.filter(reqExt, true, Predicates.<FieldDescriptor>alwaysTrue()));
+    assertNull(ProtoUtils.filter(reqExt, true, Predicates.<FieldDescriptor>alwaysFalse()));
+    assertSame(BidRequest.getDefaultInstance(), ProtoUtils.filter(
+        reqExt, false, Predicates.<FieldDescriptor>alwaysFalse()));
     assertEquals(reqPlainClear, ProtoUtils.filter(reqExt, true, ProtoUtils.NOT_EXTENSION));
     assertEquals(reqPlainNoClear, ProtoUtils.filter(reqExt, false, ProtoUtils.NOT_EXTENSION));
     assertEquals(

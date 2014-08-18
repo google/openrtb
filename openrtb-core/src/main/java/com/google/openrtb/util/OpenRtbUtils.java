@@ -244,7 +244,7 @@ public final class OpenRtbUtils {
 
   private static boolean filterSeat(SeatBid.Builder seatbid, Predicate<Bid> filter) {
     List<Bid> oldBids = seatbid.getBidList();
-    List<Bid> newBids = ProtoUtils.filter(oldBids, filter);
+    Iterable<Bid> newBids = ProtoUtils.filter(oldBids, filter);
     if (newBids == oldBids) {
       return false;
     } else {
