@@ -25,6 +25,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.Impression;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
@@ -61,6 +62,7 @@ public class ProtoUtilsTest {
         .setExtension(TestExt.testRequest1, test1)
         .setExtension(TestExt.testRequest2, test2)
         .build();
+    BidRequest reqExtNoImp = reqExt.toBuilder().clearImp().build();
     BidRequest reqDiff = reqPlainClear.toBuilder().setId("1").build();
     assertSame(reqExt, ProtoUtils.filter(reqExt, true, Predicates.<FieldDescriptor>alwaysTrue()));
     assertNull(ProtoUtils.filter(reqExt, true, Predicates.<FieldDescriptor>alwaysFalse()));
@@ -68,12 +70,26 @@ public class ProtoUtilsTest {
         reqExt, false, Predicates.<FieldDescriptor>alwaysFalse()));
     assertEquals(reqPlainClear, ProtoUtils.filter(reqExt, true, ProtoUtils.NOT_EXTENSION));
     assertEquals(reqPlainNoClear, ProtoUtils.filter(reqExt, false, ProtoUtils.NOT_EXTENSION));
+    assertEquals(reqExtNoImp, ProtoUtils.filter(reqExt, false, new Predicate<FieldDescriptor>() {
+      @Override public boolean apply(FieldDescriptor fd) {
+        return !"imp".equals(fd.getName());
+      }}));
+
+    ImmutableList<BidRequest> list = ImmutableList.of(reqPlainClear, reqDiff);
     assertEquals(
         ImmutableList.of(reqPlainClear),
-        ProtoUtils.filter(ImmutableList.of(reqPlainClear, reqDiff), new Predicate<BidRequest>() {
+        ProtoUtils.filter(list, new Predicate<BidRequest>() {
           @Override public boolean apply(BidRequest req) {
-          return "0".equals(req.getId());
-        }}));
+            return "0".equals(req.getId());
+          }}));
+    assertEquals(
+        ImmutableList.of(reqPlainClear),
+        ProtoUtils.filter(list, new Predicate<BidRequest>() {
+          @Override public boolean apply(BidRequest req) {
+            return "0".equals(req.getId());
+          }}));
+    assertSame(list, ProtoUtils.filter(list, Predicates.<BidRequest>alwaysTrue()));
+    assertTrue(Iterables.isEmpty(ProtoUtils.filter(list, Predicates.<BidRequest>alwaysFalse())));
   }
 
   @Test
