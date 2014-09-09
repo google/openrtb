@@ -16,11 +16,11 @@
 
 package com.google.openrtb.util;
 
-import com.google.common.collect.Iterators;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 
+import java.util.Collections;
 import java.util.Iterator;
 
 /**
@@ -30,7 +30,7 @@ import java.util.Iterator;
  */
 class ResponseBidsIterator implements Iterator<Bid.Builder>, Iterable<Bid.Builder> {
   private final Iterator<SeatBid.Builder> seatbidIter;
-  private Iterator<Bid.Builder> bidIter = Iterators.emptyIterator();
+  private Iterator<Bid.Builder> bidIter = Collections.emptyIterator();
 
   public ResponseBidsIterator(BidResponse.Builder bidResponse) {
     this.seatbidIter = bidResponse.getSeatbidBuilderList().iterator();
