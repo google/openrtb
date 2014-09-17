@@ -36,6 +36,8 @@ import java.util.List;
  * Additionally, you can use the syntax %{...}% for URL encoding. Nesting can be used, e.g.
  * %{A%{B}%}% will encode A and doubly-encode B. This nesting is typically necessary when URLs
  * have parameter that contain other URLs, so each server decodes and redirects to the next URL.
+ * <p>
+ * This class is threadsafe, and all concrete subclasses have to be too.
  */
 public abstract class SnippetProcessor {
   private static final Logger logger = LoggerFactory.getLogger(SnippetProcessor.class);
