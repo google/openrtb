@@ -16,12 +16,15 @@
 
 package com.google.openrtb.snippet;
 
+import com.google.common.base.MoreObjects;
 import com.google.openrtb.OpenRtb.BidRequestOrBuilder;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.BidOrBuilder;
 import com.google.openrtb.OpenRtb.BidResponseOrBuilder;
 
 /**
  * Context for {@link SnippetProcessor}.
+ * <p>
+ * This class is threadsafe.
  */
 public class SnippetProcessorContext {
   private final BidRequestOrBuilder request;
@@ -35,15 +38,24 @@ public class SnippetProcessorContext {
     this.bid = bid;
   }
 
-  public BidRequestOrBuilder request() {
+  public final BidRequestOrBuilder request() {
     return request;
   }
 
-  public BidResponseOrBuilder response() {
+  public final BidResponseOrBuilder response() {
     return response;
   }
 
-  public BidOrBuilder bid() {
+  public final BidOrBuilder bid() {
     return bid;
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this).omitNullValues()
+        .add("request", request)
+        .add("response", response)
+        .add("bid", bid)
+        .toString();
   }
 }

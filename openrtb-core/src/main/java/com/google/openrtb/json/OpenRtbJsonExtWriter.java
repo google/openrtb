@@ -24,6 +24,8 @@ import java.io.IOException;
 
 /**
  * A serialization extension, can add children of "ext" fields.
+ * <p>
+ * Implementations of this interface have to be threadsafe.
  */
 public interface OpenRtbJsonExtWriter<M extends Message> {
 

@@ -52,8 +52,8 @@
   <properties>
     <findBugsJsr305Version>3.0.0</findBugsJsr305Version>
     <gpg.skip>true</gpg.skip>
-    <guavaVersion>17.0</guavaVersion>
-    <fasterxmlJacksonVersion>2.4.1.1</fasterxmlJacksonVersion>
+    <guavaVersion>18.0</guavaVersion>
+    <fasterxmlJacksonVersion>2.4.3</fasterxmlJacksonVersion>
     <injectVersion>1</injectVersion>
     <junitVersion>4.11</junitVersion>
     <metricsVersion>3.0.2</metricsVersion>

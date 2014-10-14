@@ -33,6 +33,9 @@ import java.util.Map;
 
 /**
  * Factory that will create {@link OpenRtbJsonWriter} and {@link OpenRtbJsonReader}.
+ * <p>
+ * This class is not threadsafe. You should use only to configure and create the
+ * reader/writer objects, which will be threadsafe.
  */
 public class OpenRtbJsonFactory {
   private JsonFactory jsonFactory;

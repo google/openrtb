@@ -54,6 +54,8 @@ import java.util.Map;
 
 /**
  * Serializes OpenRTB messages to JSON.
+ * <p>
+ * This class is threadsafe.
  */
 public class OpenRtbJsonWriter {
   private final OpenRtbJsonFactory factory;

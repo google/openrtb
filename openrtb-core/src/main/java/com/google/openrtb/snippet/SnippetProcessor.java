@@ -18,8 +18,8 @@ package com.google.openrtb.snippet;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Objects.ToStringHelper;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.MoreObjects.ToStringHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.escape.Escaper;
 import com.google.common.net.PercentEscaper;
@@ -36,6 +36,8 @@ import java.util.List;
  * Additionally, you can use the syntax %{...}% for URL encoding. Nesting can be used, e.g.
  * %{A%{B}%}% will encode A and doubly-encode B. This nesting is typically necessary when URLs
  * have parameter that contain other URLs, so each server decodes and redirects to the next URL.
+ * <p>
+ * This class is threadsafe, and all concrete subclasses have to be too.
  */
 public abstract class SnippetProcessor {
   private static final Logger logger = LoggerFactory.getLogger(SnippetProcessor.class);
@@ -165,6 +167,6 @@ public abstract class SnippetProcessor {
   }
 
   protected ToStringHelper toStringHelper() {
-    return Objects.toStringHelper(this).omitNullValues();
+    return MoreObjects.toStringHelper(this).omitNullValues();
   }
 }

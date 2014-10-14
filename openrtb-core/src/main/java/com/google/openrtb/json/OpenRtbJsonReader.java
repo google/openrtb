@@ -74,6 +74,8 @@ import java.util.Collection;
 
 /**
  * Desserializes OpenRTB messages from JSON.
+ * <p>
+ * This class is threadsafe.
  */
 public class OpenRtbJsonReader {
   private final OpenRtbJsonFactory factory;

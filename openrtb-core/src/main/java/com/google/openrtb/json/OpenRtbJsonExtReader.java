@@ -24,6 +24,8 @@ import java.io.IOException;
 
 /**
  * A desserialization extension, can consume children of "ext" fields.
+ * <p>
+ * Implementations of this interface have to be threadsafe.
  *
  * @param <EB> Type of message builder being constructed by the {@link OpenRtbJsonReader}.
  */
