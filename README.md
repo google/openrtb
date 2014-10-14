@@ -26,6 +26,11 @@ yet compatible with JDK 8 (once built, the library works with JDK 8).
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 0.6.6, 14-10-2014
+
+* Javadocs for thead safety.
+* Update Guava and Jackson libraries.
+
 ## Version 0.6.5, 18-08-2014
 
 * OpenRtbMapper interface improved, supports all possible mappings.
