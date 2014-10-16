@@ -26,6 +26,10 @@ yet compatible with JDK 8 (once built, the library works with JDK 8).
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+# Version 0.6.7, 16-10-2014
+
+* OpenRtbUtils.filterBids() updated to use Bid.Builder instead of Bid.
+
 ## Version 0.6.6, 14-10-2014
 
 * Javadocs for thead safety.

@@ -69,13 +69,13 @@ public class OpenRtbValidator {
   }
 
   public boolean validate(final BidRequest request, final BidResponse.Builder response) {
-    return !OpenRtbUtils.filterBids(response, new Predicate<Bid>() {
-      @Override public boolean apply(Bid bid) {
-        return validate(request, response, bid);
+    return !OpenRtbUtils.filterBids(response, new Predicate<Bid.Builder>() {
+      @Override public boolean apply(Bid.Builder bid) {
+        return validate(request, bid);
       }});
   }
 
-  public boolean validate(BidRequest request, BidResponse.Builder response, Bid bid) {
+  public boolean validate(BidRequest request, Bid.Builder bid) {
     Impression imp = OpenRtbUtils.impWithId(request, bid.getImpid());
     if (imp == null) {
       unmatchedImp.inc();
@@ -132,7 +132,7 @@ public class OpenRtbValidator {
     return goodBid;
   }
 
-  protected static String logId(Bid bid) {
+  protected static String logId(Bid.Builder bid) {
     if (bid.hasId()) {
       return "Bid " + bid.getId();
     }
