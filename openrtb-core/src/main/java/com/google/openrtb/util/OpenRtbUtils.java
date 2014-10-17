@@ -231,7 +231,7 @@ public final class OpenRtbUtils {
    * @return {@code true} if any bid was removed
    * @see ProtoUtils#filter(Iterable, Predicate) for more general filtering support
    */
-  public static boolean filterBids(BidResponse.Builder response, Predicate<Bid> filter) {
+  public static boolean filterBids(BidResponse.Builder response, Predicate<Bid.Builder> filter) {
     checkNotNull(filter);
     boolean updated = false;
 
@@ -242,13 +242,16 @@ public final class OpenRtbUtils {
     return updated;
   }
 
-  private static boolean filterSeat(SeatBid.Builder seatbid, Predicate<Bid> filter) {
-    List<Bid> oldBids = seatbid.getBidList();
-    Iterable<Bid> newBids = ProtoUtils.filter(oldBids, filter);
+  private static boolean filterSeat(SeatBid.Builder seatbid, Predicate<Bid.Builder> filter) {
+    List<Bid.Builder> oldBids = seatbid.getBidBuilderList();
+    Iterable<Bid.Builder> newBids = ProtoUtils.filter(oldBids, filter);
     if (newBids == oldBids) {
       return false;
     } else {
-      seatbid.clearBid().addAllBid(newBids);
+      seatbid.clearBid();
+      for (Bid.Builder bid : newBids) {
+        seatbid.addBid(bid);
+      }
       return true;
     }
   }
@@ -262,7 +265,7 @@ public final class OpenRtbUtils {
    * @see ProtoUtils#filter(Iterable, Predicate) for more general filtering support
    */
   public static boolean filterBids(
-      BidResponse.Builder response, @Nullable String seat, Predicate<Bid> filter) {
+      BidResponse.Builder response, @Nullable String seat, Predicate<Bid.Builder> filter) {
     checkNotNull(filter);
 
     for (SeatBid.Builder seatbid : response.getSeatbidBuilderList()) {

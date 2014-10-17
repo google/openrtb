@@ -200,25 +200,25 @@ public class OpenRtbUtilsTest {
             .addBid(buildHtmlBid("2", 100))
             .addBid(buildHtmlBid("3", 200)))
         .addSeatbid(SeatBid.newBuilder().setSeat("unused"));
-    OpenRtbUtils.filterBids(response, Predicates.<Bid>alwaysTrue());
+    OpenRtbUtils.filterBids(response, Predicates.<Bid.Builder>alwaysTrue());
     assertEquals(3, Iterables.size(OpenRtbUtils.bids(response)));
-    assertTrue(OpenRtbUtils.filterBids(response, new Predicate<Bid>() {
-      @Override public boolean apply(Bid bid) {
+    assertTrue(OpenRtbUtils.filterBids(response, new Predicate<Bid.Builder>() {
+      @Override public boolean apply(Bid.Builder bid) {
         return !"1".equals(bid.getId());
       }}));
     assertEquals(2, Iterables.size(OpenRtbUtils.bids(response)));
     OpenRtbUtils.seatBid(response, "x").addBid(buildHtmlBid("unused", 100));
     OpenRtbUtils.seatBid(response, "x").addBid(buildHtmlBid("4", 100));
-    assertTrue(OpenRtbUtils.filterBids(response, "x", new Predicate<Bid>() {
-      @Override public boolean apply(Bid bid) {
+    assertTrue(OpenRtbUtils.filterBids(response, "x", new Predicate<Bid.Builder>() {
+      @Override public boolean apply(Bid.Builder bid) {
         return !"4".equals(bid.getId());
       }}));
     assertEquals(1, Iterables.size(OpenRtbUtils.bids(response, "x")));
-    assertFalse(OpenRtbUtils.filterBids(response, "none", Predicates.<Bid>alwaysFalse()));
-    assertTrue(OpenRtbUtils.filterBids(response, null, Predicates.<Bid>alwaysFalse()));
-    assertTrue(OpenRtbUtils.filterBids(response, "x", Predicates.<Bid>alwaysFalse()));
+    assertFalse(OpenRtbUtils.filterBids(response, "none", Predicates.<Bid.Builder>alwaysFalse()));
+    assertTrue(OpenRtbUtils.filterBids(response, null, Predicates.<Bid.Builder>alwaysFalse()));
+    assertTrue(OpenRtbUtils.filterBids(response, "x", Predicates.<Bid.Builder>alwaysFalse()));
     assertTrue(Iterables.isEmpty(OpenRtbUtils.bids(response, "x")));
-    assertFalse(OpenRtbUtils.filterBids(response, Predicates.<Bid>alwaysFalse()));
+    assertFalse(OpenRtbUtils.filterBids(response, Predicates.<Bid.Builder>alwaysFalse()));
     assertTrue(Iterables.isEmpty(OpenRtbUtils.bids(response)));
   }
 

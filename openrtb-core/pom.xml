@@ -11,12 +11,6 @@
     <version>0.6.7-SNAPSHOT</version>
   </parent>
 
-  <properties>
-    <testGeneratedSources>${project.basedir}/target/generated-test-sources</testGeneratedSources>
-    <testProtobufSource>${project.basedir}/src/test/protobuf</testProtobufSource>
-    <testProtobufGenerated>${testGeneratedSources}/protobuf</testProtobufGenerated>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>javax.inject</groupId>
