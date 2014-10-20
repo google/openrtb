@@ -57,7 +57,7 @@
     <injectVersion>1</injectVersion>
     <junitVersion>4.11</junitVersion>
     <metricsVersion>3.0.2</metricsVersion>
-    <protobufVersion>2.5.0</protobufVersion>
+    <protobufVersion>2.6.0</protobufVersion>
     <slf4jVersion>1.7.7</slf4jVersion>
 
     <!-- Plugin versions -->
