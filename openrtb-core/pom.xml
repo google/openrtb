@@ -67,7 +67,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>${buildHelperMavenPluginVersion}</version>
         <executions>
           <execution>
             <id>default</id>
@@ -95,7 +94,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
-        <version>${coberturaMavenPluginVersion}</version>
         <configuration>
           <format>xml</format>
           <format>html</format>
@@ -128,7 +126,7 @@
                 <id>compile-protoc</id>
                 <phase>generate-sources</phase>
                 <configuration>
-                  <tasks>
+                  <target>
                     <mkdir dir="${protobufGenerated}" />
                     <path id="proto.path">
                       <fileset dir="${protobufSource}">
@@ -141,7 +139,7 @@
                       <arg value="-I${protobufSource}" />
                       <arg line="${proto.files}" />
                     </exec>
-                  </tasks>
+                  </target>
                 </configuration>
                 <goals>
                   <goal>run</goal>
