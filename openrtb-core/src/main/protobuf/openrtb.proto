@@ -454,14 +454,6 @@ enum CreativeAttribute {
 }
 
 /*
- * Boolean-like enumeration used in various attributes.
- */
-enum Flag {
-  NO = 0;
-  YES = 1;
-}
-
-/*
  * OpenRTB 3.3.1: The top-level bid request object.
  */
 message BidRequest {
@@ -490,6 +482,11 @@ message BidRequest {
    * Information known or derived about the human user of the device.
    */
   optional User user = 6;
+  /**
+   * Indicator of test mode in which auctions are not billable,
+   * where false = live mode, true = test mode.
+   */
+  optional bool test = 15;
   /*
    * Auction Type. If “1”, then first price auction. If “2”, then second price auction.
    * Additional auction types can be defined as per the exchange’s business rules.
@@ -513,10 +510,10 @@ message BidRequest {
    * of the impressions available in context (e.g., all impressions available on the web page;
    * all impressions available for a video [pre, mid and postroll spots], etc.)
    * to support road-blocking. A true value should only be passed if the exchange is aware of all
-   * impressions in context for the publisher. NO means the exchange cannot verify, and YES
+   * impressions in context for the publisher. False means the exchange cannot verify, and true
    * means that all impressions represent all impressions available.
    */
-  optional Flag allimps = 10 [default = NO];
+  optional bool allimps = 10;
   /*
    * Array of allowed currencies for bids on this bid request using ISO-4217 alphabetic codes.
    * If only one currency is used by the exchange, this parameter is not required.
@@ -579,7 +576,7 @@ message BidRequest {
     /*
      * YES if the ad is interstitial or full screen; else NO.
      */
-    optional Flag instl = 6 [default = NO];
+    optional bool instl = 6;
     /*
      * Identifier for specific ad placement or ad tag that was used to initiate the auction.
      * This can be useful for debugging of any issues, or for optimization by the buyer.
@@ -696,9 +693,9 @@ message BidRequest {
        */
       repeated string mimes = 7;
       /*
-       * Specify if the banner is delivered in the top frame (YES) or in an iframe (NO).
+       * Specify if the banner is delivered in the top frame (true) or in an iframe (false).
        */
-      optional Flag topframe = 8 [default = NO];
+      optional bool topframe = 8;
       /*
        * Specify properties for an expandable ad.
        */
@@ -820,7 +817,7 @@ message BidRequest {
        * 16x9 window, then this should be set to false. Default setting is true, which assumes
        * that boxing of content to fit into a window is allowed.
        */
-      optional Flag boxingallowed = 14 [default = YES];
+      optional bool boxingallowed = 14 [default = true];
       /*
        * List of allowed playback methods. If blank, assume that all are allowed.
        */
@@ -925,7 +922,7 @@ message BidRequest {
        * Flag indicating that this impression is a private auction eligible only to seats named
        * in the DirectDeals object.
        */
-      optional Flag private_auction = 1;
+      optional bool private_auction = 1;
       /*
        * A collection of deal objects encapsulating a list of direct deals eligible for
        * this impression.
@@ -1017,7 +1014,7 @@ message BidRequest {
     /*
      * Specifies whether the site has a privacy policy.
      */
-    optional Flag privacypolicy = 8;
+    optional bool privacypolicy = 8;
     /*
      * Referrer URL that caused navigation to the current page.
      */
@@ -1026,6 +1023,10 @@ message BidRequest {
      * Search string that caused navigation to the current page.
      */
     optional string search = 11;
+    /**
+     * Mobile-optimized signal.
+     */
+    optional bool mobile = 15;
     /*
      * Site's Publisher.
      */
@@ -1085,11 +1086,11 @@ message BidRequest {
     /*
      * Specifies whether the application has a privacy policy.
      */
-    optional Flag privacypolicy = 9;
+    optional bool privacypolicy = 9;
     /*
      * Application is a paid version or free.
      */
-    optional Flag paid = 10;
+    optional bool paid = 10;
     /*
      * Application's Publisher.
      */
@@ -1185,7 +1186,7 @@ message BidRequest {
     /*
      * Is content live?
      */
-    optional Flag livestream = 13;
+    optional bool livestream = 13;
     /*
      * Direct or indirect.
      */
@@ -1206,7 +1207,7 @@ message BidRequest {
      * From QAG Video Addendum. If content can be embedded (such as an embeddable video player)
      * this value should be set to YES. If content cannot be embedded, this should be set to NO.
      */
-    optional Flag embeddable = 18;
+    optional bool embeddable = 18;
     /*
      * Language of the content. Use alpha-2/ISO 639-1 codes.
      */
@@ -1252,22 +1253,98 @@ message BidRequest {
    */
   message Device {
     /*
-     * Do Not Track.
-     */
-    optional Flag dnt = 1;
-    /*
      * Browser user agent string.
      */
     optional string ua = 2;
-    /*
-     * IPv4 address closest to device.
-     */
-    optional string ip = 3;
     /*
      * Geography as derived from the device’s location services (e.g., cell tower triangulation,
      * GPS) or IP address.
      */
     optional Geo geo = 4;
+    /*
+     * Do Not Track.
+     */
+    optional bool dnt = 1;
+    /**
+     * "Limit Ad Tracking" signal commercially endorsed (e.g., iOS, Android),
+     * where false = tracking is unrestricted,
+     * true = tracking must be limited per commercial guidelines.
+     */
+    optional bool lmt = 20;
+    /*
+     * IPv4 address closest to device.
+     */
+    optional string ip = 3;
+    /*
+     * IP address in IPv6.
+     */
+    optional string ipv6 = 9;
+    /*
+     * Return the device type being used.
+     */
+    optional DeviceType devicetype = 18;
+    /*
+     * Device make (e.g., “Apple”).
+     */
+    optional string make = 12;
+    /*
+     * Device model (e.g., “iPhone”).
+     */
+    optional string model = 13;
+    /*
+     * Device operating system (e.g., “iOS”).
+     */
+    optional string os = 14;
+    /*
+     * Device operating system version (e.g., “3.1.2”).
+     */
+    optional string osv = 15;
+    /**
+     * Hardware version of the device (e.g., "5S" for iPhone 5S).
+     */
+    optional string hwv = 21;
+    /**
+     * Physical width of the screen in pixels.
+     */
+    optional int32 w = 22;
+    /**
+     * Physical height of the screen in pixels.
+     */
+    optional int32 h = 23;
+    /**
+     * Screen size as pixels per linear inch.
+     */
+    optional int32 ppi = 24;
+    /**
+     * The ratio of physical pixels to device independent pixels.
+     */
+    optional double pxratio = 25;
+    /*
+     * Device supports Javascript?
+     */
+    optional bool js = 16;
+    /*
+     * Return the Flash version detected.
+     */
+    optional string flashver = 19;
+    /*
+     * Browser language; use alpha-2/ISO 639-1 codes.
+     */
+    optional string language = 11;
+    /*
+     * Carrier or ISP, e.g. "VERIZON", specified using Mobile Network Code (MNC).
+     * "WIFI" is often used in mobile to indicate high bandwidth
+     * (e.g., video friendly vs. cellular).
+     */
+    optional string carrier = 10;
+    /*
+     * Return the detected data connection type for the device.
+     */
+    optional ConnectionType connectiontype = 17;
+    /**
+     * ID sanctioned for advertiser use in the clear (i.e., not hashed).
+     */
+    optional string ifa = 26;
     /*
      * SHA1 hashed device ID; IMEI when available, else MEID or ESN.
      * OpenRTB’s preferred method for device ID hashing is SHA1.
@@ -1288,51 +1365,14 @@ message BidRequest {
      * Should be interpreted as case insensitive.
      */
     optional string dpidmd5 = 8;
-    /*
-     * IP address in IPv6.
+    /**
+     * MAC address of the device; hashed via SHA1.
      */
-    optional string ipv6 = 9;
-    /*
-     * Carrier or ISP derived from the IP address.
-     * Should be specified using Mobile Network Code (MNC).
+    optional string macsha1 = 27;
+    /**
+     * MAC address of the device; hashed via MD5.
      */
-    optional string carrier = 10;
-    /*
-     * Browser language; use alpha-2/ISO 639-1 codes.
-     */
-    optional string language = 11;
-    /*
-     * Device make (e.g., “Apple”).
-     */
-    optional string make = 12;
-    /*
-     * Device model (e.g., “iPhone”).
-     */
-    optional string model = 13;
-    /*
-     * Device operating system (e.g., “iOS”).
-     */
-    optional string os = 14;
-    /*
-     * Device operating system version (e.g., “3.1.2”).
-     */
-    optional string osv = 15;
-    /*
-     * Device supports Javascript?
-     */
-    optional Flag js = 16;
-    /*
-     * Return the detected data connection type for the device.
-     */
-    optional ConnectionType connectiontype = 17;
-    /*
-     * Return the device type being used.
-     */
-    optional DeviceType devicetype = 18;
-    /*
-     * Return the Flash version detected.
-     */
-    optional string flashver = 19;
+    optional string macmd5 = 28;
     /**
      * Extensions.
      */
@@ -1486,6 +1526,11 @@ message BidRequest {
      */
     optional double lon = 2;
     /*
+     * Indicate the source of the geo data (GPS, IP address, user provided).
+     * Type should be provided when lat/lon is provided.
+     */
+    optional LocationType type = 9;
+    /*
      * Country using ISO-3166-1 Alpha-3.
      */
     optional string country = 3;
@@ -1511,11 +1556,10 @@ message BidRequest {
      * Zip/postal code.
      */
     optional string zip = 8;
-    /*
-     * Indicate the source of the geo data (GPS, IP address, user provided).
-     * Type should be provided when lat/lon is provided.
+    /**
+     * Local device time as the number +/- of minutes from UTC.
      */
-    optional LocationType type = 9;
+    optional int32 utcoffset = 10;
     /**
      * Extensions.
      */
@@ -1589,7 +1633,7 @@ message BidRequest {
      * Indicated wether or not this request falls under the COPPA regulations
      * established by the USA FTC.
      */
-    optional Flag coppa = 1;
+    optional bool coppa = 1;
     /**
      * Extensions.
      */
@@ -1652,7 +1696,7 @@ message BidResponse {
     /*
      * Should impressions be won or lost as a group?
      */
-    optional Flag group = 3;
+    optional bool group = 3;
     /**
      * Extensions.
      */
@@ -1708,6 +1752,11 @@ message BidResponse {
        * However, exchanges may mandate that only one landing domain is allowed.
        */
       repeated string adomain = 7;
+      /**
+       * Bundle or package name (e.g., com.foo.mygame) of the app being advertised, if applicable;
+       * intended to be a unique ID across exchanges.
+       */
+      optional string bundle = 15;
       /*
        * Sample image URL (without cache busting) for content checking.
        */
@@ -1723,6 +1772,10 @@ message BidResponse {
        * Open Bidder macros are supported for this field.
        */
       optional string crid = 10;
+      /**
+       * IAB content category of the creative.
+       */
+      optional string cat = 16;
       /*
        * Array of creative attributes.
        */

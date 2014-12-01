@@ -31,7 +31,6 @@ import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
-import com.google.openrtb.OpenRtb.Flag;
 
 import org.junit.Test;
 
@@ -60,7 +59,7 @@ public class ProtobufTest {
              .setName("Site ABCD")
              .setDomain("siteabcd.com")
              .addAllCat(asList("IAB2-1", "IAB2-2"))
-             .setPrivacypolicy(Flag.YES)
+             .setPrivacypolicy(true)
              .setPage("http://siteabcd.com/page.htm")
              .setRef("http://referringsite.com/referringpage.htm")
              .setPublisher(Publisher.newBuilder()
@@ -73,7 +72,7 @@ public class ProtobufTest {
              .setUa("Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.16)")
              .setOs("OS X")
              .setFlashver("10.1")
-             .setJs(Flag.YES))
+             .setJs(true))
          .setUser(User.newBuilder()
              .setId("45asdf987656789adfad4678rew656789")
              .setBuyeruid("5df678asd8987656asdf78987654"))

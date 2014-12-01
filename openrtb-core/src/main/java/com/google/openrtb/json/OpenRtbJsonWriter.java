@@ -129,6 +129,9 @@ public class OpenRtbJsonWriter {
       gen.writeFieldName("user");
       writeUser(req.getUser(), gen);
     }
+    if (req.hasTest()) {
+      gen.writeNumberField("test", req.getTest() ? 1 : 0);
+    }
     if (req.hasAt()) {
       gen.writeNumberField("at", req.getAt());
     }
@@ -137,7 +140,7 @@ public class OpenRtbJsonWriter {
     }
     writeStrings("wseat", req.getWseatList(), gen);
     if (req.hasAllimps()) {
-      gen.writeNumberField("allimps", req.getAllimps().getNumber());
+      gen.writeNumberField("allimps", req.getAllimps() ? 1 : 0);
     }
     writeStrings("cur", req.getCurList(), gen);
     writeStrings("bcat", req.getBcatList(), gen);
@@ -170,7 +173,7 @@ public class OpenRtbJsonWriter {
       gen.writeStringField("displaymanagerver", imp.getDisplaymanagerver());
     }
     if (imp.hasInstl()) {
-      gen.writeNumberField("instl", imp.getInstl().getNumber());
+      gen.writeNumberField("instl", imp.getInstl() ? 1 : 0);
     }
     if (imp.hasTagid()) {
       gen.writeStringField("tagid", imp.getTagid());
@@ -220,7 +223,7 @@ public class OpenRtbJsonWriter {
     writeEnums("battr", banner.getBattrList(), gen);
     writeStrings("mimes", banner.getMimesList(), gen);
     if (banner.hasTopframe()) {
-      gen.writeNumberField("topframe", banner.getTopframe().getNumber());
+      gen.writeNumberField("topframe", banner.getTopframe() ? 1 : 0);
     }
     writeEnums("expdir", banner.getExpdirList(), gen);
     writeEnums("api", banner.getApiList(), gen);
@@ -266,7 +269,7 @@ public class OpenRtbJsonWriter {
       gen.writeNumberField("maxbitrate", video.getMaxbitrate());
     }
     if (video.hasBoxingallowed()) {
-      gen.writeNumberField("boxingallowed", video.getBoxingallowed().getNumber());
+      gen.writeNumberField("boxingallowed", video.getBoxingallowed() ? 1 : 0);
     }
     writeEnums("playbackmethod", video.getPlaybackmethodList(), gen);
     writeEnums("delivery", video.getDeliveryList(), gen);
@@ -289,7 +292,7 @@ public class OpenRtbJsonWriter {
   protected void writePMP(PMP pmp, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (pmp.hasPrivateAuction()) {
-      gen.writeNumberField("private_auction", pmp.getPrivateAuction().getNumber());
+      gen.writeNumberField("private_auction", pmp.getPrivateAuction() ? 1 : 0);
     }
     if (pmp.getDealsCount() != 0) {
       gen.writeArrayFieldStart("deals");
@@ -340,13 +343,16 @@ public class OpenRtbJsonWriter {
       gen.writeStringField("page", site.getPage());
     }
     if (site.hasPrivacypolicy()) {
-      gen.writeNumberField("privacypolicy", site.getPrivacypolicy().getNumber());
+      gen.writeNumberField("privacypolicy", site.getPrivacypolicy() ? 1 : 0);
     }
     if (site.hasRef()) {
       gen.writeStringField("ref", site.getRef());
     }
     if (site.hasSearch()) {
       gen.writeStringField("search", site.getSearch());
+    }
+    if (site.hasMobile()) {
+      gen.writeNumberField("mobile", site.getMobile() ? 1 : 0);
     }
     if (site.hasPublisher()) {
       gen.writeFieldName("publisher");
@@ -384,10 +390,10 @@ public class OpenRtbJsonWriter {
       gen.writeStringField("bundle", app.getBundle());
     }
     if (app.hasPrivacypolicy()) {
-      gen.writeNumberField("privacypolicy", app.getPrivacypolicy().getNumber());
+      gen.writeNumberField("privacypolicy", app.getPrivacypolicy() ? 1 : 0);
     }
     if (app.hasPaid()) {
-      gen.writeNumberField("paid", app.getPaid().getNumber());
+      gen.writeNumberField("paid", app.getPaid() ? 1 : 0);
     }
     if (app.hasPublisher()) {
       gen.writeFieldName("publisher");
@@ -444,7 +450,7 @@ public class OpenRtbJsonWriter {
       gen.writeNumberField("context", content.getContext().getNumber());
     }
     if (content.hasLivestream()) {
-      gen.writeNumberField("livestream", content.getLivestream().getNumber());
+      gen.writeNumberField("livestream", content.getLivestream() ? 1 : 0);
     }
     if (content.hasSourcerelationship()) {
       gen.writeNumberField("sourcerelationship", content.getSourcerelationship().getNumber());
@@ -460,7 +466,7 @@ public class OpenRtbJsonWriter {
       gen.writeNumberField("qagmediarating", content.getQagmediarating().getNumber());
     }
     if (content.hasEmbeddable()) {
-      gen.writeNumberField("embeddable", content.getEmbeddable().getNumber());
+      gen.writeNumberField("embeddable", content.getEmbeddable() ? 1 : 0);
     }
     if (content.hasLanguage()) {
       gen.writeStringField("language", content.getLanguage());
@@ -503,39 +509,27 @@ public class OpenRtbJsonWriter {
 
   protected void writeDevice(Device device, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
-    if (device.hasDnt()) {
-      gen.writeNumberField("dnt", device.getDnt().getNumber());
-    }
     if (device.hasUa()) {
       gen.writeStringField("ua", device.getUa());
-    }
-    if (device.hasIp()) {
-      gen.writeStringField("ip", device.getIp());
     }
     if (device.hasGeo()) {
       gen.writeFieldName("geo");
       writeGeo(device.getGeo(), gen, "BidRequest.device.geo");
     }
-    if (device.hasDidsha1()) {
-      gen.writeStringField("didsha1", device.getDidsha1());
+    if (device.hasDnt()) {
+      gen.writeNumberField("dnt", device.getDnt() ? 1 : 0);
     }
-    if (device.hasDidmd5()) {
-      gen.writeStringField("didmd5", device.getDidmd5());
+    if (device.hasLmt()) {
+      gen.writeNumberField("lmt", device.getLmt() ? 1 : 0);
     }
-    if (device.hasDpidsha1()) {
-      gen.writeStringField("dpidsha1", device.getDpidsha1());
-    }
-    if (device.hasDpidmd5()) {
-      gen.writeStringField("dpidmd5", device.getDpidmd5());
+    if (device.hasIp()) {
+      gen.writeStringField("ip", device.getIp());
     }
     if (device.hasIpv6()) {
       gen.writeStringField("ipv6", device.getIpv6());
     }
-    if (device.hasCarrier()) {
-      gen.writeStringField("carrier", device.getCarrier());
-    }
-    if (device.hasLanguage()) {
-      gen.writeStringField("language", device.getLanguage());
+    if (device.hasDevicetype()) {
+      gen.writeNumberField("devicetype", device.getDevicetype().getNumber());
     }
     if (device.hasMake()) {
       gen.writeStringField("make", device.getMake());
@@ -549,17 +543,56 @@ public class OpenRtbJsonWriter {
     if (device.hasOsv()) {
       gen.writeStringField("osv", device.getOsv());
     }
+    if (device.hasHwv()) {
+      gen.writeStringField("hwv", device.getHwv());
+    }
+    if (device.hasW()) {
+      gen.writeNumberField("w", device.getW());
+    }
+    if (device.hasH()) {
+      gen.writeNumberField("h", device.getH());
+    }
+    if (device.hasPpi()) {
+      gen.writeNumberField("ppi", device.getPpi());
+    }
+    if (device.hasPxratio()) {
+      gen.writeNumberField("pxratio", device.getPxratio());
+    }
     if (device.hasJs()) {
-      gen.writeNumberField("js", device.getJs().getNumber());
+      gen.writeNumberField("js", device.getJs() ? 1 : 0);
+    }
+    if (device.hasFlashver()) {
+      gen.writeStringField("flashver", device.getFlashver());
+    }
+    if (device.hasLanguage()) {
+      gen.writeStringField("language", device.getLanguage());
+    }
+    if (device.hasCarrier()) {
+      gen.writeStringField("carrier", device.getCarrier());
     }
     if (device.hasConnectiontype()) {
       gen.writeNumberField("connectiontype", device.getConnectiontype().getNumber());
     }
-    if (device.hasDevicetype()) {
-      gen.writeNumberField("devicetype", device.getDevicetype().getNumber());
+    if (device.hasIfa()) {
+      gen.writeStringField("ifa", device.getIfa());
     }
-    if (device.hasFlashver()) {
-      gen.writeStringField("flashver", device.getFlashver());
+    if (device.hasDidsha1()) {
+      gen.writeStringField("didsha1", device.getDidsha1());
+    }
+    if (device.hasDidmd5()) {
+      gen.writeStringField("didmd5", device.getDidmd5());
+    }
+    if (device.hasDpidsha1()) {
+      gen.writeStringField("dpidsha1", device.getDpidsha1());
+    }
+    if (device.hasDpidmd5()) {
+      gen.writeStringField("dpidmd5", device.getDpidmd5());
+    }
+    if (device.hasMacsha1()) {
+      gen.writeStringField("macsha1", device.getMacsha1());
+    }
+    if (device.hasMacmd5()) {
+      gen.writeStringField("macmd5", device.getMacmd5());
     }
     writeExtensions(device, gen, "BidRequest.device");
     gen.writeEndObject();
@@ -572,6 +605,9 @@ public class OpenRtbJsonWriter {
     }
     if (geo.hasLon()) {
       gen.writeNumberField("lon", geo.getLon());
+    }
+    if (geo.hasType()) {
+      gen.writeNumberField("type", geo.getType().getNumber());
     }
     if (geo.hasCountry()) {
       gen.writeStringField("country", geo.getCountry());
@@ -591,8 +627,8 @@ public class OpenRtbJsonWriter {
     if (geo.hasZip()) {
       gen.writeStringField("zip", geo.getZip());
     }
-    if (geo.hasType()) {
-      gen.writeNumberField("type", geo.getType().getNumber());
+    if (geo.hasUtcoffset()) {
+      gen.writeNumberField("utcoffset", geo.getUtcoffset());
     }
     writeExtensions(geo, gen, path);
     gen.writeEndObject();
@@ -670,7 +706,7 @@ public class OpenRtbJsonWriter {
   protected void writeRegulations(Regulations regs, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (regs.hasCoppa()) {
-      gen.writeNumberField("coppa", regs.getCoppa().getNumber());
+      gen.writeNumberField("coppa", regs.getCoppa() ? 1 : 0);
     }
     writeExtensions(regs, gen, "BidRequest.regs");
     gen.writeEndObject();
@@ -750,7 +786,7 @@ public class OpenRtbJsonWriter {
       gen.writeStringField("seat", seatbid.getSeat());
     }
     if (seatbid.hasGroup()) {
-      gen.writeNumberField("group", seatbid.getGroup().getNumber());
+      gen.writeNumberField("group", seatbid.getGroup() ? 1 : 0);
     }
     writeExtensions(seatbid, gen, "BidResponse.seatbid");
     gen.writeEndObject();
@@ -777,6 +813,9 @@ public class OpenRtbJsonWriter {
       gen.writeStringField("adm", bid.getAdm());
     }
     writeStrings("adomain", bid.getAdomainList(), gen);
+    if (bid.hasBundle()) {
+      gen.writeStringField("bundle", bid.getBundle());
+    }
     if (bid.hasIurl()) {
       gen.writeStringField("iurl", bid.getIurl());
     }
@@ -785,6 +824,9 @@ public class OpenRtbJsonWriter {
     }
     if (bid.hasCrid()) {
       gen.writeStringField("crid", bid.getCrid());
+    }
+    if (bid.hasCat()) {
+      gen.writeStringField("cat", bid.getCat());
     }
     writeEnums("attr", bid.getAttrList(), gen);
     if (bid.hasDealid()) {
