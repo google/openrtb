@@ -58,6 +58,7 @@ import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.NoBidReasonCode;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
+import com.google.openrtb.OpenRtb.ContentCategory;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
 import com.google.openrtb.TestExt;
 import com.google.openrtb.TestExt.Test1;
@@ -455,6 +456,8 @@ public class OpenRtbJsonTest {
                 .setDealid("deal1")
                 .setW(100)
                 .setH(80)
+                .setBundle("com.google.testapp")
+                .setCat(ContentCategory.IAB10_2.name())
                 .setExtension(TestExt.testBid, test1))
             .setSeat("seat1")
             .setGroup(false)

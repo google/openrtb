@@ -67,6 +67,15 @@ public class OpenRtbJsonUtils {
     return Double.parseDouble(par.getText());
   }
 
+  public static boolean nextIntBoolValue(JsonParser par) throws IOException, JsonParseException {
+    return par.nextIntValue(0) != 0;
+  }
+
+  public static void writeIntBoolField(String fieldName, boolean data, JsonGenerator gen)
+      throws IOException, JsonParseException {
+    gen.writeNumberField(fieldName, data ? 1 : 0);
+  }
+
   public static void writeStrings(String fieldName, List<String> data, JsonGenerator gen)
       throws IOException {
     if (!data.isEmpty()) {

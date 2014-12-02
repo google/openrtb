@@ -26,9 +26,26 @@ yet compatible with JDK 8 (once built, the library works with JDK 8).
 RELEASE NOTES
 ----------------------------------------------------------------------
 
-# Version 0.7.3, ??-??-????
+# Version 0.7.3, 02-12-2014
 
-* TODO
+* Partial support for OpenRTB 2.3! The missing item is Native ads,
+  which depends on the OpenRTB Native 1.0 spec (proposed final draft
+  at this time). This support will come in a future update.
+* Breaking change: The Flags enum was replaced by simple booleans.
+* Breaking change: Renamed DirectDeal to just Deal (to better match
+  the spec, although object names are not really standardized).
+* New fields added (OpenRTB 2.3):
+  - BidRequest: test
+  - Site: mobile
+  - Device: w, h, pxratio, ppi, hwv, lmt
+  - Bid: cat, bundle
+  - Geo: utcoffset
+* Othe fields added (missing from OpenRTB 2.2):
+  - Device: ifa, macsha1, macmd5
+  - Impression: secure
+  - Video: protocols (the field protocol was deprecated; in the API
+    it's renamed deprecated_protocol, JSON will be compatible)
+  - BidResponse: nbr
 
 # Version 0.7.2, 29-10-2014
 
