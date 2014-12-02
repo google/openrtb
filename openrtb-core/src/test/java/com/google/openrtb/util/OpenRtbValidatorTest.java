@@ -56,7 +56,7 @@ public class OpenRtbValidatorTest {
       .addImp(Impression.newBuilder()
           .setId("1")
           .setVideo(Video.newBuilder()
-              .setLinearity(Linearity.LINEAR).setProtocol(Protocol.VAST_3_0)
+              .setLinearity(Linearity.LINEAR).addProtocols(Protocol.VAST_3_0)
               .setMinduration(0).setMaxduration(0)
               .addAllBattr(asList(CreativeAttribute.ANNOYING, CreativeAttribute.POP_UP))
               .addCompanionad(Banner.newBuilder()

@@ -593,6 +593,13 @@ message BidRequest {
      * if this is allowed on an exchange.
      */
     optional string bidfloorcur = 9 [default = "USD"];
+    /**
+     * Flag to indicate if the impression requires secure HTTPS URL
+     * creative assets and markup, where false = non-secure, true = secure.
+     * If omitted, the secure state is unknown, but non-secure HTTP
+     * support can be assumed.
+     */
+    optional bool secure = 12;
     /*
      * Array of names for supported iframe busters. Exchange specific.
      */
@@ -676,10 +683,6 @@ message BidRequest {
        */
       optional string id = 3;
       /*
-       * The position of the ad as a relative measure of visibility or prominence.
-       */
-      optional AdPosition pos = 4 [default = POSITION_UNKNOWN];
-      /*
        * Blocked creative types. If blank, assume all types are allowed.
        */
       repeated AdType btype = 5;
@@ -687,6 +690,10 @@ message BidRequest {
        * Blocked creative attributes. If blank assume all types are allowed.
        */
       repeated CreativeAttribute battr = 6;
+      /*
+       * The position of the ad as a relative measure of visibility or prominence.
+       */
+      optional AdPosition pos = 4 [default = POSITION_UNKNOWN];
       /*
        * Whitelist of content MIME types supported. Popular MIME types include,
        * but are not limited to “image/jpg”, “image/gif” and “application/x-shockwave-flash”.
@@ -758,10 +765,6 @@ message BidRequest {
        */
       repeated string mimes = 1;
       /*
-       * Indicates whether the ad impression is linear or non-linear.
-       */
-      required Linearity linearity = 2;
-      /*
        * Minimum video ad duration in seconds.
        */
       required int32 minduration = 3;
@@ -772,7 +775,11 @@ message BidRequest {
       /*
        * Video bid response protocols.
        */
-      required Protocol protocol = 5;
+      optional Protocol deprecated_protocol = 5;
+      /*
+       * Video bid response protocols.
+       */
+      repeated Protocol protocols = 21;
       /*
        * Width of the player in pixels. This field is not required, but it’s highly recommended.
        */
@@ -786,6 +793,10 @@ message BidRequest {
        * Check the enum VideoStartDelay for special values.
        */
       optional int32 startdelay = 8;
+      /*
+       * Indicates whether the ad impression is linear or non-linear.
+       */
+      required Linearity linearity = 2;
       /*
        * If multiple ad impressions are offered in the same bid request, the sequence number
        * will allow for the coordinated delivery of multiple creatives.
@@ -920,14 +931,14 @@ message BidRequest {
     message PMP {
       /*
        * Flag indicating that this impression is a private auction eligible only to seats named
-       * in the DirectDeals object.
+       * in the Deal object.
        */
       optional bool private_auction = 1;
       /*
        * A collection of deal objects encapsulating a list of direct deals eligible for
        * this impression.
        */
-      repeated DirectDeal deals = 2;
+      repeated Deal deals = 2;
       /**
        * Extensions.
        */
@@ -937,7 +948,7 @@ message BidRequest {
        * OpenRTB 3.3.17: constitutes a deal struck a priori between a buyer and a seller and
        * indicates that this impression is available under the terms of that deal.
        */
-      message DirectDeal {
+      message Deal {
         /*
          * A unique identifier for the direct deal.
          */
@@ -1012,10 +1023,6 @@ message BidRequest {
      */
     optional string page = 7;
     /*
-     * Specifies whether the site has a privacy policy.
-     */
-    optional bool privacypolicy = 8;
-    /*
      * Referrer URL that caused navigation to the current page.
      */
     optional string ref = 10;
@@ -1027,6 +1034,10 @@ message BidRequest {
      * Mobile-optimized signal.
      */
     optional bool mobile = 15;
+    /*
+     * Specifies whether the site has a privacy policy.
+     */
+    optional bool privacypolicy = 8;
     /*
      * Site's Publisher.
      */
@@ -1059,9 +1070,19 @@ message BidRequest {
      */
     optional string name = 2;
     /*
+     * Application bundle or package name (e.g., com.foo.mygame). This is intended to be a
+     * unique ID across multiple exchanges.
+     */
+    optional string bundle = 8;
+    /*
      * Domain of the application. For example, “mygame.foo.com”.
      */
     optional string domain = 3;
+    /*
+     * For QAG 1.5 compliance, an app store URL for an installed app
+     * should be passed in the bid request.
+     */
+    optional string storeurl = 14;
     /*
      * Array of IAB content categories for the overall application.
      */
@@ -1078,11 +1099,6 @@ message BidRequest {
      * Application version.
      */
     optional string ver = 7;
-    /*
-     * Application bundle or package name (e.g., com.foo.mygame). This is intended to be a
-     * unique ID across multiple exchanges.
-     */
-    optional string bundle = 8;
     /*
      * Specifies whether the application has a privacy policy.
      */
@@ -1103,11 +1119,6 @@ message BidRequest {
      * List of keywords describing this site in a comma separated string.
      */
     optional string keywords = 13;
-    /*
-     * For QAG 1.5 compliance, an app store URL for an installed app
-     * should be passed in the bid request.
-     */
-    optional string storeurl = 14;
     /**
      * Extensions.
      */
@@ -1156,6 +1167,10 @@ message BidRequest {
      */
     optional string season = 5;
     /*
+     * Content's Producer.
+     */
+    optional Producer producer = 15;
+    /*
      * Original URL of the content, for buy-side contextualization or review.
      */
     optional string url = 6;
@@ -1168,9 +1183,9 @@ message BidRequest {
      */
     optional VideoQuality videoquality = 8;
     /*
-     * Comma separated list of keywords describing the content.
+     * Specifies the type of content (game, video, text, etc.).
      */
-    optional string keywords = 9;
+    optional Context context = 12;
     /*
      * Content rating (e.g., MPAA).
      */
@@ -1180,9 +1195,13 @@ message BidRequest {
      */
     optional string userrating = 11;
     /*
-     * Specifies the type of content (game, video, text, etc.).
+     * Media rating of the content, per QAG guidelines.
      */
-    optional Context context = 12;
+    optional QAGMediaRating qagmediarating = 17;
+    /*
+     * Comma separated list of keywords describing the content.
+     */
+    optional string keywords = 9;
     /*
      * Is content live?
      */
@@ -1192,26 +1211,18 @@ message BidRequest {
      */
     optional SourceRelationship sourcerelationship = 14;
     /*
-     * Content's Producer.
-     */
-    optional Producer producer = 15;
-    /*
      * Length of content (appropriate for video or audio) in seconds.
      */
     optional int32 len = 16;
     /*
-     * Media rating of the content, per QAG guidelines.
+     * Language of the content. Use alpha-2/ISO 639-1 codes.
      */
-    optional QAGMediaRating qagmediarating = 17;
+    optional string language = 19;
     /*
      * From QAG Video Addendum. If content can be embedded (such as an embeddable video player)
      * this value should be set to YES. If content cannot be embedded, this should be set to NO.
      */
     optional bool embeddable = 18;
-    /*
-     * Language of the content. Use alpha-2/ISO 639-1 codes.
-     */
-    optional string language = 19;
     /**
      * Extensions.
      */
@@ -1646,6 +1657,22 @@ message BidRequest {
  */
 message BidResponse {
   /*
+   * OpenRTB 5.19: Options for a bidder to signal the exchange as to why it did not
+   * offer a bid for the impression.
+   */
+  enum NoBidReasonCode {
+    UNKNOWN_ERROR = 0;
+    TECHNICAL_ERROR = 1;
+    INVALID_REQUEST = 2;
+    KNOWN_WEB_SPIDER = 3;
+    SUSPECTED_NONHUMAN_TRAFFIC = 4;
+    CLOUD_DC_PROXY_IP = 5;
+    UNSUPPORTED_DEVICE = 6;
+    BLOCKED_PUBISHER_SITE = 7;
+    UNMATCHED_USER = 8;
+  }
+
+  /*
    * ID of the bid request.
    */
   optional string id = 1;
@@ -1669,6 +1696,10 @@ message BidResponse {
    * Note: Proper JSON encoding must be used to include “escaped” quotation marks.
    */
   optional string customdata = 5;
+  /**
+   * Reason for not bidding.
+   */
+  optional NoBidReasonCode nbr = 6;
   /**
    * Extensions.
    */

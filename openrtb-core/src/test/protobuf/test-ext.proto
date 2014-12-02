@@ -57,7 +57,7 @@ extend com.google.openrtb.BidRequest.Impression.Banner {
 extend com.google.openrtb.BidRequest.Impression.PMP {
   optional Test1 testPmp = 110;
 }
-extend com.google.openrtb.BidRequest.Impression.PMP.DirectDeal {
+extend com.google.openrtb.BidRequest.Impression.PMP.Deal {
   optional Test1 testDeal = 110;
 }
 extend com.google.openrtb.BidRequest.Impression.Video {

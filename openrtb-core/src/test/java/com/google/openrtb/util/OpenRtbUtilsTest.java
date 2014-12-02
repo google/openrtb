@@ -121,7 +121,7 @@ public class OpenRtbUtilsTest {
             .setLinearity(Linearity.LINEAR)
             .setMinduration(100)
             .setMaxduration(200)
-            .setProtocol(Protocol.VAST_3_0)))
+            .addProtocols(Protocol.VAST_3_0)))
         .build();
     assertEquals(1, Iterables.size(OpenRtbUtils.impsWith(
         request, Predicates.<Impression>alwaysTrue(), false, true)));

@@ -42,7 +42,7 @@ import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner.AdType;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner.ExpandableDirection;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP.DirectDeal;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP.Deal;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.CompanionType;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.ContentDelivery;
@@ -55,6 +55,7 @@ import com.google.openrtb.OpenRtb.BidRequest.Regulations;
 import com.google.openrtb.OpenRtb.BidRequest.Site;
 import com.google.openrtb.OpenRtb.BidRequest.User;
 import com.google.openrtb.OpenRtb.BidResponse;
+import com.google.openrtb.OpenRtb.BidResponse.NoBidReasonCode;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
@@ -141,9 +142,9 @@ public class OpenRtbJsonTest {
     testRequest(jsonFactory, BidRequest.newBuilder().setId("0")
         .addImp(Impression.newBuilder().setId("0")
             .setVideo(Video.newBuilder()
-                .setLinearity(Linearity.LINEAR).setProtocol(Protocol.VAST_3_0)
+                .setLinearity(Linearity.LINEAR).addProtocols(Protocol.VAST_3_0)
                 .setMinduration(0).setMaxduration(1))
-            .setPmp(PMP.newBuilder().addDeals(DirectDeal.newBuilder().setId("0"))))
+            .setPmp(PMP.newBuilder().addDeals(Deal.newBuilder().setId("0"))))
         .setSite(Site.newBuilder()
             .setContent(Content.newBuilder())
             .setPublisher(Publisher.newBuilder()))
@@ -201,7 +202,7 @@ public class OpenRtbJsonTest {
         .register(new Test1Reader<Impression.Builder>(TestExt.testImp), "BidRequest.imp")
         .register(new Test1Reader<Banner.Builder>(TestExt.testBanner), "BidRequest.imp.banner")
         .register(new Test1Reader<PMP.Builder>(TestExt.testPmp), "BidRequest.imp.pmp")
-        .register(new Test1Reader<DirectDeal.Builder>(TestExt.testDeal), "BidRequest.imp.pmp.deals")
+        .register(new Test1Reader<Deal.Builder>(TestExt.testDeal), "BidRequest.imp.pmp.deals")
         .register(new Test1Reader<Video.Builder>(TestExt.testVideo), "BidRequest.imp.video")
         .register(new Test1Reader<Regulations.Builder>(TestExt.testRegs), "BidRequest.regs")
         .register(new Test1Reader<Site.Builder>(TestExt.testSite), "BidRequest.site")
@@ -251,10 +252,11 @@ public class OpenRtbJsonTest {
             .setTagid("tag1")
             .setBidfloor(100.0)
             .setBidfloorcur("USD")
+            .setSecure(false)
             .addIframebuster("buster1")
             .setPmp(PMP.newBuilder()
                 .setPrivateAuction(false)
-                .addDeals(DirectDeal.newBuilder()
+                .addDeals(Deal.newBuilder()
                     .setId("deal1")
                     .setBidfloor(200.0)
                     .setBidfloorcur("USD")
@@ -271,7 +273,8 @@ public class OpenRtbJsonTest {
                 .setLinearity(Linearity.LINEAR)
                 .setMinduration(15)
                 .setMaxduration(60)
-                .setProtocol(Protocol.VAST_3_0)
+                .setDeprecatedProtocol(Protocol.VAST_3_0)
+                .addProtocols(Protocol.VAST_2_0)
                 .setW(200)
                 .setH(50)
                 .setStartdelay(0)
@@ -459,6 +462,7 @@ public class OpenRtbJsonTest {
         .setBidid("bid1")
         .setCur("USD")
         .setCustomdata("mydata")
+        .setNbr(NoBidReasonCode.TECHNICAL_ERROR)
         .setExtension(TestExt.testResponse1, test1)
         .setExtension(TestExt.testResponse2, test2);
   }
