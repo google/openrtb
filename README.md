@@ -40,7 +40,7 @@ RELEASE NOTES
   - Device: w, h, pxratio, ppi, hwv, lmt
   - Bid: cat, bundle
   - Geo: utcoffset
-* Othe fields added (missing from OpenRTB 2.2):
+* Other fields added (missing from OpenRTB 2.2):
   - Device: ifa, macsha1, macmd5
   - Impression: secure
   - Video: protocols (the field protocol was deprecated; in the API
