@@ -20,6 +20,7 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.endArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.endObject;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
 import static com.google.openrtb.json.OpenRtbJsonUtils.nextDoubleValue;
+import static com.google.openrtb.json.OpenRtbJsonUtils.nextIntBoolValue;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
@@ -45,7 +46,7 @@ import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner.AdType;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner.ExpandableDirection;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP.DirectDeal;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP.Deal;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.CompanionType;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.ContentDelivery;
@@ -58,10 +59,10 @@ import com.google.openrtb.OpenRtb.BidRequest.Regulations;
 import com.google.openrtb.OpenRtb.BidRequest.Site;
 import com.google.openrtb.OpenRtb.BidRequest.User;
 import com.google.openrtb.OpenRtb.BidResponse;
+import com.google.openrtb.OpenRtb.BidResponse.NoBidReasonCode;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
-import com.google.openrtb.OpenRtb.Flag;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
 
@@ -144,6 +145,9 @@ public class OpenRtbJsonReader {
         case "user":
           req.setUser(readUser(par));
           break;
+        case "test":
+          req.setTest(nextIntBoolValue(par));
+          break;
         case "at":
           req.setAt(par.nextIntValue(2));
           break;
@@ -156,7 +160,7 @@ public class OpenRtbJsonReader {
           }
           break;
         case "allimps":
-          req.setAllimps(Flag.valueOf(par.nextIntValue(0)));
+          req.setAllimps(nextIntBoolValue(par));
           break;
         case "cur":
           for (startArray(par); endArray(par); par.nextToken()) {
@@ -189,7 +193,7 @@ public class OpenRtbJsonReader {
     for (startObject(par); endObject(par); par.nextToken()) {
       switch (getCurrentName(par)) {
         case "coppa":
-          reg.setCoppa(Flag.valueOf(par.nextIntValue(0)));
+          reg.setCoppa(nextIntBoolValue(par));
           break;
         case "ext":
           readExtensions(reg, par, "BidRequest.regs");
@@ -219,7 +223,7 @@ public class OpenRtbJsonReader {
           imp.setDisplaymanagerver(par.nextTextValue());
           break;
         case "instl":
-          imp.setInstl(Flag.valueOf(par.nextIntValue(0)));
+          imp.setInstl(nextIntBoolValue(par));
           break;
         case "tagid":
           imp.setTagid(par.nextTextValue());
@@ -229,6 +233,9 @@ public class OpenRtbJsonReader {
           break;
         case "bidfloorcur":
           imp.setBidfloorcur(par.nextTextValue());
+          break;
+        case "secure":
+          imp.setSecure(nextIntBoolValue(par));
           break;
         case "iframebuster":
           for (startArray(par); endArray(par); par.nextToken()) {
@@ -251,7 +258,7 @@ public class OpenRtbJsonReader {
     for (startObject(par); endObject(par); par.nextToken()) {
       switch (getCurrentName(par)) {
         case "private_auction":
-          pmp.setPrivateAuction(Flag.valueOf(par.nextIntValue(0)));
+          pmp.setPrivateAuction(nextIntBoolValue(par));
           break;
         case "deals":
           for (startArray(par); endArray(par); par.nextToken()) {
@@ -266,8 +273,8 @@ public class OpenRtbJsonReader {
     return pmp;
   }
 
-  protected DirectDeal.Builder readDirectDeal(JsonParser par) throws IOException {
-    DirectDeal.Builder deal = DirectDeal.newBuilder();
+  protected Deal.Builder readDirectDeal(JsonParser par) throws IOException {
+    Deal.Builder deal = Deal.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       switch (getCurrentName(par)) {
         case "id":
@@ -309,9 +316,6 @@ public class OpenRtbJsonReader {
             video.addMimes(par.getText());
           }
           break;
-        case "linearity":
-          video.setLinearity(Linearity.valueOf(par.nextIntValue(0)));
-          break;
         case "minduration":
           video.setMinduration(par.nextIntValue(0));
           break;
@@ -319,7 +323,12 @@ public class OpenRtbJsonReader {
           video.setMaxduration(par.nextIntValue(0));
           break;
         case "protocol":
-          video.setProtocol(Protocol.valueOf(par.nextIntValue(0)));
+          video.setDeprecatedProtocol(Protocol.valueOf(par.nextIntValue(0)));
+          break;
+        case "protocols":
+          for (startArray(par); endArray(par); par.nextToken()) {
+            video.addProtocols(Protocol.valueOf(par.getIntValue()));
+          }
           break;
         case "w":
           video.setW(par.nextIntValue(0));
@@ -329,6 +338,9 @@ public class OpenRtbJsonReader {
           break;
         case "startdelay":
           video.setStartdelay(par.nextIntValue(0));
+          break;
+        case "linearity":
+          video.setLinearity(Linearity.valueOf(par.nextIntValue(0)));
           break;
         case "sequence":
           video.setSequence(par.nextIntValue(0));
@@ -348,7 +360,7 @@ public class OpenRtbJsonReader {
           video.setMaxbitrate(par.nextIntValue(0));
           break;
         case "boxingallowed":
-          video.setBoxingallowed(Flag.valueOf(par.nextIntValue(0)));
+          video.setBoxingallowed(nextIntBoolValue(par));
           break;
         case "playbackmethod":
           for (startArray(par); endArray(par); par.nextToken()) {
@@ -411,9 +423,6 @@ public class OpenRtbJsonReader {
         case "id":
           banner.setId(par.nextTextValue());
           break;
-        case "pos":
-          banner.setPos(AdPosition.valueOf(par.nextIntValue(AdPosition.POSITION_UNKNOWN_VALUE)));
-          break;
         case "btype":
           for (startArray(par); endArray(par); par.nextToken()) {
             banner.addBtype(AdType.valueOf(par.getIntValue()));
@@ -424,13 +433,16 @@ public class OpenRtbJsonReader {
             banner.addBattr(CreativeAttribute.valueOf(par.getIntValue()));
           }
           break;
+        case "pos":
+          banner.setPos(AdPosition.valueOf(par.nextIntValue(AdPosition.POSITION_UNKNOWN_VALUE)));
+          break;
         case "mimes":
           for (startArray(par); endArray(par); par.nextToken()) {
             banner.addMimes(par.getText());
           }
           break;
         case "topframe":
-          banner.setTopframe(Flag.valueOf(par.nextIntValue(Flag.NO_VALUE)));
+          banner.setTopframe(nextIntBoolValue(par));
           break;
         case "expdir":
           for (startArray(par); endArray(par); par.nextToken()) {
@@ -481,14 +493,17 @@ public class OpenRtbJsonReader {
         case "page":
           site.setPage(par.nextTextValue());
           break;
-        case "privacypolicy":
-          site.setPrivacypolicy(Flag.valueOf(par.nextIntValue(0)));
-          break;
         case "ref":
           site.setRef(par.nextTextValue());
           break;
         case "search":
           site.setSearch(par.nextTextValue());
+          break;
+        case "mobile":
+          site.setMobile(nextIntBoolValue(par));
+          break;
+        case "privacypolicy":
+          site.setPrivacypolicy(nextIntBoolValue(par));
           break;
         case "publisher":
           site.setPublisher(readPublisher(par));
@@ -517,8 +532,14 @@ public class OpenRtbJsonReader {
         case "name":
           app.setName(par.nextTextValue());
           break;
+        case "bundle":
+          app.setBundle(par.nextTextValue());
+          break;
         case "domain":
           app.setDomain(par.nextTextValue());
+          break;
+        case "storeurl":
+          app.setStoreurl(par.nextTextValue());
           break;
         case "cat":
           for (startArray(par); endArray(par); par.nextToken()) {
@@ -538,14 +559,11 @@ public class OpenRtbJsonReader {
         case "ver":
           app.setVer(par.nextTextValue());
           break;
-        case "bundle":
-          app.setBundle(par.nextTextValue());
-          break;
         case "privacypolicy":
-          app.setPrivacypolicy(Flag.valueOf(par.nextIntValue(0)));
+          app.setPrivacypolicy(nextIntBoolValue(par));
           break;
         case "paid":
-          app.setPaid(Flag.valueOf(par.nextIntValue(0)));
+          app.setPaid(nextIntBoolValue(par));
           break;
         case "publisher":
           app.setPublisher(readPublisher(par));
@@ -555,9 +573,6 @@ public class OpenRtbJsonReader {
           break;
         case "keywords":
           app.setKeywords(par.nextTextValue());
-          break;
-        case "storeurl":
-          app.setStoreurl(par.nextTextValue());
           break;
         case "ext":
           readExtensions(app, par, "BidRequest.app");
@@ -586,6 +601,9 @@ public class OpenRtbJsonReader {
         case "season":
           content.setSeason(par.nextTextValue());
           break;
+        case "producer":
+          content.setProducer(readProducer(par));
+          break;
         case "url":
           content.setUrl(par.nextTextValue());
           break;
@@ -597,8 +615,8 @@ public class OpenRtbJsonReader {
         case "videoquality":
           content.setVideoquality(VideoQuality.valueOf(par.nextIntValue(0)));
           break;
-        case "keywords":
-          content.setKeywords(par.nextTextValue());
+        case "context":
+          content.setContext(Context.valueOf(par.nextIntValue(0)));
           break;
         case "contentrating":
           content.setContentrating(par.nextTextValue());
@@ -606,29 +624,26 @@ public class OpenRtbJsonReader {
         case "userrating":
           content.setUserrating(par.nextTextValue());
           break;
-        case "context":
-          content.setContext(Context.valueOf(par.nextIntValue(0)));
+        case "qagmediarating":
+          content.setQagmediarating(QAGMediaRating.valueOf(par.nextIntValue(0)));
+          break;
+        case "keywords":
+          content.setKeywords(par.nextTextValue());
           break;
         case "livestream":
-          content.setLivestream(Flag.valueOf(par.nextIntValue(0)));
+          content.setLivestream(nextIntBoolValue(par));
           break;
         case "sourcerelationship":
           content.setSourcerelationship(SourceRelationship.valueOf(par.nextIntValue(0)));
           break;
-        case "producer":
-          content.setProducer(readProducer(par));
-          break;
         case "len":
           content.setLen(par.nextIntValue(0));
           break;
-        case "qagmediarating":
-          content.setQagmediarating(QAGMediaRating.valueOf(par.nextIntValue(0)));
-          break;
-        case "embeddable":
-          content.setEmbeddable(Flag.valueOf(par.nextIntValue(0)));
-          break;
         case "language":
           content.setLanguage(par.nextTextValue());
+          break;
+        case "embeddable":
+          content.setEmbeddable(nextIntBoolValue(par));
           break;
         case "ext":
           readExtensions(content, par, "BidRequest.app.content");
@@ -694,38 +709,26 @@ public class OpenRtbJsonReader {
     Device.Builder device = Device.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       switch (getCurrentName(par)) {
-        case "dnt":
-          device.setDnt(Flag.valueOf(par.nextIntValue(0)));
-          break;
         case "ua":
           device.setUa(par.nextTextValue());
-          break;
-        case "ip":
-          device.setIp(par.nextTextValue());
           break;
         case "geo":
           device.setGeo(readGeo(par, "BidRequest.device.geo"));
           break;
-        case "didsha1":
-          device.setDidsha1(par.nextTextValue());
+        case "dnt":
+          device.setDnt(nextIntBoolValue(par));
           break;
-        case "didmd5":
-          device.setDidmd5(par.nextTextValue());
+        case "lmt":
+          device.setLmt(nextIntBoolValue(par));
           break;
-        case "dpidsha1":
-          device.setDpidsha1(par.nextTextValue());
-          break;
-        case "dpidmd5":
-          device.setDpidmd5(par.nextTextValue());
+        case "ip":
+          device.setIp(par.nextTextValue());
           break;
         case "ipv6":
           device.setIpv6(par.nextTextValue());
           break;
-        case "carrier":
-          device.setCarrier(par.nextTextValue());
-          break;
-        case "language":
-          device.setLanguage(par.nextTextValue());
+        case "devicetype":
+          device.setDevicetype(DeviceType.valueOf(par.nextIntValue(0)));
           break;
         case "make":
           device.setMake(par.nextTextValue());
@@ -739,17 +742,56 @@ public class OpenRtbJsonReader {
         case "osv":
           device.setOsv(par.nextTextValue());
           break;
+        case "hwv":
+          device.setHwv(par.nextTextValue());
+          break;
+        case "w":
+          device.setW(par.nextIntValue(0));
+          break;
+        case "h":
+          device.setH(par.nextIntValue(0));
+          break;
+        case "ppi":
+          device.setPpi(par.nextIntValue(0));
+          break;
+        case "pxratio":
+          device.setPxratio(nextDoubleValue(par));
+          break;
         case "js":
-          device.setJs(Flag.valueOf(par.nextIntValue(0)));
+          device.setJs(nextIntBoolValue(par));
+          break;
+        case "flashver":
+          device.setFlashver(par.nextTextValue());
+          break;
+        case "language":
+          device.setLanguage(par.nextTextValue());
+          break;
+        case "carrier":
+          device.setCarrier(par.nextTextValue());
           break;
         case "connectiontype":
           device.setConnectiontype(ConnectionType.valueOf(par.nextIntValue(0)));
           break;
-        case "devicetype":
-          device.setDevicetype(DeviceType.valueOf(par.nextIntValue(0)));
+        case "ifa":
+          device.setIfa(par.nextTextValue());
           break;
-        case "flashver":
-          device.setFlashver(par.nextTextValue());
+        case "didsha1":
+          device.setDidsha1(par.nextTextValue());
+          break;
+        case "didmd5":
+          device.setDidmd5(par.nextTextValue());
+          break;
+        case "dpidsha1":
+          device.setDpidsha1(par.nextTextValue());
+          break;
+        case "dpidmd5":
+          device.setDpidmd5(par.nextTextValue());
+          break;
+        case "macsha1":
+          device.setMacsha1(par.nextTextValue());
+          break;
+        case "macmd5":
+          device.setMacmd5(par.nextTextValue());
           break;
         case "ext":
           readExtensions(device, par, "BidRequest.device");
@@ -769,6 +811,9 @@ public class OpenRtbJsonReader {
         case "lon":
           geo.setLon(nextDoubleValue(par));
           break;
+        case "type":
+          geo.setType(LocationType.valueOf(par.nextIntValue(0)));
+          break;
         case "country":
           geo.setCountry(par.nextTextValue());
           break;
@@ -787,8 +832,8 @@ public class OpenRtbJsonReader {
         case "zip":
           geo.setZip(par.nextTextValue());
           break;
-        case "type":
-          geo.setType(LocationType.valueOf(par.nextIntValue(0)));
+        case "utcoffset":
+          geo.setUtcoffset(par.nextIntValue(0));
           break;
         case "ext":
           readExtensions(geo, par, path);
@@ -937,6 +982,9 @@ public class OpenRtbJsonReader {
         case "customdata":
           resp.setCustomdata(par.nextTextValue());
           break;
+        case "nbr":
+          resp.setNbr(NoBidReasonCode.valueOf(par.nextIntValue(0)));
+          break;
         case "ext":
           readExtensions(resp, par, "BidResponse");
           break;
@@ -958,7 +1006,7 @@ public class OpenRtbJsonReader {
           seatbid.setSeat(par.nextTextValue());
           break;
         case "group":
-          seatbid.setGroup(Flag.valueOf(par.nextIntValue(0)));
+          seatbid.setGroup(nextIntBoolValue(par));
           break;
         case "ext":
           readExtensions(seatbid, par, "BidResponse.seatbid");
@@ -995,6 +1043,9 @@ public class OpenRtbJsonReader {
             bid.addAdomain(par.getText());
           }
           break;
+        case "bundle":
+          bid.setBundle(par.nextTextValue());
+          break;
         case "iurl":
           bid.setIurl(par.nextTextValue());
           break;
@@ -1003,6 +1054,9 @@ public class OpenRtbJsonReader {
           break;
         case "crid":
           bid.setCrid(par.nextTextValue());
+          break;
+        case "cat":
+          bid.setCat(par.nextTextValue());
           break;
         case "attr":
           for (startArray(par); endArray(par); par.nextToken()) {
