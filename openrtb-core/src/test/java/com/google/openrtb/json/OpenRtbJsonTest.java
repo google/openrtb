@@ -245,7 +245,7 @@ public class OpenRtbJsonTest {
                 .addMimes("image/gif")
                 .setTopframe(true)
                 .addExpdir(ExpandableDirection.RIGHT)
-                .addApi(ApiFramework.MRAID)
+                .addApi(ApiFramework.MRAID_1)
                 .setExtension(TestExt.testBanner, test1))
             .setDisplaymanager("dm1")
             .setDisplaymanagerver("1.0")
