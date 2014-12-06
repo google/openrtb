@@ -37,29 +37,37 @@ public class OpenRtbJsonUtils {
   }
 
   public static void startObject(JsonParser par) throws IOException {
-    if (par.getCurrentToken() == null || par.getCurrentToken() == JsonToken.FIELD_NAME) {
-      par.nextToken();
+    JsonToken token = par.getCurrentToken();
+    if (token == null || token == JsonToken.FIELD_NAME) {
+      token = par.nextToken();
     }
-    if (par.getCurrentToken() == JsonToken.START_OBJECT) {
+    if (token == JsonToken.START_OBJECT) {
       par.nextToken();
+    } else {
+      throw new JsonParseException("Expected start of object", par.getCurrentLocation());
     }
   }
 
   public static boolean endObject(JsonParser par) {
-    return par.getCurrentToken() != JsonToken.END_OBJECT;
+    JsonToken token = par.getCurrentToken();
+    return token != null && token != JsonToken.END_OBJECT;
   }
 
   public static void startArray(JsonParser par) throws IOException {
-    if (par.getCurrentToken() == null || par.getCurrentToken() == JsonToken.FIELD_NAME) {
-      par.nextToken();
+    JsonToken token = par.getCurrentToken();
+    if (token == null || token == JsonToken.FIELD_NAME) {
+      token = par.nextToken();
     }
-    if (par.getCurrentToken() == JsonToken.START_ARRAY) {
+    if (token == JsonToken.START_ARRAY) {
       par.nextToken();
+    } else {
+      throw new JsonParseException("Expected start of array", par.getCurrentLocation());
     }
   }
 
   public static boolean endArray(JsonParser par) {
-    return par.getCurrentToken() != JsonToken.END_ARRAY;
+    JsonToken token = par.getCurrentToken();
+    return token != null && token != JsonToken.END_ARRAY;
   }
 
   public static double nextDoubleValue(JsonParser par) throws IOException, JsonParseException {
