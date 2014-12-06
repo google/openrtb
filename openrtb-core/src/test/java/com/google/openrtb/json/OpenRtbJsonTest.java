@@ -68,6 +68,7 @@ import com.google.protobuf.GeneratedMessage.GeneratedExtension;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 
 import org.junit.Test;
@@ -169,6 +170,20 @@ public class OpenRtbJsonTest {
     testResponse(jsonFactory, BidResponse.newBuilder().addSeatbid(SeatBid.newBuilder()).build());
     testResponse(jsonFactory, BidResponse.newBuilder().addSeatbid(SeatBid.newBuilder()
         .addBid(Bid.newBuilder().setId("0").setImpid("0").setPrice(0))).build());
+  }
+
+  @Test(expected = JsonParseException.class)
+  public void testBadArrayField() throws IOException, JsonParseException {
+    String test = // based on Issue #10; sample message from SpotXchange with non-array "cat"
+      "{\n \"id\": \"0\",\n \"imp\": [\n {\n \"id\": \"1\",\n \"banner\": "
+    + "{\n \"h\": 250,\n \"w\": 300,\n \"pos\": 1\n },\n \"bidfloor\": 0.05\n }\n ],\n "
+    + "\"site\": {\n \"id\": \"15047\",\n \"domain\": \"dailymotion.com\",\n \"cat\": \"IAB1\",\n "
+    + "\"page\": \"http://www.dailymotion.com\",\n "
+    + "\"publisher\": {\n \"id\": \"8796\",\n \"name\": \"dailymotion\",\n \"cat\": \"IAB3-1\",\n "
+    + "\"domain\": \"dailymotion.com\"\n }\n },\n \"user\": {\n \"id\": \"0\"\n },\n "
+    + "\"device\": {\n \"ua\": \"Mozilla/4.0\",\n "
+    + "\"ip\": \"1.2.3.4\"\n },\n \"at\": 1,\n \"cur\": [\n \"USD\"\n ]\n}";
+    newJsonFactory().newReader().readBidRequest(test);
   }
 
   static void testRequest(OpenRtbJsonFactory jsonFactory, BidRequest req) throws IOException {
