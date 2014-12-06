@@ -619,8 +619,9 @@ message BidRequest {
     enum ApiFramework {
       VPAID_1_0 = 1;
       VPAID_2_0 = 2;
-      MRAID = 3;
+      MRAID_1 = 3;
       ORMMA = 4;
+      MRAID_2 = 5;
     }
 
     /*
