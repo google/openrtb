@@ -55,7 +55,7 @@
     <guavaVersion>18.0</guavaVersion>
     <fasterxmlJacksonVersion>2.4.4</fasterxmlJacksonVersion>
     <injectVersion>1</injectVersion>
-    <junitVersion>4.11</junitVersion>
+    <junitVersion>4.12</junitVersion>
     <metricsVersion>3.0.2</metricsVersion>
     <protobufVersion>2.6.1</protobufVersion>
     <slf4jVersion>1.7.7</slf4jVersion>
