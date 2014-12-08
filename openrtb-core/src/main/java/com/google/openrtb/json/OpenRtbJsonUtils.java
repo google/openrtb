@@ -70,13 +70,23 @@ public class OpenRtbJsonUtils {
     return token != null && token != JsonToken.END_ARRAY;
   }
 
+  @Deprecated
   public static double nextDoubleValue(JsonParser par) throws IOException, JsonParseException {
     par.nextToken();
     return Double.parseDouble(par.getText());
   }
 
+  public static double getDoubleValue(JsonParser par) throws IOException, JsonParseException {
+    return Double.parseDouble(par.getText());
+  }
+
+  @Deprecated
   public static boolean nextIntBoolValue(JsonParser par) throws IOException, JsonParseException {
     return par.nextIntValue(0) != 0;
+  }
+
+  public static boolean getIntBoolValue(JsonParser par) throws IOException, JsonParseException {
+    return par.getIntValue() != 0;
   }
 
   public static void writeIntBoolField(String fieldName, boolean data, JsonGenerator gen)

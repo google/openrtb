@@ -186,6 +186,15 @@ public class OpenRtbJsonTest {
     newJsonFactory().newReader().readBidRequest(test);
   }
 
+  @Test
+  public void testNulls() throws IOException {
+    String test = // based on issue #13
+          "{ \"id\": \"0\",\n  \"app\": { \"content\": { "
+        + "\"keywords\": null },\n \"id\": \"56600\",\n \"cat\": [\"IAB19\"],\n "
+        + "\"keywords\": \"\",\n \"name\": \"Emoji Free!\",\n \"ver\": null\n } \n}";
+    newJsonFactory().newReader().readBidRequest(test);
+  }
+
   static void testRequest(OpenRtbJsonFactory jsonFactory, BidRequest req) throws IOException {
     String jsonReq = jsonFactory.newWriter().writeBidRequest(req);
     logger.info(jsonReq);
