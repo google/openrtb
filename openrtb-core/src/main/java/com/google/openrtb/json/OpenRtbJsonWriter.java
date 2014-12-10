@@ -29,6 +29,7 @@ import com.google.openrtb.OpenRtb.BidRequest.Device;
 import com.google.openrtb.OpenRtb.BidRequest.Geo;
 import com.google.openrtb.OpenRtb.BidRequest.Impression;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Native;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP.Deal;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video;
@@ -167,6 +168,10 @@ public class OpenRtbJsonWriter {
       gen.writeFieldName("video");
       writeVideo(imp.getVideo(), gen);
     }
+    if (imp.hasNative()) {
+      gen.writeFieldName("native");
+      writeNative(imp.getNative(), gen);
+    }
     if (imp.hasDisplaymanager()) {
       gen.writeStringField("displaymanager", imp.getDisplaymanager());
     }
@@ -291,6 +296,20 @@ public class OpenRtbJsonWriter {
     writeEnums("api", video.getApiList(), gen);
     writeEnums("companiontype", video.getCompaniontypeList(), gen);
     writeExtensions(video, gen, "BidRequest.imp.video");
+    gen.writeEndObject();
+  }
+
+  protected final void writeNative(Native nativ, JsonGenerator gen) throws IOException {
+    gen.writeStartObject();
+    if (nativ.hasRequest()) {
+      gen.writeStringField("request", nativ.getRequest());
+    }
+    if (nativ.hasVer()) {
+      gen.writeStringField("ver", nativ.getVer());
+    }
+    writeEnums("api", nativ.getApiList(), gen);
+    writeEnums("battr", nativ.getBattrList(), gen);
+    writeExtensions(nativ, gen, "BidRequest.imp.native");
     gen.writeEndObject();
   }
 

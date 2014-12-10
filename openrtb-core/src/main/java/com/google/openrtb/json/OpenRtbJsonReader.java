@@ -45,6 +45,8 @@ import com.google.openrtb.OpenRtb.BidRequest.Impression.ApiFramework;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner.AdType;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner.ExpandableDirection;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Native;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Native.Builder;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP.Deal;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video;
@@ -243,6 +245,9 @@ public class OpenRtbJsonReader {
       case "video":
         imp.setVideo(readVideo(par));
         break;
+      case "native":
+        imp.setNative(readNative(par));
+        break;
       case "displaymanager":
         imp.setDisplaymanager(par.getText());
         break;
@@ -274,6 +279,42 @@ public class OpenRtbJsonReader {
         break;
       case "ext":
         readExtensions(imp, par, "BidRequest.imp");
+        break;
+    }
+  }
+
+  protected final Native.Builder readNative(JsonParser par) throws IOException {
+    Native.Builder nativ = Native.newBuilder();
+    for (startObject(par); endObject(par); par.nextToken()) {
+      String fieldName = getCurrentName(par);
+      if (par.nextToken() != JsonToken.VALUE_NULL) {
+        readNativeField(par, nativ, fieldName);
+      }
+    }
+    return nativ;
+  }
+
+  protected void readNativeField(JsonParser par, Builder nativ, String fieldName)
+      throws IOException {
+    switch (fieldName) {
+      case "request":
+        nativ.setRequest(par.getText());
+        break;
+      case "ver":
+        nativ.setVer(par.getText());
+        break;
+      case "api":
+        for (startArray(par); endArray(par); par.nextToken()) {
+          nativ.addApi(ApiFramework.valueOf(par.getIntValue()));
+        }
+        break;
+      case "battr":
+        for (startArray(par); endArray(par); par.nextToken()) {
+          nativ.addBattr(CreativeAttribute.valueOf(par.getIntValue()));
+        }
+        break;
+      case "ext":
+        readExtensions(nativ, par, "BidRequest.imp.native");
         break;
     }
   }

@@ -41,6 +41,7 @@ import com.google.openrtb.OpenRtb.BidRequest.Impression.ApiFramework;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner.AdType;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner.ExpandableDirection;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Native;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP.Deal;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video;
@@ -226,6 +227,7 @@ public class OpenRtbJsonTest {
             "BidRequest.device.geo", "BidRequest.user.geo")
         .register(new Test1Reader<Impression.Builder>(TestExt.testImp), "BidRequest.imp")
         .register(new Test1Reader<Banner.Builder>(TestExt.testBanner), "BidRequest.imp.banner")
+        .register(new Test1Reader<Native.Builder>(TestExt.testNative), "BidRequest.imp.native")
         .register(new Test1Reader<PMP.Builder>(TestExt.testPmp), "BidRequest.imp.pmp")
         .register(new Test1Reader<Deal.Builder>(TestExt.testDeal), "BidRequest.imp.pmp.deals")
         .register(new Test1Reader<Video.Builder>(TestExt.testVideo), "BidRequest.imp.video")
@@ -242,12 +244,14 @@ public class OpenRtbJsonTest {
         .register(new Test1Reader<Bid.Builder>(TestExt.testBid), "BidResponse.seatbid.bid")
         // Writers
         .register(new Test1Writer(), TestExt.Test1.class,
-            "BidRequest", "BidRequest.app", "BidRequest.app.content",
-            "BidRequest.app.content.producer", "BidRequest.app.publisher",
-            "BidRequest.device", "BidRequest.device.geo", "BidRequest.imp", "BidRequest.imp.banner",
-            "BidRequest.imp.pmp", "BidRequest.imp.pmp.deals", "BidRequest.imp.video",
-            "BidRequest.regs", "BidRequest.site", "BidRequest.user", "BidRequest.user.data",
+            "BidRequest", "BidRequest.app", "BidRequest.app.publisher",
+            "BidRequest.app.content", "BidRequest.app.content.producer",
+            "BidRequest.device", "BidRequest.device.geo",
+            "BidRequest.user", "BidRequest.user.data",
             "BidRequest.user.data.segment", "BidRequest.user.geo",
+            "BidRequest.imp", "BidRequest.imp.banner", "BidRequest.imp.video",
+            "BidRequest.imp.native", "BidRequest.imp.pmp", "BidRequest.imp.pmp.deals",
+            "BidRequest.regs", "BidRequest.site",
             "BidResponse", "BidResponse.seatbid", "BidResponse.seatbid.bid")
         .register(new Test2Writer(), TestExt.Test2.class, "BidRequest", "BidResponse");
   }
@@ -319,6 +323,15 @@ public class OpenRtbJsonTest {
                 .addApi(ApiFramework.VPAID_2_0)
                 .addCompaniontype(CompanionType.HTML)
                 .setExtension(TestExt.testVideo, test1)))
+        .addImp(Impression.newBuilder()
+            .setId("imp3")
+            .setNative(Native.newBuilder()
+                .setRequest("native-req")
+                .setVer("1.0")
+                .addApi(ApiFramework.MRAID_1)
+                .addBattr(CreativeAttribute.TEXT_ONLY)
+                .setExtension(TestExt.testNative, test1))
+            .setExtension(TestExt.testImp, test1))
         .setDevice(Device.newBuilder()
             .setUa("Chrome")
             .setGeo(Geo.newBuilder()
