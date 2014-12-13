@@ -32,7 +32,11 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * Factory that will create {@link OpenRtbJsonWriter} and {@link OpenRtbJsonReader}.
+ * Factory that will create JSON serializer objects:
+ * <ul>
+ *   <li>Core model: {@link OpenRtbJsonWriter} and {@link OpenRtbJsonReader}</li>
+ *   <li>Native model: {@link OpenRtbNativeJsonWriter} and {@link OpenRtbNativeJsonReader}</li>
+ * </ul>
  * <p>
  * This class is not threadsafe. You should use only to configure and create the
  * reader/writer objects, which will be threadsafe.
@@ -119,6 +123,26 @@ public class OpenRtbJsonFactory {
    */
   public OpenRtbJsonReader newReader() {
     return new OpenRtbJsonReader(new OpenRtbJsonFactory(
+        getJsonFactory(),
+        ImmutableMultimap.copyOf(extReaders),
+        ImmutableMap.copyOf(extWriters)));
+  }
+
+  /**
+   * Creates an {@link OpenRtbNativeJsonWriter}, configured to the current state of this factory.
+   */
+  public OpenRtbNativeJsonWriter newNativeWriter() {
+    return new OpenRtbNativeJsonWriter(new OpenRtbJsonFactory(
+        getJsonFactory(),
+        ImmutableMultimap.copyOf(extReaders),
+        ImmutableMap.copyOf(extWriters)));
+  }
+
+  /**
+   * Creates an {@link OpenRtbNativeJsonWriter}, configured to the current state of this factory.
+   */
+  public OpenRtbNativeJsonReader newNativeReader() {
+    return new OpenRtbNativeJsonReader(new OpenRtbJsonFactory(
         getJsonFactory(),
         ImmutableMultimap.copyOf(extReaders),
         ImmutableMap.copyOf(extWriters)));

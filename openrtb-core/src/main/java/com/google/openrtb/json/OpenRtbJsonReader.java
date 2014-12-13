@@ -46,7 +46,6 @@ import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner.AdType;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner.ExpandableDirection;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Native;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Native.Builder;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP.Deal;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video;
@@ -66,7 +65,6 @@ import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
 import com.google.protobuf.ByteString;
-import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -74,18 +72,16 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.util.Collection;
 
 /**
- * Desserializes OpenRTB messages from JSON.
+ * Desserializes OpenRTB BidRequest/BidResponse messages from JSON.
  * <p>
  * This class is threadsafe.
  */
-public class OpenRtbJsonReader {
-  private final OpenRtbJsonFactory factory;
+public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
 
   protected OpenRtbJsonReader(OpenRtbJsonFactory factory) {
-    this.factory = factory;
+    super(factory);
   }
 
   /**
@@ -106,7 +102,7 @@ public class OpenRtbJsonReader {
    * Desserializes a {@link BidRequest} from JSON, streamed from a {@link Reader}.
    */
   public BidRequest readBidRequest(Reader reader) throws IOException {
-    return readBidRequest(factory.getJsonFactory().createParser(reader)).build();
+    return readBidRequest(factory().getJsonFactory().createParser(reader)).build();
   }
 
   /**
@@ -114,7 +110,7 @@ public class OpenRtbJsonReader {
    */
   public BidRequest readBidRequest(InputStream is) throws IOException {
     try {
-      return readBidRequest(factory.getJsonFactory().createParser(is)).build();
+      return readBidRequest(factory().getJsonFactory().createParser(is)).build();
     } finally {
       Closeables.closeQuietly(is);
     }
@@ -294,7 +290,7 @@ public class OpenRtbJsonReader {
     return nativ;
   }
 
-  protected void readNativeField(JsonParser par, Builder nativ, String fieldName)
+  protected void readNativeField(JsonParser par, Native.Builder nativ, String fieldName)
       throws IOException {
     switch (fieldName) {
       case "request":
@@ -1121,7 +1117,7 @@ public class OpenRtbJsonReader {
    * Desserializes a {@link BidResponse} from JSON, streamed from a {@link Reader}.
    */
   public BidResponse readBidResponse(Reader reader) throws IOException {
-    return readBidResponse(factory.getJsonFactory().createParser(reader)).build();
+    return readBidResponse(factory().getJsonFactory().createParser(reader)).build();
   }
 
   /**
@@ -1129,7 +1125,7 @@ public class OpenRtbJsonReader {
    */
   public BidResponse readBidResponse(InputStream is) throws IOException {
     try {
-      return readBidResponse(factory.getJsonFactory().createParser(is)).build();
+      return readBidResponse(factory().getJsonFactory().createParser(is)).build();
     } finally {
       Closeables.closeQuietly(is);
     }
@@ -1279,29 +1275,6 @@ public class OpenRtbJsonReader {
       case "ext":
         readExtensions(bid, par, "BidResponse.seatbid.bid");
         break;
-    }
-  }
-
-  protected <EB extends ExtendableBuilder<?, EB>>
-  void readExtensions(EB ext, JsonParser par, String path) throws IOException {
-    startObject(par);
-    @SuppressWarnings("unchecked")
-    Collection<OpenRtbJsonExtReader<EB>> extReaders = factory.getReaders(path);
-
-    while (true) {
-      boolean someFieldRead = false;
-      for (OpenRtbJsonExtReader<EB> extReader : extReaders) {
-        someFieldRead |= extReader.read(ext, par);
-
-        if (!endObject(par)) {
-          return;
-        }
-      }
-
-      if (!someFieldRead) {
-        throw new IOException("Unhandled extension");
-      }
-      // Else loop, try all readers again
     }
   }
 }

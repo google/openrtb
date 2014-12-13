@@ -41,9 +41,6 @@ import com.google.openrtb.OpenRtb.BidRequest.User;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
-import com.google.protobuf.Descriptors.FieldDescriptor;
-import com.google.protobuf.GeneratedMessage.ExtendableMessage;
-import com.google.protobuf.Message;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -52,19 +49,19 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Map;
 
 /**
- * Serializes OpenRTB messages to JSON.
+ * Serializes OpenRTB BidRequest/BidResponse messages to JSON.
+ * <p>
+ * Note: Among methods that write to a {@link JsonGenerator} parameter, only the {@code public}
+ * methods will call {@code flush()} on the generator before returning.
  * <p>
  * This class is threadsafe.
  */
-public class OpenRtbJsonWriter {
-  private final OpenRtbJsonFactory factory;
-  private final boolean requiredAlways = false;
+public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
 
   protected OpenRtbJsonWriter(OpenRtbJsonFactory factory) {
-    this.factory = factory;
+    super(factory);
   }
 
   /**
@@ -83,9 +80,8 @@ public class OpenRtbJsonWriter {
    * @see JsonFactory#createGenerator(Writer)
    */
   public void writeBidRequest(BidRequest req, Writer writer) throws IOException {
-    JsonGenerator gen = factory.getJsonFactory().createGenerator(writer);
+    JsonGenerator gen = factory().getJsonFactory().createGenerator(writer);
     writeBidRequest(req, gen);
-    gen.flush();
   }
 
   /**
@@ -94,9 +90,8 @@ public class OpenRtbJsonWriter {
    * @see JsonFactory#createGenerator(OutputStream)
    */
   public void writeBidRequest(BidRequest req, OutputStream os) throws IOException {
-    JsonGenerator gen = factory.getJsonFactory().createGenerator(os);
+    JsonGenerator gen = factory().getJsonFactory().createGenerator(os);
     writeBidRequest(req, gen);
-    gen.flush();
   }
 
   /**
@@ -153,6 +148,7 @@ public class OpenRtbJsonWriter {
     }
     writeExtensions(req, gen, "BidRequest");
     gen.writeEndObject();
+    gen.flush();
   }
 
   protected void writeImpression(Impression imp, JsonGenerator gen) throws IOException {
@@ -538,7 +534,7 @@ public class OpenRtbJsonWriter {
     }
     if (device.hasGeo()) {
       gen.writeFieldName("geo");
-      writeGeo(device.getGeo(), gen, "BidRequest.device.geo");
+      writeGeo(device.getGeo(), "BidRequest.device.geo", gen);
     }
     if (device.hasDnt()) {
       writeIntBoolField("dnt", device.getDnt(), gen);
@@ -622,7 +618,7 @@ public class OpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeGeo(Geo geo, JsonGenerator gen, String path) throws IOException {
+  protected void writeGeo(Geo geo, String path, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (geo.hasLat()) {
       gen.writeNumberField("lat", geo.getLat());
@@ -680,7 +676,7 @@ public class OpenRtbJsonWriter {
     }
     if (user.hasGeo()) {
       gen.writeFieldName("geo");
-      writeGeo(user.getGeo(), gen, "BidRequest.user.geo");
+      writeGeo(user.getGeo(), "BidRequest.user.geo", gen);
     }
     if (user.getDataCount() != 0) {
       gen.writeArrayFieldStart("data");
@@ -752,9 +748,8 @@ public class OpenRtbJsonWriter {
    * @see JsonFactory#createGenerator(OutputStream)
    */
   public void writeBidResponse(BidResponse resp, OutputStream os) throws IOException {
-    JsonGenerator gen = factory.getJsonFactory().createGenerator(os);
+    JsonGenerator gen = factory().getJsonFactory().createGenerator(os);
     writeBidResponse(resp, gen);
-    gen.flush();
   }
 
   /**
@@ -763,9 +758,8 @@ public class OpenRtbJsonWriter {
    * @see JsonFactory#createGenerator(Writer)
    */
   public void writeBidResponse(BidResponse resp, Writer writer) throws IOException {
-    JsonGenerator gen = factory.getJsonFactory().createGenerator(writer);
+    JsonGenerator gen = factory().getJsonFactory().createGenerator(writer);
     writeBidResponse(resp, gen);
-    gen.flush();
   }
 
   /**
@@ -798,6 +792,7 @@ public class OpenRtbJsonWriter {
     }
     writeExtensions(resp, gen, "BidResponse");
     gen.writeEndObject();
+    gen.flush();
   }
 
   protected void writeSeatBid(SeatBid seatbid, JsonGenerator gen) throws IOException {
@@ -867,39 +862,5 @@ public class OpenRtbJsonWriter {
     }
     writeExtensions(bid, gen, "BidResponse.seatbid.bid");
     gen.writeEndObject();
-  }
-
-  protected <EM extends ExtendableMessage<EM>>
-  void writeExtensions(EM msg, JsonGenerator gen, String path) throws IOException {
-    boolean openExt = false;
-    StringBuilder fullPath = new StringBuilder(path).append(':');
-    int pathMsg = fullPath.length();
-
-    for (Map.Entry<FieldDescriptor, Object> entry : msg.getAllFields().entrySet()) {
-      FieldDescriptor fd = entry.getKey();
-      if (fd.isExtension() && entry.getValue() instanceof Message) {
-        Message extMsg = (Message) entry.getValue();
-        fullPath.setLength(pathMsg);
-        fullPath.append(extMsg.getClass().getName());
-        @SuppressWarnings("unchecked")
-        OpenRtbJsonExtWriter<Message> extWriter = factory.getWriter(fullPath.toString());
-        if (extWriter != null) {
-          if (!openExt) {
-            openExt = true;
-            gen.writeFieldName("ext");
-            gen.writeStartObject();
-          }
-          extWriter.write(extMsg, gen);
-        }
-      }
-    }
-
-    if (openExt) {
-      gen.writeEndObject();
-    }
-  }
-
-  protected boolean checkRequired(boolean hasProperty) {
-    return requiredAlways || hasProperty;
   }
 }

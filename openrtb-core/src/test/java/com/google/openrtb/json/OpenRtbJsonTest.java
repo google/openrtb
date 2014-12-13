@@ -16,7 +16,6 @@
 
 package com.google.openrtb.json;
 
-import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
@@ -61,16 +60,13 @@ import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.ContentCategory;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
+import com.google.openrtb.Test.Test1;
+import com.google.openrtb.Test.Test2;
 import com.google.openrtb.TestExt;
-import com.google.openrtb.TestExt.Test1;
-import com.google.openrtb.TestExt.Test2;
-import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
-import com.google.protobuf.GeneratedMessage.GeneratedExtension;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -83,8 +79,8 @@ import java.io.IOException;
  */
 public class OpenRtbJsonTest {
   private static final Logger logger = LoggerFactory.getLogger(OpenRtbJsonTest.class);
-  private static final Test1 test1 = TestExt.Test1.newBuilder().setTest1("test1").build();
-  private static final Test2 test2 = TestExt.Test2.newBuilder().setTest2("test2").build();
+  private static final Test1 test1 = Test1.newBuilder().setTest1("test1").build();
+  private static final Test2 test2 = Test2.newBuilder().setTest2("test2").build();
 
   @Test
   public void testRequest_site() throws IOException {
@@ -101,25 +97,25 @@ public class OpenRtbJsonTest {
     testRequest(OpenRtbJsonFactory.create()
         .setJsonFactory(new JsonFactory())
         .register(new Test1Reader<BidRequest.Builder>(TestExt.testRequest1), "")
-        .register(new OpenRtbJsonExtWriter<TestExt.Test1>() {
-          @Override public void write(TestExt.Test1 ext, JsonGenerator gen) throws IOException {
+        .register(new OpenRtbJsonExtWriter<Test1>() {
+          @Override public void write(Test1 ext, JsonGenerator gen) throws IOException {
             gen.writeStringField("unknownField", "junk");
           }
-        }, TestExt.Test1.class, "BidRequest"),
+        }, Test1.class, "BidRequest"),
         newBidRequest().build());
   }
 
   @Test
   public void testRequest_AlternateFields() throws IOException {
     testRequest(newJsonFactory()
-        .register(new OpenRtbJsonExtWriter<TestExt.Test1>() {
-          @Override public void write(TestExt.Test1 ext, JsonGenerator gen) throws IOException {
+        .register(new OpenRtbJsonExtWriter<Test1>() {
+          @Override public void write(Test1 ext, JsonGenerator gen) throws IOException {
             gen.writeStringField("test1", "test1");
             gen.writeStringField("test2", "test2");
             gen.writeStringField("test1", "test1");
             gen.writeStringField("test2", "test2");
           }
-        }, TestExt.Test1.class, ""),
+        }, Test1.class, ""),
         newBidRequest().build());
   }
 
@@ -243,7 +239,7 @@ public class OpenRtbJsonTest {
         .register(new Test1Reader<SeatBid.Builder>(TestExt.testSeat), "BidResponse.seatbid")
         .register(new Test1Reader<Bid.Builder>(TestExt.testBid), "BidResponse.seatbid.bid")
         // Writers
-        .register(new Test1Writer(), TestExt.Test1.class,
+        .register(new Test1Writer(), Test1.class,
             "BidRequest", "BidRequest.app", "BidRequest.app.publisher",
             "BidRequest.app.content", "BidRequest.app.content.producer",
             "BidRequest.device", "BidRequest.device.geo",
@@ -253,7 +249,7 @@ public class OpenRtbJsonTest {
             "BidRequest.imp.native", "BidRequest.imp.pmp", "BidRequest.imp.pmp.deals",
             "BidRequest.regs", "BidRequest.site",
             "BidResponse", "BidResponse.seatbid", "BidResponse.seatbid.bid")
-        .register(new Test2Writer(), TestExt.Test2.class, "BidRequest", "BidResponse");
+        .register(new Test2Writer(), Test2.class, "BidRequest", "BidResponse");
   }
 
   static BidRequest.Builder newBidRequest() {
@@ -505,53 +501,5 @@ public class OpenRtbJsonTest {
         .setNbr(NoBidReasonCode.TECHNICAL_ERROR)
         .setExtension(TestExt.testResponse1, test1)
         .setExtension(TestExt.testResponse2, test2);
-  }
-
-  static class Test1Reader<EB extends ExtendableBuilder<?, EB>>
-  extends OpenRtbJsonExtReaderBase<EB, TestExt.Test1.Builder> {
-    public Test1Reader(GeneratedExtension<?, ?> key) {
-      super(key, TestExt.Test1.newBuilder());
-    }
-
-    @Override public boolean read(EB msg, TestExt.Test1.Builder ext, JsonParser par)
-        throws IOException {
-      switch (getCurrentName(par)) {
-        case "test1":
-          ext.setTest1(par.nextTextValue());
-          return true;
-        default:
-          return false;
-      }
-    }
-  }
-
-  static class Test1Writer implements OpenRtbJsonExtWriter<TestExt.Test1> {
-    @Override public void write(TestExt.Test1 ext, JsonGenerator gen) throws IOException {
-      gen.writeStringField("test1", ext.getTest1());
-    }
-  }
-
-  static class Test2Reader<EB extends ExtendableBuilder<?, EB>>
-  extends OpenRtbJsonExtReaderBase<EB, TestExt.Test2.Builder> {
-    public Test2Reader(GeneratedExtension<?, ?> key) {
-      super(key, TestExt.Test2.newBuilder());
-    }
-
-    @Override public boolean read(EB msg, TestExt.Test2.Builder ext, JsonParser par)
-        throws IOException {
-      switch (getCurrentName(par)) {
-        case "test2":
-          ext.setTest2(par.nextTextValue());
-          return true;
-        default:
-          return false;
-      }
-    }
-  }
-
-  static class Test2Writer implements OpenRtbJsonExtWriter<TestExt.Test2> {
-    @Override public void write(TestExt.Test2 ext, JsonGenerator gen) throws IOException {
-      gen.writeStringField("test2", ext.getTest2());
-    }
   }
 }

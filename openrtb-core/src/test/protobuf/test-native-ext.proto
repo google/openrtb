@@ -1,0 +1,65 @@
+/*
+ * Copyright 2014 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+syntax = "proto2";
+package com.google.openrtb;
+option java_outer_classname = "TestNExt";
+
+import "openrtb-native.proto";
+import "test-common.proto";
+
+extend com.google.openrtb.NativeRequest {
+  optional Test1 testNRequest1 = 110;
+  optional Test2 testNRequest2 = 111;
+}
+extend com.google.openrtb.NativeRequest.Asset {
+  optional Test1 testNReqAsset = 110;
+}
+extend com.google.openrtb.NativeRequest.Asset.Title {
+  optional Test1 testNReqTitle = 110;
+}
+extend com.google.openrtb.NativeRequest.Asset.Image {
+  optional Test1 testNReqImage = 110;
+}
+extend com.google.openrtb.NativeRequest.Asset.Video {
+  optional Test1 testNReqVideo = 110;
+}
+extend com.google.openrtb.NativeRequest.Asset.Data {
+  optional Test1 testNReqData = 110;
+}
+
+extend com.google.openrtb.NativeResponse {
+  optional Test1 testNResponse1 = 110;
+  optional Test2 testNResponse2 = 111;
+}
+extend com.google.openrtb.NativeResponse.Asset {
+  optional Test1 testNRespAsset = 110;
+}
+extend com.google.openrtb.NativeResponse.Asset.Title {
+  optional Test1 testNRespTitle = 110;
+}
+extend com.google.openrtb.NativeResponse.Asset.Image {
+  optional Test1 testNRespImage = 110;
+}
+extend com.google.openrtb.NativeResponse.Asset.Video {
+  optional Test1 testNRespVideo = 110;
+}
+extend com.google.openrtb.NativeResponse.Asset.Data {
+  optional Test1 testNRespData = 110;
+}
+extend com.google.openrtb.NativeResponse.Link {
+  optional Test1 testNRespLink = 110;
+}

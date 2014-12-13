@@ -49,13 +49,13 @@ message NativeRequest {
   optional int32 adunit = 3;
   optional int32 plcmtcnt = 4 [default = 1];
   optional int32 seq = 5 [default = 0];
-  repeated AssetObject assets = 6;
+  repeated Asset assets = 6;
   /**
    * Extensions.
    */
   extensions 100 to 199;
 
-  message AssetObject {
+  message Asset {
     required int32 id = 1;
     optional bool req = 2 [default = false];
     optional Title title = 3;
