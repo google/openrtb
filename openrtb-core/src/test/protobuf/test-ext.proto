@@ -19,13 +19,8 @@ package com.google.openrtb;
 option java_outer_classname = "TestExt";
 
 import "openrtb.proto";
+import "test-common.proto";
 
-message Test1 {
-  required string test1 = 1;
-}
-message Test2 {
-  required string test2 = 1;
-}
 extend com.google.openrtb.BidRequest {
   optional Test1 testRequest1 = 110;
   optional Test2 testRequest2 = 111;
@@ -54,14 +49,17 @@ extend com.google.openrtb.BidRequest.Impression {
 extend com.google.openrtb.BidRequest.Impression.Banner {
   optional Test1 testBanner = 110;
 }
+extend com.google.openrtb.BidRequest.Impression.Video {
+  optional Test1 testVideo = 110;
+}
+extend com.google.openrtb.BidRequest.Impression.Native {
+  optional Test1 testNative = 110;
+}
 extend com.google.openrtb.BidRequest.Impression.PMP {
   optional Test1 testPmp = 110;
 }
 extend com.google.openrtb.BidRequest.Impression.PMP.Deal {
   optional Test1 testDeal = 110;
-}
-extend com.google.openrtb.BidRequest.Impression.Video {
-  optional Test1 testVideo = 110;
 }
 extend com.google.openrtb.BidRequest.Producer {
   optional Test1 testProducer = 110;
@@ -78,6 +76,7 @@ extend com.google.openrtb.BidRequest.Site {
 extend com.google.openrtb.BidRequest.User {
   optional Test1 testUser = 110;
 }
+
 extend com.google.openrtb.BidResponse {
   optional Test1 testResponse1 = 110;
   optional Test2 testResponse2 = 111;

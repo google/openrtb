@@ -29,6 +29,8 @@ import com.google.common.collect.Iterables;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.Impression;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
+import com.google.openrtb.Test.Test1;
+import com.google.openrtb.Test.Test2;
 import com.google.openrtb.TestExt;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 
@@ -41,8 +43,8 @@ public class ProtoUtilsTest {
 
   @Test
   public void testFilter() {
-    TestExt.Test1 test1 = TestExt.Test1.newBuilder().setTest1("test1").build();
-    TestExt.Test2 test2 = TestExt.Test2.newBuilder().setTest2("test2").build();
+    Test1 test1 = Test1.newBuilder().setTest1("test1").build();
+    Test2 test2 = Test2.newBuilder().setTest2("test2").build();
     BidRequest reqPlainClear = BidRequest.newBuilder()
         .setId("0")
         .addImp(Impression.newBuilder().setId("1"))
