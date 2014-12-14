@@ -69,6 +69,7 @@ import com.google.protobuf.ByteString;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
+import java.io.CharArrayReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -293,8 +294,11 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
   protected void readNativeField(JsonParser par, Native.Builder nativ, String fieldName)
       throws IOException {
     switch (fieldName) {
-      case "request":
-        nativ.setRequest(par.getText());
+      case "request": {
+          OpenRtbNativeJsonReader nativeReader = factory().newNativeReader();
+          nativ.setRequest(nativeReader.readNativeRequest(new CharArrayReader(
+              par.getTextCharacters(), par.getTextOffset(), par.getTextLength())));
+        }
         break;
       case "ver":
         nativ.setVer(par.getText());

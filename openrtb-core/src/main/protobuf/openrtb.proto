@@ -18,6 +18,8 @@ syntax = "proto2";
 package com.google.openrtb;
 option java_outer_classname = "OpenRtb";
 
+import "openrtb-native.proto";
+
 /**
  * OpenRTB extensions ("ext" fields in the spec & JSON representation)
  * are represented here by Protocol Buffer extensions. This proto only
@@ -948,7 +950,7 @@ message BidRequest {
       /**
        * Request payload complying with the Native Ad Specification.
        */
-      required string request = 1;
+      required NativeRequest request = 1;
       /**
        * Version of the Native Ad Specification to which request complies;
        * highly recommended for efficient parsing.

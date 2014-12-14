@@ -60,6 +60,7 @@ import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.ContentCategory;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
+import com.google.openrtb.OpenRtbNative.NativeRequest;
 import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
 import com.google.openrtb.TestExt;
@@ -322,7 +323,7 @@ public class OpenRtbJsonTest {
         .addImp(Impression.newBuilder()
             .setId("imp3")
             .setNative(Native.newBuilder()
-                .setRequest("native-req")
+                .setRequest(NativeRequest.newBuilder().setVer("1"))
                 .setVer("1.0")
                 .addApi(ApiFramework.MRAID_1)
                 .addBattr(CreativeAttribute.TEXT_ONLY)
