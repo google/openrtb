@@ -1824,6 +1824,11 @@ message BidResponse {
        * Open Bidder macros are supported for this field.
        */
       optional string adm = 6;
+      /**
+       * Native ad response.
+       * You can only set one of adm and admNative; either will generate the "adm" field in JSON.
+       */
+      optional NativeResponse admNative = 17;
       /*
        * Advertiser’s primary or top-level domain for advertiser checking.
        * This can be a list of domains if there is a rotating creative.

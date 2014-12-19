@@ -58,7 +58,7 @@
     <junitVersion>4.12</junitVersion>
     <metricsVersion>3.0.2</metricsVersion>
     <protobufVersion>2.6.1</protobufVersion>
-    <slf4jVersion>1.7.7</slf4jVersion>
+    <slf4jVersion>1.7.9</slf4jVersion>
 
     <!-- Plugin versions -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
