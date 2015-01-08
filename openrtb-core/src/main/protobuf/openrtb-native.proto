@@ -25,7 +25,7 @@ option java_outer_classname = "OpenRtbNative";
  */
 message NativeRequest {
   /**
-   * OpenRTB Native 7.1: Coe layouts. An implementing exchange may not support all asset
+   * OpenRTB Native 7.1: Core layouts. An implementing exchange may not support all asset
    * variants or introduce new ones unique to that system.
    */
   enum LayoutID {

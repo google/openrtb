@@ -53,12 +53,12 @@
     <findBugsJsr305Version>3.0.0</findBugsJsr305Version>
     <gpg.skip>true</gpg.skip>
     <guavaVersion>18.0</guavaVersion>
-    <fasterxmlJacksonVersion>2.4.4</fasterxmlJacksonVersion>
+    <fasterxmlJacksonVersion>2.5.0</fasterxmlJacksonVersion>
     <injectVersion>1</injectVersion>
     <junitVersion>4.12</junitVersion>
     <metricsVersion>3.0.2</metricsVersion>
     <protobufVersion>2.6.1</protobufVersion>
-    <slf4jVersion>1.7.9</slf4jVersion>
+    <slf4jVersion>1.7.10</slf4jVersion>
 
     <!-- Plugin versions -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
