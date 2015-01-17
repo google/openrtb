@@ -82,7 +82,7 @@ public class OpenRtbJsonUtils {
   }
 
   public static long getMillisFromDecimalValue(JsonParser par) throws IOException, JsonParseException {
-    return par.getDecimalValue().multiply(BigDecimal.valueOf(1000000)).longValue();
+    return par.getDecimalValue().scaleByPowerOfTen(6).longValue();
   }
 
   @Deprecated
