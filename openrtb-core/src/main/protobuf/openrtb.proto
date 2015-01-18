@@ -589,7 +589,7 @@ message BidRequest {
     /*
      * Bid floor for this impression (in CPM of bidfloorcur).
      */
-    optional double bidfloor = 8 [default = 0];
+    optional int64 bidfloor = 8 [default = 0];
     /*
      * If bid floor is specified and multiple currencies supported per bid request,
      * then currency should be specified here using ISO-4217 alphabetic codes.
@@ -1003,7 +1003,7 @@ message BidRequest {
         /*
          * Bid floor for this impression (in CPM of bidfloorcur).
          */
-        optional double bidfloor = 2 [default = 0];
+        optional int64 bidfloor = 2 [default = 0];
         /*
          * If bid floor is specified and multiple currencies supported per bid request,
          * then currency should be specified here using ISO-4217 alphabetic codes. Notes.
@@ -1807,7 +1807,7 @@ message BidResponse {
        * Bid price in CPM. WARNING/Best Practice Note: Although this value is a float,
        * OpenRTB strongly suggests using integer math for accounting to avoid rounding errors.
        */
-      required double price = 3;
+      required int64 price = 3;
       /*
        * ID that references the ad to be served if the bid wins.
        */

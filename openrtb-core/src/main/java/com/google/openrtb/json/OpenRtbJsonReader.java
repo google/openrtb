@@ -16,14 +16,6 @@
 
 package com.google.openrtb.json;
 
-import static com.google.openrtb.json.OpenRtbJsonUtils.endArray;
-import static com.google.openrtb.json.OpenRtbJsonUtils.endObject;
-import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
-import static com.google.openrtb.json.OpenRtbJsonUtils.getDoubleValue;
-import static com.google.openrtb.json.OpenRtbJsonUtils.getIntBoolValue;
-import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
-import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
-
 import com.google.common.io.Closeables;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.App;
@@ -73,6 +65,8 @@ import java.io.CharArrayReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+
+import static com.google.openrtb.json.OpenRtbJsonUtils.*;
 
 /**
  * Desserializes OpenRTB BidRequest/BidResponse messages from JSON.
@@ -258,7 +252,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         imp.setTagid(par.getText());
         break;
       case "bidfloor":
-        imp.setBidfloor(getDoubleValue(par));
+        imp.setBidfloor(getMillisFromDecimalValue(par));
         break;
       case "bidfloorcur":
         imp.setBidfloorcur(par.getText());
@@ -365,7 +359,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         deal.setId(par.getText());
         break;
       case "bidfloor":
-        deal.setBidfloor(getDoubleValue(par));
+        deal.setBidfloor(getMillisFromDecimalValue(par));
         break;
       case "bidfloorcur":
         deal.setBidfloorcur(par.getText());
@@ -1231,7 +1225,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         bid.setImpid(par.getText());
         break;
       case "price":
-        bid.setPrice(getDoubleValue(par));
+        bid.setPrice(getMillisFromDecimalValue(par));
         break;
       case "adid":
         bid.setAdid(par.getText());

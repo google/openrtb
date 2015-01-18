@@ -87,7 +87,7 @@ public class ProtobufTest {
             .addBid(Bid.newBuilder()
                 .setId("1")
                 .setImpid("102")
-                .setPrice(9.43)
+                .setPrice(9430000)
                 .setAdid("314")
                 .setNurl("http://adserver.com/winnotice?impid=102")
                 .setAdm(
