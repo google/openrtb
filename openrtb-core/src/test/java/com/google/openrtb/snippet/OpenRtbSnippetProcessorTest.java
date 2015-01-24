@@ -84,7 +84,7 @@ public class OpenRtbSnippetProcessorTest {
     processor.process(req, resp);
     bid = resp.getSeatbidBuilder(0).getBidBuilder(0);
     assertEquals("ad-USD", bid.getAdid());
-    assertEquals("adm-10000.0", bid.getAdm());
+    assertEquals("adm-10000", bid.getAdm());
     assertEquals("c-seat1", bid.getCid());
     assertEquals("cr-req1", bid.getCrid());
     assertEquals("deal-USD", bid.getDealid());

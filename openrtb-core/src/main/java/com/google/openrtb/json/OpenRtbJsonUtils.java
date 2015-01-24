@@ -24,6 +24,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -78,6 +79,10 @@ public class OpenRtbJsonUtils {
 
   public static double getDoubleValue(JsonParser par) throws IOException, JsonParseException {
     return Double.parseDouble(par.getText());
+  }
+
+  public static long getMillisFromDecimalValue(JsonParser par) throws IOException, JsonParseException {
+    return par.getDecimalValue().scaleByPowerOfTen(6).longValue();
   }
 
   @Deprecated

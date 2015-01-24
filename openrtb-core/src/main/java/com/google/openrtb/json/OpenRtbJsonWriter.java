@@ -49,6 +49,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.math.BigDecimal;
 
 /**
  * Serializes OpenRTB BidRequest/BidResponse messages to JSON.
@@ -181,7 +182,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeStringField("tagid", imp.getTagid());
     }
     if (imp.hasBidfloor()) {
-      gen.writeNumberField("bidfloor", imp.getBidfloor());
+      gen.writeNumberField("bidfloor", BigDecimal.valueOf(imp.getBidfloor()).scaleByPowerOfTen(-6));
     }
     if (imp.hasBidfloorcur()) {
       gen.writeStringField("bidfloorcur", imp.getBidfloorcur());
@@ -332,7 +333,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeStringField("id", deal.getId());
     }
     if (deal.hasBidfloor()) {
-      gen.writeNumberField("bidfloor", deal.getBidfloor());
+      gen.writeNumberField("bidfloor", BigDecimal.valueOf(deal.getBidfloor()).scaleByPowerOfTen(-6));
     }
     if (deal.hasBidfloorcur()) {
       gen.writeStringField("bidfloorcur", deal.getBidfloorcur());
@@ -824,7 +825,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeStringField("impid", bid.getImpid());
     }
     if (checkRequired(bid.hasPrice())) {
-      gen.writeNumberField("price", bid.getPrice());
+      gen.writeNumberField("price", BigDecimal.valueOf(bid.getPrice()).scaleByPowerOfTen(-6));
     }
     if (bid.hasAdid()) {
       gen.writeStringField("adid", bid.getAdid());
