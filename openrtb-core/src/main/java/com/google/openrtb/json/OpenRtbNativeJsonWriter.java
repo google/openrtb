@@ -83,10 +83,10 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeStartObject();
     gen.writeStringField("ver", req.getVer());
     if (req.hasLayout()) {
-      gen.writeNumberField("layout", req.getLayout());
+      gen.writeNumberField("layout", req.getLayout().getNumber());
     }
     if (req.hasAdunit()) {
-      gen.writeNumberField("adunit", req.getAdunit());
+      gen.writeNumberField("adunit", req.getAdunit().getNumber());
     }
     if (req.hasPlcmtcnt()) {
       gen.writeNumberField("plcmtcnt", req.getPlcmtcnt());
@@ -144,7 +144,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       throws IOException {
     gen.writeStartObject();
     if (image.hasType()) {
-      gen.writeNumberField("type", image.getType());
+      gen.writeNumberField("type", image.getType().getNumber());
     }
     if (image.hasW()) {
       gen.writeNumberField("w", image.getW());
@@ -177,7 +177,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
   protected void writeReqData(NativeRequest.Asset.Data data, JsonGenerator gen)
       throws IOException {
     gen.writeStartObject();
-    gen.writeNumberField("type", data.getType());
+    gen.writeNumberField("type", data.getType().getNumber());
     if (data.hasLen()) {
       gen.writeNumberField("len", data.getLen());
     }

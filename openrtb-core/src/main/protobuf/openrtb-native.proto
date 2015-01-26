@@ -36,8 +36,7 @@ message NativeRequest {
     CAROUSEL = 5;
     CONTENT_STREAM = 6;
     GRID = 7;
-    /** Reserved for Exchange specific usage numbered above 500. */
-    LAYOUTID_EXCHANGE_RESERVED = 500;
+    // Exchange-specific values above 500.
   }
 
   /**
@@ -54,8 +53,7 @@ message NativeRequest {
     PROMOTED_LISTING = 3;
     IAB_IN_AD_NATIVE = 4;
     CUSTOM = 5;
-    /** Reserved for Exchange specific usage numbered above 500. */
-    ADUNITID_EXCHANGE_RESERVED = 500; 
+    // Exchange-specific values above 500.
   }
 
   /**
@@ -65,11 +63,11 @@ message NativeRequest {
   /**
    * The Layout ID of the native ad unit.
    */
-  optional int32 layout = 2;
+  optional LayoutID layout = 2;
   /**
    * The Ad unit ID of the native ad unit. This corresponds to one of IAB Core-6 native ad units. 
    */
-  optional int32 adunit = 3;
+  optional AdunitID adunit = 3;
   /**
    * The number of identical placements in this Layout.
    */
@@ -158,15 +156,14 @@ message NativeRequest {
         LOGO = 2;
         /** Large image preview for the ad. */
         MAIN = 3;
-        /** Reserved for Exchange specific usage numbered above 500. */
-        IMAGEASSETTYPE_EXCHANGE_RESERVED = 500;
+        // Exchange-specific values above 500.
       }
 
       /**
        * Type ID of the image element supported by the publisher.
        * The publisher can display this information in an appropriate format.
        */
-      optional int32 type = 1;
+      optional ImageAssetType type = 1;
       /**
        * Width of the image in pixels.
        */
@@ -282,15 +279,14 @@ message NativeRequest {
         DISPLAYURL = 11;
         /** Text describing a ‘call to action’ button for the destination URL. */
         CTATEXT = 12;
-        /** Reserved for Exchange specific usage numbered above 500. */
-        DATAASSETTYPE_EXCHANGE_RESERVED = 500;
+        // Exchange-specific values above 500.
       }
 
       /**
        * Type ID of the element supported by the publisher. The publisher can display this
        * information in an appropriate format.
        */
-      required int32 type = 1;
+      required DataAssetType type = 1;
       /**
        * Maximum length of the text in the element’s response.
        */

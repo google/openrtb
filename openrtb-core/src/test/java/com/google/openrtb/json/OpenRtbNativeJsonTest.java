@@ -20,6 +20,10 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
 import com.google.openrtb.OpenRtbNative.NativeRequest;
+import com.google.openrtb.OpenRtbNative.NativeRequest.AdunitID;
+import com.google.openrtb.OpenRtbNative.NativeRequest.Asset.Data.DataAssetType;
+import com.google.openrtb.OpenRtbNative.NativeRequest.Asset.Image.ImageAssetType;
+import com.google.openrtb.OpenRtbNative.NativeRequest.LayoutID;
 import com.google.openrtb.OpenRtbNative.NativeResponse;
 import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
@@ -101,8 +105,8 @@ public class OpenRtbNativeJsonTest {
   static NativeRequest.Builder newNativeRequest() {
     return NativeRequest.newBuilder()
         .setVer("1")
-        .setLayout(2)
-        .setAdunit(3)
+        .setLayout(LayoutID.APP_WALL)
+        .setAdunit(AdunitID.PROMOTED_LISTING)
         .setPlcmtcnt(4)
         .setSeq(5)
         .addAssets(NativeRequest.Asset.newBuilder()
@@ -112,7 +116,7 @@ public class OpenRtbNativeJsonTest {
                 .setLen(100)
                 .setExtension(TestNExt.testNReqTitle, test1))
             .setImg(NativeRequest.Asset.Image.newBuilder()
-                .setType(1)
+                .setType(ImageAssetType.ICON)
                 .setW(2)
                 .setWmin(2)
                 .setH(3)
@@ -126,7 +130,7 @@ public class OpenRtbNativeJsonTest {
                 .addAllProtocols(asList(1, 2, 3))
                 .setExtension(TestNExt.testNReqVideo, test1))
             .setData(NativeRequest.Asset.Data.newBuilder()
-                .setType(1)
+                .setType(DataAssetType.SPONSORED)
                 .setLen(10)
                 .setExtension(TestNExt.testNReqData, test1))
             .setExtension(TestNExt.testNReqAsset, test1))
