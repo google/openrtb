@@ -61,6 +61,7 @@ import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.ContentCategory;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
 import com.google.openrtb.OpenRtbNative.NativeRequest;
+import com.google.openrtb.OpenRtbNative.NativeResponse;
 import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
 import com.google.openrtb.TestExt;
@@ -158,7 +159,10 @@ public class OpenRtbJsonTest {
 
   @Test
   public void testResponse() throws IOException {
-    testResponse(newJsonFactory(), newBidResponse().build());
+    OpenRtbJsonFactory jsonFactory = newJsonFactory();
+    BidResponse resp = newBidResponse(false).build();
+    String jsonResp = testResponse(jsonFactory, resp);
+    assertEquals(jsonResp, jsonFactory.newWriter().writeBidResponse(newBidResponse(true).build()));
   }
 
   @Test
@@ -200,11 +204,12 @@ public class OpenRtbJsonTest {
     assertEquals(req, req2);
   }
 
-  static void testResponse(OpenRtbJsonFactory jsonFactory, BidResponse resp) throws IOException {
+  static String testResponse(OpenRtbJsonFactory jsonFactory, BidResponse resp) throws IOException {
     String jsonResp = jsonFactory.newWriter().writeBidResponse(resp);
     logger.info(jsonResp);
     OpenRtb.BidResponse resp2 = jsonFactory.newReader().readBidResponse(jsonResp);
     assertEquals(resp, resp2);
+    return jsonResp;
   }
 
   static OpenRtbJsonFactory newJsonFactory() {
@@ -471,28 +476,35 @@ public class OpenRtbJsonTest {
         .setExtension(TestExt.testApp, test1);
   }
 
-  static BidResponse.Builder newBidResponse() {
+  static BidResponse.Builder newBidResponse(boolean admNative) {
+    Bid.Builder bid = Bid.newBuilder()
+        .setId("bid1")
+        .setImpid("imp1")
+        .setPrice(19.95)
+        .setAdid("adid1")
+        .setNurl("http://iwon.com")
+        .addAdomain("http://myads.com")
+        .setIurl("http://mycdn.com/ad.gif")
+        .setCid("cid1")
+        .setCrid("crid1")
+        .addAttr(CreativeAttribute.TEXT_ONLY)
+        .setDealid("deal1")
+        .setW(100)
+        .setH(80)
+        .setBundle("com.google.testapp")
+        .setCat(ContentCategory.IAB10_2.name())
+        .setExtension(TestExt.testBid, test1);
+    if (admNative) {
+      bid.setAdmNative(NativeResponse.newBuilder()
+          .setVer("1.0")
+          .setLink(NativeResponse.Link.newBuilder()));
+    } else {
+      bid.setAdm("{\"ver\":\"1.0\",\"link\":{}}");
+    }
     return BidResponse.newBuilder()
         .setId("resp1")
         .addSeatbid(SeatBid.newBuilder()
-            .addBid(Bid.newBuilder()
-                .setId("bid1")
-                .setImpid("imp1")
-                .setPrice(19.95)
-                .setAdid("adid1")
-                .setNurl("http://iwon.com")
-                .setAdm("<snippet/>")
-                .addAdomain("http://myads.com")
-                .setIurl("http://mycdn.com/ad.gif")
-                .setCid("cid1")
-                .setCrid("crid1")
-                .addAttr(CreativeAttribute.TEXT_ONLY)
-                .setDealid("deal1")
-                .setW(100)
-                .setH(80)
-                .setBundle("com.google.testapp")
-                .setCat(ContentCategory.IAB10_2.name())
-                .setExtension(TestExt.testBid, test1))
+            .addBid(bid)
             .setSeat("seat1")
             .setGroup(false)
             .setExtension(TestExt.testSeat, test1))

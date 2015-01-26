@@ -16,6 +16,7 @@
 
 package com.google.openrtb.json;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeEnums;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeIntBoolField;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeStrings;
@@ -59,6 +60,7 @@ import java.io.Writer;
  * This class is threadsafe.
  */
 public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
+  private OpenRtbNativeJsonWriter nativeWriter;
 
   protected OpenRtbJsonWriter(OpenRtbJsonFactory factory) {
     super(factory);
@@ -298,8 +300,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
   protected final void writeNative(Native nativ, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (nativ.hasRequest()) {
-      OpenRtbNativeJsonWriter nativeWriter = factory().newNativeWriter();
-      gen.writeStringField("request", nativeWriter.writeNativeRequest(nativ.getRequest()));
+      gen.writeStringField("request", nativeWriter().writeNativeRequest(nativ.getRequest()));
     }
     if (nativ.hasVer()) {
       gen.writeStringField("ver", nativ.getVer());
@@ -816,6 +817,8 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
   }
 
   protected void writeBid(Bid bid, JsonGenerator gen) throws IOException {
+    checkArgument(!(bid.hasAdm() && bid.hasAdmNative()),
+        "Bid.adm and Bid.admNative cannot both be populated");
     gen.writeStartObject();
     if (checkRequired(bid.hasId())) {
       gen.writeStringField("id", bid.getId());
@@ -834,6 +837,8 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     }
     if (bid.hasAdm()) {
       gen.writeStringField("adm", bid.getAdm());
+    } else if (bid.hasAdmNative()) {
+      gen.writeStringField("adm", nativeWriter().writeNativeResponse(bid.getAdmNative()));
     }
     writeStrings("adomain", bid.getAdomainList(), gen);
     if (bid.hasBundle()) {
@@ -863,5 +868,12 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     }
     writeExtensions(bid, gen, "BidResponse.seatbid.bid");
     gen.writeEndObject();
+  }
+
+  protected final OpenRtbNativeJsonWriter nativeWriter() {
+    if (nativeWriter == null) {
+      nativeWriter = factory().newNativeWriter();
+    }
+    return nativeWriter;
   }
 }

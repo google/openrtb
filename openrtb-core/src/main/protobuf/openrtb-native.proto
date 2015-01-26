@@ -203,6 +203,9 @@ message NativeRequest {
      * Exchange implementors can impose their own specific restrictions.
      * Here are the required attributes of the Video Object. For optional attributes
      * please refer to OpenRTB 2.3.
+     *
+     * NOTE: This library only contains the "required" attributes here; for more attributes,
+     * for new we recommend using the BidRequest.Impression.Video object.
      */
     message Video {
       /**
@@ -223,8 +226,6 @@ message NativeRequest {
        * See OpenRTB 2.3 Table 6.7 Video Bid Response Protocols for a list of possible values.
        */
       repeated int32 protocols = 4;
-
-      // Optional fields from OpenRTB 2.3: TODO
 
       /**
        * Extensions.
