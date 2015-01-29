@@ -16,6 +16,7 @@
 
 package com.google.openrtb.json;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import static com.google.openrtb.json.OpenRtbJsonUtils.endArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.endObject;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
@@ -740,8 +741,13 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         content.setVideoquality(VideoQuality.valueOf(par.getIntValue()));
         break;
       case "context":
-        content.setContext(Context.valueOf(par.getValueAsInt()));
-        break;
+          try {
+              //JsonParseException may be thrown because value is string in
+              //2.2 and earlier, this allows for backwards compatibility.
+              content.setContext(Context.valueOf(par.getIntValue()));
+          } catch (JsonParseException jpe) {
+          }
+          break;
       case "contentrating":
         content.setContentrating(par.getText());
         break;
