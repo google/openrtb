@@ -740,7 +740,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         content.setVideoquality(VideoQuality.valueOf(par.getIntValue()));
         break;
       case "context":
-        content.setContext(Context.valueOf(par.getIntValue()));
+        content.setContext(Context.valueOf(par.getValueAsInt()));
         break;
       case "contentrating":
         content.setContentrating(par.getText());
