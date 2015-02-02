@@ -38,8 +38,7 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
   public static final OpenRtbSnippetProcessor ORTB_NULL = new OpenRtbSnippetProcessor() {
     @Override public String process(SnippetProcessorContext ctx, String snippet) {
       return SnippetProcessor.NULL.process(ctx, snippet);
-    }
-  };
+    }};
 
   /**
    * Creates a processor.
@@ -87,17 +86,18 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
           break;
         }
 
-        case AUCTION_PRICE: {
-          sb.append(ctx.bid().getPrice());
-          break;
-        }
-
         case AUCTION_SEAT_ID: {
           SeatBidOrBuilder seatBid = findSeat(ctx, macroDef);
           if (seatBid.hasSeat()) {
             sb.append(seatBid.getSeat());
           }
           break;
+        }
+
+        // "Server-side" macros: keep the macro untouched, so it will be
+        // expanded by the exchange or other system that receives the message.
+        case AUCTION_PRICE: {
+          sb.append(((OpenRtbMacros) macroDef).key());
         }
       }
     }

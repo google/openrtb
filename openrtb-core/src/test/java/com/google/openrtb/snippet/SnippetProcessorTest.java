@@ -16,10 +16,12 @@
 
 package com.google.openrtb.snippet;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
+import com.google.common.collect.ImmutableList;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.Impression;
 import com.google.openrtb.OpenRtb.BidResponse;
@@ -27,6 +29,8 @@ import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 
 import org.junit.Test;
+
+import java.util.List;
 
 /**
  * Tests for {@link SnippetProcessor}.
@@ -45,8 +49,15 @@ public class SnippetProcessorTest {
           .addBid(bid))
           .build();
   private final SnippetProcessor processor = new SnippetProcessor() {
+    @Override protected List<SnippetMacroType> registerMacros() {
+      return ImmutableList.<SnippetMacroType>builder()
+          .addAll(super.registerMacros())
+          .addAll(asList(TestMacros.values()))
+          .build();
+    }
     @Override protected void processMacroAt(
         SnippetProcessorContext ctx, StringBuilder sb, SnippetMacroType macroDef) {
+      sb.append("#");
     }
   };
 
@@ -105,6 +116,8 @@ public class SnippetProcessorTest {
     assertNotNull(processor.toString());
 
     assertEquals("${UNKNOWN_MACRO}", process("${UNKNOWN_MACRO}"));
+    assertEquals("#", process(TestMacros.TEST.key()));
+    assertEquals(esc("#"), process("%{" + TestMacros.TEST.key() + "}%"));
   }
 
   private String process(String snippet) {

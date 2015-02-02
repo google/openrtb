@@ -70,7 +70,7 @@ public class OpenRtbSnippetProcessorTest {
         .setAdm("adm-" + OpenRtbMacros.AUCTION_PRICE.key())
         .setCid("c-" + OpenRtbMacros.AUCTION_SEAT_ID.key())
         .setCrid("cr-" + OpenRtbMacros.AUCTION_ID.key())
-        .setDealid("deal-" + OpenRtbMacros.AUCTION_CURRENCY.key())
+        .setDealid("%{deal-" + OpenRtbMacros.AUCTION_PRICE.key() + "}%")
         .setId("bid-" + OpenRtbMacros.AUCTION_AD_ID.key())
         .setImpid("imp1")
         .setIurl("http://iurl?id=" + OpenRtbMacros.AUCTION_BID_ID.key())
@@ -84,10 +84,10 @@ public class OpenRtbSnippetProcessorTest {
     processor.process(req, resp);
     bid = resp.getSeatbidBuilder(0).getBidBuilder(0);
     assertEquals("ad-USD", bid.getAdid());
-    assertEquals("adm-10000.0", bid.getAdm());
+    assertEquals("adm-${AUCTION_PRICE}", bid.getAdm());
     assertEquals("c-seat1", bid.getCid());
     assertEquals("cr-req1", bid.getCrid());
-    assertEquals("deal-USD", bid.getDealid());
+    assertEquals("deal-%24%7BAUCTION_PRICE%7D", bid.getDealid());
     assertEquals("bid-ad-USD", bid.getId());
     assertEquals("http://iurl?id=bid-ad-USD", bid.getIurl());
     assertEquals("http://nurl?id=imp1", bid.getNurl());
