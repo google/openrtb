@@ -18,6 +18,7 @@ package com.google.openrtb.json;
 
 import static com.google.openrtb.json.OpenRtbJsonUtils.endArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.endObject;
+import static com.google.openrtb.json.OpenRtbJsonUtils.readStringOrArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getDoubleValue;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getIntBoolValue;
@@ -80,6 +81,7 @@ import java.io.Reader;
  * This class is threadsafe.
  */
 public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
+
 
   protected OpenRtbJsonReader(OpenRtbJsonFactory factory) {
     super(factory);
@@ -620,7 +622,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         site.setContent(readContent(par));
         break;
       case "keywords":
-        site.setKeywords(par.getText());
+        site.setKeywords(readStringOrArray(par));
         break;
       case "ext":
         readExtensions(site, par, "BidRequest.site");
@@ -688,7 +690,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         app.setContent(readContent(par));
         break;
       case "keywords":
-        app.setKeywords(par.getText());
+        app.setKeywords(readStringOrArray(par));
         break;
       case "ext":
         readExtensions(app, par, "BidRequest.app");
@@ -752,7 +754,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         content.setQagmediarating(QAGMediaRating.valueOf(par.getIntValue()));
         break;
       case "keywords":
-        content.setKeywords(par.getText());
+        content.setKeywords(readStringOrArray(par));
         break;
       case "livestream":
         content.setLivestream(getIntBoolValue(par));
@@ -1024,7 +1026,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         user.setGender(par.getText());
         break;
       case "keywords":
-        user.setKeywords(par.getText());
+        user.setKeywords(readStringOrArray(par));
         break;
       case "customdata":
         user.setCustomdata(par.getText());
@@ -1102,6 +1104,9 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
     }
   }
+
+
+
 
   /**
    * Desserializes a {@link BidResponse} from a JSON string, provided as a {@link ByteString}.

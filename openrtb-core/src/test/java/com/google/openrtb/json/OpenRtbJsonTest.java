@@ -193,6 +193,16 @@ public class OpenRtbJsonTest {
     newJsonFactory().newReader().readBidRequest(test);
   }
 
+  @Test
+  public void testKeywordsAsArray() throws IOException {
+    String test =
+           "{ \"id\": \"0\",\n  \"site\": { \"content\": { "
+        + "\"keywords\":  [\"foo\", \"bar\"]},\n \"id\": \"56600\",\n \"cat\": [\"IAB19\"],\n "
+        + "\"keywords\": \"\",\n \"name\": \"Emoji Free!\",\n \"ver\": null\n } \n}";
+    BidRequest bidRequest = newJsonFactory().newReader().readBidRequest(test);
+    assertEquals("foo,bar", bidRequest.getSite().getContent().getKeywords());
+  }
+
   static void testRequest(OpenRtbJsonFactory jsonFactory, BidRequest req) throws IOException {
     String jsonReq = jsonFactory.newWriter().writeBidRequest(req);
     logger.info(jsonReq);
