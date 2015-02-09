@@ -1094,9 +1094,9 @@ message BidRequest {
      */
     optional Content content = 13;
     /*
-     * List of keywords describing this site in a comma separated string.
+     * Comma separated list of keywords describing this site.
      */
-    optional string keywords = 14;
+    repeated string keywords = 14;
     /**
      * Extensions.
      */
@@ -1163,9 +1163,9 @@ message BidRequest {
      */
     optional Content content = 12;
     /*
-     * List of keywords describing this site in a comma separated string.
+     * Comma separated list of keywords describing this app.
      */
-    optional string keywords = 13;
+    repeated string keywords = 13;
     /**
      * Extensions.
      */
@@ -1248,7 +1248,7 @@ message BidRequest {
     /*
      * Comma separated list of keywords describing the content.
      */
-    optional string keywords = 9;
+    repeated string keywords = 9;
     /*
      * Is content live?
      */
@@ -1487,7 +1487,7 @@ message BidRequest {
     /*
      * Comma separated list of keywords of consumer interests or intent.
      */
-    optional string keywords = 5;
+    repeated string keywords = 5;
     /*
      * If supported by the exchange, this is custom data that the bidder had stored in the
      * exchange’s cookie. The string may be in base85 cookie safe characters, and be in any

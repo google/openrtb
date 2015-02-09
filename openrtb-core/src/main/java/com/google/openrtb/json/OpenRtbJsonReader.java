@@ -16,13 +16,12 @@
 
 package com.google.openrtb.json;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import static com.google.openrtb.json.OpenRtbJsonUtils.endArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.endObject;
-import static com.google.openrtb.json.OpenRtbJsonUtils.readStringOrArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getDoubleValue;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getIntBoolValue;
+import static com.google.openrtb.json.OpenRtbJsonUtils.readCsvString;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
@@ -68,6 +67,7 @@ import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
 import com.google.protobuf.ByteString;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
@@ -623,7 +623,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         site.setContent(readContent(par));
         break;
       case "keywords":
-        site.setKeywords(readStringOrArray(par));
+        site.addAllKeywords(readCsvString(par));
         break;
       case "ext":
         readExtensions(site, par, "BidRequest.site");
@@ -691,7 +691,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         app.setContent(readContent(par));
         break;
       case "keywords":
-        app.setKeywords(readStringOrArray(par));
+        app.addAllKeywords(readCsvString(par));
         break;
       case "ext":
         readExtensions(app, par, "BidRequest.app");
@@ -760,7 +760,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         content.setQagmediarating(QAGMediaRating.valueOf(par.getIntValue()));
         break;
       case "keywords":
-        content.setKeywords(readStringOrArray(par));
+        content.addAllKeywords(readCsvString(par));
         break;
       case "livestream":
         content.setLivestream(getIntBoolValue(par));
@@ -1032,7 +1032,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         user.setGender(par.getText());
         break;
       case "keywords":
-        user.setKeywords(readStringOrArray(par));
+        user.addAllKeywords(readCsvString(par));
         break;
       case "customdata":
         user.setCustomdata(par.getText());

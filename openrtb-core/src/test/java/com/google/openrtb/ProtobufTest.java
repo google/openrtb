@@ -66,7 +66,7 @@ public class ProtobufTest {
                  .setId("pub12345")
                  .setName("Publisher A"))
              .setContent(Content.newBuilder()
-                 .setKeywords("keyword a,keyword b,keyword c")))
+                 .addAllKeywords(asList("keyword a", "keyword b", "keyword c"))))
          .setDevice(Device.newBuilder()
              .setIp("64.124.253.1")
              .setUa("Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.16)")

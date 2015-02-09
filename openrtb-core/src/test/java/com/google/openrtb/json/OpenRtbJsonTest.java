@@ -204,7 +204,7 @@ public class OpenRtbJsonTest {
         + "\"keywords\":  [\"foo\", \"bar\"]},\n \"id\": \"56600\",\n \"cat\": [\"IAB19\"],\n "
         + "\"keywords\": \"\",\n \"name\": \"Emoji Free!\",\n \"ver\": null\n } \n}";
     BidRequest bidRequest = newJsonFactory().newReader().readBidRequest(test);
-    assertEquals("foo,bar", bidRequest.getSite().getContent().getKeywords());
+    assertEquals(asList("foo", "bar"), bidRequest.getSite().getContent().getKeywordsList());
   }
 
   static void testRequest(OpenRtbJsonFactory jsonFactory, BidRequest req) throws IOException {
@@ -390,7 +390,7 @@ public class OpenRtbJsonTest {
             .setBuyeruid("Picard")
             .setYob(1973)
             .setGender("M")
-            .setKeywords("boldly,going")
+            .addAllKeywords(asList("boldly", "going"))
             .setCustomdata("data1")
             .setGeo(Geo.newBuilder().setZip("12345"))
             .addData(Data.newBuilder()
@@ -446,7 +446,7 @@ public class OpenRtbJsonTest {
             .setUrl("http://who.com")
             .addCat("IAB10-2")
             .setVideoquality(VideoQuality.PROFESSIONAL)
-            .setKeywords("sci-fi,aliens")
+            .addAllKeywords(asList("sci-fi", "aliens"))
             .setContentrating("R")
             .setUserrating("Awesome!")
             .setContext(Context.OTHER)
@@ -463,7 +463,7 @@ public class OpenRtbJsonTest {
             .setEmbeddable(false)
             .setLanguage("en")
             .setExtension(TestExt.testContent, test1))
-        .setKeywords("news,politics")
+        .addAllKeywords(asList("news", "politics"))
         .setExtension(TestExt.testSite, test1);
   }
 
@@ -481,7 +481,7 @@ public class OpenRtbJsonTest {
         .setPaid(false)
         .setPublisher(Publisher.newBuilder().setId("pub9"))
         .setContent(Content.newBuilder().setId("cont9"))
-        .setKeywords("news,politics")
+        .addAllKeywords(asList("news", "politics"))
         .setStoreurl("http://appstore.com/cnn")
         .setExtension(TestExt.testApp, test1);
   }

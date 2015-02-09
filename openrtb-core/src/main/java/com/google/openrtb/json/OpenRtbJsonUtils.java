@@ -17,6 +17,7 @@
 package com.google.openrtb.json;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.protobuf.ProtocolMessageEnum;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -32,8 +33,8 @@ import java.util.List;
  * Utilities for writing JSON serialization code.
  */
 public class OpenRtbJsonUtils {
-
   private static final Joiner CSV_JOINER = Joiner.on(",");
+  private static final Splitter CSV_SPLITTER = Splitter.on(",");
 
   public static String getCurrentName(JsonParser par) throws JsonParseException, IOException {
     String name = par.getCurrentName();
@@ -94,22 +95,30 @@ public class OpenRtbJsonUtils {
   }
 
   /**
-   * Reads a String from either JSON Value String or JSON Array
-   * Needed because some fields (e.g. keywords) in OpenRTB 2.2 can be either string or an array.
-   * OpenRTB 2.3 should correctly use just strings with comma separated values.
+   * Reads from either a JSON Value String (containing CSV) or a JSON Array.
+   * The dual input format is needed because some fields (e.g. keywords) were allowed
+   * to be of either type in OpenRTB 2.2; now in 2.3 they are all CSV strings only.
+   * TODO: Simplify this to only accept CSV strings after 2.2 compatibility is dropped.
    */
-  public static String readStringOrArray(JsonParser par) throws IOException, JsonParseException {
+  public static Iterable<String> readCsvString(JsonParser par) throws IOException, JsonParseException {
     JsonToken currentToken = par.getCurrentToken();
     if (currentToken == JsonToken.START_ARRAY) {
       List<String> keywords = new ArrayList<>();
       for (startArray(par); endArray(par); par.nextToken()) {
         keywords.add(par.getText());
       }
-      return CSV_JOINER.join(keywords);
+      return keywords;
     } else if (currentToken == JsonToken.VALUE_STRING) {
-      return par.getText();
+      return CSV_SPLITTER.split(par.getText());
     } else {
-      throw new JsonParseException("Expected token", par.getCurrentLocation());
+      throw new JsonParseException("Expected string or array", par.getCurrentLocation());
+    }
+  }
+
+  public static void writeCsvString(String fieldName, List<String> data, JsonGenerator gen)
+      throws IOException {
+    if (!data.isEmpty()) {
+      gen.writeStringField(fieldName, CSV_JOINER.join(data));
     }
   }
 

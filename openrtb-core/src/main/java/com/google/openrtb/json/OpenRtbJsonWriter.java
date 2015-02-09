@@ -17,6 +17,7 @@
 package com.google.openrtb.json;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.openrtb.json.OpenRtbJsonUtils.writeCsvString;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeEnums;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeIntBoolField;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeStrings;
@@ -384,9 +385,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeFieldName("content");
       writeContent(site.getContent(), gen);
     }
-    if (site.hasKeywords()) {
-      gen.writeStringField("keywords", site.getKeywords());
-    }
+    writeCsvString("keywords", site.getKeywordsList(), gen);
     writeExtensions(site, gen, "BidRequest.site");
     gen.writeEndObject();
   }
@@ -428,9 +427,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeFieldName("content");
       writeContent(app.getContent(), gen);
     }
-    if (app.hasKeywords()) {
-      gen.writeStringField("keywords", app.getKeywords());
-    }
+    writeCsvString("keywords", app.getKeywordsList(), gen);
     writeExtensions(app, gen, "BidRequest.app");
     gen.writeEndObject();
   }
@@ -475,9 +472,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     if (content.hasQagmediarating()) {
       gen.writeNumberField("qagmediarating", content.getQagmediarating().getNumber());
     }
-    if (content.hasKeywords()) {
-      gen.writeStringField("keywords", content.getKeywords());
-    }
+    writeCsvString("keywords", content.getKeywordsList(), gen);
     if (content.hasLivestream()) {
       writeIntBoolField("livestream", content.getLivestream(), gen);
     }
@@ -670,9 +665,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     if (user.hasGender()) {
       gen.writeStringField("gender", user.getGender());
     }
-    if (user.hasKeywords()) {
-      gen.writeStringField("keywords", user.getKeywords());
-    }
+    writeCsvString("keywords", user.getKeywordsList(), gen);
     if (user.hasCustomdata()) {
       gen.writeStringField("customdata", user.getCustomdata());
     }
