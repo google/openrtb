@@ -16,6 +16,7 @@
 
 package com.google.openrtb.json;
 
+import com.google.common.base.Joiner;
 import com.google.protobuf.ProtocolMessageEnum;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -24,12 +25,15 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Utilities for writing JSON serialization code.
  */
 public class OpenRtbJsonUtils {
+
+  private static final Joiner CSV_JOINER = Joiner.on(",");
 
   public static String getCurrentName(JsonParser par) throws JsonParseException, IOException {
     String name = par.getCurrentName();
@@ -87,6 +91,26 @@ public class OpenRtbJsonUtils {
 
   public static boolean getIntBoolValue(JsonParser par) throws IOException, JsonParseException {
     return par.getIntValue() != 0;
+  }
+
+  /**
+   * Reads a String from either JSON Value String or JSON Array
+   * Needed because some fields (e.g. keywords) in OpenRTB 2.2 can be either string or an array.
+   * OpenRTB 2.3 should correctly use just strings with comma separated values.
+   */
+  public static String readStringOrArray(JsonParser par) throws IOException, JsonParseException {
+    JsonToken currentToken = par.getCurrentToken();
+    if (currentToken == JsonToken.START_ARRAY) {
+      List<String> keywords = new ArrayList<>();
+      for (startArray(par); endArray(par); par.nextToken()) {
+        keywords.add(par.getText());
+      }
+      return CSV_JOINER.join(keywords);
+    } else if (currentToken == JsonToken.VALUE_STRING) {
+      return par.getText();
+    } else {
+      throw new JsonParseException("Expected token", par.getCurrentLocation());
+    }
   }
 
   public static void writeIntBoolField(String fieldName, boolean data, JsonGenerator gen)
