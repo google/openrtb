@@ -25,6 +25,10 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
 import com.google.common.io.Closeables;
 import com.google.openrtb.OpenRtbNative.NativeRequest;
+import com.google.openrtb.OpenRtbNative.NativeRequest.AdunitID;
+import com.google.openrtb.OpenRtbNative.NativeRequest.Asset.Data.DataAssetType;
+import com.google.openrtb.OpenRtbNative.NativeRequest.Asset.Image.ImageAssetType;
+import com.google.openrtb.OpenRtbNative.NativeRequest.LayoutID;
 import com.google.openrtb.OpenRtbNative.NativeResponse;
 import com.google.protobuf.ByteString;
 
@@ -100,10 +104,10 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         req.setVer(par.getText());
         break;
       case "layout":
-        req.setLayout(par.getIntValue());
+        req.setLayout(LayoutID.valueOf(par.getIntValue()));
         break;
       case "adunit":
-        req.setAdunit(par.getIntValue());
+        req.setAdunit(AdunitID.valueOf(par.getIntValue()));
         break;
       case "plcmtcnt":
         req.setPlcmtcnt(par.getIntValue());
@@ -202,7 +206,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       throws IOException {
     switch (fieldName) {
       case "type":
-        image.setType(par.getIntValue());
+        image.setType(ImageAssetType.valueOf(par.getIntValue()));
         break;
       case "w":
         image.setW(par.getIntValue());
@@ -280,7 +284,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       JsonParser par, NativeRequest.Asset.Data.Builder data, String fieldName) throws IOException {
     switch (fieldName) {
       case "type":
-        data.setType(par.getIntValue());
+        data.setType(DataAssetType.valueOf(par.getIntValue()));
         break;
       case "len":
         data.setLen(par.getIntValue());

@@ -70,35 +70,30 @@ public abstract class SnippetProcessor {
     StringBuilder sb = new StringBuilder(snippet.length() * 2);
     String currSnippet = snippet;
 
-    while (true) {
-      boolean processedMacros = false;
-      int snippetPos = 0;
+    boolean processedMacros = false;
+    int snippetPos = 0;
 
-      while (snippetPos < currSnippet.length()) {
-        char c = currSnippet.charAt(snippetPos);
+    while (snippetPos < currSnippet.length()) {
+      char c = currSnippet.charAt(snippetPos);
 
-        int macroEnd = (c == '$'
-            && currSnippet.length() - snippetPos > 1 && currSnippet.charAt(snippetPos + 1) == '{')
-            ? processMacroAt(ctx, currSnippet, snippetPos, sb)
-            : -1;
+      int macroEnd = (c == '$'
+          && currSnippet.length() - snippetPos > 1 && currSnippet.charAt(snippetPos + 1) == '{')
+          ? processMacroAt(ctx, currSnippet, snippetPos, sb)
+          : -1;
 
-        if (macroEnd == -1) {
-          sb.append(c);
-          ++snippetPos;
-        } else {
-          snippetPos = macroEnd;
-          processedMacros = true;
-        }
-      }
-
-      if (processedMacros) {
-        currSnippet = sb.toString();
-        sb.setLength(0);
+      if (macroEnd == -1) {
+        sb.append(c);
+        ++snippetPos;
       } else {
-        sb.setLength(0);
-        break;
+        snippetPos = macroEnd;
+        processedMacros = true;
       }
     }
+
+    if (processedMacros) {
+      currSnippet = sb.toString();
+    }
+    sb.setLength(0);
 
     return urlEncode(currSnippet, sb);
   }
