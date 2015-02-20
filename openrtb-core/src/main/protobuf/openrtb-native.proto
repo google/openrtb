@@ -101,7 +101,7 @@ message NativeRequest {
     /**
      * Set to true if asset is required (exchange will not accept a bid without it).
      */
-    optional bool req = 2 [default = false];
+    optional bool required = 2 [default = false];
     /**
      * Title object for title assets.
      */
@@ -190,7 +190,7 @@ message NativeRequest {
        * own list of supported types in the integration docs. See Wikipedia's MIME page for
        * more information and links to all IETF RFCs. If blank, assume all types are allowed.
        */
-      repeated string mime = 6;
+      repeated string mimes = 6;
       /**
        * Extensions.
        */
@@ -321,7 +321,7 @@ message NativeResponse {
    * Array of impression tracking URLs, expected to return a 1x1 image or 204 response -
    * typically only passed when using 3rd party trackers.
    */
-  repeated string imptracker = 4;
+  repeated string imptrackers = 4;
   /**
    * Optional javascript impression tracker. Contains <script> tags to be executed at
    * impression time where it can be supported.
@@ -346,7 +346,7 @@ message NativeResponse {
     /**
      * List of third-party tracker URLs to be fired on click of the URL.
      */
-    repeated string clktrck = 2;
+    repeated string clicktrackers = 2;
     /**
      * Fallback URL for deeplink. To be used if the URL given in url is not supported by the device.
      */

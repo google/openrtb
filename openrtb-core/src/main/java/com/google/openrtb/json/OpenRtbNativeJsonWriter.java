@@ -109,8 +109,8 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
   protected void writeReqAsset(NativeRequest.Asset asset, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     gen.writeNumberField("id", asset.getId());
-    if (asset.hasReq()) {
-      writeIntBoolField("req", asset.getReq(), gen);
+    if (asset.hasRequired()) {
+      writeIntBoolField("required", asset.getRequired(), gen);
     }
     if (asset.hasTitle()) {
       gen.writeFieldName("title");
@@ -158,7 +158,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     if (image.hasHmin()) {
       gen.writeNumberField("hmin", image.getHmin());
     }
-    writeStrings("mime", image.getMimeList(), gen);
+    writeStrings("mimes", image.getMimesList(), gen);
     writeExtensions(image, gen, "NativeRequest.asset.img");
     gen.writeEndObject();
   }
@@ -235,7 +235,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeFieldName("link");
       writeRespLink(resp.getLink(), "NativeResponse.link", gen);
     }
-    writeStrings("imptracker", resp.getImptrackerList(), gen);
+    writeStrings("imptrackers", resp.getImptrackersList(), gen);
     if (resp.hasJstracker()) {
       gen.writeStringField("jstracker", resp.getJstracker());
     }
@@ -323,7 +323,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     if (link.hasUrl()) {
       gen.writeStringField("url", link.getUrl());
     }
-    writeStrings("clktrck", link.getClktrckList(), gen);
+    writeStrings("clicktrackers", link.getClicktrackersList(), gen);
     if (link.hasFallback()) {
       gen.writeStringField("fallback", link.getFallback());
     }
