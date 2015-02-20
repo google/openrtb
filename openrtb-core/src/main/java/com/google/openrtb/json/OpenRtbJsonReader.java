@@ -77,7 +77,7 @@ import java.io.InputStream;
 import java.io.Reader;
 
 /**
- * Desserializes OpenRTB BidRequest/BidResponse messages from JSON.
+ * Desserializes OpenRTB {@link BidRequest}/{@link BidResponse} messages from JSON.
  * <p>
  * This class is threadsafe.
  */

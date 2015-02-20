@@ -78,6 +78,7 @@ public class OpenRtbJsonFactory {
    *
    * @param extReader code to desserialize some extension properties
    * @param paths Paths in the OpenRTB model
+   * @param <EB> Type of message builder being constructed
    */
   public <EB extends ExtendableBuilder<?, EB>> OpenRtbJsonFactory register(
       OpenRtbJsonExtReader<EB> extReader, String... paths) {
@@ -99,6 +100,7 @@ public class OpenRtbJsonFactory {
    * @param extWriter code to serialize some {@code extKlass}'s properties
    * @param extKlass class of container message, e.g. {@code MyImpression.class}
    * @param paths Paths in the OpenRTB model
+   * @param <M> Type of message for the extension
    */
   public <M extends Message> OpenRtbJsonFactory register(
       OpenRtbJsonExtWriter<M> extWriter, Class<M> extKlass, String... paths) {

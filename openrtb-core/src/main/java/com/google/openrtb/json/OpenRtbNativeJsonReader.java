@@ -40,7 +40,7 @@ import java.io.InputStream;
 import java.io.Reader;
 
 /**
- * Desserializes OpenRTB NativeRequest/NativeResponse messages from JSON.
+ * Desserializes OpenRTB {@link NativeRequest}/{@link NativeResponse} messages from JSON.
  * <p>
  * This class is threadsafe.
  */

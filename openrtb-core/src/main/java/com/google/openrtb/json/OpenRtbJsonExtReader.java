@@ -27,7 +27,7 @@ import java.io.IOException;
  * <p>
  * Implementations of this interface have to be threadsafe.
  *
- * @param <EB> Type of message builder being constructed by the {@link OpenRtbJsonReader}.
+ * @param <EB> Type of message builder being constructed
  */
 public interface OpenRtbJsonExtReader<EB extends ExtendableBuilder<?, EB>> {
 
