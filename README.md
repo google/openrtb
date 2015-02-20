@@ -24,6 +24,19 @@ line after checkout or after any mvn clean.
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+# Version 0.8.0-beta, 20-02-2015
+
+* Support for Native Ads completed!
+* Improvements in JSON support, esp. better compatibility with
+  some OpenRTB-native exchanges and with OpenRTB 2.2
+  (thanks to github.com/matzi11a & Sojern).
+* (App/Site/User/Content).keywords are now arrays in the model.
+  They still map to a single, CSV-format string in the JSON.
+* The macro ${AUCTION_PRICE} is not anymore translated to the
+  bid price; this was a bug, this macro will proceed untouched
+  (OpenRTB-native exchanges are supposed to expand it).
+* Updated to latest error-prone; now Maven build works with JDK 8!
+
 # Version 0.7.3, 02-12-2014
 
 * Partial support for OpenRTB 2.3! The missing item is Native ads,
