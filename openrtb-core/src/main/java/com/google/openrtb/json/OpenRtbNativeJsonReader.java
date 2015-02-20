@@ -143,8 +143,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       case "id":
         asset.setId(par.getIntValue());
         break;
-      case "req":
-        asset.setReq(getIntBoolValue(par));
+      case "required":
+        asset.setRequired(getIntBoolValue(par));
         break;
       case "title":
         asset.setTitle(readReqTitle(par));
@@ -220,9 +220,9 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       case "hmin":
         image.setHmin(par.getIntValue());
         break;
-      case "mime":
+      case "mimes":
         for (startArray(par); endArray(par); par.nextToken()) {
-          image.addMime(par.getText());
+          image.addMimes(par.getText());
         }
         break;
       case "ext":
@@ -356,9 +356,9 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       case "link":
         resp.setLink(readRespLink(par, "NativeResponse.link"));
         break;
-      case "imptracker":
+      case "imptrackers":
         for (startArray(par); endArray(par); par.nextToken()) {
-          resp.addImptracker(par.getText());
+          resp.addImptrackers(par.getText());
         }
         break;
       case "jstracker":
@@ -537,9 +537,9 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       case "url":
         link.setUrl(par.getText());
         break;
-      case "clktrck":
+      case "clicktrackers":
         for (startArray(par); endArray(par); par.nextToken()) {
-          link.addClktrck(par.getText());
+          link.addClicktrackers(par.getText());
         }
         break;
       case "fallback":
