@@ -18,8 +18,6 @@ syntax = "proto2";
 package com.google.openrtb;
 option java_outer_classname = "Test";
 
-import "openrtb.proto";
-
 message Test1 {
   required string test1 = 1;
 }
