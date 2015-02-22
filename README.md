@@ -30,9 +30,9 @@ RELEASE NOTES
 * Improvements in JSON support, esp. better compatibility with
   some OpenRTB-native exchanges and with OpenRTB 2.2
   (thanks to github.com/matzi11a & Sojern).
-* (App/Site/User/Content).keywords are now arrays in the model.
+* `(App/Site/User/Content).keywords` are now arrays in the model.
   They still map to a single, CSV-format string in the JSON.
-* The macro ${AUCTION_PRICE} is not anymore translated to the
+* The macro `${AUCTION_PRICE}` is not anymore translated to the
   bid price; this was a bug, this macro will proceed untouched
   (OpenRTB-native exchanges are supposed to expand it).
 * Updated to latest error-prone; now Maven build works with JDK 8!
@@ -42,21 +42,21 @@ RELEASE NOTES
 * Partial support for OpenRTB 2.3! The missing item is Native ads,
   which depends on the OpenRTB Native 1.0 spec (proposed final draft
   at this time). This support will come in a future update.
-* Breaking change: The Flags enum was replaced by simple booleans.
-* Breaking change: Renamed DirectDeal to just Deal (to better match
+* Breaking change: The `Flags` enum was replaced by simple booleans.
+* Breaking change: Renamed `DirectDeal` to just `Deal` (to better match
   the spec, although object names are not really standardized).
 * New fields added (OpenRTB 2.3):
-  - BidRequest: test
-  - Site: mobile
-  - Device: w, h, pxratio, ppi, hwv, lmt
-  - Bid: cat, bundle
-  - Geo: utcoffset
+  - `BidRequest.test`
+  - `Site.mobile`
+  - `Device`: `w`, `h`, `pxratio`, `ppi`, `hwv`, `lmt`
+  - `Bid`: `cat`, `bundle`
+  - `Geo.utcoffset`
 * Other fields added (missing from OpenRTB 2.2):
-  - Device: ifa, macsha1, macmd5
-  - Impression: secure
-  - Video: protocols (the field protocol was deprecated; in the API
-    it's renamed deprecated_protocol, JSON will be compatible)
-  - BidResponse: nbr
+  - `Device`: `ifa`, `macsha1`, `macmd5`
+  - `Impression`: `secure`
+  - `Video`: `protocols` (the field `protocol` was deprecated; in the API
+    it's renamed `deprecated_protocol`, JSON will be compatible)
+  - `BidResponse`: `nbr`
 
 # Version 0.7.2, 29-10-2014
 
@@ -69,7 +69,7 @@ RELEASE NOTES
 
 # Version 0.7.0, 16-10-2014
 
-* OpenRtbUtils.filterBids() updated to use Bid.Builder instead of Bid.
+* `OpenRtbUtils.filterBids()` now uses `Bid.Builder` instead of `Bid`.
 
 ## Version 0.6.6, 14-10-2014
 
@@ -78,13 +78,13 @@ RELEASE NOTES
 
 ## Version 0.6.5, 18-08-2014
 
-* OpenRtbMapper interface improved, supports all possible mappings.
-* ProtoUtils.filter() optimizations, benefits OpenRtbUtils.filterBids().
+* `OpenRtbMapper` interface improved, supports all possible mappings.
+* `ProtoUtils.filter()` optimized, benefits `OpenRtbUtils.filterBids()`.
 
 ## Version 0.6.4, 10-08-2014
 
-* OpenRtbJson API review and javadocs.
-* OpenRtbValidator reviews, improved logging.
+* `OpenRtbJson` API review and javadocs.
+* `OpenRtbValidator` reviews, improved logging.
 
 ## Version 0.6.3, 02-08-2014
 
@@ -92,7 +92,7 @@ RELEASE NOTES
 
 ## Version 0.6.2, 25-07-2014
 
-* Remove dependencies jackson-databind/jackson-annotations.
+* Remove dependencies jackson-databind, jackson-annotations.
 
 ## Version 0.6.1, 15-07-2014
 
