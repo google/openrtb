@@ -171,35 +171,6 @@
               </execution>
             </executions>
           </plugin>
-
-          <plugin>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>default-compile</id>
-                <configuration>
-                  <compilerId>javac</compilerId>
-                  <includes>
-                    <include>com/google/openrtb/OpenRtb.java</include>
-                    <include>com/google/openrtb/TestExt.java</include>
-                  </includes>
-                </configuration>
-              </execution>
-              <execution>
-                <id>compile-main</id>
-                <goals><goal>compile</goal></goals>
-                <phase>compile</phase>
-                <configuration>
-                  <compilerId>javac-with-errorprone</compilerId>
-                  <forceJavacCompilerUse>true</forceJavacCompilerUse>
-                  <excludes>
-                    <exclude>com/google/openrtb/OpenRtb.java</exclude>
-                    <exclude>com/google/openrtb/TestExt.java</exclude>
-                  </excludes>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
         </plugins>
       </build>
     </profile>
