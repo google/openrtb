@@ -24,6 +24,10 @@ line after checkout or after any mvn clean.
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 0.8.0-beta2, 13-03-2015
+
+* Removed error-prone from build, new version had some issues too.
+
 ## Version 0.8.0-beta, 20-02-2015
 
 * Support for Native Ads completed!
