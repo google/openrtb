@@ -81,7 +81,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.6</version>
+        <version>2.7</version>
         <configuration>
           <aggregate>true</aggregate>
           <format>xml</format>
@@ -101,6 +101,11 @@
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
         <version>2.6.1</version>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.6</version>
       </plugin>
 
       <plugin>
@@ -146,7 +151,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.6</version>
+        <version>2.7</version>
         <configuration>
           <format>xml</format>
           <format>html</format>
