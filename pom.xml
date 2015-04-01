@@ -53,12 +53,12 @@
     <findBugsJsr305Version>3.0.0</findBugsJsr305Version>
     <gpg.skip>true</gpg.skip>
     <guavaVersion>18.0</guavaVersion>
-    <fasterxmlJacksonVersion>2.5.1</fasterxmlJacksonVersion>
+    <fasterxmlJacksonVersion>2.5.2</fasterxmlJacksonVersion>
     <injectVersion>1</injectVersion>
     <junitVersion>4.12</junitVersion>
     <metricsVersion>3.0.2</metricsVersion>
     <protobufVersion>2.6.1</protobufVersion>
-    <slf4jVersion>1.7.10</slf4jVersion>
+    <slf4jVersion>1.7.12</slf4jVersion>
 
     <!-- Plugin versions -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -161,7 +161,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.10.1</version>
+        <version>2.10.2</version>
         <configuration>
           <windowtitle>${project.name}</windowtitle>
           <notimestamp>true</notimestamp>
@@ -198,7 +198,7 @@
 
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.2</version>
+        <version>3.3</version>
         <configuration>
           <source>1.7</source>
           <target>1.7</target>

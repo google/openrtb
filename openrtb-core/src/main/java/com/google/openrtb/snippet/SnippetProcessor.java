@@ -139,7 +139,7 @@ public abstract class SnippetProcessor {
     }
 
     if (encodeLevel != 0) {
-      logger.warn("Unbalanced '%{': {}, snippet:\n{}", encodeLevel, snippet);
+      logger.warn("Unbalanced '%{': level={}, pos={}", encodeLevel, snippetPos);
     }
 
     return sb.append(flushEncoding(snippet, encodeStart, snippet.length(), 0)).toString();
