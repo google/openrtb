@@ -24,6 +24,10 @@ line after checkout or after any mvn clean.
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 0.8.0-beta3, 31-03-2015
+
+* Logging updates, mostly avoiding multiline logs (bad for syslog).
+
 ## Version 0.8.0-beta2, 13-03-2015
 
 * Removed error-prone from build, new version had some issues too.
