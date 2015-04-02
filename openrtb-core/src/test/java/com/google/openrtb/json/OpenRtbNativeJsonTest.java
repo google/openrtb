@@ -51,8 +51,52 @@ public class OpenRtbNativeJsonTest {
   }
 
   @Test
+  public void testRequest_emptyMessage() throws IOException {
+    testRequest(newJsonFactory(), NativeRequest.newBuilder()
+        .setVer("1")
+        .addAssets(NativeRequest.Asset.newBuilder()
+            .setId(1)
+            .setRequired(true)
+            .setTitle(NativeRequest.Asset.Title.newBuilder()
+                .setLen(100))
+            .setImg(NativeRequest.Asset.Image.newBuilder())
+            .setVideo(NativeRequest.Asset.Video.newBuilder()
+                .setMinduration(100)
+                .setMaxduration(200))
+            .setData(NativeRequest.Asset.Data.newBuilder()
+                .setType(DataAssetType.SPONSORED)))
+        .addAssets(NativeRequest.Asset.newBuilder()
+            .setId(1))
+        .build());
+    testRequest(newJsonFactory(), NativeRequest.newBuilder().build());
+  }
+
+  @Test
   public void testResponse() throws IOException {
     testResponse(newJsonFactory(), newNativeResponse().build());
+  }
+
+  @Test
+  public void testResponse_emptyMessage() throws IOException {
+    testResponse(newJsonFactory(), NativeResponse.newBuilder()
+        .setVer("1")
+        .addAssets(NativeResponse.Asset.newBuilder()
+            .setId(1)
+            .setReq(true)
+            .setTitle(NativeResponse.Asset.Title.newBuilder()
+                .setText("title"))
+            .setImg(NativeResponse.Asset.Image.newBuilder())
+            .setVideo(NativeResponse.Asset.Video.newBuilder())
+            .setData(NativeResponse.Asset.Data.newBuilder()
+                .setValue("v"))
+            .setLink(NativeResponse.Link.newBuilder()))
+        .addAssets(NativeResponse.Asset.newBuilder()
+            .setId(1))
+        .setLink(NativeResponse.Link.newBuilder())
+        .build());
+    testResponse(newJsonFactory(), NativeResponse.newBuilder()
+        .setLink(NativeResponse.Link.newBuilder())
+        .build());
   }
 
   static void testRequest(OpenRtbJsonFactory jsonFactory, NativeRequest req) throws IOException {
