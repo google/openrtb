@@ -231,10 +231,8 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       }
       gen.writeEndArray();
     }
-    if (resp.hasLink()) {
-      gen.writeFieldName("link");
-      writeRespLink(resp.getLink(), "NativeResponse.link", gen);
-    }
+    gen.writeFieldName("link");
+    writeRespLink(resp.getLink(), "NativeResponse.link", gen);
     writeStrings("imptrackers", resp.getImptrackersList(), gen);
     if (resp.hasJstracker()) {
       gen.writeStringField("jstracker", resp.getJstracker());

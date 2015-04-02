@@ -27,6 +27,7 @@ import com.google.openrtb.OpenRtb.BidRequest.Impression;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
+import com.google.openrtb.TestUtil;
 
 import org.junit.Test;
 
@@ -64,6 +65,7 @@ public class SnippetProcessorTest {
   @Test
   public void testContext() {
     SnippetProcessorContext ctx = new SnippetProcessorContext(req, resp, bid);
+    TestUtil.testCommonMethods(ctx);
     assertSame(req, ctx.request());
     assertSame(resp, ctx.response());
     assertSame(bid, ctx.bid());

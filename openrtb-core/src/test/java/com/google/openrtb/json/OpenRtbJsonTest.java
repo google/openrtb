@@ -18,6 +18,8 @@ package com.google.openrtb.json;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 import com.google.openrtb.OpenRtb;
 import com.google.openrtb.OpenRtb.BidRequest;
@@ -83,6 +85,13 @@ public class OpenRtbJsonTest {
   private static final Logger logger = LoggerFactory.getLogger(OpenRtbJsonTest.class);
   private static final Test1 test1 = Test1.newBuilder().setTest1("test1").build();
   private static final Test2 test2 = Test2.newBuilder().setTest2("test2").build();
+
+  @Test
+  public void testJsonFactory() {
+    assertNotNull(OpenRtbJsonFactory.create().getJsonFactory());
+    JsonFactory jf = new JsonFactory();
+    assertSame(jf, OpenRtbJsonFactory.create().setJsonFactory(jf).getJsonFactory());
+  }
 
   @Test
   public void testRequest_site() throws IOException {

@@ -101,7 +101,9 @@
             <excludes>
               <exclude>com/google/openrtb/OpenRtb.class</exclude>
               <exclude>com/google/openrtb/OpenRtb$*.class</exclude>
-              <exclude>com/google/openrtb/TestExt*.class</exclude>
+              <exclude>com/google/openrtb/OpenRtbNative.class</exclude>
+              <exclude>com/google/openrtb/OpenRtbNative$*.class</exclude>
+              <exclude>com/google/openrtb/json/CharSequenceReader.class</exclude>
             </excludes>
           </instrumentation>
         </configuration>
