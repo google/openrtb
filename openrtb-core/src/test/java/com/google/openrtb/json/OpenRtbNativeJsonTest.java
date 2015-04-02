@@ -68,7 +68,9 @@ public class OpenRtbNativeJsonTest {
         .addAssets(NativeRequest.Asset.newBuilder()
             .setId(1))
         .build());
-    testRequest(newJsonFactory(), NativeRequest.newBuilder().build());
+    testRequest(newJsonFactory(), NativeRequest.newBuilder()
+        .setVer("1")
+        .build());
   }
 
   @Test
