@@ -126,7 +126,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final NativeRequest.Asset.Builder readReqAsset(JsonParser par) throws IOException {
+  public final NativeRequest.Asset.Builder readReqAsset(JsonParser par) throws IOException {
     NativeRequest.Asset.Builder asset = NativeRequest.Asset.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -164,7 +164,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final NativeRequest.Asset.Title.Builder readReqTitle(JsonParser par)
+  public final NativeRequest.Asset.Title.Builder readReqTitle(JsonParser par)
       throws IOException {
     NativeRequest.Asset.Title.Builder title = NativeRequest.Asset.Title.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
@@ -189,7 +189,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final NativeRequest.Asset.Image.Builder readReqImage(JsonParser par)
+  public final NativeRequest.Asset.Image.Builder readReqImage(JsonParser par)
       throws IOException {
     NativeRequest.Asset.Image.Builder req = NativeRequest.Asset.Image.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
@@ -231,7 +231,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final NativeRequest.Asset.Video.Builder readReqVideo(JsonParser par)
+  public final NativeRequest.Asset.Video.Builder readReqVideo(JsonParser par)
       throws IOException {
     NativeRequest.Asset.Video.Builder video = NativeRequest.Asset.Video.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
@@ -269,7 +269,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final NativeRequest.Asset.Data.Builder readReqData(JsonParser par) throws IOException {
+  public final NativeRequest.Asset.Data.Builder readReqData(JsonParser par) throws IOException {
     NativeRequest.Asset.Data.Builder data = NativeRequest.Asset.Data.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -370,7 +370,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final NativeResponse.Asset.Builder readRespAsset(JsonParser par) throws IOException {
+  public final NativeResponse.Asset.Builder readRespAsset(JsonParser par) throws IOException {
     NativeResponse.Asset.Builder asset = NativeResponse.Asset.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -411,7 +411,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final NativeResponse.Asset.Title.Builder readRespTitle(JsonParser par)
+  public final NativeResponse.Asset.Title.Builder readRespTitle(JsonParser par)
       throws IOException {
     NativeResponse.Asset.Title.Builder title = NativeResponse.Asset.Title.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
@@ -436,7 +436,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final NativeResponse.Asset.Image.Builder readRespImage(JsonParser par)
+  public final NativeResponse.Asset.Image.Builder readRespImage(JsonParser par)
       throws IOException {
     NativeResponse.Asset.Image.Builder image = NativeResponse.Asset.Image.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
@@ -467,7 +467,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final NativeResponse.Asset.Video.Builder readRespVideo(JsonParser par)
+  public final NativeResponse.Asset.Video.Builder readRespVideo(JsonParser par)
       throws IOException {
     NativeResponse.Asset.Video.Builder video = NativeResponse.Asset.Video.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
@@ -494,7 +494,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final NativeResponse.Asset.Data.Builder readRespData(JsonParser par) throws IOException {
+  public final NativeResponse.Asset.Data.Builder readRespData(JsonParser par) throws IOException {
     NativeResponse.Asset.Data.Builder data = NativeResponse.Asset.Data.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -520,7 +520,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final NativeResponse.Link.Builder readRespLink(JsonParser par, String path) throws IOException {
+  public final NativeResponse.Link.Builder readRespLink(JsonParser par, String path) throws IOException {
     NativeResponse.Link.Builder link = NativeResponse.Link.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);

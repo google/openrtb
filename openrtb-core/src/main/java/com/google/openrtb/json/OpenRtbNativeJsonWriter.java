@@ -106,7 +106,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.flush();
   }
 
-  protected void writeReqAsset(NativeRequest.Asset asset, JsonGenerator gen) throws IOException {
+  public void writeReqAsset(NativeRequest.Asset asset, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     gen.writeNumberField("id", asset.getId());
     if (asset.hasRequired()) {
@@ -132,7 +132,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeReqTitle(NativeRequest.Asset.Title title, JsonGenerator gen)
+  public void writeReqTitle(NativeRequest.Asset.Title title, JsonGenerator gen)
       throws IOException {
     gen.writeStartObject();
     gen.writeNumberField("len", title.getLen());
@@ -140,7 +140,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeReqImage(NativeRequest.Asset.Image image, JsonGenerator gen)
+  public void writeReqImage(NativeRequest.Asset.Image image, JsonGenerator gen)
       throws IOException {
     gen.writeStartObject();
     if (image.hasType()) {
@@ -163,7 +163,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeReqVideo(NativeRequest.Asset.Video video, JsonGenerator gen)
+  public void writeReqVideo(NativeRequest.Asset.Video video, JsonGenerator gen)
       throws IOException {
     gen.writeStartObject();
     writeStrings("mimes", video.getMimesList(), gen);
@@ -174,7 +174,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeReqData(NativeRequest.Asset.Data data, JsonGenerator gen)
+  public void writeReqData(NativeRequest.Asset.Data data, JsonGenerator gen)
       throws IOException {
     gen.writeStartObject();
     gen.writeNumberField("type", data.getType().getNumber());
@@ -242,7 +242,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.flush();
   }
 
-  protected void writeRespAsset(NativeResponse.Asset asset, JsonGenerator gen) throws IOException {
+  public void writeRespAsset(NativeResponse.Asset asset, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     gen.writeNumberField("id", asset.getId());
     if (asset.hasReq()) {
@@ -272,7 +272,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeRespTitle(NativeResponse.Asset.Title title, JsonGenerator gen)
+  public void writeRespTitle(NativeResponse.Asset.Title title, JsonGenerator gen)
       throws IOException {
     gen.writeStartObject();
     gen.writeStringField("text", title.getText());
@@ -280,7 +280,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeRespImage(NativeResponse.Asset.Image image, JsonGenerator gen)
+  public void writeRespImage(NativeResponse.Asset.Image image, JsonGenerator gen)
       throws IOException {
     gen.writeStartObject();
     if (image.hasUrl()) {
@@ -296,7 +296,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeRespVideo(NativeResponse.Asset.Video video, JsonGenerator gen)
+  public void writeRespVideo(NativeResponse.Asset.Video video, JsonGenerator gen)
       throws IOException {
     gen.writeStartObject();
     writeStrings("vasttag", video.getVasttagList(), gen);
@@ -304,7 +304,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeRespData(NativeResponse.Asset.Data data, JsonGenerator gen)
+  public void writeRespData(NativeResponse.Asset.Data data, JsonGenerator gen)
       throws IOException {
     gen.writeStartObject();
     if (data.hasLabel()) {
@@ -315,7 +315,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeRespLink(NativeResponse.Link link, String path, JsonGenerator gen)
+  public void writeRespLink(NativeResponse.Link link, String path, JsonGenerator gen)
       throws IOException {
     gen.writeStartObject();
     if (link.hasUrl()) {

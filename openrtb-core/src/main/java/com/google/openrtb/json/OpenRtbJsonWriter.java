@@ -154,7 +154,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.flush();
   }
 
-  protected void writeImpression(Impression imp, JsonGenerator gen) throws IOException {
+  public void writeImpression(Impression imp, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (checkRequired(imp.hasId())) {
       gen.writeStringField("id", imp.getId());
@@ -201,7 +201,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeBanner(Banner banner, JsonGenerator gen) throws IOException {
+  public void writeBanner(Banner banner, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (banner.hasW()) {
       gen.writeNumberField("w", banner.getW());
@@ -239,7 +239,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeVideo(Video video, JsonGenerator gen) throws IOException {
+  public void writeVideo(Video video, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     writeStrings("mimes", video.getMimesList(), gen);
     if (checkRequired(video.hasMinduration())) {
@@ -312,7 +312,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writePMP(PMP pmp, JsonGenerator gen) throws IOException {
+  public void writePMP(PMP pmp, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (pmp.hasPrivateAuction()) {
       writeIntBoolField("private_auction", pmp.getPrivateAuction(), gen);
@@ -328,7 +328,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeDirectDeal(Deal deal, JsonGenerator gen) throws IOException {
+  public void writeDirectDeal(Deal deal, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (checkRequired(deal.hasId())) {
       gen.writeStringField("id", deal.getId());
@@ -348,7 +348,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeSite(Site site, JsonGenerator gen) throws IOException {
+  public void writeSite(Site site, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (site.hasId()) {
       gen.writeStringField("id", site.getId());
@@ -390,7 +390,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeApp(App app, JsonGenerator gen) throws IOException {
+  public void writeApp(App app, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (app.hasId()) {
       gen.writeStringField("id", app.getId());
@@ -432,7 +432,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeContent(Content content, JsonGenerator gen) throws IOException {
+  public void writeContent(Content content, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (content.hasId()) {
       gen.writeStringField("id", content.getId());
@@ -492,7 +492,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeProducer(Producer producer, JsonGenerator gen) throws IOException {
+  public void writeProducer(Producer producer, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (producer.hasId()) {
       gen.writeStringField("id", producer.getId());
@@ -508,7 +508,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writePublisher(Publisher publisher, JsonGenerator gen) throws IOException {
+  public void writePublisher(Publisher publisher, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (publisher.hasId()) {
       gen.writeStringField("id", publisher.getId());
@@ -524,7 +524,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeDevice(Device device, JsonGenerator gen) throws IOException {
+  public void writeDevice(Device device, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (device.hasUa()) {
       gen.writeStringField("ua", device.getUa());
@@ -615,7 +615,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeGeo(Geo geo, String path, JsonGenerator gen) throws IOException {
+  public void writeGeo(Geo geo, String path, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (geo.hasLat()) {
       gen.writeNumberField("lat", geo.getLat());
@@ -651,7 +651,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeUser(User user, JsonGenerator gen) throws IOException {
+  public void writeUser(User user, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (user.hasId()) {
       gen.writeStringField("id", user.getId());
@@ -684,7 +684,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeData(Data data, JsonGenerator gen) throws IOException {
+  public void writeData(Data data, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (data.hasId()) {
       gen.writeStringField("id", data.getId());
@@ -703,7 +703,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeSegment(Segment segment, JsonGenerator gen) throws IOException {
+  public void writeSegment(Segment segment, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (segment.hasId()) {
       gen.writeStringField("id", segment.getId());
@@ -718,7 +718,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeRegulations(Regulations regs, JsonGenerator gen) throws IOException {
+  public void writeRegulations(Regulations regs, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (regs.hasCoppa()) {
       writeIntBoolField("coppa", regs.getCoppa(), gen);
@@ -790,7 +790,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.flush();
   }
 
-  protected void writeSeatBid(SeatBid seatbid, JsonGenerator gen) throws IOException {
+  public void writeSeatBid(SeatBid seatbid, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (seatbid.getBidCount() != 0) {
       gen.writeArrayFieldStart("bid");
@@ -809,7 +809,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
-  protected void writeBid(Bid bid, JsonGenerator gen) throws IOException {
+  public void writeBid(Bid bid, JsonGenerator gen) throws IOException {
     checkArgument(!(bid.hasAdm() && bid.hasAdmNative()),
         "Bid.adm and Bid.admNative cannot both be populated");
     gen.writeStartObject();

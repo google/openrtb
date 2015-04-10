@@ -199,7 +199,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final Regulations.Builder readRegulations(JsonParser par) throws IOException {
+  public final Regulations.Builder readRegulations(JsonParser par) throws IOException {
     Regulations.Builder reg = Regulations.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -222,7 +222,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final Impression.Builder readImp(JsonParser par) throws IOException {
+  public final Impression.Builder readImp(JsonParser par) throws IOException {
     Impression.Builder imp = Impression.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -283,7 +283,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final Native.Builder readNative(JsonParser par) throws IOException {
+  public final Native.Builder readNative(JsonParser par) throws IOException {
     Native.Builder nativ = Native.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -322,7 +322,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final PMP.Builder readPMP(JsonParser par) throws IOException {
+  public final PMP.Builder readPMP(JsonParser par) throws IOException {
     PMP.Builder pmp = PMP.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -350,7 +350,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final Deal.Builder readDeal(JsonParser par) throws IOException {
+  public final Deal.Builder readDeal(JsonParser par) throws IOException {
     Deal.Builder deal = Deal.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -392,7 +392,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final Video.Builder readVideo(JsonParser par) throws IOException {
+  public final Video.Builder readVideo(JsonParser par) throws IOException {
     Video.Builder video = Video.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -491,7 +491,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final Banner.Builder readBanner(JsonParser par) throws IOException {
+  public final Banner.Builder readBanner(JsonParser par) throws IOException {
     Banner.Builder banner = Banner.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -563,7 +563,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final Site.Builder readSite(JsonParser par) throws IOException {
+  public final Site.Builder readSite(JsonParser par) throws IOException {
     Site.Builder site = Site.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -631,7 +631,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final App.Builder readApp(JsonParser par) throws IOException {
+  public final App.Builder readApp(JsonParser par) throws IOException {
     App.Builder app = App.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String name = getCurrentName(par);
@@ -699,7 +699,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final Content.Builder readContent(JsonParser par) throws IOException {
+  public final Content.Builder readContent(JsonParser par) throws IOException {
     Content.Builder content = Content.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String name = getCurrentName(par);
@@ -783,7 +783,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final Producer.Builder readProducer(JsonParser par) throws IOException {
+  public final Producer.Builder readProducer(JsonParser par) throws IOException {
     Producer.Builder producer = Producer.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -817,7 +817,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final Publisher.Builder readPublisher(JsonParser par) throws IOException {
+  public final Publisher.Builder readPublisher(JsonParser par) throws IOException {
     Publisher.Builder publisher = Publisher.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -851,7 +851,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final Device.Builder readDevice(JsonParser par) throws IOException {
+  public final Device.Builder readDevice(JsonParser par) throws IOException {
     Device.Builder device = Device.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -955,7 +955,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final Geo.Builder readGeo(JsonParser par, String path) throws IOException {
+  public final Geo.Builder readGeo(JsonParser par, String path) throws IOException {
     Geo.Builder geo = Geo.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -1005,7 +1005,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final User.Builder readUser(JsonParser par) throws IOException {
+  public final User.Builder readUser(JsonParser par) throws IOException {
     User.Builder user = User.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -1051,7 +1051,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final Data.Builder readData(JsonParser par) throws IOException {
+  public final Data.Builder readData(JsonParser par) throws IOException {
     Data.Builder data = Data.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -1082,7 +1082,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final Segment.Builder readSegment(JsonParser par) throws IOException {
+  public final Segment.Builder readSegment(JsonParser par) throws IOException {
     Segment.Builder segment = Segment.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -1190,7 +1190,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final SeatBid.Builder readSeatBid(JsonParser par) throws IOException {
+  public final SeatBid.Builder readSeatBid(JsonParser par) throws IOException {
     SeatBid.Builder seatbid = SeatBid.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -1221,7 +1221,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  protected final Bid.Builder readBid(JsonParser par) throws IOException {
+  public final Bid.Builder readBid(JsonParser par) throws IOException {
     Bid.Builder bid = Bid.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
