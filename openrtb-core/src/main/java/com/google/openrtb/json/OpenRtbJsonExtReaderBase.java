@@ -17,7 +17,10 @@
 package com.google.openrtb.json;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.openrtb.json.OpenRtbJsonUtils.endArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.endObject;
+import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
+import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
 import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
 import com.google.protobuf.GeneratedMessage.GeneratedExtension;
@@ -26,6 +29,7 @@ import com.google.protobuf.Message;
 import com.fasterxml.jackson.core.JsonParser;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Consider an example with "imp": { ..., "ext": { p1: 1, p2: 2, p3: 3 } }, and three
@@ -55,32 +59,21 @@ implements OpenRtbJsonExtReader<EB> {
 
   @SuppressWarnings("rawtypes")
   private final GeneratedExtension key;
-  private final XB prototypeBuilder;
 
-  @SuppressWarnings("unchecked")
-  protected OpenRtbJsonExtReaderBase(GeneratedExtension<?, ?> key, XB prototypeBuilder) {
+  protected OpenRtbJsonExtReaderBase(GeneratedExtension<?, ?> key) {
     this.key = checkNotNull(key);
-    this.prototypeBuilder = (XB) prototypeBuilder.clone();
   }
 
   @SuppressWarnings("unchecked")
   @Override public final boolean read(EB msg, JsonParser par) throws IOException {
-    XB ext = (XB) (msg.hasExtension(key)
-        ? ((Message) msg.getExtension(key)).toBuilder()
-        : prototypeBuilder.clone());
-    boolean someFieldRead = false;
-    while (endObject(par)) {
-      if (read(msg, ext, par)) {
-        someFieldRead = true;
-        par.nextToken();
-      } else {
-        break;
-      }
+    boolean extRead = false;
+    Object extObj = msg.getExtension(key);
+    if (extObj instanceof Message) {
+      extRead |= readSingle(msg, par, (XB) ((Message) extObj).toBuilder());
+    } else if (extObj instanceof List<?>) {
+      extRead |= readRepeated(msg, par);
     }
-    if (someFieldRead) {
-      msg.setExtension(key, ext.build());
-    }
-    return someFieldRead;
+    return extRead;
   }
 
   /**
@@ -93,4 +86,42 @@ implements OpenRtbJsonExtReader<EB> {
    * {@code false} if the property was ignored, leaving the parser in the same position
    */
   protected abstract boolean read(EB msg, XB ext, JsonParser par) throws IOException;
+  @SuppressWarnings("unchecked")
+  private boolean readSingle(EB msg, JsonParser par, XB ext) throws IOException {
+    boolean extRead = false;
+    while (endObject(par)) {
+      if (read(msg, ext, par)) {
+        extRead = true;
+        par.nextToken();
+      } else {
+        break;
+      }
+    }
+    if (extRead) {
+      msg.setExtension(key, ext.build());
+    }
+    return extRead;
+  }
+
+  @SuppressWarnings("unchecked")
+  protected boolean readRepeated(EB msg, JsonParser par) throws IOException {
+    boolean extRead = false;
+    for (startArray(par); endArray(par); par.nextToken()) {
+      boolean objRead = false;
+      XB ext = (XB) key.getMessageDefaultInstance().toBuilder();
+      for (startObject(par); endObject(par); par.nextToken()) {
+        if (read(msg, ext, par)) {
+          objRead = true;
+        }
+      }
+      if (objRead) {
+        extRead = true;
+        msg.addExtension(key, ext.build());
+      }
+    }
+    if (extRead) {
+      par.nextToken();
+    }
+    return extRead;
+  }
 }

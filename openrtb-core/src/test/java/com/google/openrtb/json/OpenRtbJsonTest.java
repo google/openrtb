@@ -529,6 +529,7 @@ public class OpenRtbJsonTest {
         .setCustomdata("mydata")
         .setNbr(NoBidReasonCode.TECHNICAL_ERROR)
         .setExtension(TestExt.testResponse1, test1)
-        .setExtension(TestExt.testResponse2, test2);
+        .addExtension(TestExt.testResponse2, test2)
+        .addExtension(TestExt.testResponse2, test2);
   }
 }

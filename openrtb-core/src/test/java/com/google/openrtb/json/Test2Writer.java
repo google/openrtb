@@ -22,7 +22,11 @@ import com.fasterxml.jackson.core.JsonGenerator;
 
 import java.io.IOException;
 
-class Test2Writer implements OpenRtbJsonExtWriter<Test2> {
+class Test2Writer extends OpenRtbJsonExtListWriter<Test2> {
+  public Test2Writer() {
+    super("test2obj");
+  }
+
   @Override public void write(Test2 ext, JsonGenerator gen) throws IOException {
     gen.writeStringField("test2", ext.getTest2());
   }

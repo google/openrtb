@@ -44,7 +44,6 @@ public abstract class AbstractOpenRtbJsonReader {
   protected <EB extends ExtendableBuilder<?, EB>>
   void readExtensions(EB ext, JsonParser par, String path) throws IOException {
     startObject(par);
-    @SuppressWarnings("unchecked")
     Collection<OpenRtbJsonExtReader<EB>> extReaders = factory.getReaders(path);
 
     while (true) {

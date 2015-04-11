@@ -24,7 +24,6 @@ import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
-import com.google.protobuf.Message;
 
 import com.fasterxml.jackson.core.JsonFactory;
 
@@ -96,10 +95,10 @@ public class OpenRtbJsonFactory {
    * @param extWriter code to serialize some {@code extKlass}'s properties
    * @param extKlass class of container message, e.g. {@code MyImpression.class}
    * @param paths Paths in the OpenRTB model
-   * @param <M> Type of message for the extension
+   * @param <T> Type of value for the extension
    */
-  public <M extends Message> OpenRtbJsonFactory register(
-      OpenRtbJsonExtWriter<M> extWriter, Class<M> extKlass, String... paths) {
+  public <T> OpenRtbJsonFactory register(
+      OpenRtbJsonExtWriter<T> extWriter, Class<T> extKlass, String... paths) {
     for (String path : paths) {
       extWriters.put(path + ':' + extKlass.getName(), extWriter);
     }
@@ -153,8 +152,8 @@ public class OpenRtbJsonFactory {
   }
 
   @SuppressWarnings("unchecked")
-  <M extends Message> OpenRtbJsonExtWriter<M> getWriter(String path) {
-    return (OpenRtbJsonExtWriter<M>) extWriters.get(path);
+  <T> OpenRtbJsonExtWriter<T> getWriter(String path) {
+    return (OpenRtbJsonExtWriter<T>) extWriters.get(path);
   }
 
   public JsonFactory getJsonFactory() {

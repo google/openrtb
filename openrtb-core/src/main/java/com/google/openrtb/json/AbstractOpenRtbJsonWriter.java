@@ -18,11 +18,11 @@ package com.google.openrtb.json;
 
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.GeneratedMessage.ExtendableMessage;
-import com.google.protobuf.Message;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,19 +48,27 @@ public class AbstractOpenRtbJsonWriter {
 
     for (Map.Entry<FieldDescriptor, Object> entry : msg.getAllFields().entrySet()) {
       FieldDescriptor fd = entry.getKey();
-      if (fd.isExtension() && entry.getValue() instanceof Message) {
-        Message extMsg = (Message) entry.getValue();
+      if (fd.isExtension()) {
         fullPath.setLength(pathMsg);
-        fullPath.append(extMsg.getClass().getName());
-        @SuppressWarnings("unchecked")
-        OpenRtbJsonExtWriter<Message> extWriter = factory.getWriter(fullPath.toString());
-        if (extWriter != null) {
-          if (!openExt) {
-            openExt = true;
-            gen.writeFieldName("ext");
-            gen.writeStartObject();
+        if (fd.isRepeated()) {
+          @SuppressWarnings("unchecked")
+          List<Object> extList = (List<Object>) entry.getValue();
+          if (!extList.isEmpty()) {
+            fullPath.append(extList.get(0).getClass().getName());
+            OpenRtbJsonExtWriter<Object> extWriter = factory.getWriter(fullPath.toString());
+            if (extWriter instanceof OpenRtbJsonExtListWriter<?>) {
+              openExt = openExt(gen, openExt);
+              ((OpenRtbJsonExtListWriter<Object>) extWriter).writeList(extList, gen);
+            }
           }
-          extWriter.write(extMsg, gen);
+        } else {
+          Object extValue = entry.getValue();
+          fullPath.append(extValue.getClass().getName());
+          OpenRtbJsonExtWriter<Object> extWriter = factory.getWriter(fullPath.toString());
+          if (extWriter != null) {
+            openExt = openExt(gen, openExt);
+            extWriter.write(extValue, gen);
+          }
         }
       }
     }
@@ -68,6 +76,13 @@ public class AbstractOpenRtbJsonWriter {
     if (openExt) {
       gen.writeEndObject();
     }
+  }
+
+  private static boolean openExt(JsonGenerator gen, boolean openExt) throws IOException {
+    if (!openExt) {
+      gen.writeObjectFieldStart("ext");
+    }
+    return true;
   }
 
   protected boolean checkRequired(boolean hasProperty) {

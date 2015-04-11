@@ -29,7 +29,7 @@ import java.io.IOException;
 class Test2Reader<EB extends ExtendableBuilder<?, EB>>
 extends OpenRtbJsonExtReaderBase<EB, Test2.Builder> {
   public Test2Reader(GeneratedExtension<?, ?> key) {
-    super(key, Test2.newBuilder());
+    super(key);
   }
 
   @Override public boolean read(EB msg, Test2.Builder ext, JsonParser par)
