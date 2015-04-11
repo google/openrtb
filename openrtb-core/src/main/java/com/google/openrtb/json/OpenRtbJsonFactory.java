@@ -90,12 +90,8 @@ public class OpenRtbJsonFactory {
 
   /**
    * Register a serializer extension. Each of these is registered for a specific
-   * "path" inside the OpenRTB model; for example, "BidRequest.device.geo" registers
-   * extensions for the {@code Geo} object inside the request's device object.
-   * You need this path, not just the leaf message type like {@code Geo}, because
-   * you might have the same message in a different place in the model (in this case,
-   * there's also "BidRequest.user.geo") but you may not want the same extension
-   * properties to be supported in both places.
+   * "path" inside the OpenRTB model; for example, "BidRequest.Geo" registers
+   * extensions for the {@code Geo} object inside the OpenRTB bid request.
    *
    * @param extWriter code to serialize some {@code extKlass}'s properties
    * @param extKlass class of container message, e.g. {@code MyImpression.class}

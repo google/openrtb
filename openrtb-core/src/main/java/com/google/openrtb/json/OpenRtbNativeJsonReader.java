@@ -159,7 +159,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         asset.setData(readReqData(par));
         break;
       case "ext":
-        readExtensions(asset, par, "NativeRequest.asset");
+        readExtensions(asset, par, "NativeRequest.Asset");
         break;
     }
   }
@@ -184,7 +184,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         title.setLen(par.getIntValue());
         break;
       case "ext":
-        readExtensions(title, par, "NativeRequest.asset.title");
+        readExtensions(title, par, "NativeRequest.Asset.Title");
         break;
     }
   }
@@ -226,7 +226,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         }
         break;
       case "ext":
-        readExtensions(image, par, "NativeRequest.asset.img");
+        readExtensions(image, par, "NativeRequest.Asset.Image");
         break;
     }
   }
@@ -264,7 +264,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         }
         break;
       case "ext":
-        readExtensions(video, par, "NativeRequest.asset.video");
+        readExtensions(video, par, "NativeRequest.Asset.Video");
         break;
     }
   }
@@ -290,7 +290,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         data.setLen(par.getIntValue());
         break;
       case "ext":
-        readExtensions(data, par, "NativeRequest.asset.data");
+        readExtensions(data, par, "NativeRequest.Asset.Data");
         break;
     }
   }
@@ -354,7 +354,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         }
         break;
       case "link":
-        resp.setLink(readRespLink(par, "NativeResponse.link"));
+        resp.setLink(readRespLink(par));
         break;
       case "imptrackers":
         for (startArray(par); endArray(par); par.nextToken()) {
@@ -403,10 +403,10 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         asset.setData(readRespData(par));
         break;
       case "link":
-        asset.setLink(readRespLink(par, "NativeResponse.asset.link"));
+        asset.setLink(readRespLink(par));
         break;
       case "ext":
-        readExtensions(asset, par, "NativeResponse.asset");
+        readExtensions(asset, par, "NativeResponse.Asset");
         break;
     }
   }
@@ -431,7 +431,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         title.setText(par.getText());
         break;
       case "ext":
-        readExtensions(title, par, "NativeResponse.asset.title");
+        readExtensions(title, par, "NativeResponse.Asset.Title");
         break;
     }
   }
@@ -462,7 +462,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         image.setH(par.getIntValue());
         break;
       case "ext":
-        readExtensions(image, par, "NativeResponse.asset.img");
+        readExtensions(image, par, "NativeResponse.Asset.Image");
         break;
     }
   }
@@ -489,7 +489,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         }
         break;
       case "ext":
-        readExtensions(video, par, "NativeResponse.asset.video");
+        readExtensions(video, par, "NativeResponse.Asset.Video");
         break;
     }
   }
@@ -515,24 +515,24 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         data.setValue(par.getText());
         break;
       case "ext":
-        readExtensions(data, par, "NativeResponse.asset.data");
+        readExtensions(data, par, "NativeResponse.Asset.Data");
         break;
     }
   }
 
-  public final NativeResponse.Link.Builder readRespLink(JsonParser par, String path) throws IOException {
+  public final NativeResponse.Link.Builder readRespLink(JsonParser par) throws IOException {
     NativeResponse.Link.Builder link = NativeResponse.Link.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
       if (par.nextToken() != JsonToken.VALUE_NULL) {
-        readRespLinkField(par, path, link, fieldName);
+        readRespLinkField(par, link, fieldName);
       }
     }
     return link;
   }
 
   protected void readRespLinkField(
-      JsonParser par, String path, NativeResponse.Link.Builder link, String fieldName) throws IOException {
+      JsonParser par, NativeResponse.Link.Builder link, String fieldName) throws IOException {
     switch (fieldName) {
       case "url":
         link.setUrl(par.getText());
@@ -546,7 +546,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         link.setFallback(par.getText());
         break;
       case "ext":
-        readExtensions(link, par, path);
+        readExtensions(link, par, "NativeResponse.Link");
         break;
     }
   }

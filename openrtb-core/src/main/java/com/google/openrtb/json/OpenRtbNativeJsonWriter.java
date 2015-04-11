@@ -128,7 +128,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeFieldName("data");
       writeReqData(asset.getData(), gen);
     }
-    writeExtensions(asset, gen, "NativeRequest.asset");
+    writeExtensions(asset, gen, "NativeRequest.Asset");
     gen.writeEndObject();
   }
 
@@ -136,7 +136,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       throws IOException {
     gen.writeStartObject();
     gen.writeNumberField("len", title.getLen());
-    writeExtensions(title, gen, "NativeRequest.asset.title");
+    writeExtensions(title, gen, "NativeRequest.Asset.Title");
     gen.writeEndObject();
   }
 
@@ -159,7 +159,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeNumberField("hmin", image.getHmin());
     }
     writeStrings("mimes", image.getMimesList(), gen);
-    writeExtensions(image, gen, "NativeRequest.asset.img");
+    writeExtensions(image, gen, "NativeRequest.Asset.Image");
     gen.writeEndObject();
   }
 
@@ -170,7 +170,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeNumberField("minduration", video.getMinduration());
     gen.writeNumberField("maxduration", video.getMaxduration());
     writeInts("protocols", video.getProtocolsList(), gen);
-    writeExtensions(video, gen, "NativeRequest.asset.video");
+    writeExtensions(video, gen, "NativeRequest.Asset.Video");
     gen.writeEndObject();
   }
 
@@ -181,7 +181,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     if (data.hasLen()) {
       gen.writeNumberField("len", data.getLen());
     }
-    writeExtensions(data, gen, "NativeRequest.asset.data");
+    writeExtensions(data, gen, "NativeRequest.Asset.Data");
     gen.writeEndObject();
   }
 
@@ -232,7 +232,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeEndArray();
     }
     gen.writeFieldName("link");
-    writeRespLink(resp.getLink(), "NativeResponse.link", gen);
+    writeRespLink(resp.getLink(), gen);
     writeStrings("imptrackers", resp.getImptrackersList(), gen);
     if (resp.hasJstracker()) {
       gen.writeStringField("jstracker", resp.getJstracker());
@@ -266,9 +266,9 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     }
     if (asset.hasLink()) {
       gen.writeFieldName("link");
-      writeRespLink(asset.getLink(), "NativeResponse.asset.link", gen);
+      writeRespLink(asset.getLink(), gen);
     }
-    writeExtensions(asset, gen, "NativeRequest.asset");
+    writeExtensions(asset, gen, "NativeRequest.Asset");
     gen.writeEndObject();
   }
 
@@ -276,7 +276,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       throws IOException {
     gen.writeStartObject();
     gen.writeStringField("text", title.getText());
-    writeExtensions(title, gen, "NativeResponse.asset.title");
+    writeExtensions(title, gen, "NativeResponse.Asset.Title");
     gen.writeEndObject();
   }
 
@@ -292,7 +292,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     if (image.hasH()) {
       gen.writeNumberField("h", image.getH());
     }
-    writeExtensions(image, gen, "NativeResponse.asset.img");
+    writeExtensions(image, gen, "NativeResponse.Asset.Image");
     gen.writeEndObject();
   }
 
@@ -300,7 +300,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       throws IOException {
     gen.writeStartObject();
     writeStrings("vasttag", video.getVasttagList(), gen);
-    writeExtensions(video, gen, "NativeResponse.asset.video");
+    writeExtensions(video, gen, "NativeResponse.Asset.Video");
     gen.writeEndObject();
   }
 
@@ -311,11 +311,11 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeStringField("label", data.getLabel());
     }
     gen.writeStringField("value", data.getValue());
-    writeExtensions(data, gen, "NativeResponse.asset.data");
+    writeExtensions(data, gen, "NativeResponse.Asset.Data");
     gen.writeEndObject();
   }
 
-  public void writeRespLink(NativeResponse.Link link, String path, JsonGenerator gen)
+  public void writeRespLink(NativeResponse.Link link, JsonGenerator gen)
       throws IOException {
     gen.writeStartObject();
     if (link.hasUrl()) {
@@ -325,7 +325,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     if (link.hasFallback()) {
       gen.writeStringField("fallback", link.getFallback());
     }
-    writeExtensions(link, gen, path);
+    writeExtensions(link, gen, "NativeResponse.Link");
     gen.writeEndObject();
   }
 }
