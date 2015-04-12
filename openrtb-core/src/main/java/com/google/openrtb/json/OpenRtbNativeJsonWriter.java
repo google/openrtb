@@ -101,7 +101,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       }
       gen.writeEndArray();
     }
-    writeExtensions(req, gen, "NativeRequest");
+    writeExtensions(req, gen);
     gen.writeEndObject();
     gen.flush();
   }
@@ -128,7 +128,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeFieldName("data");
       writeReqData(asset.getData(), gen);
     }
-    writeExtensions(asset, gen, "NativeRequest.Asset");
+    writeExtensions(asset, gen);
     gen.writeEndObject();
   }
 
@@ -136,7 +136,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       throws IOException {
     gen.writeStartObject();
     gen.writeNumberField("len", title.getLen());
-    writeExtensions(title, gen, "NativeRequest.Asset.Title");
+    writeExtensions(title, gen);
     gen.writeEndObject();
   }
 
@@ -159,7 +159,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeNumberField("hmin", image.getHmin());
     }
     writeStrings("mimes", image.getMimesList(), gen);
-    writeExtensions(image, gen, "NativeRequest.Asset.Image");
+    writeExtensions(image, gen);
     gen.writeEndObject();
   }
 
@@ -170,7 +170,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeNumberField("minduration", video.getMinduration());
     gen.writeNumberField("maxduration", video.getMaxduration());
     writeInts("protocols", video.getProtocolsList(), gen);
-    writeExtensions(video, gen, "NativeRequest.Asset.Video");
+    writeExtensions(video, gen);
     gen.writeEndObject();
   }
 
@@ -181,7 +181,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     if (data.hasLen()) {
       gen.writeNumberField("len", data.getLen());
     }
-    writeExtensions(data, gen, "NativeRequest.Asset.Data");
+    writeExtensions(data, gen);
     gen.writeEndObject();
   }
 
@@ -237,7 +237,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     if (resp.hasJstracker()) {
       gen.writeStringField("jstracker", resp.getJstracker());
     }
-    writeExtensions(resp, gen, "NativeResponse");
+    writeExtensions(resp, gen);
     gen.writeEndObject();
     gen.flush();
   }
@@ -268,7 +268,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeFieldName("link");
       writeRespLink(asset.getLink(), gen);
     }
-    writeExtensions(asset, gen, "NativeRequest.Asset");
+    writeExtensions(asset, gen);
     gen.writeEndObject();
   }
 
@@ -276,7 +276,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       throws IOException {
     gen.writeStartObject();
     gen.writeStringField("text", title.getText());
-    writeExtensions(title, gen, "NativeResponse.Asset.Title");
+    writeExtensions(title, gen);
     gen.writeEndObject();
   }
 
@@ -292,7 +292,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     if (image.hasH()) {
       gen.writeNumberField("h", image.getH());
     }
-    writeExtensions(image, gen, "NativeResponse.Asset.Image");
+    writeExtensions(image, gen);
     gen.writeEndObject();
   }
 
@@ -300,7 +300,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       throws IOException {
     gen.writeStartObject();
     writeStrings("vasttag", video.getVasttagList(), gen);
-    writeExtensions(video, gen, "NativeResponse.Asset.Video");
+    writeExtensions(video, gen);
     gen.writeEndObject();
   }
 
@@ -311,7 +311,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeStringField("label", data.getLabel());
     }
     gen.writeStringField("value", data.getValue());
-    writeExtensions(data, gen, "NativeResponse.Asset.Data");
+    writeExtensions(data, gen);
     gen.writeEndObject();
   }
 
@@ -325,7 +325,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     if (link.hasFallback()) {
       gen.writeStringField("fallback", link.getFallback());
     }
-    writeExtensions(link, gen, "NativeResponse.Link");
+    writeExtensions(link, gen);
     gen.writeEndObject();
   }
 }

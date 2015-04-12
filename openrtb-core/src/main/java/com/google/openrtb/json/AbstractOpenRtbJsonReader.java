@@ -41,23 +41,32 @@ public abstract class AbstractOpenRtbJsonReader {
     return factory;
   }
 
+  /**
+   * Read any extensions that may exist in a message.
+   *
+   * @param msg Builder of a message that may contain extensions
+   * @param par The JSON parser, positioned at the "ext" field
+   * @throws IOException any parsing error
+   */
   protected <EB extends ExtendableBuilder<?, EB>>
-  void readExtensions(EB ext, JsonParser par, String path) throws IOException {
+  void readExtensions(EB msg, JsonParser par) throws IOException {
     startObject(par);
-    Collection<OpenRtbJsonExtReader<EB>> extReaders = factory.getReaders(path);
+    @SuppressWarnings("unchecked")
+    Collection<OpenRtbJsonExtReader<EB>> extReaders =
+        factory.getReaders((Class<EB>) msg.getClass());
 
     while (true) {
-      boolean someFieldRead = false;
+      boolean extRead = false;
       for (OpenRtbJsonExtReader<EB> extReader : extReaders) {
-        someFieldRead |= extReader.read(ext, par);
+        extRead |= extReader.read(msg, par);
 
         if (!endObject(par)) {
           return;
         }
       }
 
-      if (!someFieldRead) {
-        throw new IOException("Unhandled extension at " + path
+      if (!extRead) {
+        throw new IOException("Unhandled extension for " + msg.getClass()
             + ": " + getCurrentName(par));
       }
       // Else loop, try all readers again

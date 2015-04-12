@@ -32,6 +32,9 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * Makes easy to implement an {@link OpenRtbJsonExtReader} that supports very flexible
+ * mapping from JSON fields into the model extension messages.
+ * <p>
  * Consider an example with "imp": { ..., "ext": { p1: 1, p2: 2, p3: 3 } }, and three
  * {@code ExtReader<Impression.Builder>} where ER1 reads {p4}, ER2 reads {p2}, ER3 reads {p1,p3}.
  * The main {@link OpenRtbJsonReader} will start at p1, invoking all compatible
@@ -49,8 +52,8 @@ import java.util.List;
  * 3) ER1 will be invoked several times, but never find any property it recognizes.
  *    It shouldn'set set an extension object that will be always empty.
  *
- * @param <EB> Type of message builder being constructed
- * @param <XB> Type of message builder for the extension
+ * @param <EB> Builder type for the message containing extensions
+ * @param <XB> Builder type for the extension messages
  */
 public abstract class OpenRtbJsonExtReaderBase <
     EB extends ExtendableBuilder<?, EB>, XB extends Message.Builder
@@ -86,6 +89,7 @@ implements OpenRtbJsonExtReader<EB> {
    * {@code false} if the property was ignored, leaving the parser in the same position
    */
   protected abstract boolean read(EB msg, XB ext, JsonParser par) throws IOException;
+
   @SuppressWarnings("unchecked")
   private boolean readSingle(EB msg, JsonParser par, XB ext) throws IOException {
     boolean extRead = false;

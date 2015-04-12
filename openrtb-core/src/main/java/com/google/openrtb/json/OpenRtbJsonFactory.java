@@ -18,16 +18,19 @@ package com.google.openrtb.json;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
+import com.google.protobuf.Message;
 
 import com.fasterxml.jackson.core.JsonFactory;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -37,13 +40,13 @@ import java.util.Map;
  *   <li>Native model: {@link OpenRtbNativeJsonWriter} and {@link OpenRtbNativeJsonReader}</li>
  * </ul>
  * <p>
- * This class is not threadsafe. You should use only to configure and create the
+ * This class is NOT threadsafe. You should use only to configure and create the
  * reader/writer objects, which will be threadsafe.
  */
 public class OpenRtbJsonFactory {
   private JsonFactory jsonFactory;
   private final Multimap<String, OpenRtbJsonExtReader<?>> extReaders;
-  private final Map<String, OpenRtbJsonExtWriter<?>> extWriters;
+  private final Map<String, Map<String, OpenRtbJsonExtWriter<?>>> extWriters;
 
   /**
    * Creates a new factory with default configuration.
@@ -51,16 +54,28 @@ public class OpenRtbJsonFactory {
   public static OpenRtbJsonFactory create() {
     return new OpenRtbJsonFactory(null,
         LinkedListMultimap.<String, OpenRtbJsonExtReader<?>>create(),
-        Maps.<String, OpenRtbJsonExtWriter<?>>newLinkedHashMap());
+        new LinkedHashMap<String, Map<String, OpenRtbJsonExtWriter<?>>>());
   }
 
   private OpenRtbJsonFactory(
       JsonFactory jsonFactory,
       Multimap<String, OpenRtbJsonExtReader<?>> extReaders,
-      Map<String, OpenRtbJsonExtWriter<?>> extWriters) {
+      Map<String, Map<String, OpenRtbJsonExtWriter<?>>> extWriters) {
     this.jsonFactory = jsonFactory;
     this.extReaders = checkNotNull(extReaders);
     this.extWriters = checkNotNull(extWriters);
+  }
+
+  private OpenRtbJsonFactory immutableClone() {
+    return new OpenRtbJsonFactory(
+        getJsonFactory(),
+        ImmutableMultimap.copyOf(extReaders),
+        ImmutableMap.copyOf(Maps.transformValues(extWriters, new Function<
+            Map<String, OpenRtbJsonExtWriter<?>>, Map<String, OpenRtbJsonExtWriter<?>>>() {
+              @Override public Map<String, OpenRtbJsonExtWriter<?>> apply(
+                  Map<String, OpenRtbJsonExtWriter<?>> map) {
+                return ImmutableMap.copyOf(map);
+              }})));
   }
 
   /**
@@ -80,10 +95,8 @@ public class OpenRtbJsonFactory {
    * @param <EB> Type of message builder being constructed
    */
   public <EB extends ExtendableBuilder<?, EB>> OpenRtbJsonFactory register(
-      OpenRtbJsonExtReader<EB> extReader, String... paths) {
-    for (String path : paths) {
-      extReaders.put(path, extReader);
-    }
+      OpenRtbJsonExtReader<EB> extReader, Class<EB> path) {
+    extReaders.put(path.getName(), extReader);
     return this;
   }
 
@@ -98,9 +111,13 @@ public class OpenRtbJsonFactory {
    * @param <T> Type of value for the extension
    */
   public <T> OpenRtbJsonFactory register(
-      OpenRtbJsonExtWriter<T> extWriter, Class<T> extKlass, String... paths) {
-    for (String path : paths) {
-      extWriters.put(path + ':' + extKlass.getName(), extWriter);
+      OpenRtbJsonExtWriter<T> extWriter, Class<T> extKlass, Class<?>... paths) {
+    for (Class<?> path : paths) {
+      Map<String, OpenRtbJsonExtWriter<?>> map = extWriters.get(path.getName());
+      if (map == null) {
+        extWriters.put(path.getName(), map = new LinkedHashMap<>());
+      }
+      map.put(extKlass.getName(), extWriter);
     }
     return this;
   }
@@ -109,20 +126,14 @@ public class OpenRtbJsonFactory {
    * Creates an {@link OpenRtbJsonWriter}, configured to the current state of this factory.
    */
   public OpenRtbJsonWriter newWriter() {
-    return new OpenRtbJsonWriter(new OpenRtbJsonFactory(
-        getJsonFactory(),
-        ImmutableMultimap.copyOf(extReaders),
-        ImmutableMap.copyOf(extWriters)));
+    return new OpenRtbJsonWriter(immutableClone());
   }
 
   /**
    * Creates an {@link OpenRtbJsonWriter}, configured to the current state of this factory.
    */
   public OpenRtbJsonReader newReader() {
-    return new OpenRtbJsonReader(new OpenRtbJsonFactory(
-        getJsonFactory(),
-        ImmutableMultimap.copyOf(extReaders),
-        ImmutableMap.copyOf(extWriters)));
+    return new OpenRtbJsonReader(immutableClone());
   }
 
   /**
@@ -147,15 +158,22 @@ public class OpenRtbJsonFactory {
 
   @SuppressWarnings("unchecked")
   <EB extends ExtendableBuilder<?, EB>>
-  Collection<OpenRtbJsonExtReader<EB>> getReaders(String path) {
-    return (Collection<OpenRtbJsonExtReader<EB>>) (Collection<?>) extReaders.get(path);
+  Collection<OpenRtbJsonExtReader<EB>> getReaders(Class<EB> msgClass) {
+    return (Collection<OpenRtbJsonExtReader<EB>>) (Collection<?>)
+        extReaders.get(msgClass.getName());
   }
 
   @SuppressWarnings("unchecked")
-  <T> OpenRtbJsonExtWriter<T> getWriter(String path) {
-    return (OpenRtbJsonExtWriter<T>) extWriters.get(path);
+  <T> OpenRtbJsonExtWriter<T> getWriter(Class<? extends Message> msgClass, Class<?> extClass) {
+    Map<String, OpenRtbJsonExtWriter<?>> map = extWriters.get(msgClass.getName());
+    return map == null ? null : (OpenRtbJsonExtWriter<T>) map.get(extClass.getName());
   }
 
+  /**
+   * Returns the {@link JsonFactory} configured for this {@link OpenRtbJsonFactory}.
+   * If you didn't set any value with {@link #setJsonFactory(JsonFactory)},
+   * will create a default factory.
+   */
   public JsonFactory getJsonFactory() {
     if (jsonFactory == null) {
       jsonFactory = new JsonFactory();

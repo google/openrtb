@@ -34,9 +34,10 @@ public interface OpenRtbJsonExtReader<EB extends ExtendableBuilder<?, EB>> {
   /**
    * Desserializes extension properties supported by this reader, if any.
    *
-   * @param msg Buider for the container message, where an extension message will be set
+   * @param msg Builder for the container message, where an extension message will be set
    * @param par JSON parser, positioned at the property to be desserialized
    * @return {@code true} if at least one extension property was consumed
+   * @throws IOException any parsing error
    */
   boolean read(EB msg, JsonParser par) throws IOException;
 }

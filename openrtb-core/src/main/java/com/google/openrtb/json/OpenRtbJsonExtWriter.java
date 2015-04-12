@@ -22,6 +22,8 @@ import java.io.IOException;
 
 /**
  * A serialization extension, can add children of "ext" fields.
+ *
+ * @param <T> type of extension field
  * <p>
  * Implementations of this interface have to be threadsafe.
  */
@@ -30,8 +32,9 @@ public interface OpenRtbJsonExtWriter<T> {
   /**
    * Serialize all properties set in an extension node.
    *
-   * @param msg The extension node
-   * @param gen JSON generator
+   * @param value The extension value (scalar field)
+   * @param gen The JSON generator
+   * @throws IOException any serialization error
    */
   void write(T value, JsonGenerator gen) throws IOException;
 }

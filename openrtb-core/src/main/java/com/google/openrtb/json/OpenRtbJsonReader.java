@@ -193,7 +193,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         req.setRegs(readRegulations(par));
         break;
       case "ext":
-        readExtensions(req, par, "BidRequest");
+        readExtensions(req, par);
         break;
     }
   }
@@ -216,7 +216,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         reg.setCoppa(getIntBoolValue(par));
         break;
       case "ext":
-        readExtensions(reg, par, "BidRequest.Regulations");
+        readExtensions(reg, par);
         break;
     }
   }
@@ -277,7 +277,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         imp.setPmp(readPMP(par));
         break;
       case "ext":
-        readExtensions(imp, par, "BidRequest.Impression");
+        readExtensions(imp, par);
         break;
     }
   }
@@ -316,7 +316,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         }
         break;
       case "ext":
-        readExtensions(nativ, par, "BidRequest.Impression.Native");
+        readExtensions(nativ, par);
         break;
     }
   }
@@ -344,7 +344,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         }
         break;
       case "ext":
-        readExtensions(pmp, par, "BidRequest.Impression.PMP");
+        readExtensions(pmp, par);
         break;
     }
   }
@@ -386,7 +386,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         deal.setAt(par.getIntValue());
         break;
       case "ext":
-        readExtensions(deal, par, "BidRequest.Impression.PMP.Deal");
+        readExtensions(deal, par);
         break;
     }
   }
@@ -485,7 +485,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         }
         break;
       case "ext":
-        readExtensions(video, par, "BidRequest.Impression.Video");
+        readExtensions(video, par);
         break;
     }
   }
@@ -557,7 +557,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         }
         break;
       case "ext":
-        readExtensions(banner, par, "BidRequest.Impression.Banner");
+        readExtensions(banner, par);
         break;
     }
   }
@@ -625,7 +625,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         site.addAllKeywords(readCsvString(par));
         break;
       case "ext":
-        readExtensions(site, par, "BidRequest.Site");
+        readExtensions(site, par);
         break;
     }
   }
@@ -693,7 +693,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         app.addAllKeywords(readCsvString(par));
         break;
       case "ext":
-        readExtensions(app, par, "BidRequest.App");
+        readExtensions(app, par);
         break;
     }
   }
@@ -777,7 +777,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         content.setEmbeddable(getIntBoolValue(par));
         break;
       case "ext":
-        readExtensions(content, par, "BidRequest.Content");
+        readExtensions(content, par);
         break;
     }
   }
@@ -811,7 +811,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         producer.setDomain(par.getText());
         break;
       case "ext":
-        readExtensions(producer, par, "BidRequest.Producer");
+        readExtensions(producer, par);
         break;
     }
   }
@@ -845,7 +845,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         publisher.setDomain(par.getText());
         break;
       case "ext":
-        readExtensions(publisher, par, "BidRequest.Publisher");
+        readExtensions(publisher, par);
         break;
     }
   }
@@ -949,7 +949,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         device.setMacmd5(par.getText());
         break;
       case "ext":
-        readExtensions(device, par, "BidRequest.Device");
+        readExtensions(device, par);
         break;
     }
   }
@@ -999,7 +999,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         geo.setUtcoffset(par.getIntValue());
         break;
       case "ext":
-        readExtensions(geo, par, "BidRequest.Geo");
+        readExtensions(geo, par);
         break;
     }
   }
@@ -1045,7 +1045,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         }
         break;
       case "ext":
-        readExtensions(user, par, "BidRequest.User");
+        readExtensions(user, par);
         break;
     }
   }
@@ -1076,7 +1076,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         }
         break;
       case "ext":
-        readExtensions(data, par, "BidRequest.Data");
+        readExtensions(data, par);
         break;
     }
   }
@@ -1105,7 +1105,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         segment.setValue(par.getText());
         break;
       case "ext":
-        readExtensions(segment, par, "BidRequest.Data.Segment");
+        readExtensions(segment, par);
         break;
     }
   }
@@ -1181,7 +1181,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         resp.setNbr(NoBidReasonCode.valueOf(par.getIntValue()));
         break;
       case "ext":
-        readExtensions(resp, par, "BidResponse");
+        readExtensions(resp, par);
         break;
     }
   }
@@ -1212,7 +1212,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         seatbid.setGroup(getIntBoolValue(par));
         break;
       case "ext":
-        readExtensions(seatbid, par, "BidResponse.SeatBid");
+        readExtensions(seatbid, par);
         break;
     }
   }
@@ -1284,7 +1284,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         bid.setH(par.getIntValue());
         break;
       case "ext":
-        readExtensions(bid, par, "BidResponse.SeatBid.Bid");
+        readExtensions(bid, par);
         break;
     }
   }

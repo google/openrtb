@@ -40,35 +40,25 @@ public class AbstractOpenRtbJsonWriter {
     return factory;
   }
 
+  /**
+   * Write any extensions that may exist in a message.
+   *
+   * @param msg A message that may contain extensions
+   * @param gen The JSON generator
+   * @throws IOException any serialization error
+   */
+  @SuppressWarnings("unchecked")
   protected <EM extends ExtendableMessage<EM>>
-  void writeExtensions(EM msg, JsonGenerator gen, String path) throws IOException {
+  void writeExtensions(EM msg, JsonGenerator gen) throws IOException {
     boolean openExt = false;
-    StringBuilder fullPath = new StringBuilder(path).append(':');
-    int pathMsg = fullPath.length();
 
-    for (Map.Entry<FieldDescriptor, Object> entry : msg.getAllFields().entrySet()) {
-      FieldDescriptor fd = entry.getKey();
+    for (Map.Entry<FieldDescriptor, Object> field : msg.getAllFields().entrySet()) {
+      FieldDescriptor fd = field.getKey();
       if (fd.isExtension()) {
-        fullPath.setLength(pathMsg);
         if (fd.isRepeated()) {
-          @SuppressWarnings("unchecked")
-          List<Object> extList = (List<Object>) entry.getValue();
-          if (!extList.isEmpty()) {
-            fullPath.append(extList.get(0).getClass().getName());
-            OpenRtbJsonExtWriter<Object> extWriter = factory.getWriter(fullPath.toString());
-            if (extWriter instanceof OpenRtbJsonExtListWriter<?>) {
-              openExt = openExt(gen, openExt);
-              ((OpenRtbJsonExtListWriter<Object>) extWriter).writeList(extList, gen);
-            }
-          }
+          openExt = writeRepeated(msg, gen, openExt, (List<Object>) field.getValue());
         } else {
-          Object extValue = entry.getValue();
-          fullPath.append(extValue.getClass().getName());
-          OpenRtbJsonExtWriter<Object> extWriter = factory.getWriter(fullPath.toString());
-          if (extWriter != null) {
-            openExt = openExt(gen, openExt);
-            extWriter.write(extValue, gen);
-          }
+          openExt = writeSingle(msg, gen, openExt, field.getValue());
         }
       }
     }
@@ -76,6 +66,32 @@ public class AbstractOpenRtbJsonWriter {
     if (openExt) {
       gen.writeEndObject();
     }
+  }
+
+  protected <EM extends ExtendableMessage<EM>> boolean writeSingle(
+      EM msg, JsonGenerator gen, boolean openExtP, Object extValue) throws IOException {
+    boolean openExt = openExtP;
+    OpenRtbJsonExtWriter<Object> extWriter =
+        factory.getWriter(msg.getClass(), extValue.getClass());
+    if (extWriter != null) {
+      openExt = openExt(gen, openExt);
+      extWriter.write(extValue, gen);
+    }
+    return openExt;
+  }
+
+  protected <EM extends ExtendableMessage<EM>> boolean writeRepeated(
+      EM msg, JsonGenerator gen, boolean openExtP, List<Object> extList) throws IOException {
+    boolean openExt = openExtP;
+    if (!extList.isEmpty()) {
+      OpenRtbJsonExtWriter<Object> extWriter =
+          factory.getWriter(msg.getClass(), extList.get(0).getClass());
+      if (extWriter instanceof OpenRtbJsonExtListWriter<?>) {
+        openExt = openExt(gen, openExt);
+        ((OpenRtbJsonExtListWriter<Object>) extWriter).writeList(extList, gen);
+      }
+    }
+    return openExt;
   }
 
   private static boolean openExt(JsonGenerator gen, boolean openExt) throws IOException {
