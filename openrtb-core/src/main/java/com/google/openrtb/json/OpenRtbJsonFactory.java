@@ -33,6 +33,8 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 /**
  * Factory that will create JSON serializer objects:
  * <ul>
@@ -44,9 +46,11 @@ import java.util.Map;
  * reader/writer objects, which will be threadsafe.
  */
 public class OpenRtbJsonFactory {
+  private static final String FIELDNAME_ALL = "*";
+
   private JsonFactory jsonFactory;
   private final Multimap<String, OpenRtbJsonExtReader<?, ?>> extReaders;
-  private final Map<String, Map<String, OpenRtbJsonExtWriter<?>>> extWriters;
+  private final Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters;
 
   /**
    * Creates a new factory with default configuration.
@@ -54,13 +58,13 @@ public class OpenRtbJsonFactory {
   public static OpenRtbJsonFactory create() {
     return new OpenRtbJsonFactory(null,
         LinkedListMultimap.<String, OpenRtbJsonExtReader<?, ?>>create(),
-        new LinkedHashMap<String, Map<String, OpenRtbJsonExtWriter<?>>>());
+        new LinkedHashMap<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>>());
   }
 
   private OpenRtbJsonFactory(
       JsonFactory jsonFactory,
       Multimap<String, OpenRtbJsonExtReader<?, ?>> extReaders,
-      Map<String, Map<String, OpenRtbJsonExtWriter<?>>> extWriters) {
+      Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters) {
     this.jsonFactory = jsonFactory;
     this.extReaders = checkNotNull(extReaders);
     this.extWriters = checkNotNull(extWriters);
@@ -71,11 +75,17 @@ public class OpenRtbJsonFactory {
         getJsonFactory(),
         ImmutableMultimap.copyOf(extReaders),
         ImmutableMap.copyOf(Maps.transformValues(extWriters, new Function<
-            Map<String, OpenRtbJsonExtWriter<?>>, Map<String, OpenRtbJsonExtWriter<?>>>() {
+            Map<String, Map<String, OpenRtbJsonExtWriter<?>>>,
+            Map<String, Map<String, OpenRtbJsonExtWriter<?>>>>() {
+          @Override public Map<String, Map<String, OpenRtbJsonExtWriter<?>>> apply(
+              Map<String, Map<String, OpenRtbJsonExtWriter<?>>> map) {
+            return ImmutableMap.copyOf(Maps.transformValues(map, new Function<
+                Map<String, OpenRtbJsonExtWriter<?>>, Map<String, OpenRtbJsonExtWriter<?>>>() {
               @Override public Map<String, OpenRtbJsonExtWriter<?>> apply(
                   Map<String, OpenRtbJsonExtWriter<?>> map) {
                 return ImmutableMap.copyOf(map);
-              }})));
+              }}));
+          }})));
   }
 
   /**
@@ -88,7 +98,6 @@ public class OpenRtbJsonFactory {
 
   /**
    * Register a desserializer extension.
-   * See {@link #register(OpenRtbJsonExtWriter, Class, String...)} about {@code paths}.
    *
    * @param extReader code to desserialize some extension properties
    * @param msgKlass class of container message's builder, e.g. {@code MyImpression.Builder.class}
@@ -106,20 +115,26 @@ public class OpenRtbJsonFactory {
    *
    * @param extWriter code to serialize some {@code extKlass}'s properties
    * @param extKlass class of container message, e.g. {@code MyImpression.class}
-   * @param msgKlasses Paths in the OpenRTB model
+   * @param msgKlass Path in the OpenRTB model
    * @param <T> Type of value for the extension
    */
-  @SafeVarargs
   public final <T> OpenRtbJsonFactory register(OpenRtbJsonExtWriter<T> extWriter,
-      Class<T> extKlass, Class<? extends Message>... msgKlasses) {
-    for (Class<? extends Message> msgKlass : msgKlasses) {
-      Map<String, OpenRtbJsonExtWriter<?>> map = extWriters.get(msgKlass.getName());
-      if (map == null) {
-        extWriters.put(msgKlass.getName(), map = new LinkedHashMap<>());
-      }
-      map.put(extKlass.getName(), extWriter);
+    Class<T> extKlass, Class<? extends Message> msgKlass, String fieldName) {
+    Map<String, Map<String, OpenRtbJsonExtWriter<?>>> mapMsg = extWriters.get(msgKlass.getName());
+    if (mapMsg == null) {
+      extWriters.put(msgKlass.getName(), mapMsg = new LinkedHashMap<>());
     }
+    Map<String, OpenRtbJsonExtWriter<?>> mapKlass = mapMsg.get(extKlass.getName());
+    if (mapKlass == null) {
+      mapMsg.put(extKlass.getName(), mapKlass = new LinkedHashMap<>());
+    }
+    mapKlass.put(fieldName == null ? FIELDNAME_ALL : fieldName, extWriter);
     return this;
+  }
+
+  public final <T> OpenRtbJsonFactory register(OpenRtbJsonExtWriter<T> extWriter,
+      Class<T> extKlass, Class<? extends Message> msgKlass) {
+    return register(extWriter, extKlass, msgKlass, FIELDNAME_ALL);
   }
 
   /**
@@ -165,9 +180,22 @@ public class OpenRtbJsonFactory {
 
   @SuppressWarnings("unchecked")
   final <T> OpenRtbJsonExtWriter<T> getWriter(
-      Class<? extends Message> msgClass, Class<?> extClass) {
-    Map<String, OpenRtbJsonExtWriter<?>> map = extWriters.get(msgClass.getName());
-    return map == null ? null : (OpenRtbJsonExtWriter<T>) map.get(extClass.getName());
+      Class<? extends Message> msgClass, Class<?> extClass, @Nullable String fieldName) {
+    Map<String, Map<String, OpenRtbJsonExtWriter<?>>> mapMsg = extWriters.get(msgClass.getName());
+    if (mapMsg == null) {
+      return null;
+    }
+    Map<String, OpenRtbJsonExtWriter<?>> mapKlass = mapMsg.get(extClass.getName());
+    if (mapKlass == null) {
+      return null;
+    }
+    if (fieldName != null && !FIELDNAME_ALL.equals(fieldName)) {
+      OpenRtbJsonExtWriter<T> writer = (OpenRtbJsonExtWriter<T>) mapKlass.get(fieldName);
+      if (writer != null) {
+        return writer;
+      }
+    }
+    return (OpenRtbJsonExtWriter<T>) mapKlass.get(FIELDNAME_ALL);
   }
 
   /**
@@ -180,5 +208,9 @@ public class OpenRtbJsonFactory {
       jsonFactory = new JsonFactory();
     }
     return jsonFactory;
+  }
+
+  private static String fieldKey(String fieldName) {
+    return fieldName == null ? FIELDNAME_ALL : fieldName;
   }
 }

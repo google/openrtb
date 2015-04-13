@@ -27,7 +27,8 @@ import com.fasterxml.jackson.core.JsonParser;
 import java.io.IOException;
 
 /**
- * Sample JSON reader for a regular extension of message type.
+ * Sample JSON reader for a repeated extension of message type.
+ * (Exactly the same code as for regular extension of message type / {@link Test1Reader}.)
  */
 class Test2Reader<EB extends ExtendableBuilder<?, EB>>
 extends OpenRtbJsonExtReader<EB, Test2.Builder> {

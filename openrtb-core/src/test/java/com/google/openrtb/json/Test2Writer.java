@@ -23,7 +23,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import java.io.IOException;
 
 /**
- * Sample JSON writer for a regular or repeated extension of message type.
+ * Sample JSON writer for a repeated extension of message type.
  * <p>
  * To support repeated extensions, the super-call needs the field name and object/scalar option.
  * The field name, the array-open and array-close tokens, and (for objects) the object-open

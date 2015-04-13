@@ -47,10 +47,16 @@ public abstract class OpenRtbJsonExtReader<
   @SuppressWarnings("rawtypes")
   private final GeneratedExtension key;
 
+  /**
+   * Use this constructor for readers of scalar type.
+   */
   protected OpenRtbJsonExtReader() {
     this.key = null;
   }
 
+  /**
+   * Use this constructor for readers of message type.
+   */
   protected OpenRtbJsonExtReader(GeneratedExtension<?, ?> key) {
     this.key = checkNotNull(key);
   }
@@ -69,7 +75,7 @@ public abstract class OpenRtbJsonExtReader<
       readSingle(msg, par, (XB) ((Message) extObj).toBuilder());
     } else if (extObj instanceof List<?>) {
       readRepeated(msg, par);
-    }
+    } // Else it's a scalar: reader class should override this method
   }
 
   /**
@@ -124,6 +130,7 @@ public abstract class OpenRtbJsonExtReader<
 
   @SuppressWarnings("unchecked")
   protected void readRepeated(EB msg, JsonParser par) throws IOException {
+    par.nextToken();
     JsonToken tokLast = par.getCurrentToken();
     JsonLocation locLast = par.getCurrentLocation();
     for (startArray(par); endArray(par); par.nextToken()) {

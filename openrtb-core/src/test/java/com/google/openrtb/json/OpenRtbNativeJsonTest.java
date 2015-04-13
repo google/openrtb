@@ -147,15 +147,21 @@ public class OpenRtbNativeJsonTest {
         .register(new Test1Reader<NativeResponse.Asset.Data.Builder>(TestNExt.testNRespData),
             NativeResponse.Asset.Data.Builder.class)
         // Writers
-        .register(new Test1Writer(), Test1.class,
-            NativeRequest.class, NativeRequest.Asset.class,
-            NativeRequest.Asset.Title.class, NativeRequest.Asset.Image.class,
-            NativeRequest.Asset.Video.class, NativeRequest.Asset.Data.class,
-            NativeResponse.class, NativeResponse.Link.class, NativeResponse.Asset.class,
-            NativeResponse.Asset.Title.class, NativeResponse.Asset.Image.class,
-            NativeResponse.Asset.Video.class, NativeResponse.Asset.Data.class)
-        .register(new Test2Writer(), Test2.class,
-            NativeRequest.class, NativeResponse.class);
+        .register(new Test1Writer(), Test1.class, NativeRequest.class)
+        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.class)
+        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Title.class)
+        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Image.class)
+        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Video.class)
+        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Data.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Link.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Title.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Image.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Video.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Data.class)
+        .register(new Test2Writer(), Test2.class, NativeRequest.class)
+        .register(new Test2Writer(), Test2.class, NativeResponse.class);
   }
 
   static NativeRequest.Builder newNativeRequest() {

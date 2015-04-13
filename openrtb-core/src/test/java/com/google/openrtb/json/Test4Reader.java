@@ -16,7 +16,9 @@
 
 package com.google.openrtb.json;
 
+import static com.google.openrtb.json.OpenRtbJsonUtils.endArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
+import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.TestExt;
@@ -27,15 +29,17 @@ import com.fasterxml.jackson.core.JsonParser;
 import java.io.IOException;
 
 /**
- * Sample JSON reader for a regular or repeated extension of scalar type.
+ * Sample JSON reader for a repeated extension of scalar type.
  */
-public class ScalarReader extends OpenRtbJsonExtReader<BidResponse.Builder, Message.Builder> {
+public class Test4Reader extends OpenRtbJsonExtReader<BidResponse.Builder, Message.Builder> {
 
   @Override
   protected void read(BidResponse.Builder msg, JsonParser par) throws IOException {
     switch (getCurrentName(par)) {
-      case "test3":
-        msg.setExtension(TestExt.testResponse3, par.nextIntValue(0));
+      case "test4":
+        for (startArray(par); endArray(par); par.nextToken()) {
+          msg.addExtension(TestExt.testResponse4, par.getIntValue());
+        }
         break;
     }
   }

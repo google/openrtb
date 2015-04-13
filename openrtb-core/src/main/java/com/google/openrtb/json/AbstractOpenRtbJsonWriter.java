@@ -56,9 +56,9 @@ public class AbstractOpenRtbJsonWriter {
       FieldDescriptor fd = field.getKey();
       if (fd.isExtension()) {
         if (fd.isRepeated()) {
-          openExt = writeRepeated(msg, gen, openExt, (List<Object>) field.getValue());
+          openExt = writeRepeated(msg, gen, fd.getName(), (List<Object>) field.getValue(), openExt);
         } else {
-          openExt = writeSingle(msg, gen, openExt, field.getValue());
+          openExt = writeSingle(msg, gen, fd.getName(), field.getValue(), openExt);
         }
       }
     }
@@ -69,10 +69,11 @@ public class AbstractOpenRtbJsonWriter {
   }
 
   protected <EM extends ExtendableMessage<EM>> boolean writeSingle(
-      EM msg, JsonGenerator gen, boolean openExtP, Object extValue) throws IOException {
+      EM msg, JsonGenerator gen, String fieldName, Object extValue, boolean openExtP)
+      throws IOException {
     boolean openExt = openExtP;
     OpenRtbJsonExtWriter<Object> extWriter =
-        factory.getWriter(msg.getClass(), extValue.getClass());
+        factory.getWriter(msg.getClass(), extValue.getClass(), fieldName);
     if (extWriter != null) {
       openExt = openExt(gen, openExt);
       extWriter.write(extValue, gen);
@@ -81,14 +82,15 @@ public class AbstractOpenRtbJsonWriter {
   }
 
   protected <EM extends ExtendableMessage<EM>> boolean writeRepeated(
-      EM msg, JsonGenerator gen, boolean openExtP, List<Object> extList) throws IOException {
+      EM msg, JsonGenerator gen, String fieldName, List<Object> extList, boolean openExtP)
+      throws IOException {
     boolean openExt = openExtP;
     if (!extList.isEmpty()) {
       OpenRtbJsonExtWriter<Object> extWriter =
-          factory.getWriter(msg.getClass(), extList.get(0).getClass());
-      if (extWriter.getFieldName() != null) {
+          factory.getWriter(msg.getClass(), extList.get(0).getClass(), fieldName);
+      if (extWriter != null) {
         openExt = openExt(gen, openExt);
-        extWriter.writeList(extList, gen);
+        extWriter.writeRepeated(extList, gen);
       }
     }
     return openExt;

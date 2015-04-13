@@ -26,9 +26,12 @@ import java.io.IOException;
  * Nothing different is necessary for repeated extensions; the {@link #write()} method
  * will simply be invoked multiple times, for each item in the sequence.
  */
-class ScalarWriter extends OpenRtbJsonExtWriter<Integer> {
+class Test4Writer extends OpenRtbJsonExtWriter<Integer> {
+  Test4Writer() {
+    super("test4", false);
+  }
 
   @Override protected void write(Integer ext, JsonGenerator gen) throws IOException {
-    gen.writeNumberField("test3", ext);
+    gen.writeNumber(ext);
   }
 }

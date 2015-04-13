@@ -32,10 +32,16 @@ public abstract class OpenRtbJsonExtWriter<T> {
   private final String fieldName;
   private final boolean object;
 
+  /**
+   * Use this constructor for writers of regular extensions.
+   */
   protected OpenRtbJsonExtWriter() {
     this(null, true);
   }
 
+  /**
+   * Use this constructor for writers of repeated extensions.
+   */
   protected OpenRtbJsonExtWriter(String fieldName, boolean object) {
     this.fieldName = fieldName;
     this.object = object;
@@ -45,7 +51,7 @@ public abstract class OpenRtbJsonExtWriter<T> {
     return fieldName;
   }
 
-  void writeList(List<T> list, JsonGenerator gen) throws IOException {
+  void writeRepeated(List<T> list, JsonGenerator gen) throws IOException {
     gen.writeArrayFieldStart(fieldName);
     for (T item : list) {
       if (object) {
