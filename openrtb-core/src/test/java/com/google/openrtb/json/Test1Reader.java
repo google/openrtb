@@ -26,20 +26,22 @@ import com.fasterxml.jackson.core.JsonParser;
 
 import java.io.IOException;
 
+/**
+ * Sample JSON reader for a regular extension of message type.
+ */
 class Test1Reader<EB extends ExtendableBuilder<?, EB>>
-extends OpenRtbJsonExtReaderBase<EB, Test1.Builder> {
+extends OpenRtbJsonExtReader<EB, Test1.Builder> {
+
   public Test1Reader(GeneratedExtension<?, ?> key) {
     super(key);
   }
 
-  @Override public boolean read(EB msg, Test1.Builder ext, JsonParser par)
+  @Override protected void read(EB msg, Test1.Builder ext, JsonParser par)
       throws IOException {
     switch (getCurrentName(par)) {
       case "test1":
         ext.setTest1(par.nextTextValue());
-        return true;
-      default:
-        return false;
+        break;
     }
   }
 }

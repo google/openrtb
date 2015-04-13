@@ -22,12 +22,23 @@ import com.fasterxml.jackson.core.JsonGenerator;
 
 import java.io.IOException;
 
-class Test2Writer extends OpenRtbJsonExtListWriter<Test2> {
+/**
+ * Sample JSON writer for a regular or repeated extension of message type.
+ * <p>
+ * To support repeated extensions, the super-call needs the field name and object/scalar option.
+ * The field name, the array-open and array-close tokens, and (for objects) the object-open
+ * and object-close tokens, will all be emitted by the framework, so the {@link #write()} method
+ * provided here is the same you need for a regular extension: just write all fields for one item.
+ * Suppose {@code x: ( ext: ( a: 10 ))} and {@code y: ( ext: ( b: [ ( a: 1 ), ( a: 2 ) ] ))}.
+ * where {@code x.ext.a} is a regular extension and {@code y.ext.b} is a repeated extension
+ * which value is a sequence of the same {@code x.ext.a} objects, you can share the writer.
+ */
+class Test2Writer extends OpenRtbJsonExtWriter<Test2> {
   public Test2Writer() {
-    super("test2obj");
+    super("test2obj", true);
   }
 
-  @Override public void write(Test2 ext, JsonGenerator gen) throws IOException {
+  @Override protected void write(Test2 ext, JsonGenerator gen) throws IOException {
     gen.writeStringField("test2", ext.getTest2());
   }
 }

@@ -86,9 +86,9 @@ public class AbstractOpenRtbJsonWriter {
     if (!extList.isEmpty()) {
       OpenRtbJsonExtWriter<Object> extWriter =
           factory.getWriter(msg.getClass(), extList.get(0).getClass());
-      if (extWriter instanceof OpenRtbJsonExtListWriter<?>) {
+      if (extWriter.getFieldName() != null) {
         openExt = openExt(gen, openExt);
-        ((OpenRtbJsonExtListWriter<Object>) extWriter).writeList(extList, gen);
+        extWriter.writeList(extList, gen);
       }
     }
     return openExt;

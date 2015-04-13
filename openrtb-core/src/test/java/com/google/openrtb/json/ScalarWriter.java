@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Google Inc. All Rights Reserved.
+ * Copyright 2015 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,19 @@
 
 package com.google.openrtb.json;
 
-import com.google.openrtb.Test.Test1;
-
 import com.fasterxml.jackson.core.JsonGenerator;
 
 import java.io.IOException;
 
 /**
- * Sample JSON writer for a regular or repeated extension of message type.
+ * Sample JSON writer for a regular or repeated extension of scalar type.
+ * <p>
+ * Nothing different is necessary for repeated extensions; the {@link #write()} method
+ * will simply be invoked multiple times, for each item in the sequence.
  */
-class Test1Writer extends OpenRtbJsonExtWriter<Test1> {
+class ScalarWriter extends OpenRtbJsonExtWriter<Integer> {
 
-  @Override protected void write(Test1 ext, JsonGenerator gen) throws IOException {
-    gen.writeStringField("test1", ext.getTest1());
+  @Override protected void write(Integer ext, JsonGenerator gen) throws IOException {
+    gen.writeNumberField("test3", ext);
   }
 }

@@ -19,6 +19,7 @@ package com.google.openrtb.json;
 import com.fasterxml.jackson.core.JsonGenerator;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * A serialization extension, can add children of "ext" fields.
@@ -27,7 +28,36 @@ import java.io.IOException;
  * <p>
  * Implementations of this interface have to be threadsafe.
  */
-public interface OpenRtbJsonExtWriter<T> {
+public abstract class OpenRtbJsonExtWriter<T> {
+  private final String fieldName;
+  private final boolean object;
+
+  protected OpenRtbJsonExtWriter() {
+    this(null, true);
+  }
+
+  protected OpenRtbJsonExtWriter(String fieldName, boolean object) {
+    this.fieldName = fieldName;
+    this.object = object;
+  }
+
+  protected final String getFieldName() {
+    return fieldName;
+  }
+
+  void writeList(List<T> list, JsonGenerator gen) throws IOException {
+    gen.writeArrayFieldStart(fieldName);
+    for (T item : list) {
+      if (object) {
+        gen.writeStartObject();
+      }
+      write(item, gen);
+      if (object) {
+        gen.writeEndObject();
+      }
+    }
+    gen.writeEndArray();
+  }
 
   /**
    * Serialize all properties set in an extension node.
@@ -36,5 +66,5 @@ public interface OpenRtbJsonExtWriter<T> {
    * @param gen The JSON generator
    * @throws IOException any serialization error
    */
-  void write(T value, JsonGenerator gen) throws IOException;
+  protected abstract void write(T value, JsonGenerator gen) throws IOException;
 }

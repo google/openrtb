@@ -22,7 +22,9 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
 import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
 
+import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -52,16 +54,29 @@ public abstract class AbstractOpenRtbJsonReader {
   void readExtensions(EB msg, JsonParser par) throws IOException {
     startObject(par);
     @SuppressWarnings("unchecked")
-    Collection<OpenRtbJsonExtReader<EB>> extReaders =
+    Collection<OpenRtbJsonExtReader<EB, ?>> extReaders =
         factory.getReaders((Class<EB>) msg.getClass());
+    JsonToken tokLast = par.getCurrentToken();
+    JsonLocation locLast = par.getCurrentLocation();
 
     while (true) {
       boolean extRead = false;
-      for (OpenRtbJsonExtReader<EB> extReader : extReaders) {
-        extRead |= extReader.read(msg, par);
+      for (OpenRtbJsonExtReader<EB, ?> extReader : extReaders) {
+        extReader.read(msg, par);
+        JsonToken tokNew = par.getCurrentToken();
+        JsonLocation locNew = par.getCurrentLocation();
+        boolean advanced = tokNew != tokLast || !locNew.equals(locLast);
+        extRead |= advanced;
 
         if (!endObject(par)) {
           return;
+        } else if (advanced && par.getCurrentToken() != JsonToken.FIELD_NAME) {
+          par.nextToken();
+          tokLast = par.getCurrentToken();
+          locLast = par.getCurrentLocation();
+        } else {
+          tokLast = tokNew;
+          locLast = locNew;
         }
       }
 

@@ -110,7 +110,7 @@ public class OpenRtbJsonTest {
         .register(new Test1Reader<BidRequest.Builder>(TestExt.testRequest1),
             BidRequest.Builder.class)
         .register(new OpenRtbJsonExtWriter<Test1>() {
-          @Override public void write(Test1 ext, JsonGenerator gen) throws IOException {
+          @Override protected void write(Test1 ext, JsonGenerator gen) throws IOException {
             gen.writeStringField("unknownField", "junk");
           }
         }, Test1.class, BidRequest.class),
@@ -121,7 +121,7 @@ public class OpenRtbJsonTest {
   public void testRequest_AlternateFields() throws IOException {
     testRequest(newJsonFactory()
         .register(new OpenRtbJsonExtWriter<Test1>() {
-          @Override public void write(Test1 ext, JsonGenerator gen) throws IOException {
+          @Override protected void write(Test1 ext, JsonGenerator gen) throws IOException {
             gen.writeStringField("test1", "test1");
             gen.writeStringField("test2", "test2");
             gen.writeStringField("test1", "test1");
@@ -268,7 +268,9 @@ public class OpenRtbJsonTest {
             Regulations.class,
             BidResponse.class, SeatBid.class, Bid.class)
         .register(new Test2Writer(), Test2.class,
-            BidRequest.class, BidResponse.class);
+            BidRequest.class, BidResponse.class)
+        .register(new ScalarReader(), BidResponse.Builder.class)
+        .register(new ScalarWriter(), Integer.class, BidResponse.class);
   }
 
   static BidRequest.Builder newBidRequest() {
@@ -527,6 +529,9 @@ public class OpenRtbJsonTest {
         .setNbr(NoBidReasonCode.TECHNICAL_ERROR)
         .setExtension(TestExt.testResponse1, test1)
         .addExtension(TestExt.testResponse2, test2)
-        .addExtension(TestExt.testResponse2, test2);
+        .addExtension(TestExt.testResponse2, test2)
+        .setExtension(TestExt.testResponse3, 99);
+        //.addExtension(TestExt.testResponse4, 10)
+        //.addExtension(TestExt.testResponse4, 20);
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Google Inc. All Rights Reserved.
+ * Copyright 2015 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,29 +18,24 @@ package com.google.openrtb.json;
 
 import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
 
-import com.google.openrtb.Test.Test2;
-import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
-import com.google.protobuf.GeneratedMessage.GeneratedExtension;
+import com.google.openrtb.OpenRtb.BidResponse;
+import com.google.openrtb.TestExt;
+import com.google.protobuf.Message;
 
 import com.fasterxml.jackson.core.JsonParser;
 
 import java.io.IOException;
 
 /**
- * Sample JSON reader for a regular extension of message type.
+ * Sample JSON reader for a regular or repeated extension of scalar type.
  */
-class Test2Reader<EB extends ExtendableBuilder<?, EB>>
-extends OpenRtbJsonExtReader<EB, Test2.Builder> {
+public class ScalarReader extends OpenRtbJsonExtReader<BidResponse.Builder, Message.Builder> {
 
-  public Test2Reader(GeneratedExtension<?, ?> key) {
-    super(key);
-  }
-
-  @Override protected void read(EB msg, Test2.Builder ext, JsonParser par)
-      throws IOException {
+  @Override
+  protected void read(BidResponse.Builder msg, JsonParser par) throws IOException {
     switch (getCurrentName(par)) {
-      case "test2":
-        ext.setTest2(par.nextTextValue());
+      case "test3":
+        msg.setExtension(TestExt.testResponse3, par.nextIntValue(0));
         break;
     }
   }
