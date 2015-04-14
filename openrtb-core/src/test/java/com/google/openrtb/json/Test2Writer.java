@@ -34,6 +34,7 @@ import java.io.IOException;
  * which value is a sequence of the same {@code x.ext.a} objects, you can share the writer.
  */
 class Test2Writer extends OpenRtbJsonExtWriter<Test2> {
+
   public Test2Writer() {
     super("test2obj", true);
   }

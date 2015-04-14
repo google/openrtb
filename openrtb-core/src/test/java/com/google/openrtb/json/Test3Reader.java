@@ -28,6 +28,9 @@ import java.io.IOException;
 
 /**
  * Sample JSON reader for a regular extension of scalar type.
+ *
+ * <p>This reader can only be used in a single message, in this case the {@code BidRequest}.
+ * See {@link Test1Reader} how to keep the reader open to any message.
  */
 public class Test3Reader extends OpenRtbJsonExtReader<BidResponse.Builder, Message.Builder> {
 

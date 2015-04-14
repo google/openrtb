@@ -62,7 +62,7 @@ public abstract class OpenRtbJsonExtReader<
   }
 
   /**
-   * Desserializes extension properties supported by this reader, if any.
+   * Override this method for extensions of scalar type.
    *
    * @param msg Builder for the container message, where an extension message will be set
    * @param par JSON parser, positioned at the property to be desserialized
@@ -79,6 +79,8 @@ public abstract class OpenRtbJsonExtReader<
   }
 
   /**
+   * Override this method for extensions of message type.
+   * <p>
    * Makes easy to implement an {@link OpenRtbJsonExtReader} that supports very flexible
    * mapping from JSON fields into the model extension messages.
    * <p>
@@ -105,6 +107,7 @@ public abstract class OpenRtbJsonExtReader<
    * {@code false} if the property was ignored, leaving the parser in the same position
    */
   protected void read(EB msg, XB ext, JsonParser par) throws IOException {
+    throw new AbstractMethodError();
   }
 
   @SuppressWarnings("unchecked")
@@ -150,5 +153,11 @@ public abstract class OpenRtbJsonExtReader<
         msg.addExtension(key, ext.build());
       }
     }
+  }
+
+  @Override
+  public String toString() {
+    return getClass().getName()
+        + (key == null ? " (scalar " : " (" + key.getDescriptor().getFullName() + ")");
   }
 }

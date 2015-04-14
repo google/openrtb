@@ -67,6 +67,7 @@ import com.google.openrtb.OpenRtbNative.NativeResponse;
 import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
 import com.google.openrtb.TestExt;
+import com.google.openrtb.TestUtil;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -91,6 +92,8 @@ public class OpenRtbJsonTest {
     assertNotNull(OpenRtbJsonFactory.create().getJsonFactory());
     JsonFactory jf = new JsonFactory();
     assertSame(jf, OpenRtbJsonFactory.create().setJsonFactory(jf).getJsonFactory());
+    TestUtil.testCommonMethods(new Test2Reader<BidRequest.Builder>(TestExt.testRequest2));
+    TestUtil.testCommonMethods(new Test4Writer());
   }
 
   @Test

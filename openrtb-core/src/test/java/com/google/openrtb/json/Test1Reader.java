@@ -29,6 +29,10 @@ import java.io.IOException;
 /**
  * Sample JSON reader for a regular extension of message type.
  * (Exactly the same code as for repeated extension of message type / {@link Test2Reader}.)
+ *
+ * @param <EB> Type of message builder being constructed.  Keeping this generic parameter
+ * open here allows this extension to be used inside any message; if you don't need that,
+ * you can bind this to a specific message builder type, see {@link Test3Reader}.
  */
 class Test1Reader<EB extends ExtendableBuilder<?, EB>>
 extends OpenRtbJsonExtReader<EB, Test1.Builder> {

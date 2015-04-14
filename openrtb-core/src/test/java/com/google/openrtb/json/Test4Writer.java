@@ -27,6 +27,7 @@ import java.io.IOException;
  * will simply be invoked multiple times, for each item in the sequence.
  */
 class Test4Writer extends OpenRtbJsonExtWriter<Integer> {
+
   Test4Writer() {
     super("test4", false);
   }

@@ -97,7 +97,7 @@ public class OpenRtbJsonFactory {
   }
 
   /**
-   * Register a desserializer extension.
+   * Register an extension reader.
    *
    * @param extReader code to desserialize some extension properties
    * @param msgKlass class of container message's builder, e.g. {@code MyImpression.Builder.class}
@@ -109,14 +109,14 @@ public class OpenRtbJsonFactory {
   }
 
   /**
-   * Register a serializer extension. Each of these is registered for a specific
-   * "path" inside the OpenRTB model; for example, "BidRequest.Geo" registers
-   * extensions for the {@code Geo} object inside the OpenRTB bid request.
+   * Register an extension writer, bound to a specific field name. This writer will be
+   * used in preference to a non-field-specific writer that may exist for the same class.
    *
    * @param extWriter code to serialize some {@code extKlass}'s properties
    * @param extKlass class of container message, e.g. {@code MyImpression.class}
-   * @param msgKlass Path in the OpenRTB model
+   * @param fieldName name of the field containing the extension
    * @param <T> Type of value for the extension
+   * @see #register(OpenRtbJsonExtWriter, Class, Class)
    */
   public final <T> OpenRtbJsonFactory register(OpenRtbJsonExtWriter<T> extWriter,
     Class<T> extKlass, Class<? extends Message> msgKlass, String fieldName) {
@@ -132,6 +132,15 @@ public class OpenRtbJsonFactory {
     return this;
   }
 
+  /**
+   * Register an extension writer, not bound to any a field name (so this serializer
+   * can be used for any extension of the provided class).
+   *
+   * @param extWriter code to serialize some {@code extKlass}'s properties
+   * @param extKlass class of container message, e.g. {@code MyImpression.class}
+   * @param <T> Type of value for the extension
+   * @see #register(OpenRtbJsonExtWriter, Class, Class, String)
+   */
   public final <T> OpenRtbJsonFactory register(OpenRtbJsonExtWriter<T> extWriter,
       Class<T> extKlass, Class<? extends Message> msgKlass) {
     return register(extWriter, extKlass, msgKlass, FIELDNAME_ALL);
@@ -208,9 +217,5 @@ public class OpenRtbJsonFactory {
       jsonFactory = new JsonFactory();
     }
     return jsonFactory;
-  }
-
-  private static String fieldKey(String fieldName) {
-    return fieldName == null ? FIELDNAME_ALL : fieldName;
   }
 }
