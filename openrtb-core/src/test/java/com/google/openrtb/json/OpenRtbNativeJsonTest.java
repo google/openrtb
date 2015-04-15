@@ -20,10 +20,6 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
 import com.google.openrtb.OpenRtbNative.NativeRequest;
-import com.google.openrtb.OpenRtbNative.NativeRequest.AdunitID;
-import com.google.openrtb.OpenRtbNative.NativeRequest.Asset.Data.DataAssetType;
-import com.google.openrtb.OpenRtbNative.NativeRequest.Asset.Image.ImageAssetType;
-import com.google.openrtb.OpenRtbNative.NativeRequest.LayoutID;
 import com.google.openrtb.OpenRtbNative.NativeResponse;
 import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
@@ -64,7 +60,7 @@ public class OpenRtbNativeJsonTest {
                 .setMinduration(100)
                 .setMaxduration(200))
             .setData(NativeRequest.Asset.Data.newBuilder()
-                .setType(DataAssetType.SPONSORED)))
+                .setType(NativeRequest.Asset.Data.DataAssetType.SPONSORED)))
         .addAssets(NativeRequest.Asset.newBuilder()
             .setId(1))
         .build());
@@ -119,40 +115,60 @@ public class OpenRtbNativeJsonTest {
     return OpenRtbJsonFactory.create()
         .setJsonFactory(new JsonFactory())
         // NativeRequest Readers
-        .register(new Test1Reader<NativeRequest.Builder>(TestNExt.testNRequest1), "NativeRequest")
-        .register(new Test2Reader<NativeRequest.Builder>(TestNExt.testNRequest2), "NativeRequest")
-        .register(new Test1Reader<NativeRequest.Asset.Builder>(TestNExt.testNReqAsset), "NativeRequest.asset")
-        .register(new Test1Reader<NativeRequest.Asset.Title.Builder>(TestNExt.testNReqTitle), "NativeRequest.asset.title")
-        .register(new Test1Reader<NativeRequest.Asset.Image.Builder>(TestNExt.testNReqImage), "NativeRequest.asset.img")
-        .register(new Test1Reader<NativeRequest.Asset.Video.Builder>(TestNExt.testNReqVideo), "NativeRequest.asset.video")
-        .register(new Test1Reader<NativeRequest.Asset.Data.Builder>(TestNExt.testNReqData), "NativeRequest.asset.data")
+        .register(new Test1Reader<NativeRequest.Builder>(TestNExt.testNRequest1),
+            NativeRequest.Builder.class)
+        .register(new Test2Reader<NativeRequest.Builder>(TestNExt.testNRequest2),
+            NativeRequest.Builder.class)
+        .register(new Test1Reader<NativeRequest.Asset.Builder>(TestNExt.testNReqAsset),
+            NativeRequest.Asset.Builder.class)
+        .register(new Test1Reader<NativeRequest.Asset.Title.Builder>(TestNExt.testNReqTitle),
+            NativeRequest.Asset.Title.Builder.class)
+        .register(new Test1Reader<NativeRequest.Asset.Image.Builder>(TestNExt.testNReqImage),
+            NativeRequest.Asset.Image.Builder.class)
+        .register(new Test1Reader<NativeRequest.Asset.Video.Builder>(TestNExt.testNReqVideo),
+            NativeRequest.Asset.Video.Builder.class)
+        .register(new Test1Reader<NativeRequest.Asset.Data.Builder>(TestNExt.testNReqData),
+            NativeRequest.Asset.Data.Builder.class)
         // NativeResponse Readers
-        .register(new Test1Reader<NativeResponse.Builder>(TestNExt.testNResponse1), "NativeResponse")
-        .register(new Test2Reader<NativeResponse.Builder>(TestNExt.testNResponse2), "NativeResponse")
-        .register(new Test1Reader<NativeResponse.Link.Builder>(TestNExt.testNRespLink), "NativeResponse.link")
-        .register(new Test1Reader<NativeResponse.Asset.Builder>(TestNExt.testNRespAsset), "NativeResponse.asset")
-        .register(new Test1Reader<NativeResponse.Link.Builder>(TestNExt.testNRespLink), "NativeResponse.asset.link")
-        .register(new Test1Reader<NativeResponse.Asset.Title.Builder>(TestNExt.testNRespTitle), "NativeResponse.asset.title")
-        .register(new Test1Reader<NativeResponse.Asset.Image.Builder>(TestNExt.testNRespImage), "NativeResponse.asset.img")
-        .register(new Test1Reader<NativeResponse.Asset.Video.Builder>(TestNExt.testNRespVideo), "NativeResponse.asset.video")
-        .register(new Test1Reader<NativeResponse.Asset.Data.Builder>(TestNExt.testNRespData), "NativeResponse.asset.data")
+        .register(new Test1Reader<NativeResponse.Builder>(TestNExt.testNResponse1),
+            NativeResponse.Builder.class)
+        .register(new Test2Reader<NativeResponse.Builder>(TestNExt.testNResponse2),
+            NativeResponse.Builder.class)
+        .register(new Test1Reader<NativeResponse.Link.Builder>(TestNExt.testNRespLink),
+            NativeResponse.Link.Builder.class)
+        .register(new Test1Reader<NativeResponse.Asset.Builder>(TestNExt.testNRespAsset),
+            NativeResponse.Asset.Builder.class)
+        .register(new Test1Reader<NativeResponse.Asset.Title.Builder>(TestNExt.testNRespTitle),
+            NativeResponse.Asset.Title.Builder.class)
+        .register(new Test1Reader<NativeResponse.Asset.Image.Builder>(TestNExt.testNRespImage),
+            NativeResponse.Asset.Image.Builder.class)
+        .register(new Test1Reader<NativeResponse.Asset.Video.Builder>(TestNExt.testNRespVideo),
+            NativeResponse.Asset.Video.Builder.class)
+        .register(new Test1Reader<NativeResponse.Asset.Data.Builder>(TestNExt.testNRespData),
+            NativeResponse.Asset.Data.Builder.class)
         // Writers
-        .register(new Test1Writer(), Test1.class,
-            "NativeRequest", "NativeRequest.asset",
-            "NativeRequest.asset.title", "NativeRequest.asset.img",
-            "NativeRequest.asset.video", "NativeRequest.asset.data",
-            "NativeResponse", "NativeResponse.link",
-            "NativeResponse.asset", "NativeResponse.asset.link",
-            "NativeResponse.asset.title", "NativeResponse.asset.img",
-            "NativeResponse.asset.video", "NativeResponse.asset.data")
-        .register(new Test2Writer(), Test2.class, "NativeRequest", "NativeResponse");
+        .register(new Test1Writer(), Test1.class, NativeRequest.class)
+        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.class)
+        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Title.class)
+        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Image.class)
+        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Video.class)
+        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Data.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Link.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Title.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Image.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Video.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Data.class)
+        .register(new Test2Writer(), Test2.class, NativeRequest.class)
+        .register(new Test2Writer(), Test2.class, NativeResponse.class);
   }
 
   static NativeRequest.Builder newNativeRequest() {
     return NativeRequest.newBuilder()
         .setVer("1")
-        .setLayout(LayoutID.APP_WALL)
-        .setAdunit(AdunitID.PROMOTED_LISTING)
+        .setLayout(NativeRequest.LayoutID.APP_WALL)
+        .setAdunit(NativeRequest.AdunitID.PROMOTED_LISTING)
         .setPlcmtcnt(4)
         .setSeq(5)
         .addAssets(NativeRequest.Asset.newBuilder()
@@ -162,7 +178,7 @@ public class OpenRtbNativeJsonTest {
                 .setLen(100)
                 .setExtension(TestNExt.testNReqTitle, test1))
             .setImg(NativeRequest.Asset.Image.newBuilder()
-                .setType(ImageAssetType.ICON)
+                .setType(NativeRequest.Asset.Image.ImageAssetType.ICON)
                 .setW(2)
                 .setWmin(2)
                 .setH(3)
@@ -176,7 +192,7 @@ public class OpenRtbNativeJsonTest {
                 .addAllProtocols(asList(1, 2, 3))
                 .setExtension(TestNExt.testNReqVideo, test1))
             .setData(NativeRequest.Asset.Data.newBuilder()
-                .setType(DataAssetType.SPONSORED)
+                .setType(NativeRequest.Asset.Data.DataAssetType.SPONSORED)
                 .setLen(10)
                 .setExtension(TestNExt.testNReqData, test1))
             .setExtension(TestNExt.testNReqAsset, test1))

@@ -67,6 +67,7 @@ import com.google.openrtb.OpenRtbNative.NativeResponse;
 import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
 import com.google.openrtb.TestExt;
+import com.google.openrtb.TestUtil;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -91,6 +92,8 @@ public class OpenRtbJsonTest {
     assertNotNull(OpenRtbJsonFactory.create().getJsonFactory());
     JsonFactory jf = new JsonFactory();
     assertSame(jf, OpenRtbJsonFactory.create().setJsonFactory(jf).getJsonFactory());
+    TestUtil.testCommonMethods(new Test2Reader<BidRequest.Builder>(TestExt.testRequest2));
+    TestUtil.testCommonMethods(new Test4Writer());
   }
 
   @Test
@@ -107,12 +110,13 @@ public class OpenRtbJsonTest {
   public void testRequest_unknownField() throws IOException {
     testRequest(OpenRtbJsonFactory.create()
         .setJsonFactory(new JsonFactory())
-        .register(new Test1Reader<BidRequest.Builder>(TestExt.testRequest1), "")
+        .register(new Test1Reader<BidRequest.Builder>(TestExt.testRequest1),
+            BidRequest.Builder.class)
         .register(new OpenRtbJsonExtWriter<Test1>() {
-          @Override public void write(Test1 ext, JsonGenerator gen) throws IOException {
+          @Override protected void write(Test1 ext, JsonGenerator gen) throws IOException {
             gen.writeStringField("unknownField", "junk");
           }
-        }, Test1.class, "BidRequest"),
+        }, Test1.class, BidRequest.class),
         newBidRequest().build());
   }
 
@@ -120,13 +124,13 @@ public class OpenRtbJsonTest {
   public void testRequest_AlternateFields() throws IOException {
     testRequest(newJsonFactory()
         .register(new OpenRtbJsonExtWriter<Test1>() {
-          @Override public void write(Test1 ext, JsonGenerator gen) throws IOException {
+          @Override protected void write(Test1 ext, JsonGenerator gen) throws IOException {
             gen.writeStringField("test1", "test1");
             gen.writeStringField("test2", "test2");
             gen.writeStringField("test1", "test1");
             gen.writeStringField("test2", "test2");
           }
-        }, Test1.class, ""),
+        }, Test1.class, BidRequest.class),
         newBidRequest().build());
   }
 
@@ -235,46 +239,64 @@ public class OpenRtbJsonTest {
     return OpenRtbJsonFactory.create()
         .setJsonFactory(new JsonFactory())
         // BidRequest Readers
-        .register(new Test1Reader<BidRequest.Builder>(TestExt.testRequest1), "BidRequest")
-        .register(new Test2Reader<BidRequest.Builder>(TestExt.testRequest2), "BidRequest")
-        .register(new Test1Reader<App.Builder>(TestExt.testApp), "BidRequest.app")
-        .register(new Test1Reader<Content.Builder>(TestExt.testContent), "BidRequest.app.content")
-        .register(new Test1Reader<Producer.Builder>(TestExt.testProducer),
-            "BidRequest.app.content.producer")
+        .register(new Test1Reader<BidRequest.Builder>(TestExt.testRequest1),
+            BidRequest.Builder.class)
+        .register(new Test2Reader<BidRequest.Builder>(TestExt.testRequest2),
+            BidRequest.Builder.class)
+        .register(new Test1Reader<App.Builder>(TestExt.testApp), App.Builder.class)
+        .register(new Test1Reader<Content.Builder>(TestExt.testContent), Content.Builder.class)
+        .register(new Test1Reader<Producer.Builder>(TestExt.testProducer), Producer.Builder.class)
         .register(new Test1Reader<Publisher.Builder>(TestExt.testPublisher),
-            "BidRequest.app.publisher")
-        .register(new Test1Reader<Device.Builder>(TestExt.testDevice), "BidRequest.device")
-        .register(new Test1Reader<Geo.Builder>(TestExt.testGeo),
-            "BidRequest.device.geo", "BidRequest.user.geo")
-        .register(new Test1Reader<Impression.Builder>(TestExt.testImp), "BidRequest.imp")
-        .register(new Test1Reader<Banner.Builder>(TestExt.testBanner), "BidRequest.imp.banner")
-        .register(new Test1Reader<Native.Builder>(TestExt.testNative), "BidRequest.imp.native")
-        .register(new Test1Reader<PMP.Builder>(TestExt.testPmp), "BidRequest.imp.pmp")
-        .register(new Test1Reader<Deal.Builder>(TestExt.testDeal), "BidRequest.imp.pmp.deals")
-        .register(new Test1Reader<Video.Builder>(TestExt.testVideo), "BidRequest.imp.video")
-        .register(new Test1Reader<Regulations.Builder>(TestExt.testRegs), "BidRequest.regs")
-        .register(new Test1Reader<Site.Builder>(TestExt.testSite), "BidRequest.site")
-        .register(new Test1Reader<User.Builder>(TestExt.testUser), "BidRequest.user")
-        .register(new Test1Reader<Data.Builder>(TestExt.testData), "BidRequest.user.data")
-        .register(new Test1Reader<Segment.Builder>(TestExt.testSegment),
-            "BidRequest.user.data.segment")
+            Publisher.Builder.class)
+        .register(new Test1Reader<Device.Builder>(TestExt.testDevice), Device.Builder.class)
+        .register(new Test1Reader<Geo.Builder>(TestExt.testGeo), Geo.Builder.class)
+        .register(new Test1Reader<Impression.Builder>(TestExt.testImp), Impression.Builder.class)
+        .register(new Test1Reader<Banner.Builder>(TestExt.testBanner), Banner.Builder.class)
+        .register(new Test1Reader<Native.Builder>(TestExt.testNative), Native.Builder.class)
+        .register(new Test1Reader<PMP.Builder>(TestExt.testPmp), PMP.Builder.class)
+        .register(new Test1Reader<Deal.Builder>(TestExt.testDeal), Deal.Builder.class)
+        .register(new Test1Reader<Video.Builder>(TestExt.testVideo), Video.Builder.class)
+        .register(new Test1Reader<Regulations.Builder>(TestExt.testRegs), Regulations.Builder.class)
+        .register(new Test1Reader<Site.Builder>(TestExt.testSite), Site.Builder.class)
+        .register(new Test1Reader<User.Builder>(TestExt.testUser), User.Builder.class)
+        .register(new Test1Reader<Data.Builder>(TestExt.testData), Data.Builder.class)
+        .register(new Test1Reader<Segment.Builder>(TestExt.testSegment), Segment.Builder.class)
         // BidResponse Readers
-        .register(new Test1Reader<BidResponse.Builder>(TestExt.testResponse1), "BidResponse")
-        .register(new Test2Reader<BidResponse.Builder>(TestExt.testResponse2), "BidResponse")
-        .register(new Test1Reader<SeatBid.Builder>(TestExt.testSeat), "BidResponse.seatbid")
-        .register(new Test1Reader<Bid.Builder>(TestExt.testBid), "BidResponse.seatbid.bid")
-        // Writers
-        .register(new Test1Writer(), Test1.class,
-            "BidRequest", "BidRequest.app", "BidRequest.app.publisher",
-            "BidRequest.app.content", "BidRequest.app.content.producer",
-            "BidRequest.device", "BidRequest.device.geo",
-            "BidRequest.user", "BidRequest.user.data",
-            "BidRequest.user.data.segment", "BidRequest.user.geo",
-            "BidRequest.imp", "BidRequest.imp.banner", "BidRequest.imp.video",
-            "BidRequest.imp.native", "BidRequest.imp.pmp", "BidRequest.imp.pmp.deals",
-            "BidRequest.regs", "BidRequest.site",
-            "BidResponse", "BidResponse.seatbid", "BidResponse.seatbid.bid")
-        .register(new Test2Writer(), Test2.class, "BidRequest", "BidResponse");
+        .register(new Test1Reader<BidResponse.Builder>(TestExt.testResponse1),
+            BidResponse.Builder.class)
+        .register(new Test2Reader<BidResponse.Builder>(TestExt.testResponse2),
+            BidResponse.Builder.class)
+        .register(new Test3Reader(), BidResponse.Builder.class)
+        .register(new Test4Reader(), BidResponse.Builder.class)
+        .register(new Test1Reader<SeatBid.Builder>(TestExt.testSeat), SeatBid.Builder.class)
+        .register(new Test1Reader<Bid.Builder>(TestExt.testBid), Bid.Builder.class)
+        // BidRequest Writers
+        .register(new Test1Writer(), Test1.class, BidRequest.class)
+        .register(new Test2Writer(), Test2.class, BidRequest.class)
+        .register(new Test1Writer(), Test1.class, App.class)
+        .register(new Test1Writer(), Test1.class, Device.class)
+        .register(new Test1Writer(), Test1.class, Site.class)
+        .register(new Test1Writer(), Test1.class, User.class)
+        .register(new Test1Writer(), Test1.class, Geo.class)
+        .register(new Test1Writer(), Test1.class, Data.class)
+        .register(new Test1Writer(), Test1.class, Segment.class)
+        .register(new Test1Writer(), Test1.class, Publisher.class)
+        .register(new Test1Writer(), Test1.class, Content.class)
+        .register(new Test1Writer(), Test1.class, Producer.class)
+        .register(new Test1Writer(), Test1.class, Impression.class)
+        .register(new Test1Writer(), Test1.class, Banner.class)
+        .register(new Test1Writer(), Test1.class, Video.class)
+        .register(new Test1Writer(), Test1.class, Native.class)
+        .register(new Test1Writer(), Test1.class, PMP.class)
+        .register(new Test1Writer(), Test1.class, Deal.class)
+        .register(new Test1Writer(), Test1.class, Regulations.class)
+        .register(new Test1Writer(), Test1.class, SeatBid.class)
+        .register(new Test1Writer(), Test1.class, Bid.class)
+        // BidResponse Writers
+        .register(new Test1Writer(), Test1.class, BidResponse.class, "testResponse1")
+        .register(new Test2Writer(), Test2.class, BidResponse.class, "testResponse2")
+        .register(new Test3Writer(), Integer.class, BidResponse.class, "testResponse3")
+        .register(new Test4Writer(), Integer.class, BidResponse.class, "testResponse4");
   }
 
   static BidRequest.Builder newBidRequest() {
@@ -532,6 +554,10 @@ public class OpenRtbJsonTest {
         .setCustomdata("mydata")
         .setNbr(NoBidReasonCode.TECHNICAL_ERROR)
         .setExtension(TestExt.testResponse1, test1)
-        .setExtension(TestExt.testResponse2, test2);
+        .addExtension(TestExt.testResponse2, test2)
+        .addExtension(TestExt.testResponse2, test2)
+        .setExtension(TestExt.testResponse3, 99)
+        .addExtension(TestExt.testResponse4, 10)
+        .addExtension(TestExt.testResponse4, 20);
   }
 }

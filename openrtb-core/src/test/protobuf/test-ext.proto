@@ -79,7 +79,9 @@ extend com.google.openrtb.BidRequest.User {
 
 extend com.google.openrtb.BidResponse {
   optional Test1 testResponse1 = 110;
-  optional Test2 testResponse2 = 111;
+  repeated Test2 testResponse2 = 111;
+  optional int32 testResponse3 = 112;
+  repeated int32 testResponse4 = 113;
 }
 extend com.google.openrtb.BidResponse.SeatBid {
   optional Test1 testSeat = 110;
