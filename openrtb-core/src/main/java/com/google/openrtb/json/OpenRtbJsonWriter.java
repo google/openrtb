@@ -239,6 +239,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeEndObject();
   }
 
+  @SuppressWarnings("deprecation")
   public void writeVideo(Video video, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     writeStrings("mimes", video.getMimesList(), gen);
@@ -248,8 +249,8 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     if (checkRequired(video.hasMaxduration())) {
       gen.writeNumberField("maxduration", video.getMaxduration());
     }
-    if (checkRequired(video.hasDeprecatedProtocol())) {
-      gen.writeNumberField("protocol", video.getDeprecatedProtocol().getNumber());
+    if (checkRequired(video.hasProtocol())) {
+      gen.writeNumberField("protocol", video.getProtocol().getNumber());
     }
     writeEnums("protocols", video.getProtocolsList(), gen);
     if (video.hasW()) {

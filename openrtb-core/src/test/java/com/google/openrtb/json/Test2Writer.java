@@ -27,7 +27,7 @@ import java.io.IOException;
  * <p>
  * To support repeated extensions, the super-call needs the field name and object/scalar option.
  * The field name, the array-open and array-close tokens, and (for objects) the object-open
- * and object-close tokens, will all be emitted by the framework, so the {@link #write()} method
+ * and object-close tokens, will all be emitted by the framework, so the {@link #write} method
  * provided here is the same you need for a regular extension: just write all fields for one item.
  * Suppose {@code x: ( ext: ( a: 10 ))} and {@code y: ( ext: ( b: [ ( a: 1 ), ( a: 2 ) ] ))}.
  * where {@code x.ext.a} is a regular extension and {@code y.ext.b} is a repeated extension

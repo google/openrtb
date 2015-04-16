@@ -23,7 +23,7 @@ import java.io.IOException;
 /**
  * Sample JSON writer for a regular or repeated extension of scalar type.
  * <p>
- * Nothing different is necessary for repeated extensions; the {@link #write()} method
+ * Nothing different is necessary for repeated extensions; the {@link #write} method
  * will simply be invoked multiple times, for each item in the sequence.
  */
 class Test3Writer extends OpenRtbJsonExtWriter<Integer> {

@@ -299,6 +299,7 @@ public class OpenRtbJsonTest {
         .register(new Test4Writer(), Integer.class, BidResponse.class, "testResponse4");
   }
 
+  @SuppressWarnings("deprecation")
   static BidRequest.Builder newBidRequest() {
     return BidRequest.newBuilder()
         .setId("3031323334353637")
@@ -345,7 +346,7 @@ public class OpenRtbJsonTest {
                 .setLinearity(Linearity.LINEAR)
                 .setMinduration(15)
                 .setMaxduration(60)
-                .setDeprecatedProtocol(Protocol.VAST_3_0)
+                .setProtocol(Protocol.VAST_3_0)
                 .addProtocols(Protocol.VAST_2_0)
                 .setW(200)
                 .setH(50)

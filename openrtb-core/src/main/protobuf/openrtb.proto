@@ -456,7 +456,7 @@ enum CreativeAttribute {
 }
 
 /*
- * OpenRTB 3.3.1: The top-level bid request object.
+ * OpenRTB 3.2.1: The top-level bid request object.
  */
 message BidRequest {
   /*
@@ -469,19 +469,23 @@ message BidRequest {
    */
   repeated Impression imp = 2;
   /*
-   * Information pertaining to a website.
+   * Details via a Site object (Section 3.2.6) about the publisher’s website.
+   * Only applicable and recommended for websites.
    */
   optional Site site = 3;
   /*
-   * Information pertaining to a mobile application.
+   * Details via an App object (Section 3.2.7) about the publisher’s app
+   * (i.e., non-browser applications). Only applicable and recommended for apps.
    */
   optional App app = 4;
   /*
-   * Information pertaining to the device.
+   * Details via a Device object (Section 3.2.11) about the user’s
+   * device to which the impression will be delivered.
    */
   optional Device device = 5;
   /*
-   * Information known or derived about the human user of the device.
+   * Details via a User object (Section 3.2.13) about the human
+   * user of the device; the advertising audience.
    */
   optional User user = 6;
   /**
@@ -496,15 +500,14 @@ message BidRequest {
    */
   optional int32 at = 7 [default = 2];
   /*
-   * Maximum amount of time in milliseconds to submit a bid (e.g., 120 means the bidder
-   * has 120ms to submit a bid before the auction is complete). If this value never changes
-   * across an exchange, then the exchange can supply this information offline.
+   * Maximum time in milliseconds to submit a bid to avoid timeout.
+   * This value is commonly communicated offline.
    */
   optional int32 tmax = 8;
   /*
-   * Array of buyer seats allowed to bid on this auction. Seats are an optional feature of exchange.
-   * For example, [“4”,”34”,”82”,”A45”] indicates that only advertisers using these exchange seats
-   * are allowed to bid on the impressions in this auction.
+   * Whitelist of buyer seats allowed to bid on this impression.
+   * Seat IDs must be communicated between bidders and the exchange a priori.
+   * Omission implies no seat restrictions.
    */
   repeated string wseat = 9;
   /*
@@ -517,23 +520,21 @@ message BidRequest {
    */
   optional bool allimps = 10;
   /*
-   * Array of allowed currencies for bids on this bid request using ISO-4217 alphabetic codes.
-   * If only one currency is used by the exchange, this parameter is not required.
+   * Array of allowed currencies for bids on this bid request using ISO-4217 alpha codes.
+   * Recommended only if the exchange accepts multiple currencies.
    */
   repeated string cur = 11;
   /*
-   * Blocked Advertiser Categories. Note that there is no existing categorization / taxonomy of
-   * advertiser industries. However, as a substitute exchanges may decide to use IAB categories
-   * as an approximation.
+   * Blocked advertiser categories using the IAB content categories. Refer to List 5.1.
    */
   repeated string bcat = 12;
   /*
-   * Array of strings of blocked top-level domains of advertisers.
-   * For example, {“company1.com”, “company2.com”}.
+   * Block list of advertisers by their domains (e.g., “ford.com”).
    */
   repeated string badv = 13;
   /*
-   * Container for any legal, governmental or industry regulations in force for the request.
+   * A Regs object (Section 3.2.16) that specifies any industry, legal,
+   * or governmental regulations in force for this request.
    */
   optional Regulations regs = 14;
   /**
@@ -542,12 +543,15 @@ message BidRequest {
   extensions 100 to 199;
 
   /*
-   * OpenRTB 3.3.2: describes the ad position or impression being auctioned.
-   * A single bid request can include multiple “imp” objects, a use case for which might be an
-   * exchange that supports selling all ad positions on a given page as a bundle.
-   * Each “imp” object has a required ID so that bids can reference them individually.
-   * An exchange can also conduct private auctions by restricting involvement to specific
-   * subsets of seats within bidders.
+   * OpenRTB 3.2.2: This object describes an ad placement or impression being auctioned.
+   * A single bid request can include multiple Imp objects, a use case for which might be
+   * an exchange that supports selling all ad positions on a given page.
+   * Each Imp object has a required ID so that bids can reference them individually.
+   *
+   * The presence of Banner (Section 3.2.3), Video (Section 3.2.4), and/or Native (Section 3.2.5)
+   * objects subordinate to the Imp object indicates the type of impression being offered.
+   * The publisher can choose one such type which is the typical case or mix them at their
+   * discretion. However, any given bid for the impression must conform to one of the offered types.
    */
   message Impression {
     /*
@@ -556,29 +560,34 @@ message BidRequest {
      */
     required string id = 1;
     /*
-     * A Banner object; required if this impression is offered as a banner ad opportunity.
+     * A Banner object (Section 3.2.3); required if this impression is
+     * offered as a banner ad opportunity.
      */
     optional Banner banner = 2;
     /*
-     * A Video object; required if this impression is offered as a video ad opportunity.
+     * A Video object (Section 3.2.4); required if this impression is
+     * offered as a video ad opportunity.
      */
     optional Video video = 3;
     /**
-     * A Native object; required if this impression is offered as a native ad opportunity.
+     * A Native object (Section 3.2.5); required if this impression is
+     * offered as a native ad opportunity.
      */
     optional Native native = 13;
     /*
-     * Name of ad mediation partner, SDK technology, or native player responsible for rendering
-     * ad (typically video or mobile). Used by some ad servers to customize ad code by partner.
+     * Name of ad mediation partner, SDK technology, or player responsible for rendering ad
+     * (typically video or mobile). Used by some ad servers to customize ad code by partner.
+     * Recommended for video and/or apps.
      */
     optional string displaymanager = 4;
     /*
      * Version of ad mediation partner, SDK technology, or native player responsible for rendering
      * ad (typically video or mobile). Used by some ad servers to customize ad code by partner.
+     * Recommended for video and/or apps.
      */
     optional string displaymanagerver = 5;
     /*
-     * YES if the ad is interstitial or full screen; else NO.
+     * 1 = the ad is interstitial or full screen, 0 = not interstitial.
      */
     optional bool instl = 6;
     /*
@@ -587,14 +596,12 @@ message BidRequest {
      */
     optional string tagid = 7;
     /*
-     * Bid floor for this impression (in CPM of bidfloorcur).
+     * Minimum bid for this impression expressed in CPM.
      */
     optional double bidfloor = 8 [default = 0];
     /*
-     * If bid floor is specified and multiple currencies supported per bid request,
-     * then currency should be specified here using ISO-4217 alphabetic codes.
-     * Note, this may be different from bid currency returned by bidder,
-     * if this is allowed on an exchange.
+     * Currency specified using ISO-4217 alpha codes. This may be different from bid currency
+     * returned by bidder if this is allowed by the exchange.
      */
     optional string bidfloorcur = 9 [default = "USD"];
     /**
@@ -605,11 +612,12 @@ message BidRequest {
      */
     optional bool secure = 12;
     /*
-     * Array of names for supported iframe busters. Exchange specific.
+     * Array of exchange-specific names of supported iframe busters.
      */
     repeated string iframebuster = 10;
     /*
-     * Contains any Deals eligible for this Impression.
+     * A Pmp object (Section 3.2.17) containing any private marketplace deals
+     * in effect for this impression.
      */
     optional PMP pmp = 11;
     /**
@@ -643,60 +651,73 @@ message BidRequest {
     }
 
     /*
-     * OpenRTB 3.3.3: A banner object typically describes an ad impressions opportunity for banner,
-     * rich media or in-banner video inventory.
+     * OpenRTB 3.2.3: This object represents the most general type of impression.
+     * Although the term “banner” may have very specific meaning in other contexts,
+     * here it can be many things including a simple static image, an expandable ad unit,
+     * or even in-banner video (refer to the Video object in Section 3.2.4 for the more
+     * generalized and full featured video ad units). An array of Banner objects can also
+     * appear within the Video to describe optional companion ads defined in the VAST specification.
+     *
+     * The presence of a Banner as a subordinate of the Imp object indicates that this impression
+     * is offered as a banner type impression. At the publisher’s discretion, that same impression
+     * may also be offered as video and/or native by also including as Imp subordinates the Video
+     * and/or Native objects, respectively. However, any given bid for the impression must conform
+     * to one of the offered types.
      */
     message Banner {
       /*
-       * Width of the impression in pixels. Since some ad types are not restricted by size
-       * this field is not required, but it’s highly recommended.
+       * Width of the impression in pixels.
+       * If neither wmin nor wmax are specified, this value is an exact
+       * width requirement. Otherwise it is a preferred width.
        */
       optional int32 w = 1;
       /*
-       * Height of the impression in pixels. Since some ad types are not restricted by size
-       * this field is not required, but it’s highly recommended.
+       * Height of the impression in pixels.
+       * If neither hmin nor hmax are specified, this value is an exact
+       * height requirement. Otherwise it is a preferred height.
        */
       optional int32 h = 2;
       /**
-       * Maximum width of the impression in pixels. If included, it indicates that a range
-       * of sizes is allowed with this maximum width and "w" is taken as recommended.
-       * If not included, then "w" should be considered an exact requirement.
+       * Maximum width of the impression in pixels.
+       * If included along with a w value then w should be interpreted
+       * as a recommended or preferred width.
        */
       optional int32 wmax = 11;
       /**
-       * Maximum height of the impression in pixels. If included, it indicates that a range
-       * of sizes is allowed with this maximum height and "h" is taken as recommended.
-       * If not included, then "h" should be considered an exact requirement.
+       * Maximum height of the impression in pixels.
+       * If included along with an h value then h should be interpreted
+       * as a recommended or preferred height.
        */
       optional int32 hmax = 12;
       /**
-       * Minimum width of the impression in pixels. If included, it indicates that a range
-       * of sizes is allowed with this minimum width and "w" is taken as recommended.
-       * If not included, then "w" should be considered an exact requirement.
+       * Minimum width of the impression in pixels.
+       * If included along with a w value then w should be interpreted
+       * as a recommended or preferred width.
        */
       optional int32 wmin = 13;
       /**
-       * Minumum height of the impression in pixels. If included, it indicates that a range
-       * of sizes is allowed with this minimum height and "h" is taken as recommended.
-       * If not included, then "h" should be considered an exact requirement.
+       * Minumum height of the impression in pixels.
+       * If included along with an h value then h should be interpreted
+       * as a recommended or preferred height.
        */
       optional int32 hmin = 14;
       /*
-       * Unique identifier for this banner object. Useful for tracking multiple banner objects
-       * (e.g., in companion banner array). Usually starts with 1, increasing with each object.
-       * Combination of impression id X banner id should be unique.
+       * Unique identifier for this banner object. Recommended when Banner objects are
+       * used with a Video object (Section 3.2.4) to represent an array of companion ads.
+       * Values usually start at 1 and increase with each object; should be unique within
+       * an impression.
        */
       optional string id = 3;
       /*
-       * Blocked creative types. If blank, assume all types are allowed.
+       * Blocked banner ad types. Refer to List 5.2.
        */
-      repeated AdType btype = 5;
+      repeated AdType btype = 5 [packed = true];
       /*
-       * Blocked creative attributes. If blank assume all types are allowed.
+       * Blocked creative attributes. Refer to List 5.3.
        */
-      repeated CreativeAttribute battr = 6;
+      repeated CreativeAttribute battr = 6 [packed = true];
       /*
-       * The position of the ad as a relative measure of visibility or prominence.
+       * Ad position on screen. Refer to List 5.4.
        */
       optional AdPosition pos = 4 [default = POSITION_UNKNOWN];
       /*
@@ -709,14 +730,14 @@ message BidRequest {
        */
       optional bool topframe = 8;
       /*
-       * Specify properties for an expandable ad.
+       * Directions in which the banner may expand. Refer to List 5.5.
        */
-      repeated ExpandableDirection expdir = 9;
+      repeated ExpandableDirection expdir = 9 [packed = true];
       /*
-       * List of supported API frameworks for this banner. If an API is not explicitly listed
-       * it is assumed not to be supported.
+       * List of supported API frameworks for this impression. Refer to List 5.6.
+       * If an API is not explicitly listed, it is assumed not to be supported.
        */
-      repeated ApiFramework api = 10;
+      repeated ApiFramework api = 10 [packed = true];
       /**
        * Extensions.
        */
@@ -759,9 +780,18 @@ message BidRequest {
     }
 
     /*
-     * OpenRTB 3.3.4: A video object typically describes an ad opportunity for in-stream video
-     * inventory (including linear pre-roll, mid-roll and post-roll, and non-linear overlays).
-     * Please note, in-banner video is typically represented by the banner object.
+     * OpenRTB 3.2.4: This object represents an in-stream video impression.
+     * Many of the fields are non-essential for minimally viable transactions, but are included
+     * to offer fine control when needed. Video in OpenRTB generally assumes compliance with
+     * the VAST standard. As such, the notion of companion ads is supported by optionally
+     * including an array of Banner objects (refer to the Banner object in Section 3.2.3)
+     * that define these companion ads.
+     *
+     * The presence of a Video as a subordinate of the Imp object indicates that this impression
+     * is offered as a video type impression. At the publisher’s discretion, that same impression
+     * may also be offered as banner and/or native by also including as Imp subordinates the
+     * Banner and/or Native objects, respectively. However, any given bid for the impression
+     * must conform to one of the offered types.
      */
     message Video {
       /*
@@ -771,37 +801,45 @@ message BidRequest {
       repeated string mimes = 1;
       /*
        * Minimum video ad duration in seconds.
+       * This field is not required, but it’s highly recommended.
        */
-      required int32 minduration = 3;
+      optional int32 minduration = 3;
       /*
        * Maximum video ad duration in seconds.
+       * This field is not required, but it’s highly recommended.
        */
-      required int32 maxduration = 4;
+      optional int32 maxduration = 4;
       /*
-       * Video bid response protocols.
+       * Deprecated; use protocols.
        */
-      optional Protocol deprecated_protocol = 5;
+      optional Protocol protocol = 5 [deprecated = true];
       /*
-       * Video bid response protocols.
+       * Array of supported video bid response protocols. Refer to List 5.8.
+       * At least one supported protocol must be specified in either the
+       * protocol or protocols attribute.
        */
-      repeated Protocol protocols = 21;
+      repeated Protocol protocols = 21 [packed = true];
       /*
-       * Width of the player in pixels. This field is not required, but it’s highly recommended.
+       * Width of the player in pixels.
+       * This field is not required, but it’s highly recommended.
        */
       optional int32 w = 6;
       /*
-       * Height of the player in pixels. This field is not required, but it’s highly recommended.
+       * Height of the player in pixels.
+       * This field is not required, but it’s highly recommended.
        */
       optional int32 h = 7;
       /*
        * Indicates the start delay in seconds for preroll, midroll, or postroll ad placement.
        * Check the enum VideoStartDelay for special values.
+       * This field is not required, but it’s highly recommended.
        */
       optional int32 startdelay = 8;
       /*
-       * Indicates whether the ad impression is linear or non-linear.
+       * Indicates if the impression must be linear, nonlinear, etc.
+       * If none specified, assume all are allowed. Refer to List 5.7.
        */
-      required Linearity linearity = 2;
+      optional Linearity linearity = 2;
       /*
        * If multiple ad impressions are offered in the same bid request, the sequence number
        * will allow for the coordinated delivery of multiple creatives.
@@ -810,7 +848,7 @@ message BidRequest {
       /*
        * Blocked creative attributes. If blank assume all types are allowed.
        */
-      repeated CreativeAttribute battr = 10;
+      repeated CreativeAttribute battr = 10 [packed = true];
       /*
        * Maximum extended video ad duration, if extension is allowed.
        * If blank or 0, extension is not allowed. If -1, extension is allowed, and there is
@@ -837,11 +875,11 @@ message BidRequest {
       /*
        * List of allowed playback methods. If blank, assume that all are allowed.
        */
-      repeated PlaybackMethod playbackmethod = 15;
+      repeated PlaybackMethod playbackmethod = 15 [packed = true];
       /*
        * List of supported delivery methods. If blank, assume all are supported.
        */
-      repeated ContentDelivery delivery = 16;
+      repeated ContentDelivery delivery = 16 [packed = true];
       /*
        * The position of the ad as a relative measure of visibility or prominence.
        */
@@ -854,11 +892,11 @@ message BidRequest {
        * List of supported API frameworks for this banner. If an API is not explicitly listed
        * it is assumed not to be supported.
        */
-      repeated ApiFramework api = 19;
+      repeated ApiFramework api = 19 [packed = true];
       /*
        * Recommended if companion objects are included.
        */
-      repeated CompanionType companiontype = 20;
+      repeated CompanionType companiontype = 20 [packed = true];
       /**
        * Extensions.
        */
@@ -960,11 +998,11 @@ message BidRequest {
        * List of supported API frameworks for this impression.
        * If an API is not explicitly listed, it is assumed not to be supported.
        */
-      repeated ApiFramework api = 3;
+      repeated ApiFramework api = 3 [packed = true];
       /**
        * Blocked creative attributes.
        */
-      repeated CreativeAttribute battr = 4;
+      repeated CreativeAttribute battr = 4 [packed = true];
       /**
        * Extensions.
        */
@@ -1862,7 +1900,7 @@ message BidResponse {
       /*
        * Array of creative attributes.
        */
-      repeated CreativeAttribute attr = 11;
+      repeated CreativeAttribute attr = 11 [packed = true];
       /*
        * A unique identifier for the direct deal associated with the bid.
        */
