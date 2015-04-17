@@ -33,8 +33,6 @@ import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.Impression;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.Linearity;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.Protocol;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
@@ -117,11 +115,7 @@ public class OpenRtbUtilsTest {
   public void testRequest_videos() {
     BidRequest request = BidRequest.newBuilder()
         .setId("1")
-        .addImp(Impression.newBuilder().setId("1").setVideo(Video.newBuilder()
-            .setLinearity(Linearity.LINEAR)
-            .setMinduration(100)
-            .setMaxduration(200)
-            .addProtocols(Protocol.VAST_3_0)))
+        .addImp(Impression.newBuilder().setId("1").setVideo(Video.newBuilder()))
         .build();
     assertEquals(1, Iterables.size(OpenRtbUtils.impsWith(
         request, Predicates.<Impression>alwaysTrue(), false, true)));
@@ -129,7 +123,7 @@ public class OpenRtbUtilsTest {
         request, Predicates.<Impression>alwaysFalse(), false, true)));
     assertEquals(1, Iterables.size(OpenRtbUtils.impsWith(request, new Predicate<Impression>() {
       @Override public boolean apply(Impression imp) {
-        return imp.getVideo().getLinearity() == Linearity.LINEAR;
+        return imp.hasVideo();
       }
     }, false, true)));
   }
