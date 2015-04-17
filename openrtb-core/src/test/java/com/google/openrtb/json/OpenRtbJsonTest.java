@@ -155,9 +155,7 @@ public class OpenRtbJsonTest {
         .build());
     testRequest(jsonFactory, BidRequest.newBuilder().setId("0")
         .addImp(Impression.newBuilder().setId("0")
-            .setVideo(Video.newBuilder()
-                .setLinearity(Linearity.LINEAR).addProtocols(Protocol.VAST_3_0)
-                .setMinduration(0).setMaxduration(1))
+            .setVideo(Video.newBuilder())
             .setPmp(PMP.newBuilder().addDeals(Deal.newBuilder().setId("0"))))
         .setSite(Site.newBuilder()
             .setContent(Content.newBuilder())
@@ -181,9 +179,10 @@ public class OpenRtbJsonTest {
   @Test
   public void testResponse_emptyMessages() throws IOException {
     OpenRtbJsonFactory jsonFactory = newJsonFactory();
-    testResponse(jsonFactory, BidResponse.newBuilder().build());
-    testResponse(jsonFactory, BidResponse.newBuilder().addSeatbid(SeatBid.newBuilder()).build());
-    testResponse(jsonFactory, BidResponse.newBuilder().addSeatbid(SeatBid.newBuilder()
+    testResponse(jsonFactory, BidResponse.newBuilder().setId("1").build());
+    testResponse(jsonFactory,
+        BidResponse.newBuilder().setId("1").addSeatbid(SeatBid.newBuilder()).build());
+    testResponse(jsonFactory, BidResponse.newBuilder().setId("1").addSeatbid(SeatBid.newBuilder()
         .addBid(Bid.newBuilder().setId("0").setImpid("0").setPrice(0))).build());
   }
 
@@ -299,6 +298,7 @@ public class OpenRtbJsonTest {
         .register(new Test4Writer(), Integer.class, BidResponse.class, "testResponse4");
   }
 
+  @SuppressWarnings("deprecation")
   static BidRequest.Builder newBidRequest() {
     return BidRequest.newBuilder()
         .setId("3031323334353637")
@@ -345,7 +345,7 @@ public class OpenRtbJsonTest {
                 .setLinearity(Linearity.LINEAR)
                 .setMinduration(15)
                 .setMaxduration(60)
-                .setDeprecatedProtocol(Protocol.VAST_3_0)
+                .setProtocol(Protocol.VAST_3_0)
                 .addProtocols(Protocol.VAST_2_0)
                 .setW(200)
                 .setH(50)

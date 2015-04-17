@@ -46,6 +46,7 @@ public class SnippetProcessorTest {
       .setPrice(10000)
       .build();
   private static BidResponse resp = BidResponse.newBuilder()
+      .setId("1")
       .addSeatbid(SeatBid.newBuilder()
           .addBid(bid))
           .build();
@@ -148,6 +149,7 @@ public class SnippetProcessorTest {
           .setIurl("https://mycontent.com/creative.png");
     }
     return BidResponse.newBuilder()
+        .setId("1")
         .addSeatbid(SeatBid.newBuilder()
             .setSeat("seat1")
             .addBid(bid))

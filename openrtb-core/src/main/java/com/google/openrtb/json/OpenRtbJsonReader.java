@@ -402,6 +402,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     return video;
   }
 
+  @SuppressWarnings("deprecation")
   protected void readVideoField(JsonParser par, Video.Builder video, String fieldName)
       throws IOException {
     switch (fieldName) {
@@ -417,7 +418,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         video.setMaxduration(par.getIntValue());
         break;
       case "protocol":
-        video.setDeprecatedProtocol(Protocol.valueOf(par.getIntValue()));
+        video.setProtocol(Protocol.valueOf(par.getIntValue()));
         break;
       case "protocols":
         for (startArray(par); endArray(par); par.nextToken()) {
