@@ -34,34 +34,34 @@ import javax.annotation.Nullable;
 public interface OpenRtbMapper<ReqIn, RespIn, ReqOut, RespOut> {
 
   /**
-   * Converts an OpenRTB response to native.
+   * Converts an OpenRTB response to the exchange-specific format.
    *
    * @param request OpenRTB request, if necessary for context or validations
    * @param response OpenRTB response
-   * @return Native response
+   * @return Response in the exchange-specific format
    */
-  RespOut toNativeBidResponse(@Nullable BidRequest request, BidResponse response);
+  RespOut toExchangeBidResponse(@Nullable BidRequest request, BidResponse response);
 
   /**
-   * Converts a native request to OpenRTB.
+   * Converts an exchange-specific request to OpenRTB.
    *
-   * @param request Native request
+   * @param request Request in the exchange-specific format
    * @return OpenRTB request
    */
   BidRequest.Builder toOpenRtbBidRequest(ReqIn request);
 
   /**
-   * Converts an OpenRTB request to native.
+   * Converts an OpenRTB request to the exchange-specific format.
    *
    * @param request OpenRTB request
-   * @return Native request
+   * @return Request in the exchange-specific format
    */
-  ReqOut toNativeBidRequest(@Nullable BidRequest request);
+  ReqOut toExchangeBidRequest(@Nullable BidRequest request);
 
   /**
-   * Converts a native response to OpenRTB.
+   * Converts a n exchange-specific response to OpenRTB.
    *
-   * @param request native request, if necessary for context or validations
+   * @param request Request in the exchange-specific format, if necessary for context or validations
    * @param response The response
    * @return OpenRTB response
    */
