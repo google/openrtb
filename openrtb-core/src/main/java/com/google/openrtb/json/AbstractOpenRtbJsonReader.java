@@ -27,7 +27,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
-import java.util.Collection;
+import java.util.Set;
 
 /**
  * Desserializes OpenRTB messages from JSON.
@@ -54,7 +54,7 @@ public abstract class AbstractOpenRtbJsonReader {
   void readExtensions(EB msg, JsonParser par) throws IOException {
     startObject(par);
     @SuppressWarnings("unchecked")
-    Collection<OpenRtbJsonExtReader<EB, ?>> extReaders =
+    Set<OpenRtbJsonExtReader<EB, ?>> extReaders =
         factory.getReaders((Class<EB>) msg.getClass());
     JsonToken tokLast = par.getCurrentToken();
     JsonLocation locLast = par.getCurrentLocation();
