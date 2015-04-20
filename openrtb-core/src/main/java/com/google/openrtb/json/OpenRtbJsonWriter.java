@@ -478,7 +478,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
       writeIntBoolField("livestream", content.getLivestream(), gen);
     }
     if (content.hasSourcerelationship()) {
-      gen.writeNumberField("sourcerelationship", content.getSourcerelationship().getNumber());
+      writeIntBoolField("sourcerelationship", content.getSourcerelationship(), gen);
     }
     if (content.hasLen()) {
       gen.writeNumberField("len", content.getLen());
