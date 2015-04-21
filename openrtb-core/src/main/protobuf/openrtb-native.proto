@@ -25,6 +25,38 @@ option java_outer_classname = "OpenRtbNative";
  */
 message NativeRequest {
   /**
+   * Version of the Native Markup version in use.
+   */
+  optional string ver = 1;
+  /**
+   * The Layout ID of the native ad unit.
+   * This field is not required, but it’s highly recommended.
+   */
+  optional LayoutID layout = 2;
+  /**
+   * The Ad unit ID of the native ad unit. This corresponds to one of IAB Core-6 native ad units.
+   * This field is not required, but it’s highly recommended.
+   */
+  optional AdunitID adunit = 3;
+  /**
+   * The number of identical placements in this Layout.
+   */
+  optional int32 plcmtcnt = 4 [default = 1];
+  /**
+   * 0 for the first ad, 1 for the second ad, and so on.
+   * This is not the sequence number of the content in the stream.
+   */
+  optional int32 seq = 5 [default = 0];
+  /**
+   * Any bid must comply with the array of elements expressed by the Exchange.
+   */
+  repeated Asset assets = 6;
+  /**
+   * Extensions.
+   */
+  extensions 100 to 199;
+
+  /**
    * OpenRTB Native 7.1: Core layouts. An implementing exchange may not support all asset
    * variants or introduce new ones unique to that system.
    */
@@ -55,36 +87,6 @@ message NativeRequest {
     CUSTOM = 5;
     // Exchange-specific values above 500.
   }
-
-  /**
-   * Version of the Native Markup version in use.
-   */
-  required string ver = 1;
-  /**
-   * The Layout ID of the native ad unit.
-   */
-  optional LayoutID layout = 2;
-  /**
-   * The Ad unit ID of the native ad unit. This corresponds to one of IAB Core-6 native ad units. 
-   */
-  optional AdunitID adunit = 3;
-  /**
-   * The number of identical placements in this Layout.
-   */
-  optional int32 plcmtcnt = 4 [default = 1];
-  /**
-   * 0 for the first ad, 1 for the second ad, and so on.
-   * This is not the sequence number of the content in the stream.
-   */
-  optional int32 seq = 5 [default = 0];
-  /**
-   * Any bid must comply with the array of elements expressed by the Exchange.
-   */
-  repeated Asset assets = 6;
-  /**
-   * Extensions.
-   */
-  extensions 100 to 199;
 
   /**
    * OpenRTB Native 4.2: The main container object for each asset requested or supported by
@@ -145,21 +147,6 @@ message NativeRequest {
      */
     message Image {
       /**
-       * OpenRTB Native 7.4: Common image asset element types of native advertising at
-       * the time of writing this spec. This list is non-exhaustive and intended to be
-       * extended by the buyers and sellers as the format evolves.
-       */
-      enum ImageAssetType {
-        /** Icon image. */
-        ICON = 1;
-        /** Logo image for the brand/app. */
-        LOGO = 2;
-        /** Large image preview for the ad. */
-        MAIN = 3;
-        // Exchange-specific values above 500.
-      }
-
-      /**
        * Type ID of the image element supported by the publisher.
        * The publisher can display this information in an appropriate format.
        */
@@ -195,6 +182,21 @@ message NativeRequest {
        * Extensions.
        */
       extensions 100 to 199;
+
+      /**
+       * OpenRTB Native 7.4: Common image asset element types of native advertising at
+       * the time of writing this spec. This list is non-exhaustive and intended to be
+       * extended by the buyers and sellers as the format evolves.
+       */
+      enum ImageAssetType {
+        /** Icon image. */
+        ICON = 1;
+        /** Logo image for the brand/app. */
+        LOGO = 2;
+        /** Large image preview for the ad. */
+        MAIN = 3;
+        // Exchange-specific values above 500.
+      }
     }
 
     /**
@@ -205,7 +207,7 @@ message NativeRequest {
      * please refer to OpenRTB 2.3.
      *
      * NOTE: This library only contains the "required" attributes here; for more attributes,
-     * for new we recommend using the BidRequest.Impression.Video object.
+     * for now we recommend using the BidRequest.Impression.Video object.
      */
     message Video {
       /**
@@ -223,7 +225,7 @@ message NativeRequest {
       required int32 maxduration = 3;
       /**
        * An array of video protocols the publisher can accept in the bid response.
-       * See OpenRTB 2.3 Table 6.7 Video Bid Response Protocols for a list of possible values.
+       * See OpenRTB 2.3 Table 5.8 Video Bid Response Protocols for a list of possible values.
        */
       repeated int32 protocols = 4;
 
@@ -240,6 +242,20 @@ message NativeRequest {
      * writing of this document.
      */
     message Data {
+      /**
+       * Type ID of the element supported by the publisher. The publisher can display this
+       * information in an appropriate format.
+       */
+      required DataAssetType type = 1;
+      /**
+       * Maximum length of the text in the element’s response.
+       */
+      optional int32 len = 2;
+      /**
+       * Extensions.
+       */
+      extensions 100 to 199;
+
       /**
        * OpenRTB Native 7.3: Common asset element types of native advertising.
        * This list is non-exhaustive and intended to be extended by the buyers and sellers
@@ -282,20 +298,6 @@ message NativeRequest {
         CTATEXT = 12;
         // Exchange-specific values above 500.
       }
-
-      /**
-       * Type ID of the element supported by the publisher. The publisher can display this
-       * information in an appropriate format.
-       */
-      required DataAssetType type = 1;
-      /**
-       * Maximum length of the text in the element’s response.
-       */
-      optional int32 len = 2;
-      /**
-       * Extensions.
-       */
-      extensions 100 to 199;
     }
   }
 }
@@ -427,10 +429,12 @@ message NativeResponse {
       optional string url = 1;
       /**
        * Width of the image in pixels.
+       * This field is not required, but it’s highly recommended.
        */
       optional int32 w = 2;
       /**
        * Height of the image in pixels.
+       * This field is not required, but it’s highly recommended.
        */
       optional int32 h = 3;
       /**

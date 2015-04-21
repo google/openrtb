@@ -31,7 +31,6 @@ import com.google.openrtb.OpenRtb.BidRequest.App;
 import com.google.openrtb.OpenRtb.BidRequest.Content;
 import com.google.openrtb.OpenRtb.BidRequest.Content.Context;
 import com.google.openrtb.OpenRtb.BidRequest.Content.QAGMediaRating;
-import com.google.openrtb.OpenRtb.BidRequest.Content.SourceRelationship;
 import com.google.openrtb.OpenRtb.BidRequest.Content.VideoQuality;
 import com.google.openrtb.OpenRtb.BidRequest.Data;
 import com.google.openrtb.OpenRtb.BidRequest.Data.Segment;
@@ -766,7 +765,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         content.setLivestream(getIntBoolValue(par));
         break;
       case "sourcerelationship":
-        content.setSourcerelationship(SourceRelationship.valueOf(par.getIntValue()));
+        content.setSourcerelationship(getIntBoolValue(par));
         break;
       case "len":
         content.setLen(par.getIntValue());

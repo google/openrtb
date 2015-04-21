@@ -49,10 +49,8 @@ public class OpenRtbNativeJsonTest {
   @Test
   public void testRequest_emptyMessage() throws IOException {
     testRequest(newJsonFactory(), NativeRequest.newBuilder()
-        .setVer("1")
         .addAssets(NativeRequest.Asset.newBuilder()
             .setId(1)
-            .setRequired(true)
             .setTitle(NativeRequest.Asset.Title.newBuilder()
                 .setLen(100))
             .setImg(NativeRequest.Asset.Image.newBuilder())
@@ -64,9 +62,7 @@ public class OpenRtbNativeJsonTest {
         .addAssets(NativeRequest.Asset.newBuilder()
             .setId(1))
         .build());
-    testRequest(newJsonFactory(), NativeRequest.newBuilder()
-        .setVer("1")
-        .build());
+    testRequest(newJsonFactory(), NativeRequest.newBuilder().build());
   }
 
   @Test
@@ -77,7 +73,6 @@ public class OpenRtbNativeJsonTest {
   @Test
   public void testResponse_emptyMessage() throws IOException {
     testResponse(newJsonFactory(), NativeResponse.newBuilder()
-        .setVer("1")
         .addAssets(NativeResponse.Asset.newBuilder()
             .setId(1)
             .setReq(true)

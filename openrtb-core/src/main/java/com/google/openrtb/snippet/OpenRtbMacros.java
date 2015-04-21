@@ -18,8 +18,6 @@ package com.google.openrtb.snippet;
 
 import com.google.common.collect.ImmutableMap;
 
-import java.util.Map;
-
 /**
  * OpenRTB 4.6: Standard OpenRTB macros.
  * <p>
@@ -74,7 +72,7 @@ public enum OpenRtbMacros implements SnippetMacroType {
   AUCTION_SEAT_ID("${AUCTION_SEAT_ID}"),
   ;
 
-  private static final Map<String, OpenRtbMacros> LOOKUP_KEY;
+  private static final ImmutableMap<String, OpenRtbMacros> LOOKUP_KEY;
 
   static {
     ImmutableMap.Builder<String, OpenRtbMacros> builder = ImmutableMap.builder();

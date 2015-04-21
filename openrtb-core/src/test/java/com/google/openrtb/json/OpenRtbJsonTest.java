@@ -27,7 +27,6 @@ import com.google.openrtb.OpenRtb.BidRequest.App;
 import com.google.openrtb.OpenRtb.BidRequest.Content;
 import com.google.openrtb.OpenRtb.BidRequest.Content.Context;
 import com.google.openrtb.OpenRtb.BidRequest.Content.QAGMediaRating;
-import com.google.openrtb.OpenRtb.BidRequest.Content.SourceRelationship;
 import com.google.openrtb.OpenRtb.BidRequest.Content.VideoQuality;
 import com.google.openrtb.OpenRtb.BidRequest.Data;
 import com.google.openrtb.OpenRtb.BidRequest.Data.Segment;
@@ -482,7 +481,7 @@ public class OpenRtbJsonTest {
             .setUserrating("Awesome!")
             .setContext(Context.OTHER)
             .setLivestream(false)
-            .setSourcerelationship(SourceRelationship.INDIRECT)
+            .setSourcerelationship(false)
             .setProducer(Producer.newBuilder()
                 .setId("prod1")
                 .setName("Warner")

@@ -17,7 +17,8 @@
 package com.google.openrtb.json;
 
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeIntBoolField;
-import static com.google.openrtb.json.OpenRtbJsonUtils.writeInts;
+import static com.google.openrtb.json.OpenRtbJsonUtils.writeRequiredInts;
+import static com.google.openrtb.json.OpenRtbJsonUtils.writeRequiredStrings;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeStrings;
 
 import com.google.openrtb.OpenRtbNative.NativeRequest;
@@ -81,7 +82,9 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
    */
   public void writeNativeRequest(NativeRequest req, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
-    gen.writeStringField("ver", req.getVer());
+    if (req.hasVer()) {
+      gen.writeStringField("ver", req.getVer());
+    }
     if (req.hasLayout()) {
       gen.writeNumberField("layout", req.getLayout().getNumber());
     }
@@ -94,7 +97,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     if (req.hasSeq()) {
       gen.writeNumberField("seq", req.getSeq());
     }
-    if (req.getAssetsCount() != 0) {
+    if (checkRequired(req.getAssetsCount())) {
       gen.writeArrayFieldStart("assets");
       for (NativeRequest.Asset asset : req.getAssetsList()) {
         writeReqAsset(asset, gen);
@@ -158,7 +161,9 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     if (image.hasHmin()) {
       gen.writeNumberField("hmin", image.getHmin());
     }
-    writeStrings("mimes", image.getMimesList(), gen);
+    if (checkRequired(image.getMimesCount())) {
+      writeRequiredStrings("mimes", image.getMimesList(), gen);
+    }
     writeExtensions(image, gen);
     gen.writeEndObject();
   }
@@ -166,10 +171,14 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
   public void writeReqVideo(NativeRequest.Asset.Video video, JsonGenerator gen)
       throws IOException {
     gen.writeStartObject();
-    writeStrings("mimes", video.getMimesList(), gen);
+    if (checkRequired(video.getMimesCount())) {
+      writeRequiredStrings("mimes", video.getMimesList(), gen);
+    }
     gen.writeNumberField("minduration", video.getMinduration());
     gen.writeNumberField("maxduration", video.getMaxduration());
-    writeInts("protocols", video.getProtocolsList(), gen);
+    if (checkRequired(video.getProtocolsCount())) {
+      writeRequiredInts("protocols", video.getProtocolsList(), gen);
+    }
     writeExtensions(video, gen);
     gen.writeEndObject();
   }
