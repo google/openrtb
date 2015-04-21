@@ -106,4 +106,8 @@ public class AbstractOpenRtbJsonWriter {
   protected boolean checkRequired(boolean hasProperty) {
     return requiredAlways || hasProperty;
   }
+
+  protected boolean checkRequired(int propertyCount) {
+    return requiredAlways || propertyCount != 0;
+  }
 }

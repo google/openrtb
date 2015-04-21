@@ -424,6 +424,7 @@ message BidRequest {
       /*
        * Indicates the start delay in seconds for pre-roll, mid-roll, or post-roll ad placements.
        * Refer to List 5.10 (enum VideoStartDelay) for additional generic values.
+       * This field is not required, but it’s highly recommended.
        */
       optional int32 startdelay = 8;
       /*
@@ -1026,25 +1027,30 @@ message BidRequest {
   message Device {
     /*
      * Browser user agent string.
+     * This field is not required, but it’s highly recommended.
      */
     optional string ua = 2;
     /*
      * Location of the device assumed to be the user’s current location defined by a
      * Geo object (Section 3.2.12).
+     * This field is not required, but it’s highly recommended.
      */
     optional Geo geo = 4;
     /*
      * Standard “Do Not Track” flag as set in the header by the browser,
      * where 0 = tracking is unrestricted, 1 = do not track.
+     * This field is not required, but it’s highly recommended.
      */
     optional bool dnt = 1;
     /**
      * “Limit Ad Tracking” signal commercially endorsed (e.g., iOS, Android),
      * where 0 = tracking is unrestricted, 1 = tracking must be limited per commercial guidelines.
+     * This field is not required, but it’s highly recommended.
      */
     optional bool lmt = 20;
     /*
      * IPv4 address closest to device.
+     * This field is not required, but it’s highly recommended.
      */
     optional string ip = 3;
     /*

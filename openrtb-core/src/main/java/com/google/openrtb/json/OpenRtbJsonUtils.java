@@ -130,34 +130,50 @@ public class OpenRtbJsonUtils {
   public static void writeStrings(String fieldName, List<String> data, JsonGenerator gen)
       throws IOException {
     if (!data.isEmpty()) {
-      gen.writeArrayFieldStart(fieldName);
-      for (String d : data) {
-        gen.writeString(d);
-      }
-      gen.writeEndArray();
+      writeRequiredStrings(fieldName, data, gen);
     }
+  }
+
+  public static void writeRequiredStrings(String fieldName, List<String> data, JsonGenerator gen)
+    throws IOException {
+    gen.writeArrayFieldStart(fieldName);
+    for (String d : data) {
+      gen.writeString(d);
+    }
+    gen.writeEndArray();
   }
 
   public static void writeInts(String fieldName, List<Integer> data, JsonGenerator gen)
       throws IOException {
     if (!data.isEmpty()) {
-      gen.writeArrayFieldStart(fieldName);
-      for (Integer d : data) {
-        gen.writeNumber(d);
-      }
-      gen.writeEndArray();
+      writeRequiredInts(fieldName, data, gen);
     }
+  }
+
+  public static void writeRequiredInts(String fieldName, List<Integer> data, JsonGenerator gen)
+      throws IOException {
+    gen.writeArrayFieldStart(fieldName);
+    for (Integer d : data) {
+      gen.writeNumber(d);
+    }
+    gen.writeEndArray();
   }
 
   public static void writeEnums(
       String fieldName, List<? extends ProtocolMessageEnum> enums, JsonGenerator gen)
       throws IOException {
     if (!enums.isEmpty()) {
-      gen.writeArrayFieldStart(fieldName);
-      for (ProtocolMessageEnum e : enums) {
-        gen.writeNumber(e.getNumber());
-      }
-      gen.writeEndArray();
+      writeRequiredEnums(fieldName, enums, gen);
     }
+  }
+
+  public static void writeRequiredEnums(
+      String fieldName, List<? extends ProtocolMessageEnum> enums, JsonGenerator gen)
+      throws IOException {
+    gen.writeArrayFieldStart(fieldName);
+    for (ProtocolMessageEnum e : enums) {
+      gen.writeNumber(e.getNumber());
+    }
+    gen.writeEndArray();
   }
 }
