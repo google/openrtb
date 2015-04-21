@@ -26,9 +26,6 @@ RELEASE NOTES
 
 ## Version 0.8.0, 02-04-2015
 
-
-## Version 0.8.0-beta4, 21-04-2015
-
 * Lots of changes/improvements in the JSON extension support:
   - Public read/write methods to allow reuse by composition.
   - Extension registry is now per message type instead of "paths",
@@ -41,6 +38,10 @@ RELEASE NOTES
   - Documentation and ordering in sync with the latest specs.
   - Some required/optional updated to match the OpenRTB 2.3 spec.
   - Content.sourcerelationship changed type to bool.
+
+## Version 0.8.0-beta4, 21-04-2015
+
+* Test coverage reviews.
 
 ## Version 0.8.0-beta3, 31-03-2015
 
