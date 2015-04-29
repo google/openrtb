@@ -30,6 +30,7 @@ import com.google.openrtb.OpenRtb.BidRequest.User;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
+import com.google.openrtb.OpenRtb.ContentCategory;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
 
 import org.junit.Test;
@@ -58,7 +59,7 @@ public class ProtobufTest {
              .setId("234563")
              .setName("Site ABCD")
              .setDomain("siteabcd.com")
-             .addAllCat(asList("IAB2-1", "IAB2-2"))
+             .addAllCat(asList(ContentCategory.IAB2_1, ContentCategory.IAB2_2))
              .setPrivacypolicy(true)
              .setPage("http://siteabcd.com/page.htm")
              .setRef("http://referringsite.com/referringpage.htm")

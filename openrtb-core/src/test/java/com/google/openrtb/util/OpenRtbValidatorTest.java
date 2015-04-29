@@ -30,6 +30,7 @@ import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.Protocol;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
+import com.google.openrtb.OpenRtb.ContentCategory;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
 
 import com.codahale.metrics.MetricRegistry;
@@ -44,7 +45,7 @@ public class OpenRtbValidatorTest {
   private static BidRequest requestBanner = BidRequest.newBuilder()
       .setId("1")
       .addAllBadv(asList("adv1.com", "adv2.com"))
-      .addAllBcat(asList("cat1", "cat2"))
+      .addAllBcat(asList(ContentCategory.IAB1, ContentCategory.IAB2))
       .addImp(Impression.newBuilder()
           .setId("1")
           .setBanner(Banner.newBuilder()

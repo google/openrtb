@@ -180,7 +180,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "bcat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          req.addBcat(par.getText());
+          req.addBcat(OpenRtbJsonUtils.categoryFromJsonName(par.getText()));
         }
         break;
       case "badv":
@@ -587,17 +587,17 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "cat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          site.addCat(par.getText());
+          site.addCat(OpenRtbJsonUtils.categoryFromJsonName(par.getText()));
         }
         break;
       case "sectioncat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          site.addSectioncat(par.getText());
+          site.addSectioncat(OpenRtbJsonUtils.categoryFromJsonName(par.getText()));
         }
         break;
       case "pagecat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          site.addPagecat(par.getText());
+          site.addPagecat(OpenRtbJsonUtils.categoryFromJsonName(par.getText()));
         }
         break;
       case "page":
@@ -661,17 +661,17 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "cat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          app.addCat(par.getText());
+          app.addCat(OpenRtbJsonUtils.categoryFromJsonName(par.getText()));
         }
         break;
       case "sectioncat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          app.addSectioncat(par.getText());
+          app.addSectioncat(OpenRtbJsonUtils.categoryFromJsonName(par.getText()));
         }
         break;
       case "pagecat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          app.addPagecat(par.getText());
+          app.addPagecat(OpenRtbJsonUtils.categoryFromJsonName(par.getText()));
         }
         break;
       case "ver":
@@ -735,7 +735,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "cat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          content.addCat(par.getText());
+          content.addCat(OpenRtbJsonUtils.categoryFromJsonName(par.getText()));
         }
         break;
       case "videoquality":
@@ -804,7 +804,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "cat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          producer.addCat(par.getText());
+          producer.addCat(OpenRtbJsonUtils.categoryFromJsonName(par.getText()));
         }
         break;
       case "domain":
@@ -838,7 +838,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "cat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          publisher.addCat(par.getText());
+          publisher.addCat(OpenRtbJsonUtils.categoryFromJsonName(par.getText()));
         }
         break;
       case "domain":
@@ -1028,7 +1028,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         user.setYob(par.getIntValue());
         break;
       case "gender":
-        user.setGender(par.getText());
+        user.setGender(OpenRtbJsonUtils.genderFromJsonName(par.getText()));
         break;
       case "keywords":
         user.addAllKeywords(readCsvString(par));
@@ -1267,7 +1267,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         bid.setCrid(par.getText());
         break;
       case "cat":
-        bid.setCat(par.getText());
+        bid.setCat(OpenRtbJsonUtils.categoryFromJsonName(par.getText()));
         break;
       case "attr":
         for (startArray(par); endArray(par); par.nextToken()) {
