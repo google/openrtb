@@ -24,6 +24,7 @@ import static org.junit.Assert.assertSame;
 import com.google.openrtb.OpenRtb;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.App;
+import com.google.openrtb.OpenRtb.BidRequest.AuctionType;
 import com.google.openrtb.OpenRtb.BidRequest.Content;
 import com.google.openrtb.OpenRtb.BidRequest.Content.Context;
 import com.google.openrtb.OpenRtb.BidRequest.Content.QAGMediaRating;
@@ -334,7 +335,7 @@ public class OpenRtbJsonTest {
                     .setBidfloorcur("USD")
                     .addWseat("seat2")
                     .addWadomain("goodadv1")
-                    .setAt(2)
+                    .setAt(AuctionType.SECOND_PRICE)
                     .setExtension(TestExt.testDeal, test1))
                 .setExtension(TestExt.testPmp, test1))
             .setExtension(TestExt.testImp, test1))
@@ -434,7 +435,7 @@ public class OpenRtbJsonTest {
                     .setExtension(TestExt.testSegment, test1))
                 .setExtension(TestExt.testData, test1))
             .setExtension(TestExt.testUser, test1))
-        .setAt(2)
+        .setAt(AuctionType.SECOND_PRICE)
         .setTmax(100)
         .addWseat("seat1")
         .setAllimps(false)

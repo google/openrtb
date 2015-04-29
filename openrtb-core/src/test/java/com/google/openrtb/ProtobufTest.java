@@ -19,6 +19,7 @@ package com.google.openrtb;
 import static java.util.Arrays.asList;
 
 import com.google.openrtb.OpenRtb.BidRequest;
+import com.google.openrtb.OpenRtb.BidRequest.AuctionType;
 import com.google.openrtb.OpenRtb.BidRequest.Content;
 import com.google.openrtb.OpenRtb.BidRequest.Device;
 import com.google.openrtb.OpenRtb.BidRequest.Impression;
@@ -44,7 +45,7 @@ public class ProtobufTest {
   public void testRequest_5_1_1() {
     BidRequest.newBuilder()
         .setId("1234534625254")
-        .setAt(2)
+        .setAt(AuctionType.SECOND_PRICE)
         .setTmax(120)
         .addImp(Impression.newBuilder()
             .setId("1")

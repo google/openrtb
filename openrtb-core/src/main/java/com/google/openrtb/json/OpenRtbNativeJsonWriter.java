@@ -17,8 +17,7 @@
 package com.google.openrtb.json;
 
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeIntBoolField;
-import static com.google.openrtb.json.OpenRtbJsonUtils.writeRequiredInts;
-import static com.google.openrtb.json.OpenRtbJsonUtils.writeRequiredStrings;
+import static com.google.openrtb.json.OpenRtbJsonUtils.writeInts;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeStrings;
 
 import com.google.openrtb.OpenRtbNative.NativeRequest;
@@ -162,7 +161,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeNumberField("hmin", image.getHmin());
     }
     if (checkRequired(image.getMimesCount())) {
-      writeRequiredStrings("mimes", image.getMimesList(), gen);
+      writeStrings("mimes", image.getMimesList(), gen);
     }
     writeExtensions(image, gen);
     gen.writeEndObject();
@@ -172,12 +171,12 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       throws IOException {
     gen.writeStartObject();
     if (checkRequired(video.getMimesCount())) {
-      writeRequiredStrings("mimes", video.getMimesList(), gen);
+      writeStrings("mimes", video.getMimesList(), gen);
     }
     gen.writeNumberField("minduration", video.getMinduration());
     gen.writeNumberField("maxduration", video.getMaxduration());
     if (checkRequired(video.getProtocolsCount())) {
-      writeRequiredInts("protocols", video.getProtocolsList(), gen);
+      writeInts("protocols", video.getProtocolsList(), gen);
     }
     writeExtensions(video, gen);
     gen.writeEndObject();

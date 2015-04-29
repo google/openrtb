@@ -21,8 +21,6 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.writeContentCategories;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeCsvString;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeEnums;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeIntBoolField;
-import static com.google.openrtb.json.OpenRtbJsonUtils.writeRequiredEnums;
-import static com.google.openrtb.json.OpenRtbJsonUtils.writeRequiredStrings;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeStrings;
 
 import com.google.openrtb.OpenRtb.BidRequest;
@@ -134,7 +132,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
       writeIntBoolField("test", req.getTest(), gen);
     }
     if (req.hasAt()) {
-      gen.writeNumberField("at", req.getAt());
+      gen.writeNumberField("at", req.getAt().getNumber());
     }
     if (req.hasTmax()) {
       gen.writeNumberField("tmax", req.getTmax());
@@ -242,7 +240,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
   public void writeVideo(Video video, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
     if (checkRequired(video.getMimesCount())) {
-      writeRequiredStrings("mimes", video.getMimesList(), gen);
+      writeStrings("mimes", video.getMimesList(), gen);
     }
     if (video.hasMinduration()) {
       gen.writeNumberField("minduration", video.getMinduration());
@@ -254,7 +252,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeNumberField("protocol", video.getProtocol().getNumber());
     }
     if (checkRequired(video.getProtocolsCount())) {
-      writeRequiredEnums("protocols", video.getProtocolsList(), gen);
+      writeEnums("protocols", video.getProtocolsList(), gen);
     }
     if (video.hasW()) {
       gen.writeNumberField("w", video.getW());
@@ -342,7 +340,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     writeStrings("wseat", deal.getWseatList(), gen);
     writeStrings("wadomain", deal.getWadomainList(), gen);
     if (deal.hasAt()) {
-      gen.writeNumberField("at", deal.getAt());
+      gen.writeNumberField("at", deal.getAt().getNumber());
     }
     writeExtensions(deal, gen);
     gen.writeEndObject();

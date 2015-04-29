@@ -84,7 +84,7 @@ message BidRequest {
    * Auction type, where 1 = First Price, 2 = Second Price Plus.
    * Exchange-specific auction types can be defined using values greater than 500.
    */
-  optional int32 at = 7 [default = 2];
+  optional AuctionType at = 7 [default = SECOND_PRICE];
   /*
    * Maximum time in milliseconds to submit a bid to avoid timeout.
    * This value is commonly communicated offline.
@@ -125,6 +125,12 @@ message BidRequest {
    * Extensions.
    */
   extensions 100 to 199;
+
+  enum AuctionType {
+    FIRST_PRICE = 1;
+    SECOND_PRICE = 2;
+    FIXED_PRICE = 3;
+  }
 
   /*
    * OpenRTB 3.2.2: This object describes an ad placement or impression being auctioned.
@@ -660,7 +666,7 @@ message BidRequest {
          * where 1 = First Price, 2 = Second Price Plus, 3 = the value passed in bidfloor is
          * the agreed upon deal price. Additional auction types can be defined by the exchange.
          */
-        optional int32 at = 6;
+        optional AuctionType at = 6;
          /*
           * Whitelist of buyer seats allowed to bid on this deal. Seat IDs must be communicated
           * between bidders and the exchange a priori. Omission implies no seat restrictions.

@@ -27,6 +27,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.openrtb.OpenRtb.BidRequest;
+import com.google.openrtb.OpenRtb.BidRequest.AuctionType;
 import com.google.openrtb.OpenRtb.BidRequest.Impression;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
 import com.google.openrtb.Test.Test1;
@@ -99,10 +100,10 @@ public class ProtoUtilsTest {
     BidRequest.Builder req = BidRequest.newBuilder().setId("0");
     ProtoUtils.update(ImmutableList.of(req), new Function<BidRequest.Builder, Boolean>() {
       @Override public Boolean apply(BidRequest.Builder req) {
-        req.setAt(1);
+        req.setAt(AuctionType.FIRST_PRICE);
         return true;
       }});
-    assertTrue(req.getAt() == 1);
+    assertEquals(AuctionType.FIRST_PRICE, req.getAt());
   }
 
   @Test
