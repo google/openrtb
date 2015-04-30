@@ -24,7 +24,14 @@ line after checkout or after any mvn clean.
 RELEASE NOTES
 ----------------------------------------------------------------------
 
-## Version 0.8.0, 02-04-2015
+## Version 0.8.1, 29-04-2015
+
+* All "*cat" fields in the model are now typed as [arrays of]
+  the ContentCategory enum, instead of strings.
+* User.gender is now typed as the Gender enum.
+* BidRequest/Deal.at are now typed as the AuctionType enum.
+
+## Version 0.8.0, 21-04-2015
 
 * Lots of changes/improvements in the JSON extension support:
   - Public read/write methods to allow reuse by composition.
@@ -39,7 +46,7 @@ RELEASE NOTES
   - Some required/optional updated to match the OpenRTB 2.3 spec.
   - Content.sourcerelationship changed type to bool.
 
-## Version 0.8.0-beta4, 21-04-2015
+## Version 0.8.0-beta4, 02-04-2015
 
 * Test coverage reviews.
 

@@ -16,8 +16,15 @@
 
 package com.google.openrtb.json;
 
+import static java.util.Arrays.asList;
+
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import com.google.common.collect.ImmutableBiMap;
+import com.google.common.collect.Maps;
+import com.google.openrtb.OpenRtb.BidRequest.User.Gender;
+import com.google.openrtb.OpenRtb.ContentCategory;
 import com.google.protobuf.ProtocolMessageEnum;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -29,12 +36,39 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 /**
  * Utilities for writing JSON serialization code.
  */
 public class OpenRtbJsonUtils {
   private static final Joiner CSV_JOINER = Joiner.on(",");
   private static final Splitter CSV_SPLITTER = Splitter.on(",");
+  private static final ImmutableBiMap<String, ContentCategory> CAT_NAME = ImmutableBiMap.copyOf(
+      Maps.uniqueIndex(asList(ContentCategory.values()), new Function<ContentCategory, String>() {
+        @Override public String apply(ContentCategory cat) {
+          return cat.name().replace('_', '-');
+        }}));
+  private static final ImmutableBiMap<String, Gender> GENDER_NAME = ImmutableBiMap.of(
+      "M", Gender.MALE,
+      "F", Gender.FEMALE,
+      "O", Gender.OTHER);
+
+  public static @Nullable ContentCategory categoryFromJsonName(String cat) {
+    return CAT_NAME.get(cat);
+  }
+
+  public static @Nullable String categoryToJsonName(ContentCategory cat) {
+    return CAT_NAME.inverse().get(cat);
+  }
+
+  public static @Nullable Gender genderFromJsonName(String cat) {
+    return GENDER_NAME.get(cat);
+  }
+
+  public static @Nullable String genderToJsonName(Gender cat) {
+    return GENDER_NAME.inverse().get(cat);
+  }
 
   public static String getCurrentName(JsonParser par) throws JsonParseException, IOException {
     String name = par.getCurrentName();
@@ -130,50 +164,46 @@ public class OpenRtbJsonUtils {
   public static void writeStrings(String fieldName, List<String> data, JsonGenerator gen)
       throws IOException {
     if (!data.isEmpty()) {
-      writeRequiredStrings(fieldName, data, gen);
+      gen.writeArrayFieldStart(fieldName);
+      for (String d : data) {
+        gen.writeString(d);
+      }
+      gen.writeEndArray();
     }
-  }
-
-  public static void writeRequiredStrings(String fieldName, List<String> data, JsonGenerator gen)
-    throws IOException {
-    gen.writeArrayFieldStart(fieldName);
-    for (String d : data) {
-      gen.writeString(d);
-    }
-    gen.writeEndArray();
   }
 
   public static void writeInts(String fieldName, List<Integer> data, JsonGenerator gen)
       throws IOException {
     if (!data.isEmpty()) {
-      writeRequiredInts(fieldName, data, gen);
+      gen.writeArrayFieldStart(fieldName);
+      for (Integer d : data) {
+        gen.writeNumber(d);
+      }
+      gen.writeEndArray();
     }
-  }
-
-  public static void writeRequiredInts(String fieldName, List<Integer> data, JsonGenerator gen)
-      throws IOException {
-    gen.writeArrayFieldStart(fieldName);
-    for (Integer d : data) {
-      gen.writeNumber(d);
-    }
-    gen.writeEndArray();
   }
 
   public static void writeEnums(
       String fieldName, List<? extends ProtocolMessageEnum> enums, JsonGenerator gen)
       throws IOException {
     if (!enums.isEmpty()) {
-      writeRequiredEnums(fieldName, enums, gen);
+      gen.writeArrayFieldStart(fieldName);
+      for (ProtocolMessageEnum e : enums) {
+        gen.writeNumber(e.getNumber());
+      }
+      gen.writeEndArray();
     }
   }
 
-  public static void writeRequiredEnums(
-      String fieldName, List<? extends ProtocolMessageEnum> enums, JsonGenerator gen)
+  public static void writeContentCategories(
+      String fieldName, List<ContentCategory> cats, JsonGenerator gen)
       throws IOException {
-    gen.writeArrayFieldStart(fieldName);
-    for (ProtocolMessageEnum e : enums) {
-      gen.writeNumber(e.getNumber());
+    if (!cats.isEmpty()) {
+      gen.writeArrayFieldStart(fieldName);
+      for (ContentCategory cat : cats) {
+        gen.writeString(OpenRtbJsonUtils.categoryToJsonName(cat));
+      }
+      gen.writeEndArray();
     }
-    gen.writeEndArray();
   }
 }
