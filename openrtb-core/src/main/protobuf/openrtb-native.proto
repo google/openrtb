@@ -54,7 +54,7 @@ message NativeRequest {
   /**
    * Extensions.
    */
-  extensions 100 to 199;
+  extensions 100 to 9999;
 
   /**
    * OpenRTB Native 7.1: Core layouts. An implementing exchange may not support all asset
@@ -125,7 +125,7 @@ message NativeRequest {
     /**
      * Extensions.
      */
-    extensions 100 to 199;
+    extensions 100 to 9999;
 
     /**
      * OpenRTB Native 4.3: The Title object is to be used for title element of the Native ad.
@@ -138,7 +138,7 @@ message NativeRequest {
       /**
        * Extensions.
        */
-      extensions 100 to 199;
+      extensions 100 to 9999;
     }
 
     /**
@@ -181,7 +181,7 @@ message NativeRequest {
       /**
        * Extensions.
        */
-      extensions 100 to 199;
+      extensions 100 to 9999;
 
       /**
        * OpenRTB Native 7.4: Common image asset element types of native advertising at
@@ -232,7 +232,7 @@ message NativeRequest {
       /**
        * Extensions.
        */
-      extensions 100 to 199;
+      extensions 100 to 9999;
     }
 
     /**
@@ -254,7 +254,7 @@ message NativeRequest {
       /**
        * Extensions.
        */
-      extensions 100 to 199;
+      extensions 100 to 9999;
 
       /**
        * OpenRTB Native 7.3: Common asset element types of native advertising.
@@ -332,7 +332,7 @@ message NativeResponse {
   /**
    * Extensions.
    */
-  extensions 100 to 199;
+  extensions 100 to 9999;
 
   /**
    * OpenRTB Native 5.8: Used for ‘call to action’ assets, or other links from the Native ad.
@@ -356,7 +356,7 @@ message NativeResponse {
     /**
      * Extensions.
      */
-    extensions 100 to 199;
+    extensions 100 to 9999;
   }
 
   /**
@@ -402,7 +402,7 @@ message NativeResponse {
     /**
      * Extensions.
      */
-    extensions 100 to 199;
+    extensions 100 to 9999;
 
     /**
      * OpenRTB Native 5.4: Corresponds to the Title Object in the request, with the value filled in.
@@ -415,7 +415,7 @@ message NativeResponse {
       /**
        * Extensions.
        */
-      extensions 100 to 199;
+      extensions 100 to 9999;
     }
 
     /**
@@ -440,7 +440,7 @@ message NativeResponse {
       /**
        * Extensions.
        */
-      extensions 100 to 199;
+      extensions 100 to 9999;
     }
 
     /**
@@ -462,7 +462,7 @@ message NativeResponse {
       /**
        * Extensions.
        */
-      extensions 100 to 199;
+      extensions 100 to 9999;
     }
 
     /**
@@ -477,7 +477,7 @@ message NativeResponse {
       /**
        * Extensions.
        */
-      extensions 100 to 199;
+      extensions 100 to 9999;
     }
   }
 }
