@@ -498,7 +498,8 @@ message BidRequest {
        */
       repeated CompanionType companiontype = 20 [packed = true];
       /**
-       * Companion ads in OpenRTB 2.1 format. Cannot be used with companionad/companiontype.
+       * Companion ads in OpenRTB 2.1 format.  (Or to be precise, interpretations
+       * based on the buggy sample message in 5.1.4, fixed later in 2.2.)
        */
       optional CompanionAd companionad_21 = 22 [deprecated = true];
       /**
@@ -511,6 +512,7 @@ message BidRequest {
        */
       message CompanionAd {
         repeated Banner banner = 1;
+        extensions 100 to 9999;
       }
 
       /*

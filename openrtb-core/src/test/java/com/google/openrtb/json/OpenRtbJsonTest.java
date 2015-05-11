@@ -46,6 +46,7 @@ import com.google.openrtb.OpenRtb.BidRequest.Impression.Native;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP.Deal;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.CompanionAd;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.CompanionType;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.ContentDelivery;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.Linearity;
@@ -364,6 +365,11 @@ public class OpenRtbJsonTest {
                     .setId("compad1")
                     .setW(100)
                     .setH(50))
+                .setCompanionad21(CompanionAd.newBuilder()
+                    .addBanner(Banner.newBuilder()
+                    .setId("compad2")
+                    .setW(110)
+                    .setH(60)))
                 .addApi(ApiFramework.VPAID_2_0)
                 .addCompaniontype(CompanionType.HTML)
                 .setExtension(TestExt.testVideo, test1)))

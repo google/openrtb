@@ -21,6 +21,7 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.endObject;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getDoubleValue;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getIntBoolValue;
+import static com.google.openrtb.json.OpenRtbJsonUtils.peekArrayOrObject;
 import static com.google.openrtb.json.OpenRtbJsonUtils.readCsvString;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
@@ -50,6 +51,7 @@ import com.google.openrtb.OpenRtb.BidRequest.Impression.Native;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP.Deal;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.CompanionAd;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.CompanionType;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.ContentDelivery;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.Linearity;
@@ -475,8 +477,14 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         video.setPos(AdPosition.valueOf(par.getIntValue()));
         break;
       case "companionad":
-        for (startArray(par); endArray(par); par.nextToken()) {
-          video.addCompanionad(readBanner(par));
+        if (peekArrayOrObject(par) == JsonToken.START_ARRAY) {
+          // OpenRTB 2.2+
+          for (startArray(par); endArray(par); par.nextToken()) {
+            video.addCompanionad(readBanner(par));
+          }
+        } else { // START_OBJECT
+          // OpenRTB 2.1-
+          video.setCompanionad21(readCompanionAd(par));
         }
         break;
       case "api":
@@ -491,6 +499,31 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "ext":
         readExtensions(video, par);
+        break;
+    }
+  }
+
+  public final CompanionAd.Builder readCompanionAd(JsonParser par) throws IOException {
+    CompanionAd.Builder companionad = CompanionAd.newBuilder();
+    for (startObject(par); endObject(par); par.nextToken()) {
+      String fieldName = getCurrentName(par);
+      if (par.nextToken() != JsonToken.VALUE_NULL) {
+        readCompanionAdField(par, companionad, fieldName);
+      }
+    }
+    return companionad;
+  }
+
+  protected void readCompanionAdField(
+      JsonParser par, CompanionAd.Builder companionad, String fieldName) throws IOException {
+    switch (fieldName) {
+      case "banner":
+        for (startArray(par); endArray(par); par.nextToken()) {
+          companionad.addBanner(readBanner(par));
+        }
+        break;
+      case "ext":
+        readExtensions(companionad, par);
         break;
     }
   }

@@ -36,6 +36,7 @@ import com.google.openrtb.OpenRtb.BidRequest.Impression.Native;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP.Deal;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.CompanionAd;
 import com.google.openrtb.OpenRtb.BidRequest.Producer;
 import com.google.openrtb.OpenRtb.BidRequest.Publisher;
 import com.google.openrtb.OpenRtb.BidRequest.Regulations;
@@ -288,15 +289,35 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeNumberField("pos", video.getPos().getNumber());
     }
     if (video.getCompanionadCount() != 0) {
+      // OpenRTB 2.2+
       gen.writeArrayFieldStart("companionad");
       for (Banner companionad : video.getCompanionadList()) {
         writeBanner(companionad, gen);
       }
       gen.writeEndArray();
     }
+    if (video.hasCompanionad21()) {
+      // OpenRTB 2.1-
+      gen.writeFieldName("companionad");
+      writeCompanionAd21(video.getCompanionad21(), gen);
+    }
     writeEnums("api", video.getApiList(), gen);
     writeEnums("companiontype", video.getCompaniontypeList(), gen);
     writeExtensions(video, gen);
+    gen.writeEndObject();
+  }
+
+  protected void writeCompanionAd21(CompanionAd companionad21, JsonGenerator gen)
+      throws IOException {
+    gen.writeStartObject();
+    if (companionad21.getBannerCount() != 0) {
+      gen.writeArrayFieldStart("banner");
+      for (Banner banner : companionad21.getBannerList()) {
+        writeBanner(banner, gen);
+      }
+      gen.writeEndArray();
+    }
+    writeExtensions(companionad21, gen);
     gen.writeEndObject();
   }
 
