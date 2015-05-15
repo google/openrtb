@@ -108,20 +108,6 @@ public class OpenRtbJsonTest {
     testRequest(newJsonFactory(), newBidRequest().setApp(newApp()).build());
   }
 
-  @Test(expected = IOException.class)
-  public void testRequest_unknownField() throws IOException {
-    testRequest(OpenRtbJsonFactory.create()
-        .setJsonFactory(new JsonFactory())
-        .register(new Test1Reader<BidRequest.Builder>(TestExt.testRequest1),
-            BidRequest.Builder.class)
-        .register(new OpenRtbJsonExtWriter<Test1>() {
-          @Override protected void write(Test1 ext, JsonGenerator gen) throws IOException {
-            gen.writeStringField("unknownField", "junk");
-          }
-        }, Test1.class, BidRequest.class),
-        newBidRequest().build());
-  }
-
   @Test
   public void testRequest_AlternateFields() throws IOException {
     testRequest(newJsonFactory()
@@ -200,6 +186,18 @@ public class OpenRtbJsonTest {
     + "\"device\": {\n \"ua\": \"Mozilla/4.0\",\n "
     + "\"ip\": \"1.2.3.4\"\n },\n \"at\": 1,\n \"cur\": [\n \"USD\"\n ]\n}";
     newJsonFactory().newReader().readBidRequest(test);
+  }
+
+  @Test
+  public void testIgnoredFields() throws IOException {
+    String test =
+          "{ \"id\": \"0\", "
+        + "\"x1\": 10, \"x2\": \"x\", \"x3\": [4], \"x4\": { \"x5\": [] }, "
+        + "\"ext\": { \"x6\": [ { \"x7\": 100, \"x8\": 3.1415 } ] }"
+        + "}";
+    assertEquals(
+        BidRequest.newBuilder().setId("0").build(),
+        newJsonFactory().newReader().readBidRequest(test));
   }
 
   @Test

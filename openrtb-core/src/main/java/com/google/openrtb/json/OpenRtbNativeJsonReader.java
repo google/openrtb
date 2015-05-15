@@ -120,9 +120,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
           req.addAssets(readReqAsset(par));
         }
         break;
-      case "ext":
-        readExtensions(req, par);
-        break;
+      default:
+        readOther(req, par, fieldName);
     }
   }
 
@@ -158,9 +157,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       case "data":
         asset.setData(readReqData(par));
         break;
-      case "ext":
-        readExtensions(asset, par);
-        break;
+      default:
+        readOther(asset, par, fieldName);
     }
   }
 
@@ -183,9 +181,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       case "len":
         title.setLen(par.getIntValue());
         break;
-      case "ext":
-        readExtensions(title, par);
-        break;
+      default:
+        readOther(title, par, fieldName);
     }
   }
 
@@ -225,9 +222,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
           image.addMimes(par.getText());
         }
         break;
-      case "ext":
-        readExtensions(image, par);
-        break;
+      default:
+        readOther(image, par, fieldName);
     }
   }
 
@@ -263,9 +259,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
           video.addProtocols(par.getIntValue());
         }
         break;
-      case "ext":
-        readExtensions(video, par);
-        break;
+      default:
+        readOther(video, par, fieldName);
     }
   }
 
@@ -289,9 +284,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       case "len":
         data.setLen(par.getIntValue());
         break;
-      case "ext":
-        readExtensions(data, par);
-        break;
+      default:
+        readOther(data, par, fieldName);
     }
   }
 
@@ -364,9 +358,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       case "jstracker":
         resp.setJstracker(par.getText());
         break;
-      case "ext":
-        readExtensions(resp, par);
-        break;
+      default:
+        readOther(resp, par, fieldName);
     }
   }
 
@@ -405,9 +398,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       case "link":
         asset.setLink(readRespLink(par));
         break;
-      case "ext":
-        readExtensions(asset, par);
-        break;
+      default:
+        readOther(asset, par, fieldName);
     }
   }
 
@@ -430,9 +422,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       case "text":
         title.setText(par.getText());
         break;
-      case "ext":
-        readExtensions(title, par);
-        break;
+      default:
+        readOther(title, par, fieldName);
     }
   }
 
@@ -461,9 +452,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       case "h":
         image.setH(par.getIntValue());
         break;
-      case "ext":
-        readExtensions(image, par);
-        break;
+      default:
+        readOther(image, par, fieldName);
     }
   }
 
@@ -488,9 +478,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
           video.addVasttag(par.getText());
         }
         break;
-      case "ext":
-        readExtensions(video, par);
-        break;
+      default:
+        readOther(video, par, fieldName);
     }
   }
 
@@ -514,9 +503,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       case "value":
         data.setValue(par.getText());
         break;
-      case "ext":
-        readExtensions(data, par);
-        break;
+      default:
+        readOther(data, par, fieldName);
     }
   }
 
@@ -545,9 +533,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       case "fallback":
         link.setFallback(par.getText());
         break;
-      case "ext":
-        readExtensions(link, par);
-        break;
+      default:
+        readOther(link, par, fieldName);
     }
   }
 }
