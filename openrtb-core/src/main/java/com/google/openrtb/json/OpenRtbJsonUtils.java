@@ -70,7 +70,7 @@ public class OpenRtbJsonUtils {
     return GENDER_NAME.inverse().get(cat);
   }
 
-  public static String getCurrentName(JsonParser par) throws JsonParseException, IOException {
+  public static String getCurrentName(JsonParser par) throws IOException {
     String name = par.getCurrentName();
     return name == null ? "" : name;
   }
@@ -122,21 +122,21 @@ public class OpenRtbJsonUtils {
   }
 
   @Deprecated
-  public static double nextDoubleValue(JsonParser par) throws IOException, JsonParseException {
+  public static double nextDoubleValue(JsonParser par) throws IOException {
     par.nextToken();
     return Double.parseDouble(par.getText());
   }
 
-  public static double getDoubleValue(JsonParser par) throws IOException, JsonParseException {
+  public static double getDoubleValue(JsonParser par) throws IOException {
     return Double.parseDouble(par.getText());
   }
 
   @Deprecated
-  public static boolean nextIntBoolValue(JsonParser par) throws IOException, JsonParseException {
+  public static boolean nextIntBoolValue(JsonParser par) throws IOException {
     return par.nextIntValue(0) != 0;
   }
 
-  public static boolean getIntBoolValue(JsonParser par) throws IOException, JsonParseException {
+  public static boolean getIntBoolValue(JsonParser par) throws IOException {
     return par.getIntValue() != 0;
   }
 
@@ -146,7 +146,7 @@ public class OpenRtbJsonUtils {
    * to be of either type in OpenRTB 2.2; now in 2.3 they are all CSV strings only.
    * TODO: Simplify this to only accept CSV strings after 2.2 compatibility is dropped.
    */
-  public static Iterable<String> readCsvString(JsonParser par) throws IOException, JsonParseException {
+  public static Iterable<String> readCsvString(JsonParser par) throws IOException {
     JsonToken currentToken = par.getCurrentToken();
     if (currentToken == JsonToken.START_ARRAY) {
       List<String> keywords = new ArrayList<>();
@@ -169,7 +169,7 @@ public class OpenRtbJsonUtils {
   }
 
   public static void writeIntBoolField(String fieldName, boolean data, JsonGenerator gen)
-      throws IOException, JsonParseException {
+      throws IOException {
     gen.writeNumberField(fieldName, data ? 1 : 0);
   }
 

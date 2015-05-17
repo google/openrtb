@@ -79,8 +79,15 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
    * Serializes a {@link NativeRequest} to JSON, with a provided {@link JsonGenerator}
    * which allows several choices of output and encoding.
    */
-  public void writeNativeRequest(NativeRequest req, JsonGenerator gen) throws IOException {
+  public final void writeNativeRequest(NativeRequest req, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
+    writeNativeRequestFields(req, gen);
+    writeExtensions(req, gen);
+    gen.writeEndObject();
+    gen.flush();
+  }
+
+  protected void writeNativeRequestFields(NativeRequest req, JsonGenerator gen) throws IOException {
     if (req.hasVer()) {
       gen.writeStringField("ver", req.getVer());
     }
@@ -103,13 +110,17 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       }
       gen.writeEndArray();
     }
-    writeExtensions(req, gen);
-    gen.writeEndObject();
-    gen.flush();
   }
 
-  public void writeReqAsset(NativeRequest.Asset asset, JsonGenerator gen) throws IOException {
+  public final void writeReqAsset(NativeRequest.Asset asset, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
+    writeReqAssetFields(asset, gen);
+    writeExtensions(asset, gen);
+    gen.writeEndObject();
+  }
+
+  protected void writeReqAssetFields(NativeRequest.Asset asset, JsonGenerator gen)
+      throws IOException {
     gen.writeNumberField("id", asset.getId());
     if (asset.hasRequired()) {
       writeIntBoolField("required", asset.getRequired(), gen);
@@ -130,21 +141,31 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeFieldName("data");
       writeReqData(asset.getData(), gen);
     }
-    writeExtensions(asset, gen);
-    gen.writeEndObject();
   }
 
-  public void writeReqTitle(NativeRequest.Asset.Title title, JsonGenerator gen)
+  public final void writeReqTitle(NativeRequest.Asset.Title title, JsonGenerator gen)
       throws IOException {
     gen.writeStartObject();
-    gen.writeNumberField("len", title.getLen());
+    writeReqTitleFields(title, gen);
     writeExtensions(title, gen);
     gen.writeEndObject();
   }
 
-  public void writeReqImage(NativeRequest.Asset.Image image, JsonGenerator gen)
+  protected void writeReqTitleFields(NativeRequest.Asset.Title title, JsonGenerator gen)
+      throws IOException {
+    gen.writeNumberField("len", title.getLen());
+  }
+
+  public final void writeReqImage(NativeRequest.Asset.Image image, JsonGenerator gen)
       throws IOException {
     gen.writeStartObject();
+    writeReqImageFields(image, gen);
+    writeExtensions(image, gen);
+    gen.writeEndObject();
+  }
+
+  protected void writeReqImageFields(NativeRequest.Asset.Image image, JsonGenerator gen)
+      throws IOException {
     if (image.hasType()) {
       gen.writeNumberField("type", image.getType().getNumber());
     }
@@ -163,13 +184,18 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     if (checkRequired(image.getMimesCount())) {
       writeStrings("mimes", image.getMimesList(), gen);
     }
-    writeExtensions(image, gen);
+  }
+
+  public final void writeReqVideo(NativeRequest.Asset.Video video, JsonGenerator gen)
+      throws IOException {
+    gen.writeStartObject();
+    writeReqVideoFields(video, gen);
+    writeExtensions(video, gen);
     gen.writeEndObject();
   }
 
-  public void writeReqVideo(NativeRequest.Asset.Video video, JsonGenerator gen)
+  protected void writeReqVideoFields(NativeRequest.Asset.Video video, JsonGenerator gen)
       throws IOException {
-    gen.writeStartObject();
     if (checkRequired(video.getMimesCount())) {
       writeStrings("mimes", video.getMimesList(), gen);
     }
@@ -178,19 +204,22 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     if (checkRequired(video.getProtocolsCount())) {
       writeInts("protocols", video.getProtocolsList(), gen);
     }
-    writeExtensions(video, gen);
+  }
+
+  public final void writeReqData(NativeRequest.Asset.Data data, JsonGenerator gen)
+      throws IOException {
+    gen.writeStartObject();
+    writeReqDataFields(data, gen);
+    writeExtensions(data, gen);
     gen.writeEndObject();
   }
 
-  public void writeReqData(NativeRequest.Asset.Data data, JsonGenerator gen)
+  protected void writeReqDataFields(NativeRequest.Asset.Data data, JsonGenerator gen)
       throws IOException {
-    gen.writeStartObject();
     gen.writeNumberField("type", data.getType().getNumber());
     if (data.hasLen()) {
       gen.writeNumberField("len", data.getLen());
     }
-    writeExtensions(data, gen);
-    gen.writeEndObject();
   }
 
   /**
@@ -227,8 +256,16 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
    * Serializes a {@link NativeResponse} to JSON, with a provided {@link JsonGenerator}
    * which allows several choices of output and encoding.
    */
-  public void writeNativeResponse(NativeResponse resp, JsonGenerator gen) throws IOException {
+  public final void writeNativeResponse(NativeResponse resp, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
+    writeNativeResponseFields(resp, gen);
+    writeExtensions(resp, gen);
+    gen.writeEndObject();
+    gen.flush();
+  }
+
+  protected void writeNativeResponseFields(NativeResponse resp, JsonGenerator gen)
+      throws IOException {
     if (resp.hasVer()) {
       gen.writeStringField("ver", resp.getVer());
     }
@@ -245,13 +282,18 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     if (resp.hasJstracker()) {
       gen.writeStringField("jstracker", resp.getJstracker());
     }
-    writeExtensions(resp, gen);
-    gen.writeEndObject();
-    gen.flush();
   }
 
-  public void writeRespAsset(NativeResponse.Asset asset, JsonGenerator gen) throws IOException {
+  public final void writeRespAsset(NativeResponse.Asset asset, JsonGenerator gen)
+      throws IOException {
     gen.writeStartObject();
+    writeRespAssetFields(asset, gen);
+    writeExtensions(asset, gen);
+    gen.writeEndObject();
+  }
+
+  protected void writeRespAssetFields(NativeResponse.Asset asset, JsonGenerator gen)
+      throws IOException {
     gen.writeNumberField("id", asset.getId());
     if (asset.hasReq()) {
       writeIntBoolField("req", asset.getReq(), gen);
@@ -276,21 +318,31 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeFieldName("link");
       writeRespLink(asset.getLink(), gen);
     }
-    writeExtensions(asset, gen);
-    gen.writeEndObject();
   }
 
-  public void writeRespTitle(NativeResponse.Asset.Title title, JsonGenerator gen)
+  public final void writeRespTitle(NativeResponse.Asset.Title title, JsonGenerator gen)
       throws IOException {
     gen.writeStartObject();
-    gen.writeStringField("text", title.getText());
+    writeRespTitleFields(title, gen);
     writeExtensions(title, gen);
     gen.writeEndObject();
   }
 
-  public void writeRespImage(NativeResponse.Asset.Image image, JsonGenerator gen)
+  protected void writeRespTitleFields(NativeResponse.Asset.Title title, JsonGenerator gen)
+      throws IOException {
+    gen.writeStringField("text", title.getText());
+  }
+
+  public final void writeRespImage(NativeResponse.Asset.Image image, JsonGenerator gen)
       throws IOException {
     gen.writeStartObject();
+    writeRespImageFields(image, gen);
+    writeExtensions(image, gen);
+    gen.writeEndObject();
+  }
+
+  protected void writeRespImageFields(NativeResponse.Asset.Image image, JsonGenerator gen)
+      throws IOException {
     if (image.hasUrl()) {
       gen.writeStringField("url", image.getUrl());
     }
@@ -300,32 +352,47 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     if (image.hasH()) {
       gen.writeNumberField("h", image.getH());
     }
-    writeExtensions(image, gen);
-    gen.writeEndObject();
   }
 
-  public void writeRespVideo(NativeResponse.Asset.Video video, JsonGenerator gen)
+  public final void writeRespVideo(NativeResponse.Asset.Video video, JsonGenerator gen)
       throws IOException {
     gen.writeStartObject();
-    writeStrings("vasttag", video.getVasttagList(), gen);
+    writeRespVideoFields(video, gen);
     writeExtensions(video, gen);
     gen.writeEndObject();
   }
 
-  public void writeRespData(NativeResponse.Asset.Data data, JsonGenerator gen)
+  protected void writeRespVideoFields(NativeResponse.Asset.Video video, JsonGenerator gen)
+      throws IOException {
+    writeStrings("vasttag", video.getVasttagList(), gen);
+  }
+
+  public final void writeRespData(NativeResponse.Asset.Data data, JsonGenerator gen)
       throws IOException {
     gen.writeStartObject();
-    if (data.hasLabel()) {
-      gen.writeStringField("label", data.getLabel());
-    }
-    gen.writeStringField("value", data.getValue());
+    writeRespDataFields(data, gen);
     writeExtensions(data, gen);
     gen.writeEndObject();
   }
 
-  public void writeRespLink(NativeResponse.Link link, JsonGenerator gen)
+  protected void writeRespDataFields(NativeResponse.Asset.Data data, JsonGenerator gen)
+      throws IOException {
+    if (data.hasLabel()) {
+      gen.writeStringField("label", data.getLabel());
+    }
+    gen.writeStringField("value", data.getValue());
+  }
+
+  public final void writeRespLink(NativeResponse.Link link, JsonGenerator gen)
       throws IOException {
     gen.writeStartObject();
+    writeRespLinkFields(link, gen);
+    writeExtensions(link, gen);
+    gen.writeEndObject();
+  }
+
+  protected void writeRespLinkFields(NativeResponse.Link link, JsonGenerator gen)
+      throws IOException {
     if (link.hasUrl()) {
       gen.writeStringField("url", link.getUrl());
     }
@@ -333,7 +400,5 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     if (link.hasFallback()) {
       gen.writeStringField("fallback", link.getFallback());
     }
-    writeExtensions(link, gen);
-    gen.writeEndObject();
   }
 }
