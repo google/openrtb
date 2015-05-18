@@ -46,6 +46,7 @@ import com.google.openrtb.OpenRtb.BidRequest.Impression.Native;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP.Deal;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.CompanionAd;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.CompanionType;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.ContentDelivery;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.Linearity;
@@ -81,7 +82,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 /**
- * Tests for {@link OpenRtbJsonWriter}.
+ * Tests for {@link OpenRtbJsonFactory}, {@link OpenRtbJsonReader}, {@link OpenRtbJsonWriter}.
  */
 public class OpenRtbJsonTest {
   private static final Logger logger = LoggerFactory.getLogger(OpenRtbJsonTest.class);
@@ -105,20 +106,6 @@ public class OpenRtbJsonTest {
   @Test
   public void testRequest_app() throws IOException {
     testRequest(newJsonFactory(), newBidRequest().setApp(newApp()).build());
-  }
-
-  @Test(expected = IOException.class)
-  public void testRequest_unknownField() throws IOException {
-    testRequest(OpenRtbJsonFactory.create()
-        .setJsonFactory(new JsonFactory())
-        .register(new Test1Reader<BidRequest.Builder>(TestExt.testRequest1),
-            BidRequest.Builder.class)
-        .register(new OpenRtbJsonExtWriter<Test1>() {
-          @Override protected void write(Test1 ext, JsonGenerator gen) throws IOException {
-            gen.writeStringField("unknownField", "junk");
-          }
-        }, Test1.class, BidRequest.class),
-        newBidRequest().build());
   }
 
   @Test
@@ -199,6 +186,18 @@ public class OpenRtbJsonTest {
     + "\"device\": {\n \"ua\": \"Mozilla/4.0\",\n "
     + "\"ip\": \"1.2.3.4\"\n },\n \"at\": 1,\n \"cur\": [\n \"USD\"\n ]\n}";
     newJsonFactory().newReader().readBidRequest(test);
+  }
+
+  @Test
+  public void testIgnoredFields() throws IOException {
+    String test =
+          "{ \"id\": \"0\", "
+        + "\"x1\": 10, \"x2\": \"x\", \"x3\": [4], \"x4\": { \"x5\": [] }, "
+        + "\"ext\": { \"x6\": [ { \"x7\": 100, \"x8\": 3.1415 } ] }"
+        + "}";
+    assertEquals(
+        BidRequest.newBuilder().setId("0").build(),
+        newJsonFactory().newReader().readBidRequest(test));
   }
 
   @Test
@@ -364,6 +363,11 @@ public class OpenRtbJsonTest {
                     .setId("compad1")
                     .setW(100)
                     .setH(50))
+                .setCompanionad21(CompanionAd.newBuilder()
+                    .addBanner(Banner.newBuilder()
+                    .setId("compad2")
+                    .setW(110)
+                    .setH(60)))
                 .addApi(ApiFramework.VPAID_2_0)
                 .addCompaniontype(CompanionType.HTML)
                 .setExtension(TestExt.testVideo, test1)))

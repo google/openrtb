@@ -23,14 +23,15 @@ import "openrtb-native.proto";
 /**
  * OpenRTB extensions ("ext" fields in the spec & JSON representation)
  * are represented here by Protocol Buffer extensions. This proto only
- * reserves the range of IDs 100-199 at every extensible object.
+ * reserves the range of IDs 100-9999 at every extensible object.
  * <p>
- * Assigned codes:
+ * Reserved ranges:
  * <ol>
- *   <li>100: "Internal" extensions, used by a RTB toolkit (like Open Bidder),
- *      may contribute to the mapping but won't produce on-wire extensions.</li>
- *   <li>101: DoubleClick Ad Exchange ("Link" extensions).</li>
- *   <li>102: DoubleClick Ad Exchange (on-wire extensions).</li>
+ *   <li>100-199: Reserved for Google, including the openrtb-doubleclick
+ *                library (DcExt) and Open Bidder project (ObExt).</li>
+ *   <li>200-999: Free for use with other exchanges or projects.</li>
+ *   <li>1000-1999: Reserved for Google.</li>
+ *   <li>2000-9999: Free for use with other exchanges or projects.</li>
  * </ol>
  */
 
@@ -124,7 +125,7 @@ message BidRequest {
   /**
    * Extensions.
    */
-  extensions 100 to 199;
+  extensions 100 to 9999;
 
   enum AuctionType {
     FIRST_PRICE = 1;
@@ -212,7 +213,7 @@ message BidRequest {
     /**
      * Extensions.
      */
-    extensions 100 to 199;
+    extensions 100 to 9999;
 
     /*
      * OpenRTB 5.4: The following table specifies the position of the ad as a relative measure
@@ -339,7 +340,7 @@ message BidRequest {
       /**
        * Extensions.
        */
-      extensions 100 to 199;
+      extensions 100 to 9999;
 
       /*
        * OpenRTB 5.2: types of ads that can be accepted by the exchange unless
@@ -497,9 +498,22 @@ message BidRequest {
        */
       repeated CompanionType companiontype = 20 [packed = true];
       /**
+       * Companion ads in OpenRTB 2.1 format.  (Or to be precise, interpretations
+       * based on the buggy sample message in 5.1.4, fixed later in 2.2.)
+       */
+      optional CompanionAd companionad_21 = 22 [deprecated = true];
+      /**
        * Extensions.
        */
-      extensions 100 to 199;
+      extensions 100 to 9999;
+
+      /**
+       * OpenRTB 2.1 compatibility.
+       */
+      message CompanionAd {
+        repeated Banner banner = 1;
+        extensions 100 to 9999;
+      }
 
       /*
        * OpenRTB 5.7: The following table indicates the options for video linearity.
@@ -616,7 +630,7 @@ message BidRequest {
       /**
        * Extensions.
        */
-      extensions 100 to 199;
+      extensions 100 to 9999;
     }
 
     /*
@@ -639,7 +653,7 @@ message BidRequest {
       /**
        * Extensions.
        */
-      extensions 100 to 199;
+      extensions 100 to 9999;
 
       /*
        * OpenRTB 3.2.18: This object constitutes a specific deal that was struck a priori
@@ -680,7 +694,7 @@ message BidRequest {
         /**
          * Extensions.
          */
-        extensions 100 to 199;
+        extensions 100 to 9999;
       }
     }
   }
@@ -726,11 +740,11 @@ message BidRequest {
     /*
      * Referrer URL that caused navigation to the current page.
      */
-    optional string ref = 10;
+    optional string ref = 9;
     /*
      * Search string that caused navigation to the current page.
      */
-    optional string search = 11;
+    optional string search = 10;
     /**
      * Mobile-optimized signal, where 0 = no, 1 = yes.
      */
@@ -742,19 +756,19 @@ message BidRequest {
     /*
      * Details about the Publisher (Section 3.2.8) of the site.
      */
-    optional Publisher publisher = 12;
+    optional Publisher publisher = 11;
     /*
      * Details about the Content (Section 3.2.9) within the site.
      */
-    optional Content content = 13;
+    optional Content content = 12;
     /*
      * Comma separated list of keywords about this site.
      */
-    repeated string keywords = 14;
+    repeated string keywords = 13;
     /**
      * Extensions.
      */
-    extensions 100 to 199;
+    extensions 100 to 9999;
   }
 
   /*
@@ -785,7 +799,7 @@ message BidRequest {
     /*
      * App store URL for an installed app; for QAG 1.5 compliance.
      */
-    optional string storeurl = 14;
+    optional string storeurl = 16;
     /*
      * Array of IAB content categories of the app. Refer to List 5.1.
      */
@@ -827,7 +841,7 @@ message BidRequest {
     /**
      * Extensions.
      */
-    extensions 100 to 199;
+    extensions 100 to 9999;
   }
 
   /*
@@ -854,7 +868,7 @@ message BidRequest {
     /**
      * Extensions.
      */
-    extensions 100 to 199;
+    extensions 100 to 9999;
   }
 
   /*
@@ -952,7 +966,7 @@ message BidRequest {
     /**
      * Extensions.
      */
-    extensions 100 to 199;
+    extensions 100 to 9999;
 
     /*
      * OpenRTB 5.11: The following table lists the options for the video quality.
@@ -1021,7 +1035,7 @@ message BidRequest {
     /**
      * Extensions.
      */
-    extensions 100 to 199;
+    extensions 100 to 9999;
   }
 
   /*
@@ -1053,7 +1067,7 @@ message BidRequest {
      * where 0 = tracking is unrestricted, 1 = tracking must be limited per commercial guidelines.
      * This field is not required, but it’s highly recommended.
      */
-    optional bool lmt = 20;
+    optional bool lmt = 23;
     /*
      * IPv4 address closest to device.
      * This field is not required, but it’s highly recommended.
@@ -1086,23 +1100,23 @@ message BidRequest {
     /**
      * Hardware version of the device (e.g., "5S" for iPhone 5S).
      */
-    optional string hwv = 21;
+    optional string hwv = 24;
     /**
      * Physical width of the screen in pixels.
      */
-    optional int32 w = 22;
+    optional int32 w = 25;
     /**
      * Physical height of the screen in pixels.
      */
-    optional int32 h = 23;
+    optional int32 h = 26;
     /**
      * Screen size as pixels per linear inch.
      */
-    optional int32 ppi = 24;
+    optional int32 ppi = 27;
     /**
      * The ratio of physical pixels to device independent pixels.
      */
-    optional double pxratio = 25;
+    optional double pxratio = 28;
     /*
      * Support for JavaScript, where 0 = no, 1 = yes.
      */
@@ -1128,7 +1142,7 @@ message BidRequest {
     /**
      * ID sanctioned for advertiser use in the clear (i.e., not hashed).
      */
-    optional string ifa = 26;
+    optional string ifa = 20;
     /*
      * Hardware device ID (e.g., IMEI); hashed via SHA1.
      */
@@ -1148,15 +1162,15 @@ message BidRequest {
     /**
      * MAC address of the device; hashed via SHA1.
      */
-    optional string macsha1 = 27;
+    optional string macsha1 = 21;
     /**
      * MAC address of the device; hashed via MD5.
      */
-    optional string macmd5 = 28;
+    optional string macmd5 = 22;
     /**
      * Extensions.
      */
-    extensions 100 to 199;
+    extensions 100 to 9999;
 
     /*
      * OpenRTB 5.17: The following table lists the type of device from which the
@@ -1248,7 +1262,7 @@ message BidRequest {
     /**
      * Extensions.
      */
-    extensions 100 to 199;
+    extensions 100 to 9999;
 
     /*
      * OpenRTB 5.16: The following table lists the options to indicate how the geographic
@@ -1307,7 +1321,7 @@ message BidRequest {
     /**
      * Extensions.
      */
-    extensions 100 to 199;
+    extensions 100 to 9999;
 
     enum Gender {
       MALE = 1;   // "M"
@@ -1339,7 +1353,7 @@ message BidRequest {
     /**
      * Extensions.
      */
-    extensions 100 to 199;
+    extensions 100 to 9999;
 
     /*
      * OpenRTB 3.2.15: Segment objects are essentially key-value pairs that convey specific units
@@ -1363,7 +1377,7 @@ message BidRequest {
       /**
        * Extensions.
        */
-      extensions 100 to 199;
+      extensions 100 to 9999;
     }
   }
 
@@ -1382,7 +1396,7 @@ message BidRequest {
     /**
      * Extensions.
      */
-    extensions 100 to 199;
+    extensions 100 to 9999;
   }
 }
 
@@ -1426,7 +1440,7 @@ message BidResponse {
   /**
    * Extensions.
    */
-  extensions 100 to 199;
+  extensions 100 to 9999;
 
   /*
    * OpenRTB 5.19: The following table lists the options for a bidder to signal the exchange
@@ -1468,7 +1482,7 @@ message BidResponse {
     /**
      * Extensions.
      */
-    extensions 100 to 199;
+    extensions 100 to 9999;
 
     /*
      * OpenRTB 4.2.3: A SeatBid object contains one or more Bid objects, each of which relates
@@ -1507,7 +1521,7 @@ message BidResponse {
        * Native ad response.
        * You can only set one of adm and admNative; either will generate the "adm" field in JSON.
        */
-      optional NativeResponse admNative = 17;
+      optional NativeResponse admNative = 50;
       /*
        * Advertiser domain for block list checking (e.g., “ford.com”). This can be an array of
        * for the case of rotating creatives. Exchanges can mandate that only one domain is allowed.
@@ -1517,7 +1531,7 @@ message BidResponse {
        * Bundle or package name (e.g., com.foo.mygame) of the app being advertised, if applicable;
        * intended to be a unique ID across exchanges.
        */
-      optional string bundle = 15;
+      optional string bundle = 14;
       /*
        * URL without cache-busting to an image that is representative of the content of
        * the campaign for ad quality/safety checking.
@@ -1535,7 +1549,7 @@ message BidResponse {
       /**
        * IAB content categories of the creative. Refer to List 5.1.
        */
-      optional ContentCategory cat = 16;
+      optional ContentCategory cat = 15;
       /*
        * Set of attributes describing the creative. Refer to List 5.3.
        */
@@ -1544,19 +1558,19 @@ message BidResponse {
        * Reference to the deal.id from the bid request if this bid pertains to a
        * private marketplace direct deal.
        */
-      optional string dealid = 12;
+      optional string dealid = 13;
       /**
        * Width of the ad in pixels.
        */
-       optional int32 w = 13;
+       optional int32 w = 16;
       /**
        * Height of the ad in pixels.
        */
-       optional int32 h = 14;
+       optional int32 h = 17;
       /**
        * Extensions.
        */
-      extensions 100 to 199;
+      extensions 100 to 9999;
     }
   }
 }

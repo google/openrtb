@@ -17,7 +17,6 @@
 package com.google.openrtb.json;
 
 import static com.google.openrtb.json.OpenRtbJsonUtils.endObject;
-import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
 import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
@@ -41,6 +40,15 @@ public abstract class AbstractOpenRtbJsonReader {
 
   public final OpenRtbJsonFactory factory() {
     return factory;
+  }
+
+  protected <EB extends ExtendableBuilder<?, EB>>
+  void readOther(EB msg, JsonParser par, String fieldName) throws IOException {
+    if ("ext".equals(fieldName)) {
+      readExtensions(msg, par);
+    } else {
+      par.skipChildren();
+    }
   }
 
   /**
@@ -81,8 +89,8 @@ public abstract class AbstractOpenRtbJsonReader {
       }
 
       if (!extRead) {
-        throw new IOException("Unhandled extension for " + msg.getClass()
-            + ": " + getCurrentName(par));
+        par.nextToken();
+        par.skipChildren();
       }
       // Else loop, try all readers again
     }
