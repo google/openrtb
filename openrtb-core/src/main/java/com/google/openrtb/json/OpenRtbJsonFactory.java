@@ -52,40 +52,47 @@ public class OpenRtbJsonFactory {
   private final SetMultimap<String, OpenRtbJsonExtReader<?, ?>> extReaders;
   private final Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters;
 
-  /**
-   * Creates a new factory with default configuration.
-   */
-  public static OpenRtbJsonFactory create() {
-    return new OpenRtbJsonFactory(null,
-        LinkedHashMultimap.<String, OpenRtbJsonExtReader<?, ?>>create(),
-        new LinkedHashMap<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>>());
-  }
-
-  private OpenRtbJsonFactory(
+  protected OpenRtbJsonFactory(
       JsonFactory jsonFactory,
       SetMultimap<String, OpenRtbJsonExtReader<?, ?>> extReaders,
       Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters) {
     this.jsonFactory = jsonFactory;
-    this.extReaders = checkNotNull(extReaders);
-    this.extWriters = checkNotNull(extWriters);
+    this.extReaders = extReaders == null
+        ? LinkedHashMultimap.<String, OpenRtbJsonExtReader<?, ?>>create()
+        : extReaders;
+    this.extWriters = extWriters == null
+        ? new LinkedHashMap<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>>()
+        : extWriters;
   }
 
-  private OpenRtbJsonFactory immutableClone() {
-    return new OpenRtbJsonFactory(
-        getJsonFactory(),
-        ImmutableSetMultimap.copyOf(extReaders),
-        ImmutableMap.copyOf(Maps.transformValues(extWriters, new Function<
-            Map<String, Map<String, OpenRtbJsonExtWriter<?>>>,
-            Map<String, Map<String, OpenRtbJsonExtWriter<?>>>>() {
-          @Override public Map<String, Map<String, OpenRtbJsonExtWriter<?>>> apply(
-              Map<String, Map<String, OpenRtbJsonExtWriter<?>>> map) {
-            return ImmutableMap.copyOf(Maps.transformValues(map, new Function<
-                Map<String, OpenRtbJsonExtWriter<?>>, Map<String, OpenRtbJsonExtWriter<?>>>() {
-              @Override public Map<String, OpenRtbJsonExtWriter<?>> apply(
-                  Map<String, OpenRtbJsonExtWriter<?>> map) {
-                return ImmutableMap.copyOf(map);
-              }}));
-          }})));
+  /**
+   * This "immutable-clone-constructor" returns an immutable copy of this factory.
+   * Subclasses should have a protected constructor that super-calls this and makes
+   * immutable copies of their own fields if necessary.  You can then override the
+   * methods that create Reader/Writer objects so they use that constructor.
+   */
+  protected OpenRtbJsonFactory(OpenRtbJsonFactory config) {
+    this.jsonFactory = config.getJsonFactory();
+    this.extReaders = ImmutableSetMultimap.copyOf(config.extReaders);
+    this.extWriters = ImmutableMap.copyOf(Maps.transformValues(config.extWriters, new Function<
+        Map<String, Map<String, OpenRtbJsonExtWriter<?>>>,
+        Map<String, Map<String, OpenRtbJsonExtWriter<?>>>>() {
+      @Override public Map<String, Map<String, OpenRtbJsonExtWriter<?>>> apply(
+          Map<String, Map<String, OpenRtbJsonExtWriter<?>>> map) {
+        return ImmutableMap.copyOf(Maps.transformValues(map, new Function<
+            Map<String, OpenRtbJsonExtWriter<?>>, Map<String, OpenRtbJsonExtWriter<?>>>() {
+          @Override public Map<String, OpenRtbJsonExtWriter<?>> apply(
+              Map<String, OpenRtbJsonExtWriter<?>> map) {
+            return ImmutableMap.copyOf(map);
+          }}));
+      }}));
+  }
+
+  /**
+   * Creates a new factory with default configuration.
+   */
+  public static OpenRtbJsonFactory create() {
+    return new OpenRtbJsonFactory(null, null, null);
   }
 
   /**
@@ -150,34 +157,28 @@ public class OpenRtbJsonFactory {
    * Creates an {@link OpenRtbJsonWriter}, configured to the current state of this factory.
    */
   public OpenRtbJsonWriter newWriter() {
-    return new OpenRtbJsonWriter(immutableClone());
+    return new OpenRtbJsonWriter(new OpenRtbJsonFactory(this));
   }
 
   /**
    * Creates an {@link OpenRtbJsonWriter}, configured to the current state of this factory.
    */
   public OpenRtbJsonReader newReader() {
-    return new OpenRtbJsonReader(immutableClone());
+    return new OpenRtbJsonReader(new OpenRtbJsonFactory(this));
   }
 
   /**
    * Creates an {@link OpenRtbNativeJsonWriter}, configured to the current state of this factory.
    */
   public OpenRtbNativeJsonWriter newNativeWriter() {
-    return new OpenRtbNativeJsonWriter(new OpenRtbJsonFactory(
-        getJsonFactory(),
-        ImmutableSetMultimap.copyOf(extReaders),
-        ImmutableMap.copyOf(extWriters)));
+    return new OpenRtbNativeJsonWriter(new OpenRtbJsonFactory(this));
   }
 
   /**
    * Creates an {@link OpenRtbNativeJsonWriter}, configured to the current state of this factory.
    */
   public OpenRtbNativeJsonReader newNativeReader() {
-    return new OpenRtbNativeJsonReader(new OpenRtbJsonFactory(
-        getJsonFactory(),
-        ImmutableSetMultimap.copyOf(extReaders),
-        ImmutableMap.copyOf(extWriters)));
+    return new OpenRtbNativeJsonReader(new OpenRtbJsonFactory(this));
   }
 
   @SuppressWarnings("unchecked")

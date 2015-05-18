@@ -82,7 +82,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 /**
- * Tests for {@link OpenRtbJsonWriter}.
+ * Tests for {@link OpenRtbJsonFactory}, {@link OpenRtbJsonReader}, {@link OpenRtbJsonWriter}.
  */
 public class OpenRtbJsonTest {
   private static final Logger logger = LoggerFactory.getLogger(OpenRtbJsonTest.class);

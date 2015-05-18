@@ -34,7 +34,8 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 /**
- * Tests for {@link OpenRtbJsonWriter}.
+ * Tests for {@link OpenRtbJsonFactory},
+ * {@link OpenRtbNativeJsonReader}, {@link OpenRtbNativeJsonWriter}.
  */
 public class OpenRtbNativeJsonTest {
   private static final Logger logger = LoggerFactory.getLogger(OpenRtbNativeJsonTest.class);
