@@ -26,19 +26,19 @@ RELEASE NOTES
 
 ## Version 0.8.2, 19-05-2015
 
-- Added OpenRTB 2.1-compatible CompanionAd
+- Added OpenRTB 2.1-compatible `CompanionAd`
 - Expanded the range of IDs reserved for extensions
 - Fixed some field IDs for compatibility with internal Google systems
 - JSON parsing lenient with unknown fields
-- Improve OpenRtbJsonFactory/Reader/Writer for subclassing. Now you can
-  use that to map uncompliant extensions (see OpenRtbExtJsonTest).
+- Improve `OpenRtbJsonFactory/Reader/Writer` for subclassing.
+  This can be used for uncompliant extensions, see `OpenRtbExtJsonTest`.
 
 ## Version 0.8.1, 29-04-2015
 
-* All "*cat" fields in the model are now typed as [arrays of]
-  the ContentCategory enum, instead of strings.
-* User.gender is now typed as the Gender enum.
-* BidRequest/Deal.at are now typed as the AuctionType enum.
+* All `*cat` fields in the model are now typed as [arrays of]
+  the `ContentCategory` enum, instead of `string`s.
+* `User.gender` is now typed as the `Gender` enum.
+* `BidRequest/Deal.at` are now typed as the `AuctionType` enum.
 
 ## Version 0.8.0, 21-04-2015
 
@@ -46,14 +46,14 @@ RELEASE NOTES
   - Public read/write methods to allow reuse by composition.
   - Extension registry is now per message type instead of "paths",
     static-typed, allowing reuse of messages as part of extensions.
-  - Support for extensions of scalar types such as int32
+  - Support for extensions of scalar types such as `int32`
   - Support for repeated extensions (of both message and scalar types).
-  - New OpenRtbJsonExtReader/Writer make simpler to write extensions.
+  - New `OpenRtbJsonExtReader/Writer` make simpler to write extensions.
 * OpenRTB model reviews:
-  - Using protobuf deprecation for Video.protocol.
+  - Using protobuf deprecation for `Video.protocol`.
   - Documentation and ordering in sync with the latest specs.
-  - Some required/optional updated to match the OpenRTB 2.3 spec.
-  - Content.sourcerelationship changed type to bool.
+  - Some `required/optional` updated to match the OpenRTB 2.3 spec.
+  - `Content.sourcerelationship` changed type to `bool`.
 
 ## Version 0.8.0-beta4, 02-04-2015
 
