@@ -24,6 +24,15 @@ line after checkout or after any mvn clean.
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 0.8.2, 19-05-2015
+
+- Added OpenRTB 2.1-compatible CompanionAd
+- Expanded the range of IDs reserved for extensions
+- Fixed some field IDs for compatibility with internal Google systems
+- JSON parsing lenient with unknown fields
+- Improve OpenRtbJsonFactory/Reader/Writer for subclassing. Now you can
+  use that to map uncompliant extensions (see OpenRtbExtJsonTest).
+
 ## Version 0.8.1, 29-04-2015
 
 * All "*cat" fields in the model are now typed as [arrays of]
