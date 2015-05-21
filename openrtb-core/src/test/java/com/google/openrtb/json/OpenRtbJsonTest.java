@@ -157,6 +157,32 @@ public class OpenRtbJsonTest {
   }
 
   @Test
+  public void testRequest_extNoReadersRegistered() throws IOException {
+    OpenRtbJsonReader reader = OpenRtbJsonFactory.create().newReader();
+    BidRequest req = BidRequest.newBuilder().setId("0").build();
+    // Based on Issue #34
+    assertEquals(req, reader.readBidRequest("{ \"ext\": { \"x\": 0 }, \"id\": \"0\" }"));
+  }
+
+  @Test
+  public void testRequest_extNoReadersConsume() throws IOException {
+    OpenRtbJsonReader reader = newJsonFactory().newReader();
+    BidRequest req = BidRequest.newBuilder().setId("0").build();
+    // Based on Issue #34
+    assertEquals(req, reader.readBidRequest("{ \"ext\": { \"x\": { } }, \"id\": \"0\" }"));
+  }
+
+  @Test(expected = JsonParseException.class)
+  public void testRequest_extNonObject1() throws IOException {
+    newJsonFactory().newReader().readBidRequest("{ \"ext\": [ \"x\": { } ], \"id\": \"0\" }");
+  }
+
+  @Test(expected = JsonParseException.class)
+  public void testRequest_extNonObject2() throws IOException {
+    newJsonFactory().newReader().readBidRequest("{ \"ext\": \"x\", \"id\": \"0\" }");
+  }
+
+  @Test
   public void testResponse() throws IOException {
     OpenRtbJsonFactory jsonFactory = newJsonFactory();
     BidResponse resp = newBidResponse(false).build();
@@ -192,11 +218,19 @@ public class OpenRtbJsonTest {
   public void testIgnoredFields() throws IOException {
     String test =
           "{ \"id\": \"0\", "
-        + "\"x1\": 10, \"x2\": \"x\", \"x3\": [4], \"x4\": { \"x5\": [] }, "
-        + "\"ext\": { \"x6\": [ { \"x7\": 100, \"x8\": 3.1415 } ] }"
+        + "\"x1\": 10, \"at\": 1, "
+        + "\"x2\": \"x\", \"x3\": [4], \"test\": 1, "
+        + "\"x4\": { \"x5\": [] }, \"tmax\": 100, "
+        + "\"ext\": { \"x6\": [ { \"x7\": 100, \"x8\": 3.1415 } ], \"test1\": \"*\" }"
         + "}";
     assertEquals(
-        BidRequest.newBuilder().setId("0").build(),
+        BidRequest.newBuilder()
+            .setId("0")
+            .setAt(AuctionType.FIRST_PRICE)
+            .setTest(true)
+            .setTmax(100)
+            .setExtension(TestExt.testRequest1, Test1.newBuilder().setTest1("*").build())
+            .build(),
         newJsonFactory().newReader().readBidRequest(test));
   }
 
