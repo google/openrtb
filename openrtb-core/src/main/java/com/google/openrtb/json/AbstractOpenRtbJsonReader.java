@@ -62,8 +62,14 @@ public abstract class AbstractOpenRtbJsonReader {
   void readExtensions(EB msg, JsonParser par) throws IOException {
     startObject(par);
     @SuppressWarnings("unchecked")
-    Set<OpenRtbJsonExtReader<EB, ?>> extReaders =
-        factory.getReaders((Class<EB>) msg.getClass());
+    Set<OpenRtbJsonExtReader<EB, ?>> extReaders = factory.getReaders((Class<EB>) msg.getClass());
+    if (extReaders.isEmpty()) {
+      par.nextToken();
+      par.skipChildren();
+      par.nextToken();
+      return;
+    }
+
     JsonToken tokLast = par.getCurrentToken();
     JsonLocation locLast = par.getCurrentLocation();
 
@@ -79,8 +85,7 @@ public abstract class AbstractOpenRtbJsonReader {
         if (!endObject(par)) {
           return;
         } else if (advanced && par.getCurrentToken() != JsonToken.FIELD_NAME) {
-          par.nextToken();
-          tokLast = par.getCurrentToken();
+          tokLast = par.nextToken();
           locLast = par.getCurrentLocation();
         } else {
           tokLast = tokNew;
@@ -91,6 +96,8 @@ public abstract class AbstractOpenRtbJsonReader {
       if (!extRead) {
         par.nextToken();
         par.skipChildren();
+        tokLast = par.nextToken();
+        locLast = par.getCurrentLocation();
       }
       // Else loop, try all readers again
     }
