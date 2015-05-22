@@ -24,7 +24,7 @@ line after checkout or after any mvn clean.
 RELEASE NOTES
 ----------------------------------------------------------------------
 
-## Version 0.8.2, 19-05-2015
+## Version 0.8.3, 22-05-2015
 
 - Added OpenRTB 2.1-compatible `CompanionAd`
 - Expanded the range of IDs reserved for extensions
