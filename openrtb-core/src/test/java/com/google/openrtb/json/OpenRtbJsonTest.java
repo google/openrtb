@@ -172,6 +172,14 @@ public class OpenRtbJsonTest {
     assertEquals(req, reader.readBidRequest("{ \"ext\": { \"x\": { } }, \"id\": \"0\" }"));
   }
 
+  @Test
+  public void testRequest_extBug() throws IOException {
+    OpenRtbJsonReader reader = OpenRtbJsonFactory.create().newReader();
+    BidRequest req = BidRequest.newBuilder().setId("0").build();
+    // Based on Issue #34
+    assertEquals(req, reader.readBidRequest("{ \"ext\": { \"x\": 0, \"y\": {} }, \"id\": \"0\" }"));
+  }
+
   @Test(expected = JsonParseException.class)
   public void testRequest_extNonObject1() throws IOException {
     newJsonFactory().newReader().readBidRequest("{ \"ext\": [ \"x\": { } ], \"id\": \"0\" }");
