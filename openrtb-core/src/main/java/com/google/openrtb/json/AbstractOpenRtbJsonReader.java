@@ -60,16 +60,14 @@ public abstract class AbstractOpenRtbJsonReader {
    */
   protected <EB extends ExtendableBuilder<?, EB>>
   void readExtensions(EB msg, JsonParser par) throws IOException {
-    startObject(par);
     @SuppressWarnings("unchecked")
     Set<OpenRtbJsonExtReader<EB, ?>> extReaders = factory.getReaders((Class<EB>) msg.getClass());
     if (extReaders.isEmpty()) {
-      par.nextToken();
       par.skipChildren();
-      par.nextToken();
       return;
     }
 
+    startObject(par);
     JsonToken tokLast = par.getCurrentToken();
     JsonLocation locLast = par.getCurrentLocation();
 
