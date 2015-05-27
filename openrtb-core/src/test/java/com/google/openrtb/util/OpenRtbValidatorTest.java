@@ -25,8 +25,8 @@ import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.Impression;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.Linearity;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.Protocol;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.VideoBidResponseProtocol;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.VideoLinearity;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
@@ -50,18 +50,18 @@ public class OpenRtbValidatorTest {
           .setId("1")
           .setBanner(Banner.newBuilder()
               .setId("1")
-              .addAllBattr(asList(CreativeAttribute.ANNOYING, CreativeAttribute.POP_UP))))
+              .addAllBattr(asList(CreativeAttribute.ANNOYING, CreativeAttribute.POP))))
       .build();
   private static BidRequest requestVideo = BidRequest.newBuilder()
       .setId("1")
       .addImp(Impression.newBuilder()
           .setId("1")
           .setVideo(Video.newBuilder()
-              .setLinearity(Linearity.LINEAR)
-              .addProtocols(Protocol.VAST_3_0)
+              .setLinearity(VideoLinearity.LINEAR)
+              .addProtocols(VideoBidResponseProtocol.VAST_3_0)
               .setMinduration(0)
               .setMaxduration(0)
-              .addAllBattr(asList(CreativeAttribute.ANNOYING, CreativeAttribute.POP_UP))
+              .addAllBattr(asList(CreativeAttribute.ANNOYING, CreativeAttribute.POP))
               .addCompanionad(Banner.newBuilder()
                   .setId("1")
                   .addAllBattr(asList(CreativeAttribute.TEXT_ONLY)))))

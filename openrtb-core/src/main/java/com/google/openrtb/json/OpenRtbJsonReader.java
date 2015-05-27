@@ -31,7 +31,7 @@ import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.App;
 import com.google.openrtb.OpenRtb.BidRequest.AuctionType;
 import com.google.openrtb.OpenRtb.BidRequest.Content;
-import com.google.openrtb.OpenRtb.BidRequest.Content.Context;
+import com.google.openrtb.OpenRtb.BidRequest.Content.ContentContext;
 import com.google.openrtb.OpenRtb.BidRequest.Content.QAGMediaRating;
 import com.google.openrtb.OpenRtb.BidRequest.Content.VideoQuality;
 import com.google.openrtb.OpenRtb.BidRequest.Data;
@@ -42,28 +42,28 @@ import com.google.openrtb.OpenRtb.BidRequest.Device.DeviceType;
 import com.google.openrtb.OpenRtb.BidRequest.Geo;
 import com.google.openrtb.OpenRtb.BidRequest.Geo.LocationType;
 import com.google.openrtb.OpenRtb.BidRequest.Impression;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.APIFramework;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.AdPosition;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.ApiFramework;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner.AdType;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner.BannerAdType;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner.ExpandableDirection;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Native;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP.Deal;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.CompanionAd;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.CompanionType;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.ContentDelivery;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.Linearity;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.PlaybackMethod;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.Protocol;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.ContentDeliveryMethod;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.VASTCompanionType;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.VideoBidResponseProtocol;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.VideoLinearity;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.VideoPlaybackMethod;
 import com.google.openrtb.OpenRtb.BidRequest.Producer;
 import com.google.openrtb.OpenRtb.BidRequest.Publisher;
 import com.google.openrtb.OpenRtb.BidRequest.Regulations;
 import com.google.openrtb.OpenRtb.BidRequest.Site;
 import com.google.openrtb.OpenRtb.BidRequest.User;
 import com.google.openrtb.OpenRtb.BidResponse;
-import com.google.openrtb.OpenRtb.BidResponse.NoBidReasonCode;
+import com.google.openrtb.OpenRtb.BidResponse.NoBidReason;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.ContentCategory;
@@ -310,7 +310,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "api":
         for (startArray(par); endArray(par); par.nextToken()) {
-          nativ.addApi(ApiFramework.valueOf(par.getIntValue()));
+          nativ.addApi(APIFramework.valueOf(par.getIntValue()));
         }
         break;
       case "battr":
@@ -418,11 +418,11 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         video.setMaxduration(par.getIntValue());
         break;
       case "protocol":
-        video.setProtocol(Protocol.valueOf(par.getIntValue()));
+        video.setProtocol(VideoBidResponseProtocol.valueOf(par.getIntValue()));
         break;
       case "protocols":
         for (startArray(par); endArray(par); par.nextToken()) {
-          video.addProtocols(Protocol.valueOf(par.getIntValue()));
+          video.addProtocols(VideoBidResponseProtocol.valueOf(par.getIntValue()));
         }
         break;
       case "w":
@@ -435,7 +435,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         video.setStartdelay(par.getIntValue());
         break;
       case "linearity":
-        video.setLinearity(Linearity.valueOf(par.getIntValue()));
+        video.setLinearity(VideoLinearity.valueOf(par.getIntValue()));
         break;
       case "sequence":
         video.setSequence(par.getIntValue());
@@ -459,12 +459,12 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "playbackmethod":
         for (startArray(par); endArray(par); par.nextToken()) {
-          video.addPlaybackmethod(PlaybackMethod.valueOf(par.getIntValue()));
+          video.addPlaybackmethod(VideoPlaybackMethod.valueOf(par.getIntValue()));
         }
         break;
       case "delivery":
         for (startArray(par); endArray(par); par.nextToken()) {
-          video.addDelivery(ContentDelivery.valueOf(par.getIntValue()));
+          video.addDelivery(ContentDeliveryMethod.valueOf(par.getIntValue()));
         }
         break;
       case "pos":
@@ -483,12 +483,12 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "api":
         for (startArray(par); endArray(par); par.nextToken()) {
-          video.addApi(ApiFramework.valueOf(par.getIntValue()));
+          video.addApi(APIFramework.valueOf(par.getIntValue()));
         }
         break;
       case "companiontype":
         for (startArray(par); endArray(par); par.nextToken()) {
-          video.addCompaniontype(CompanionType.valueOf(par.getIntValue()));
+          video.addCompaniontype(VASTCompanionType.valueOf(par.getIntValue()));
         }
         break;
       default:
@@ -557,7 +557,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "btype":
         for (startArray(par); endArray(par); par.nextToken()) {
-          banner.addBtype(AdType.valueOf(par.getIntValue()));
+          banner.addBtype(BannerAdType.valueOf(par.getIntValue()));
         }
         break;
       case "battr":
@@ -583,7 +583,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "api":
         for (startArray(par); endArray(par); par.nextToken()) {
-          banner.addApi(ApiFramework.valueOf(par.getIntValue()));
+          banner.addApi(APIFramework.valueOf(par.getIntValue()));
         }
         break;
       default:
@@ -793,7 +793,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
           try {
               //JsonParseException may be thrown because value is string in
               //2.2 and earlier, this allows for backwards compatibility.
-              content.setContext(Context.valueOf(par.getIntValue()));
+              content.setContext(ContentContext.valueOf(par.getIntValue()));
           } catch (JsonParseException jpe) {
           }
           break;
@@ -1228,7 +1228,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         resp.setCustomdata(par.getText());
         break;
       case "nbr":
-        resp.setNbr(NoBidReasonCode.valueOf(par.getIntValue()));
+        resp.setNbr(NoBidReason.valueOf(par.getIntValue()));
         break;
       default:
         readOther(resp, par, fieldName);

@@ -26,7 +26,7 @@ import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.App;
 import com.google.openrtb.OpenRtb.BidRequest.AuctionType;
 import com.google.openrtb.OpenRtb.BidRequest.Content;
-import com.google.openrtb.OpenRtb.BidRequest.Content.Context;
+import com.google.openrtb.OpenRtb.BidRequest.Content.ContentContext;
 import com.google.openrtb.OpenRtb.BidRequest.Content.QAGMediaRating;
 import com.google.openrtb.OpenRtb.BidRequest.Content.VideoQuality;
 import com.google.openrtb.OpenRtb.BidRequest.Data;
@@ -37,21 +37,21 @@ import com.google.openrtb.OpenRtb.BidRequest.Device.DeviceType;
 import com.google.openrtb.OpenRtb.BidRequest.Geo;
 import com.google.openrtb.OpenRtb.BidRequest.Geo.LocationType;
 import com.google.openrtb.OpenRtb.BidRequest.Impression;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.APIFramework;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.AdPosition;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.ApiFramework;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner.AdType;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner.BannerAdType;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner.ExpandableDirection;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Native;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP.Deal;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video;
 import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.CompanionAd;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.CompanionType;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.ContentDelivery;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.Linearity;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.PlaybackMethod;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.Protocol;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.ContentDeliveryMethod;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.VASTCompanionType;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.VideoBidResponseProtocol;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.VideoLinearity;
+import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.VideoPlaybackMethod;
 import com.google.openrtb.OpenRtb.BidRequest.Producer;
 import com.google.openrtb.OpenRtb.BidRequest.Publisher;
 import com.google.openrtb.OpenRtb.BidRequest.Regulations;
@@ -59,7 +59,7 @@ import com.google.openrtb.OpenRtb.BidRequest.Site;
 import com.google.openrtb.OpenRtb.BidRequest.User;
 import com.google.openrtb.OpenRtb.BidRequest.User.Gender;
 import com.google.openrtb.OpenRtb.BidResponse;
-import com.google.openrtb.OpenRtb.BidResponse.NoBidReasonCode;
+import com.google.openrtb.OpenRtb.BidResponse.NoBidReason;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.ContentCategory;
@@ -353,12 +353,12 @@ public class OpenRtbJsonTest {
                 .setHmin(50)
                 .setId("banner1")
                 .setPos(AdPosition.ABOVE_THE_FOLD)
-                .addBtype(AdType.JAVASCRIPT)
+                .addBtype(BannerAdType.JAVASCRIPT_AD)
                 .addBattr(CreativeAttribute.TEXT_ONLY)
                 .addMimes("image/gif")
                 .setTopframe(true)
                 .addExpdir(ExpandableDirection.RIGHT)
-                .addApi(ApiFramework.MRAID_1)
+                .addApi(APIFramework.MRAID_1)
                 .setExtension(TestExt.testBanner, test1))
             .setDisplaymanager("dm1")
             .setDisplaymanagerver("1.0")
@@ -384,11 +384,11 @@ public class OpenRtbJsonTest {
             .setId("imp2")
             .setVideo(Video.newBuilder()
                 .addMimes("video/vp9")
-                .setLinearity(Linearity.LINEAR)
+                .setLinearity(VideoLinearity.LINEAR)
                 .setMinduration(15)
                 .setMaxduration(60)
-                .setProtocol(Protocol.VAST_3_0)
-                .addProtocols(Protocol.VAST_2_0)
+                .setProtocol(VideoBidResponseProtocol.VAST_3_0)
+                .addProtocols(VideoBidResponseProtocol.VAST_2_0)
                 .setW(200)
                 .setH(50)
                 .setStartdelay(0)
@@ -398,8 +398,8 @@ public class OpenRtbJsonTest {
                 .setMinbitrate(1000)
                 .setMaxbitrate(2000)
                 .setBoxingallowed(false)
-                .addPlaybackmethod(PlaybackMethod.CLICK_TO_PLAY)
-                .addDelivery(ContentDelivery.STREAMING)
+                .addPlaybackmethod(VideoPlaybackMethod.CLICK_TO_PLAY)
+                .addDelivery(ContentDeliveryMethod.STREAMING)
                 .setPos(AdPosition.ABOVE_THE_FOLD)
                 .addCompanionad(Banner.newBuilder()
                     .setId("compad1")
@@ -410,15 +410,15 @@ public class OpenRtbJsonTest {
                     .setId("compad2")
                     .setW(110)
                     .setH(60)))
-                .addApi(ApiFramework.VPAID_2_0)
-                .addCompaniontype(CompanionType.HTML)
+                .addApi(APIFramework.VPAID_2)
+                .addCompaniontype(VASTCompanionType.HTML)
                 .setExtension(TestExt.testVideo, test1)))
         .addImp(Impression.newBuilder()
             .setId("imp3")
             .setNative(Native.newBuilder()
                 .setRequest(NativeRequest.newBuilder().setVer("1"))
                 .setVer("1.0")
-                .addApi(ApiFramework.MRAID_1)
+                .addApi(APIFramework.MRAID_1)
                 .addBattr(CreativeAttribute.TEXT_ONLY)
                 .setExtension(TestExt.testNative, test1))
             .setExtension(TestExt.testImp, test1))
@@ -527,7 +527,7 @@ public class OpenRtbJsonTest {
             .addAllKeywords(asList("sci-fi", "aliens"))
             .setContentrating("R")
             .setUserrating("Awesome!")
-            .setContext(Context.OTHER)
+            .setContext(ContentContext.OTHER)
             .setLivestream(false)
             .setSourcerelationship(false)
             .setProducer(Producer.newBuilder()
@@ -599,7 +599,7 @@ public class OpenRtbJsonTest {
         .setBidid("bid1")
         .setCur("USD")
         .setCustomdata("mydata")
-        .setNbr(NoBidReasonCode.TECHNICAL_ERROR)
+        .setNbr(NoBidReason.TECHNICAL_ERROR)
         .setExtension(TestExt.testResponse1, test1)
         .addExtension(TestExt.testResponse2, test2)
         .addExtension(TestExt.testResponse2, test2)

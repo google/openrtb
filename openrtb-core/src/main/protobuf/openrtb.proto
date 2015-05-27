@@ -224,14 +224,14 @@ message BidRequest {
      * Values “3” – “6” apply to apps per the mobile addendum to QAG version 1.5.
      */
     enum AdPosition {
-      POSITION_UNKNOWN = 0;
+      UNKNOWN = 0;
       ABOVE_THE_FOLD = 1;
-      DEPRECATED_MAYBE_VISIBLE = 2;
+      DEPRECATED_LIKELY_BELOW_THE_FOLD = 2;
       BELOW_THE_FOLD = 3;
       HEADER = 4;
       FOOTER = 5;
       SIDEBAR = 6;
-      FULLSCREEN = 7;
+      AD_POSITION_FULLSCREEN = 7;
     }
 
     /*
@@ -241,9 +241,9 @@ message BidRequest {
      * interpretation of value “3” is MRAID-1. In OpenRTB 2.2, this was made explicit and MRAID-2
      * has been added as value “5”.
      */
-    enum ApiFramework {
-      VPAID_1_0 = 1;
-      VPAID_2_0 = 2;
+    enum APIFramework {
+      VPAID_1 = 1;
+      VPAID_2 = 2;
       MRAID_1 = 3;
       ORMMA = 4;
       MRAID_2 = 5;
@@ -310,7 +310,7 @@ message BidRequest {
       /*
        * Blocked banner ad types. Refer to List 5.2.
        */
-      repeated AdType btype = 5 [packed = true];
+      repeated BannerAdType btype = 5 [packed = true];
       /*
        * Blocked creative attributes. Refer to List 5.3.
        */
@@ -318,7 +318,7 @@ message BidRequest {
       /*
        * Ad position on screen. Refer to List 5.4.
        */
-      optional AdPosition pos = 4 [default = POSITION_UNKNOWN];
+      optional AdPosition pos = 4 [default = UNKNOWN];
       /*
        * Whitelist of content MIME types supported. Popular MIME types include,
        * but are not limited to “image/jpg”, “image/gif” and “application/x-shockwave-flash”.
@@ -336,7 +336,7 @@ message BidRequest {
        * List of supported API frameworks for this impression. Refer to List 5.6.
        * If an API is not explicitly listed, it is assumed not to be supported.
        */
-      repeated ApiFramework api = 10 [packed = true];
+      repeated APIFramework api = 10 [packed = true];
       /**
        * Extensions.
        */
@@ -346,19 +346,19 @@ message BidRequest {
        * OpenRTB 5.2: types of ads that can be accepted by the exchange unless
        * restricted by publisher site settings.
        */
-      enum AdType {
+      enum BannerAdType {
         /*
          * "Usually mobile".
          */
-        XHTML_TEXT = 1;
+        XHTML_TEXT_AD = 1;
         /*
          * "Usually mobile".
          */
-        XHTML_BANNER = 2;
+        XHTML_BANNER_AD = 2;
         /*
          * Javascript must be valid XHTML (ie, script tags included).
          */
-        JAVASCRIPT = 3;
+        JAVASCRIPT_AD = 3;
         /*
          * Iframe.
          */
@@ -374,7 +374,7 @@ message BidRequest {
         RIGHT = 2;
         UP = 3;
         DOWN = 4;
-        FULLSCREEN = 5;
+        EXPANDABLE_FULLSCREEN = 5;
       }
     }
 
@@ -411,13 +411,13 @@ message BidRequest {
       /*
        * Deprecated; use protocols.
        */
-      optional Protocol protocol = 5 [deprecated = true];
+      optional VideoBidResponseProtocol protocol = 5 [deprecated = true];
       /*
        * Array of supported video bid response protocols. Refer to List 5.8.
        * At least one supported protocol must be specified in either the
        * protocol or protocols attribute.
        */
-      repeated Protocol protocols = 21 [packed = true];
+      repeated VideoBidResponseProtocol protocols = 21 [packed = true];
       /*
        * Width of the player in pixels.
        * This field is not required, but it’s highly recommended.
@@ -438,7 +438,7 @@ message BidRequest {
        * Indicates if the impression must be linear, nonlinear, etc.
        * If none specified, assume all are allowed. Refer to List 5.7.
        */
-      optional Linearity linearity = 2;
+      optional VideoLinearity linearity = 2;
       /*
        * If multiple ad impressions are offered in the same bid request, the sequence number
        * will allow for the coordinated delivery of multiple creatives.
@@ -473,16 +473,16 @@ message BidRequest {
       /*
        * Allowed playback methods. If none specified, assume all are allowed. Refer to List 5.9.
        */
-      repeated PlaybackMethod playbackmethod = 15 [packed = true];
+      repeated VideoPlaybackMethod playbackmethod = 15 [packed = true];
       /*
        * Supported delivery methods (e.g., streaming, progressive).
        * If none specified, assume all are supported. Refer to List 5.13.
        */
-      repeated ContentDelivery delivery = 16 [packed = true];
+      repeated ContentDeliveryMethod delivery = 16 [packed = true];
       /*
        * Ad position on screen. Refer to List 5.4.
        */
-      optional AdPosition pos = 17 [default = POSITION_UNKNOWN];
+      optional AdPosition pos = 17 [default = UNKNOWN];
       /*
        * Array of Banner objects (Section 3.2.3) if companion ads are available.
        */
@@ -491,12 +491,12 @@ message BidRequest {
        * List of supported API frameworks for this impression. Refer to List 5.6.
        * If an API is not explicitly listed, it is assumed not to be supported.
        */
-      repeated ApiFramework api = 19 [packed = true];
+      repeated APIFramework api = 19 [packed = true];
       /*
        * Supported VAST companion ad types. Refer to List 5.12.
        * Recommended if companion Banner objects are included via the companionad array.
        */
-      repeated CompanionType companiontype = 20 [packed = true];
+      repeated VASTCompanionType companiontype = 20 [packed = true];
       /**
        * Companion ads in OpenRTB 2.1 format.  (Or to be precise, interpretations
        * based on the buggy sample message in 5.1.4, fixed later in 2.2.)
@@ -529,7 +529,7 @@ message BidRequest {
        * This OpenRTB table has values derived from the IAB Quality Assurance Guidelines (QAG).
        * Practitioners should keep in sync with updates to the QAG values as published on IAB.net.
        */
-      enum Linearity {
+      enum VideoLinearity {
         LINEAR = 1;
         NON_LINEAR = 2;
       }
@@ -538,7 +538,7 @@ message BidRequest {
        * OpenRTB 5.8: The following table lists the options for video bid response protocols that
        * could be supported by an exchange.
        */
-      enum Protocol {
+      enum VideoBidResponseProtocol {
         VAST_1_0 = 1;
         VAST_2_0 = 2;
         VAST_3_0 = 3;
@@ -550,9 +550,9 @@ message BidRequest {
       /*
        * OpenRTB 5.9: The following table lists the various video playback methods.
        */
-      enum PlaybackMethod {
-        AUTOPLAY_SOUND_ON = 1;
-        AUTOPLAY_SOUND_OFF = 2;
+      enum VideoPlaybackMethod {
+        AUTO_PLAY_SOUND_ON = 1;
+        AUTO_PLAY_SOUND_OFF = 2;
         CLICK_TO_PLAY = 3;
         MOUSE_OVER = 4;
       }
@@ -573,17 +573,17 @@ message BidRequest {
        * These values are defined by the IAB –
        * http://www.iab.net/media/file/long-form-video-final.pdf.
        */
-      enum CompanionType {
+      enum VASTCompanionType {
         STATIC = 1;
         HTML = 2;
-        IFRAME = 3;
+        COMPANION_IFRAME = 3;
       }
 
       /*
        * OpenRTB 5.13: The following table lists the various options for the delivery
        * of video content.
        */
-      enum ContentDelivery {
+      enum ContentDeliveryMethod {
         STREAMING = 1;
         PROGRESSIVE = 2;
       }
@@ -622,7 +622,7 @@ message BidRequest {
        * List of supported API frameworks for this impression.  Refer to List 5.6.
        * If an API is not explicitly listed, it is assumed not to be supported.
        */
-      repeated ApiFramework api = 3 [packed = true];
+      repeated APIFramework api = 3 [packed = true];
       /**
        * Blocked creative attributes. Refer to List 5.3.
        */
@@ -925,7 +925,7 @@ message BidRequest {
     /*
      * Type of content (game, video, text, etc.). Refer to List 5.14.
      */
-    optional Context context = 12;
+    optional ContentContext context = 12;
     /*
      * Content rating (e.g., MPAA).
      */
@@ -986,7 +986,7 @@ message BidRequest {
      * This OpenRTB table has values derived from the IAB Quality Assurance Guidelines (QAG).
      * Practitioners should keep in sync with updates to the QAG values as published on IAB.net.
      */
-    enum Context {
+    enum ContentContext {
       VIDEO = 1;
       GAME = 2;
       MUSIC = 3;
@@ -1003,7 +1003,7 @@ message BidRequest {
      */
     enum QAGMediaRating {
       ALL_AUDIENCES = 1;
-      EVERYONE_12 = 2;
+      EVERYONE_OVER_12 = 2;
       MATURE = 3;
     }
   }
@@ -1185,8 +1185,12 @@ message BidRequest {
      */
     enum DeviceType {
       MOBILE = 1;
-      PC = 2;
+      PERSONAL_COMPUTER = 2;
       CONNECTED_TV = 3;
+      PHONE = 4;
+      TABLET = 5;
+      CONNECTED_DEVICE = 6;
+      SET_TOP_BOX = 7;
     }
 
     /*
@@ -1271,7 +1275,7 @@ message BidRequest {
     enum LocationType {
       GPS_LOCATION = 1;
       IP = 2;
-      USER = 3;
+      USER_PROVIDED = 3;
     }
   }
 
@@ -1436,7 +1440,7 @@ message BidResponse {
   /**
    * Reason for not bidding. Refer to List 5.19.
    */
-  optional NoBidReasonCode nbr = 6;
+  optional NoBidReason nbr = 6;
   /**
    * Extensions.
    */
@@ -1446,15 +1450,15 @@ message BidResponse {
    * OpenRTB 5.19: The following table lists the options for a bidder to signal the exchange
    * as to why it did not offer a bid for the impression.
    */
-  enum NoBidReasonCode {
+  enum NoBidReason {
     UNKNOWN_ERROR = 0;
     TECHNICAL_ERROR = 1;
     INVALID_REQUEST = 2;
     KNOWN_WEB_SPIDER = 3;
     SUSPECTED_NONHUMAN_TRAFFIC = 4;
-    CLOUD_DC_PROXY_IP = 5;
+    CLOUD_DATACENTER_PROXYIP = 5;
     UNSUPPORTED_DEVICE = 6;
-    BLOCKED_PUBISHER_SITE = 7;
+    BLOCKED_PUBISHER = 7;
     UNMATCHED_USER = 8;
   }
 
@@ -1990,7 +1994,7 @@ enum CreativeAttribute {
   EXPANDABLE_ROLLOVER_INITIATED = 5;
   VIDEO_IN_BANNER_AUTO_PLAY = 6;
   VIDEO_IN_BANNER_USER_INITIATED = 7;
-  POP_UP = 8;
+  POP = 8;
   PROVOCATIVE_OR_SUGGESTIVE = 9;
   ANNOYING = 10;
   SURVEYS = 11;
