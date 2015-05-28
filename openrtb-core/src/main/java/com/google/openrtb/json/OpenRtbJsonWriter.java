@@ -30,16 +30,16 @@ import com.google.openrtb.OpenRtb.BidRequest.Data;
 import com.google.openrtb.OpenRtb.BidRequest.Data.Segment;
 import com.google.openrtb.OpenRtb.BidRequest.Device;
 import com.google.openrtb.OpenRtb.BidRequest.Geo;
-import com.google.openrtb.OpenRtb.BidRequest.Impression;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Native;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP.Deal;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.CompanionAd;
+import com.google.openrtb.OpenRtb.BidRequest.Imp;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Native;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Pmp;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Pmp.Deal;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Video;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.CompanionAd;
 import com.google.openrtb.OpenRtb.BidRequest.Producer;
 import com.google.openrtb.OpenRtb.BidRequest.Publisher;
-import com.google.openrtb.OpenRtb.BidRequest.Regulations;
+import com.google.openrtb.OpenRtb.BidRequest.Regs;
 import com.google.openrtb.OpenRtb.BidRequest.Site;
 import com.google.openrtb.OpenRtb.BidRequest.User;
 import com.google.openrtb.OpenRtb.BidResponse;
@@ -115,8 +115,8 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     gen.writeStringField("id", req.getId());
     if (checkRequired(req.getImpCount())) {
       gen.writeArrayFieldStart("imp");
-      for (Impression imp : req.getImpList()) {
-        writeImpression(imp, gen);
+      for (Imp imp : req.getImpList()) {
+        writeImp(imp, gen);
       }
       gen.writeEndArray();
     }
@@ -154,18 +154,18 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     writeStrings("badv", req.getBadvList(), gen);
     if (req.hasRegs()) {
       gen.writeFieldName("regs");
-      writeRegulations(req.getRegs(), gen);
+      writeRegs(req.getRegs(), gen);
     }
   }
 
-  public final void writeImpression(Impression imp, JsonGenerator gen) throws IOException {
+  public final void writeImp(Imp imp, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
-    writeImpressionFields(imp, gen);
+    writeImpFields(imp, gen);
     writeExtensions(imp, gen);
     gen.writeEndObject();
   }
 
-  protected void writeImpressionFields(Impression imp, JsonGenerator gen) throws IOException {
+  protected void writeImpFields(Imp imp, JsonGenerator gen) throws IOException {
     gen.writeStringField("id", imp.getId());
     if (imp.hasBanner()) {
       gen.writeFieldName("banner");
@@ -203,7 +203,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     writeStrings("iframebuster", imp.getIframebusterList(), gen);
     if (imp.hasPmp()) {
       gen.writeFieldName("pmp");
-      writePMP(imp.getPmp(), gen);
+      writePmp(imp.getPmp(), gen);
     }
   }
 
@@ -358,14 +358,14 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     writeEnums("battr", nativ.getBattrList(), gen);
   }
 
-  public final void writePMP(PMP pmp, JsonGenerator gen) throws IOException {
+  public final void writePmp(Pmp pmp, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
-    writePMPFields(pmp, gen);
+    writePmpFields(pmp, gen);
     writeExtensions(pmp, gen);
     gen.writeEndObject();
   }
 
-  protected void writePMPFields(PMP pmp, JsonGenerator gen) throws IOException {
+  protected void writePmpFields(Pmp pmp, JsonGenerator gen) throws IOException {
     if (pmp.hasPrivateAuction()) {
       writeIntBoolField("private_auction", pmp.getPrivateAuction(), gen);
     }
@@ -810,14 +810,14 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     }
   }
 
-  public final void writeRegulations(Regulations regs, JsonGenerator gen) throws IOException {
+  public final void writeRegs(Regs regs, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
-    writeRegulationsFields(regs, gen);
+    writeRegsFields(regs, gen);
     writeExtensions(regs, gen);
     gen.writeEndObject();
   }
 
-  protected void writeRegulationsFields(Regulations regs, JsonGenerator gen) throws IOException {
+  protected void writeRegsFields(Regs regs, JsonGenerator gen) throws IOException {
     if (regs.hasCoppa()) {
       writeIntBoolField("coppa", regs.getCoppa(), gen);
     }

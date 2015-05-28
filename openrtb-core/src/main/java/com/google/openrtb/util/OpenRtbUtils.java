@@ -27,8 +27,8 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.openrtb.OpenRtb.BidRequest;
-import com.google.openrtb.OpenRtb.BidRequest.Impression;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
+import com.google.openrtb.OpenRtb.BidRequest.Imp;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
@@ -43,13 +43,13 @@ import javax.annotation.Nullable;
  * {@link com.google.openrtb.OpenRtb.BidResponse.Builder}.
  */
 public final class OpenRtbUtils {
-  public static final Predicate<Impression> IMP_HAS_BANNER = new Predicate<Impression>() {
-    @Override public boolean apply(Impression imp) {
+  public static final Predicate<Imp> IMP_HAS_BANNER = new Predicate<Imp>() {
+    @Override public boolean apply(Imp imp) {
       assert imp != null;
       return imp.hasBanner();
     }};
-  public static final Predicate<Impression> IMP_HAS_VIDEO = new Predicate<Impression>() {
-    @Override public boolean apply(Impression imp) {
+  public static final Predicate<Imp> IMP_HAS_VIDEO = new Predicate<Imp>() {
+    @Override public boolean apply(Imp imp) {
       assert imp != null;
       return imp.hasVideo();
     }};
@@ -282,10 +282,10 @@ public final class OpenRtbUtils {
    *
    * @return The {@link Impression}s that has the given id, or {@code null} if not found.
    */
-  public static @Nullable Impression impWithId(BidRequest request, final String id) {
+  public static @Nullable Imp impWithId(BidRequest request, final String id) {
     checkNotNull(id);
 
-    for (Impression imp : request.getImpList()) {
+    for (Imp imp : request.getImpList()) {
       if (imp.getId().equals(id)) {
         return imp;
       }
@@ -302,11 +302,11 @@ public final class OpenRtbUtils {
    * @return The {@link Impression} for a given impression ID x banner ID,
    * or {@code null} if not found.
    */
-  public static @Nullable Impression bannerImpWithId(
+  public static @Nullable Imp bannerImpWithId(
       BidRequest request, @Nullable String impId, String bannerId) {
     checkNotNull(bannerId);
 
-    for (Impression imp : request.getImpList()) {
+    for (Imp imp : request.getImpList()) {
       if ((impId == null || imp.getId().equals(impId))
           && imp.hasBanner() && imp.getBanner().getId().equals(bannerId)) {
         return imp;
@@ -327,17 +327,17 @@ public final class OpenRtbUtils {
    * and only for impressions that pass the banner/video type filters
    * @return Immutable or unmodifiable view for the filtered impressions
    */
-  public static Iterable<Impression> impsWith(
-      BidRequest request, final Predicate<Impression> predicate, boolean banner, boolean video) {
+  public static Iterable<Imp> impsWith(
+      BidRequest request, final Predicate<Imp> predicate, boolean banner, boolean video) {
     checkNotNull(predicate);
 
-    final List<Impression> imps = request.getImpList();
+    final List<Imp> imps = request.getImpList();
     if (imps.isEmpty()) {
       return ImmutableList.of();
     }
 
-    final Predicate<Impression> impTypeFilter = banner && video
-        ? Predicates.<Impression>alwaysTrue()
+    final Predicate<Imp> impTypeFilter = banner && video
+        ? Predicates.<Imp>alwaysTrue()
         : banner ? IMP_HAS_BANNER : IMP_HAS_VIDEO;
     final boolean included = filter(imps.get(0), impTypeFilter, predicate);
     int size = imps.size(), i;
@@ -351,18 +351,18 @@ public final class OpenRtbUtils {
     if (i == size) {
       return included
           ? imps // Unmodifiable, comes from protobuf
-          : ImmutableList.<Impression>of();
+          : ImmutableList.<Imp>of();
     }
 
     final int headingSize = i;
-    return new FluentIterable<Impression>() {
-      @Override public Iterator<Impression> iterator() {
-        final Iterator<Impression> unfiltered = imps.iterator();
-        return new AbstractIterator<Impression>() {
+    return new FluentIterable<Imp>() {
+      @Override public Iterator<Imp> iterator() {
+        final Iterator<Imp> unfiltered = imps.iterator();
+        return new AbstractIterator<Imp>() {
           private int heading = 0;
-          @Override protected Impression computeNext() {
+          @Override protected Imp computeNext() {
             while (unfiltered.hasNext()) {
-              Impression imp = unfiltered.next();
+              Imp imp = unfiltered.next();
               if ((heading++ < headingSize)
                   ? included
                   : OpenRtbUtils.filter(imp, impTypeFilter, predicate)) {
@@ -375,7 +375,7 @@ public final class OpenRtbUtils {
   }
 
   private static boolean filter(
-      Impression imp, Predicate<Impression> typePredicate, Predicate<Impression> predicate) {
+      Imp imp, Predicate<Imp> typePredicate, Predicate<Imp> predicate) {
     return typePredicate.apply(imp) && predicate.apply(imp);
   }
 }

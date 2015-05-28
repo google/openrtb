@@ -56,7 +56,7 @@ message BidRequest {
    * Array of Imp objects (Section 3.2.2) representing the impressions offered.
    * At least 1 Imp object is required.
    */
-  repeated Impression imp = 2;
+  repeated Imp imp = 2;
   /*
    * Details via a Site object (Section 3.2.6) about the publisher’s website.
    * Only applicable and recommended for websites.
@@ -121,7 +121,7 @@ message BidRequest {
    * A Regs object (Section 3.2.16) that specifies any industry, legal,
    * or governmental regulations in force for this request.
    */
-  optional Regulations regs = 14;
+  optional Regs regs = 14;
   /**
    * Extensions.
    */
@@ -144,7 +144,7 @@ message BidRequest {
    * The publisher can choose one such type which is the typical case or mix them at their
    * discretion. However, any given bid for the impression must conform to one of the offered types.
    */
-  message Impression {
+  message Imp {
     /*
      * A unique identifier for this impression within the context of the bid request
      * (typically, value starts with 1, and increments up to n for n impressions).
@@ -209,7 +209,7 @@ message BidRequest {
      * A Pmp object (Section 3.2.17) containing any private marketplace deals
      * in effect for this impression.
      */
-    optional PMP pmp = 11;
+    optional Pmp pmp = 11;
     /**
      * Extensions.
      */
@@ -638,7 +638,7 @@ message BidRequest {
      * buyers and sellers that may pertain to this impression. The actual deals are represented
      * as a collection of Deal objects. Refer to Section 7.2 for more details.
      */
-    message PMP {
+    message Pmp {
       /*
        * Indicator of auction eligibility to seats named in the Direct Deals object,
        * where 0 = all bids are accepted, 1 = bids are restricted to the deals specified
@@ -1391,7 +1391,7 @@ message BidRequest {
    * the United States Federal Trade Commission’s regulations for the United States Children’s
    * Online Privacy Protection Act (“COPPA”). Refer to Section 7.1 for more information.
    */
-  message Regulations {
+  message Regs {
     /*
      * Flag indicating if this request is subject to the COPPA regulations established by
      * the USA FTC, where 0 = no, 1 = yes.

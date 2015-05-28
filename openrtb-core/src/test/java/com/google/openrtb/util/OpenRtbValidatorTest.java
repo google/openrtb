@@ -22,11 +22,11 @@ import static org.junit.Assert.assertTrue;
 
 import com.google.common.collect.Iterables;
 import com.google.openrtb.OpenRtb.BidRequest;
-import com.google.openrtb.OpenRtb.BidRequest.Impression;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.VideoBidResponseProtocol;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.VideoLinearity;
+import com.google.openrtb.OpenRtb.BidRequest.Imp;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Video;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VideoBidResponseProtocol;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VideoLinearity;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
@@ -46,7 +46,7 @@ public class OpenRtbValidatorTest {
       .setId("1")
       .addAllBadv(asList("adv1.com", "adv2.com"))
       .addAllBcat(asList(ContentCategory.IAB1, ContentCategory.IAB2))
-      .addImp(Impression.newBuilder()
+      .addImp(Imp.newBuilder()
           .setId("1")
           .setBanner(Banner.newBuilder()
               .setId("1")
@@ -54,7 +54,7 @@ public class OpenRtbValidatorTest {
       .build();
   private static BidRequest requestVideo = BidRequest.newBuilder()
       .setId("1")
-      .addImp(Impression.newBuilder()
+      .addImp(Imp.newBuilder()
           .setId("1")
           .setVideo(Video.newBuilder()
               .setLinearity(VideoLinearity.LINEAR)

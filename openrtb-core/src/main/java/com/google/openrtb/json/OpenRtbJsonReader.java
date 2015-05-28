@@ -41,25 +41,25 @@ import com.google.openrtb.OpenRtb.BidRequest.Device.ConnectionType;
 import com.google.openrtb.OpenRtb.BidRequest.Device.DeviceType;
 import com.google.openrtb.OpenRtb.BidRequest.Geo;
 import com.google.openrtb.OpenRtb.BidRequest.Geo.LocationType;
-import com.google.openrtb.OpenRtb.BidRequest.Impression;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.APIFramework;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.AdPosition;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner.BannerAdType;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner.ExpandableDirection;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Native;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.PMP.Deal;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.CompanionAd;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.ContentDeliveryMethod;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.VASTCompanionType;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.VideoBidResponseProtocol;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.VideoLinearity;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video.VideoPlaybackMethod;
+import com.google.openrtb.OpenRtb.BidRequest.Imp;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.APIFramework;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.AdPosition;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner.BannerAdType;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner.ExpandableDirection;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Native;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Pmp;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Pmp.Deal;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Video;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.CompanionAd;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.ContentDeliveryMethod;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VASTCompanionType;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VideoBidResponseProtocol;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VideoLinearity;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VideoPlaybackMethod;
 import com.google.openrtb.OpenRtb.BidRequest.Producer;
 import com.google.openrtb.OpenRtb.BidRequest.Publisher;
-import com.google.openrtb.OpenRtb.BidRequest.Regulations;
+import com.google.openrtb.OpenRtb.BidRequest.Regs;
 import com.google.openrtb.OpenRtb.BidRequest.Site;
 import com.google.openrtb.OpenRtb.BidRequest.User;
 import com.google.openrtb.OpenRtb.BidResponse;
@@ -196,25 +196,25 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         }
         break;
       case "regs":
-        req.setRegs(readRegulations(par));
+        req.setRegs(readRegs(par));
         break;
       default:
         readOther(req, par, fieldName);
     }
   }
 
-  public final Regulations.Builder readRegulations(JsonParser par) throws IOException {
-    Regulations.Builder reg = Regulations.newBuilder();
+  public final Regs.Builder readRegs(JsonParser par) throws IOException {
+    Regs.Builder reg = Regs.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
       if (par.nextToken() != JsonToken.VALUE_NULL) {
-        readRegulationsField(par, reg, fieldName);
+        readRegsField(par, reg, fieldName);
       }
     }
     return reg;
   }
 
-  protected void readRegulationsField(JsonParser par, Regulations.Builder reg, String fieldName)
+  protected void readRegsField(JsonParser par, Regs.Builder reg, String fieldName)
       throws IOException {
     switch (fieldName) {
       case "coppa":
@@ -225,8 +225,8 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  public final Impression.Builder readImp(JsonParser par) throws IOException {
-    Impression.Builder imp = Impression.newBuilder();
+  public final Imp.Builder readImp(JsonParser par) throws IOException {
+    Imp.Builder imp = Imp.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
       if (par.nextToken() != JsonToken.VALUE_NULL) {
@@ -236,7 +236,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     return imp;
   }
 
-  protected void readImpField(JsonParser par, Impression.Builder imp, String fieldName)
+  protected void readImpField(JsonParser par, Imp.Builder imp, String fieldName)
       throws IOException {
     switch (fieldName) {
       case "id":
@@ -278,7 +278,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         }
         break;
       case "pmp":
-        imp.setPmp(readPMP(par));
+        imp.setPmp(readPmp(par));
         break;
       default:
         readOther(imp, par, fieldName);
@@ -323,18 +323,18 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  public final PMP.Builder readPMP(JsonParser par) throws IOException {
-    PMP.Builder pmp = PMP.newBuilder();
+  public final Pmp.Builder readPmp(JsonParser par) throws IOException {
+    Pmp.Builder pmp = Pmp.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
       if (par.nextToken() != JsonToken.VALUE_NULL) {
-        readPMPField(par, pmp, fieldName);
+        readPmpField(par, pmp, fieldName);
       }
     }
     return pmp;
   }
 
-  protected void readPMPField(JsonParser par, PMP.Builder pmp, String fieldName)
+  protected void readPmpField(JsonParser par, Pmp.Builder pmp, String fieldName)
       throws IOException {
     switch (fieldName) {
       case "private_auction":

@@ -21,8 +21,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
 import com.google.openrtb.OpenRtb.BidRequest;
-import com.google.openrtb.OpenRtb.BidRequest.Impression;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
+import com.google.openrtb.OpenRtb.BidRequest.Imp;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
@@ -60,7 +60,7 @@ public class OpenRtbSnippetProcessorTest {
     BidRequest req = BidRequest.newBuilder()
         .setId("req1")
         .addCur("USD")
-        .addImp(Impression.newBuilder()
+        .addImp(Imp.newBuilder()
             .setId("imp1")
             .setBanner(Banner.newBuilder()))
         .build();
@@ -97,7 +97,7 @@ public class OpenRtbSnippetProcessorTest {
   public void testNoData() {
     BidRequest request = BidRequest.newBuilder()
         .setId("req1")
-        .addImp(Impression.newBuilder()
+        .addImp(Imp.newBuilder()
             .setId("imp1")
             .setBanner(Banner.newBuilder()))
         .build();
