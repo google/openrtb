@@ -278,9 +278,9 @@ public final class OpenRtbUtils {
   }
 
   /**
-   * Finds an {@link Impression} by ID.
+   * Finds an {@link Imp} by ID.
    *
-   * @return The {@link Impression}s that has the given id, or {@code null} if not found.
+   * @return The {@link Imp}s that has the given id, or {@code null} if not found.
    */
   public static @Nullable Imp impWithId(BidRequest request, final String id) {
     checkNotNull(id);
@@ -295,11 +295,11 @@ public final class OpenRtbUtils {
   }
 
   /**
-   * Find an {@link Impression} by its ID and its {@link Banner}'s ID.
+   * Find an {@link Imp} by its ID and its {@link Banner}'s ID.
    *
-   * @param impId Impression ID; optional if the Banner IDs are unique within the request
+   * @param impId Imp ID; optional if the Banner IDs are unique within the request
    * @param bannerId Banner ID
-   * @return The {@link Impression} for a given impression ID x banner ID,
+   * @return The {@link Imp} for a given impression ID x banner ID,
    * or {@code null} if not found.
    */
   public static @Nullable Imp bannerImpWithId(
