@@ -24,13 +24,36 @@ line after checkout or after any mvn clean.
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 0.8.4, 29-05-2015
+
+* While you are distracted with Google IO, we're sneaking some painful
+  but necessary breaking changes.  OpenRTB 2.3 finally provided clear,
+  normative names for all objects, so we're finally adopting these names
+  even though they have no impact at the JSON interop level:
+  - `Impression` renamed to `Imp`
+  - `PMP` renamed to `Pmp`
+  - `Regulations` renamed to `Regs`
+* Also renamed a small number of enum names and enumerated values, for
+  different reasons (clarity, compatibility with internal Google systems):
+  - `ApiFramework` renamed to `ApiFramework`
+  - `CompanionType` renamed to `VASTCompanionType`
+  - `AdType` renamed to `BannerAdType`
+  - `Protocol` renamed to `VideoBidResponseProtocol`
+  - `Linearity` renamed to `VideoLinearity`
+  - `PlaybackMethod` renamed to `VideoPlaybackMethod`
+  - `ContentDelivery` renamed to `ContentDeliveryMethod`
+  - `Context` renamed to `ContentContext`
+  - `NoBidReasonCode` renamed to `NoBidReason`
+* Added to `DeviceType` some values we'd missed when they were introduced
+  in OpenRTB 2.2: `PHONE`, `TABLET`, `CONNECTED_DEVICE`, `SET_TOP_BOX`.
+
 ## Version 0.8.3, 22-05-2015
 
-- Added OpenRTB 2.1-compatible `CompanionAd`
-- Expanded the range of IDs reserved for extensions
-- Fixed some field IDs for compatibility with internal Google systems
-- JSON parsing lenient with unknown fields
-- Improve `OpenRtbJsonFactory/Reader/Writer` for subclassing.
+* Added OpenRTB 2.1-compatible `CompanionAd`
+* Expanded the range of IDs reserved for extensions
+* Fixed some field IDs for compatibility with internal Google systems
+* JSON parsing lenient with unknown fields
+* Improve `OpenRtbJsonFactory/Reader/Writer` for subclassing.
   This can be used for uncompliant extensions, see `OpenRtbExtJsonTest`.
 
 ## Version 0.8.1, 29-04-2015
