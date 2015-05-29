@@ -30,9 +30,9 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.openrtb.OpenRtb.BidRequest;
-import com.google.openrtb.OpenRtb.BidRequest.Impression;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Video;
+import com.google.openrtb.OpenRtb.BidRequest.Imp;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Video;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
@@ -52,17 +52,17 @@ public class OpenRtbUtilsTest {
   public void testRequest_imps() {
     BidRequest request = BidRequest.newBuilder().setId("1").build();
     assertTrue(Iterables.isEmpty(OpenRtbUtils.impsWith(
-        request, Predicates.<Impression>alwaysTrue(), true, true)));
-    request = request.toBuilder().addImp(Impression.newBuilder().setId("1")).build();
+        request, Predicates.<Imp>alwaysTrue(), true, true)));
+    request = request.toBuilder().addImp(Imp.newBuilder().setId("1")).build();
     assertEquals(1, Iterables.size(OpenRtbUtils.impsWith(
-        request, Predicates.<Impression>alwaysTrue(), true, true)));
-    assertTrue(Iterables.isEmpty(OpenRtbUtils.impsWith(request, new Predicate<Impression>() {
-      @Override public boolean apply(Impression imp) {
+        request, Predicates.<Imp>alwaysTrue(), true, true)));
+    assertTrue(Iterables.isEmpty(OpenRtbUtils.impsWith(request, new Predicate<Imp>() {
+      @Override public boolean apply(Imp imp) {
         return "notfound".equals(imp.getId());
       }
     }, true, true)));
-    assertEquals(1, Iterables.size(OpenRtbUtils.impsWith(request, new Predicate<Impression>() {
-      @Override public boolean apply(Impression imp) {
+    assertEquals(1, Iterables.size(OpenRtbUtils.impsWith(request, new Predicate<Imp>() {
+      @Override public boolean apply(Imp imp) {
         return "1".equals(imp.getId());
       }
     }, true, true)));
@@ -73,36 +73,36 @@ public class OpenRtbUtilsTest {
   public void testRequest_banners() {
     BidRequest request = BidRequest.newBuilder()
         .setId("1")
-        .addImp(Impression.newBuilder().setId("1").setBanner(Banner.newBuilder().setId("0")))
-        .addImp(Impression.newBuilder().setId("2").setBanner(Banner.newBuilder().setId("0")))
-        .addImp(Impression.newBuilder().setId("3").setBanner(Banner.newBuilder().setId("0")))
-        .addImp(Impression.newBuilder().setId("4").setBanner(Banner.newBuilder().setId("0")))
+        .addImp(Imp.newBuilder().setId("1").setBanner(Banner.newBuilder().setId("0")))
+        .addImp(Imp.newBuilder().setId("2").setBanner(Banner.newBuilder().setId("0")))
+        .addImp(Imp.newBuilder().setId("3").setBanner(Banner.newBuilder().setId("0")))
+        .addImp(Imp.newBuilder().setId("4").setBanner(Banner.newBuilder().setId("0")))
         .build();
     assertEquals(4, Iterables.size(OpenRtbUtils.impsWith(
-        request, Predicates.<Impression>alwaysTrue(), true, false)));
+        request, Predicates.<Imp>alwaysTrue(), true, false)));
     assertTrue(Iterables.isEmpty(OpenRtbUtils.impsWith(
-        request, Predicates.<Impression>alwaysFalse(), true, false)));
+        request, Predicates.<Imp>alwaysFalse(), true, false)));
     // Filter-all case
-    assertEquals(4, Iterables.size(OpenRtbUtils.impsWith(request, new Predicate<Impression>() {
-      @Override public boolean apply(Impression imp) {
+    assertEquals(4, Iterables.size(OpenRtbUtils.impsWith(request, new Predicate<Imp>() {
+      @Override public boolean apply(Imp imp) {
         return "0".equals(imp.getBanner().getId());
       }
     }, true, false)));
     // Filter-none case
-    assertEquals(0, Iterables.size(OpenRtbUtils.impsWith(request, new Predicate<Impression>() {
-      @Override public boolean apply(Impression imp) {
+    assertEquals(0, Iterables.size(OpenRtbUtils.impsWith(request, new Predicate<Imp>() {
+      @Override public boolean apply(Imp imp) {
         return "1".equals(imp.getBanner().getId());
       }
     }, true, false)));
     // Filter-1 case
-    assertEquals(1, Iterables.size(OpenRtbUtils.impsWith(request, new Predicate<Impression>() {
-      @Override public boolean apply(Impression imp) {
+    assertEquals(1, Iterables.size(OpenRtbUtils.impsWith(request, new Predicate<Imp>() {
+      @Override public boolean apply(Imp imp) {
         return "1".equals(imp.getId());
       }
     }, true, false)));
     // Filter-N case
-    assertEquals(3, Iterables.size(OpenRtbUtils.impsWith(request, new Predicate<Impression>() {
-      @Override public boolean apply(Impression imp) {
+    assertEquals(3, Iterables.size(OpenRtbUtils.impsWith(request, new Predicate<Imp>() {
+      @Override public boolean apply(Imp imp) {
         return imp.getId().compareTo("1") > 0;
       }
     }, true, false)));
@@ -115,14 +115,14 @@ public class OpenRtbUtilsTest {
   public void testRequest_videos() {
     BidRequest request = BidRequest.newBuilder()
         .setId("1")
-        .addImp(Impression.newBuilder().setId("1").setVideo(Video.newBuilder()))
+        .addImp(Imp.newBuilder().setId("1").setVideo(Video.newBuilder()))
         .build();
     assertEquals(1, Iterables.size(OpenRtbUtils.impsWith(
-        request, Predicates.<Impression>alwaysTrue(), false, true)));
+        request, Predicates.<Imp>alwaysTrue(), false, true)));
     assertTrue(Iterables.isEmpty(OpenRtbUtils.impsWith(
-        request, Predicates.<Impression>alwaysFalse(), false, true)));
-    assertEquals(1, Iterables.size(OpenRtbUtils.impsWith(request, new Predicate<Impression>() {
-      @Override public boolean apply(Impression imp) {
+        request, Predicates.<Imp>alwaysFalse(), false, true)));
+    assertEquals(1, Iterables.size(OpenRtbUtils.impsWith(request, new Predicate<Imp>() {
+      @Override public boolean apply(Imp imp) {
         return imp.hasVideo();
       }
     }, false, true)));

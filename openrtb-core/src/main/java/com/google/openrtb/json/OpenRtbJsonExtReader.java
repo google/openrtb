@@ -85,7 +85,7 @@ public abstract class OpenRtbJsonExtReader<
    * mapping from JSON fields into the model extension messages.
    * <p>
    * Consider an example with "imp": { ..., "ext": { p1: 1, p2: 2, p3: 3 } }, and three
-   * {@code ExtReader<Impression.Builder>} where ER1 reads {p4}, ER2 reads {p2}, ER3 reads {p1,p3}.
+   * {@code ExtReader<Imp.Builder>} where ER1 reads {p4}, ER2 reads {p2}, ER3 reads {p1,p3}.
    * The main {@link OpenRtbJsonReader} will start at p1, invoking all compatible
    * {@link OpenRtbJsonExtReader}s until some of them consumes that property.
    * The {@code ExtReader}'s top-level {@code read()} may use a loop so it can read multiple
@@ -97,7 +97,7 @@ public abstract class OpenRtbJsonExtReader<
    * 2) ER2 won't recognize p3, so the same thing happens: return false, main reader
    *    tries all ExtReader's, ER3 will handle p3.  This will be the second invocation
    *    to ER3 for the same "ext" object, that's why we need the ternary conditional
-   *    below to reuse the {@code MyExt.Impression.Builder} if that was already set previously.
+   *    below to reuse the {@code MyExt.Imp.Builder} if that was already set previously.
    * 3) ER1 will be invoked several times, but never find any property it recognizes.
    *    It shouldn'set set an extension object that will be always empty.
    *

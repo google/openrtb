@@ -23,7 +23,7 @@ import static org.junit.Assert.assertSame;
 
 import com.google.common.collect.ImmutableList;
 import com.google.openrtb.OpenRtb.BidRequest;
-import com.google.openrtb.OpenRtb.BidRequest.Impression;
+import com.google.openrtb.OpenRtb.BidRequest.Imp;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
@@ -130,7 +130,7 @@ public class SnippetProcessorTest {
   private String process(String snippet, boolean full) {
     BidRequest request = BidRequest.newBuilder()
         .setId("1")
-        .addImp(Impression.newBuilder()
+        .addImp(Imp.newBuilder()
             .setId("1")).build();
     BidResponse response = createBidResponse(snippet, full);
     return processor.process(

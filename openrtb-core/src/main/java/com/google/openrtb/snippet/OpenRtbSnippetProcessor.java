@@ -18,8 +18,7 @@ package com.google.openrtb.snippet;
 
 import com.google.common.collect.ImmutableList;
 import com.google.openrtb.OpenRtb.BidRequest;
-import com.google.openrtb.OpenRtb.BidRequest.Impression;
-import com.google.openrtb.OpenRtb.BidRequest.ImpressionOrBuilder;
+import com.google.openrtb.OpenRtb.BidRequest.ImpOrBuilder;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
@@ -156,8 +155,8 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
         macro, "Bid doesn't belong to this request");
   }
 
-  protected ImpressionOrBuilder findImp(SnippetProcessorContext ctx, SnippetMacroType macro) {
-    for (Impression imp : ctx.request().getImpList()) {
+  protected ImpOrBuilder findImp(SnippetProcessorContext ctx, SnippetMacroType macro) {
+    for (ImpOrBuilder imp : ctx.request().getImpOrBuilderList()) {
       if (imp.getId().equals(ctx.bid().getImpid())) {
         return imp;
       }

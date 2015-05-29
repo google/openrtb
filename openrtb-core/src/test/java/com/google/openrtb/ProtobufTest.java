@@ -22,9 +22,9 @@ import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.AuctionType;
 import com.google.openrtb.OpenRtb.BidRequest.Content;
 import com.google.openrtb.OpenRtb.BidRequest.Device;
-import com.google.openrtb.OpenRtb.BidRequest.Impression;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.AdPosition;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
+import com.google.openrtb.OpenRtb.BidRequest.Imp;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.AdPosition;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
 import com.google.openrtb.OpenRtb.BidRequest.Publisher;
 import com.google.openrtb.OpenRtb.BidRequest.Site;
 import com.google.openrtb.OpenRtb.BidRequest.User;
@@ -47,7 +47,7 @@ public class ProtobufTest {
         .setId("1234534625254")
         .setAt(AuctionType.SECOND_PRICE)
         .setTmax(120)
-        .addImp(Impression.newBuilder()
+        .addImp(Imp.newBuilder()
             .setId("1")
             .setBanner(Banner.newBuilder()
                 .setW(300)

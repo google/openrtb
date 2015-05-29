@@ -207,7 +207,7 @@ message NativeRequest {
      * please refer to OpenRTB 2.3.
      *
      * NOTE: This library only contains the "required" attributes here; for more attributes,
-     * for now we recommend using the BidRequest.Impression.Video object.
+     * for now we recommend using the BidRequest.Imp.Video object.
      */
     message Video {
       /**

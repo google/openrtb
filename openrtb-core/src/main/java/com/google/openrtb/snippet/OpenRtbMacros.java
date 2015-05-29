@@ -35,7 +35,7 @@ import com.google.common.collect.ImmutableMap;
  *     <li>Notice that {code impid} is expected to be set to {@code AUCTION_IMP_ID}; you can
  *         use the macro or set the value manually but in the latter case they should match.
  *         All other properties that use the macro {@code AUCTION_IMP_ID} will resolve that
- *         to the bid's {code Impression.id}, not to the bid's own {code impid} property.</li>
+ *         to the bid's {code Imp.id}, not to the bid's own {code impid} property.</li>
  * </ul>
  */
 public enum OpenRtbMacros implements SnippetMacroType {

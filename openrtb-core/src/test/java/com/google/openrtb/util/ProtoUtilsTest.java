@@ -28,8 +28,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.AuctionType;
-import com.google.openrtb.OpenRtb.BidRequest.Impression;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
+import com.google.openrtb.OpenRtb.BidRequest.Imp;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
 import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
 import com.google.openrtb.TestExt;
@@ -48,16 +48,16 @@ public class ProtoUtilsTest {
     Test2 test2 = Test2.newBuilder().setTest2("test2").build();
     BidRequest reqPlainClear = BidRequest.newBuilder()
         .setId("0")
-        .addImp(Impression.newBuilder().setId("1"))
+        .addImp(Imp.newBuilder().setId("1"))
         .build();
     BidRequest reqPlainNoClear = BidRequest.newBuilder()
         .setId("0")
-        .addImp(Impression.newBuilder().setId("1")
+        .addImp(Imp.newBuilder().setId("1")
             .setBanner(Banner.newBuilder()))
         .build();
     BidRequest reqExt = BidRequest.newBuilder()
         .setId("0")
-        .addImp(Impression.newBuilder()
+        .addImp(Imp.newBuilder()
             .setId("1")
             .setBanner(Banner.newBuilder()
                 .setExtension(TestExt.testBanner, test1))

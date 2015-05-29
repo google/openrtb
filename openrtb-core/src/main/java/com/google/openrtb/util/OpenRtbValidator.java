@@ -20,8 +20,8 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.openrtb.OpenRtb.BidRequest;
-import com.google.openrtb.OpenRtb.BidRequest.Impression;
-import com.google.openrtb.OpenRtb.BidRequest.Impression.Banner;
+import com.google.openrtb.OpenRtb.BidRequest.Imp;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
@@ -76,7 +76,7 @@ public class OpenRtbValidator {
   }
 
   public boolean validate(BidRequest request, Bid.Builder bid) {
-    Impression imp = OpenRtbUtils.impWithId(request, bid.getImpid());
+    Imp imp = OpenRtbUtils.impWithId(request, bid.getImpid());
     if (imp == null) {
       unmatchedImp.inc();
       if (logger.isDebugEnabled()) {
