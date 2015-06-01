@@ -1553,7 +1553,7 @@ message BidResponse {
       /**
        * IAB content categories of the creative. Refer to List 5.1.
        */
-      optional ContentCategory cat = 15;
+      repeated ContentCategory cat = 15;
       /*
        * Set of attributes describing the creative. Refer to List 5.3.
        */

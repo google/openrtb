@@ -948,9 +948,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     if (bid.hasCrid()) {
       gen.writeStringField("crid", bid.getCrid());
     }
-    if (bid.hasCat()) {
-      gen.writeStringField("cat", OpenRtbJsonUtils.categoryToJsonName(bid.getCat()));
-    }
+    writeContentCategories("cat", bid.getCatList(), gen);
     writeEnums("attr", bid.getAttrList(), gen);
     if (bid.hasDealid()) {
       gen.writeStringField("dealid", bid.getDealid());
