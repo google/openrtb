@@ -112,7 +112,7 @@ message BidRequest {
   /*
    * Blocked advertiser categories using the IAB content categories. Refer to List 5.1.
    */
-  repeated ContentCategory bcat = 12;
+  repeated ContentCategory bcat = 12 [packed = true];
   /*
    * Block list of advertisers by their domains (e.g., “ford.com”).
    */
@@ -722,17 +722,17 @@ message BidRequest {
     /*
      * Array of IAB content categories of the site.  Refer to List 5.1.
      */
-    repeated ContentCategory cat = 4;
+    repeated ContentCategory cat = 4 [packed = true];
     /*
      * Array of IAB content categories that describe the current section of the site.
      * Refer to List 5.1.
      */
-    repeated ContentCategory sectioncat = 5;
+    repeated ContentCategory sectioncat = 5 [packed = true];
     /*
      * Array of IAB content categories that describe the current page or view of the site.
      * Refer to List 5.1.
      */
-    repeated ContentCategory pagecat = 6;
+    repeated ContentCategory pagecat = 6 [packed = true];
     /*
      * URL of the page where the impression will be shown.
      */
@@ -803,17 +803,17 @@ message BidRequest {
     /*
      * Array of IAB content categories of the app. Refer to List 5.1.
      */
-    repeated ContentCategory cat = 4;
+    repeated ContentCategory cat = 4 [packed = true];
     /*
      * Array of IAB content categories that describe the current section of the app.
      * Refer to List 5.1.
      */
-    repeated ContentCategory sectioncat = 5;
+    repeated ContentCategory sectioncat = 5 [packed = true];
     /*
      * Array of IAB content categories that describe the current page or view of the app.
      * Refer to List 5.1.
      */
-    repeated ContentCategory pagecat = 6;
+    repeated ContentCategory pagecat = 6 [packed = true];
     /*
      * Application version.
      */
@@ -860,7 +860,7 @@ message BidRequest {
     /*
      * Array of IAB content categories that describe the publisher. Refer to List 5.1.
      */
-    repeated ContentCategory cat = 3;
+    repeated ContentCategory cat = 3 [packed = true];
     /*
      * Highest level domain of the publisher (e.g., “publisher.com”).
      */
@@ -1027,7 +1027,7 @@ message BidRequest {
     /*
      * Array of IAB content categories that describe the content producer. Refer to List 5.1.
      */
-    repeated ContentCategory cat = 3;
+    repeated ContentCategory cat = 3 [packed = true];
     /*
      * Highest level domain of the content producer (e.g., “producer.com”).
      */
@@ -1553,7 +1553,7 @@ message BidResponse {
       /**
        * IAB content categories of the creative. Refer to List 5.1.
        */
-      repeated ContentCategory cat = 15;
+      repeated ContentCategory cat = 15 [packed = true];
       /*
        * Set of attributes describing the creative. Refer to List 5.3.
        */

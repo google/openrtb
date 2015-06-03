@@ -227,7 +227,7 @@ message NativeRequest {
        * An array of video protocols the publisher can accept in the bid response.
        * See OpenRTB 2.3 Table 5.8 Video Bid Response Protocols for a list of possible values.
        */
-      repeated int32 protocols = 4;
+      repeated int32 protocols = 4 [packed = true];
 
       /**
        * Extensions.
