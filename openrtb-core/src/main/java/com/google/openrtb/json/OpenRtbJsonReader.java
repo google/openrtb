@@ -1314,13 +1314,14 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "crid":
         bid.setCrid(par.getText());
         break;
-      case "cat": {
+      case "cat":
+        for (startArray(par); endArray(par); par.nextToken()) {
           ContentCategory cat = OpenRtbJsonUtils.categoryFromJsonName(par.getText());
           if (cat != null) {
-            bid.setCat(cat);
+            bid.addCat(cat);
           }
-          break;
         }
+        break;
       case "attr":
         for (startArray(par); endArray(par); par.nextToken()) {
           bid.addAttr(CreativeAttribute.valueOf(par.getIntValue()));

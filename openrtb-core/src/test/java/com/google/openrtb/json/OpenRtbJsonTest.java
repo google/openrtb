@@ -580,7 +580,7 @@ public class OpenRtbJsonTest {
         .setW(100)
         .setH(80)
         .setBundle("com.google.testapp")
-        .setCat(ContentCategory.IAB10_2)
+        .addCat(ContentCategory.IAB10_2)
         .setExtension(TestExt.testBid, test1);
     if (admNative) {
       bid.setAdmNative(NativeResponse.newBuilder()
