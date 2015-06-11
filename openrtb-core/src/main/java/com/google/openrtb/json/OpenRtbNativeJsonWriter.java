@@ -296,7 +296,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       throws IOException {
     gen.writeNumberField("id", asset.getId());
     if (asset.hasRequired()) {
-      writeIntBoolField("req", asset.getRequired(), gen);
+      writeIntBoolField("required", asset.getRequired(), gen);
     }
     if (asset.hasTitle()) {
       gen.writeFieldName("title");
