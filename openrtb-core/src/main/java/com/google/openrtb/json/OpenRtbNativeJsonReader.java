@@ -380,7 +380,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       case "id":
         asset.setId(par.getIntValue());
         break;
-      case "req":
+      case "required":
         asset.setRequired(getIntBoolValue(par));
         break;
       case "title":
