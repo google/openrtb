@@ -24,6 +24,12 @@ line after checkout or after any mvn clean.
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 0.8.5, 11-06-2015
+
+* Fix `Bid.bcat` cardinality to repeated.
+* Fix `Asset.req` name to `required`.
+* Added `[packed=true]` qualifier to several fields.
+
 ## Version 0.8.4, 29-05-2015
 
 * While you are distracted with Google IO, we're sneaking some painful
