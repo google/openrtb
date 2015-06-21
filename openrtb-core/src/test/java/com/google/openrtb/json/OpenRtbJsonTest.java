@@ -587,7 +587,7 @@ public class OpenRtbJsonTest {
           .setVer("1.0")
           .setLink(NativeResponse.Link.newBuilder()));
     } else {
-      bid.setAdm("{\"ver\":\"1.0\",\"link\":{}}");
+      bid.setAdm("{\"native\":{\"ver\":\"1.0\",\"link\":{}}}");
     }
     return BidResponse.newBuilder()
         .setId("resp1")

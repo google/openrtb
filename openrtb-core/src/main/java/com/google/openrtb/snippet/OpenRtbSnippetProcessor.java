@@ -64,7 +64,7 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
         }
 
         case AUCTION_BID_ID: {
-          sb.append(ctx.bid().getId());
+          sb.append(ctx.response().getBidid());
           break;
         }
 

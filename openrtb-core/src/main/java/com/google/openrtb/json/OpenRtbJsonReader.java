@@ -1070,6 +1070,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "id":
         user.setId(par.getText());
         break;
+      case "buyerid":  // Compatibility with broken 2.3 spec; fixed in 2.3.1
       case "buyeruid":
         user.setBuyeruid(par.getText());
         break;

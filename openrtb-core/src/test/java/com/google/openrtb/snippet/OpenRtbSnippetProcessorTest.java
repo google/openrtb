@@ -77,6 +77,7 @@ public class OpenRtbSnippetProcessorTest {
         .setNurl("http://nurl?id=" + OpenRtbMacros.AUCTION_IMP_ID.key())
         .setPrice(10000);
     BidResponse.Builder resp = BidResponse.newBuilder()
+        .setBidid("bid-1")
         .addSeatbid(SeatBid.newBuilder()
             .setSeat("seat1")
             .addBid(bid));
@@ -89,7 +90,7 @@ public class OpenRtbSnippetProcessorTest {
     assertEquals("cr-req1", bid.getCrid());
     assertEquals("deal-%24%7BAUCTION_PRICE%7D", bid.getDealid());
     assertEquals("bid-ad-USD", bid.getId());
-    assertEquals("http://iurl?id=bid-ad-USD", bid.getIurl());
+    assertEquals("http://iurl?id=bid-1", bid.getIurl());
     assertEquals("http://nurl?id=imp1", bid.getNurl());
   }
 
