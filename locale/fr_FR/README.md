@@ -1,29 +1,24 @@
-Google OpenRTB Libraries
+Google OpenRTB Librairies
 ----------------------------------------------------------------------
 
-This library supports the OpenRTB specification, providing
-bindings for all protobuf-supported languages, and additional
-support for Java such as JSON serialization and validation.
+Cette librairie supporte les spécifications d' OpenRTB.
 
-See our [wiki](https://github.com/google/openrtb/wiki) to get started!
-Use the Github issue tracker for bugs, RFEs for any support.
+Regardez notre [wiki](https://github.com/google/openrtb/wiki) to get started!
+Veuillez utiliser Github pour signaler des bugs ou demander de l'aide.
 
 
-*French version is avaible in ''/locale/fr_FR/README.md'*
-
-BUILDING NOTES
+NOTES D'INSTALLATION
 ----------------------------------------------------------------------
 
-You need: JDK 7, Maven 3.2, Protocol buffers (protoc) 2.6.1.
-Building is supported from the command line with Maven and
-from any IDE that can load Maven projects.
+Vous avez besoin de: JDK 7, Maven 3.2, Protocol buffers (protoc) 2.6.1.
+La compilation est supportée en ligne de commande avec Maven and
+depuis tout les IDE qui peuvent charger un projet Maven.
 
-On Eclipse, the latest m2e is recommended but it can't run the code
-generation step, so you need to run a "mvn install" from the command
-line after checkout or after any mvn clean.
+Sur Eclispe, la dernière version m2e est recommandée mais il ne peut pas générer le code, donc vous avez besoin pour lancer un "mvn install" depuis un ligne de commande après un checkout .
 
 
-RELEASE NOTES
+
+NOTES DE MISE A JOUR
 ----------------------------------------------------------------------
 
 ## Version 0.8.5, 11-06-2015
