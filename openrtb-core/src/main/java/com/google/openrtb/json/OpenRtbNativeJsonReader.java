@@ -90,8 +90,15 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
     NativeRequest.Builder req = NativeRequest.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
-      if (par.nextToken() != JsonToken.VALUE_NULL) {
-        readNativeRequestField(par, req, fieldName);
+      if (par.nextToken() != JsonToken.VALUE_NULL && "native".equals(fieldName)) {
+        for (startObject(par); endObject(par); par.nextToken()) {
+          fieldName = getCurrentName(par);
+          if (par.nextToken() != JsonToken.VALUE_NULL) {
+            readNativeRequestField(par, req, fieldName);
+          }
+        }
+      } else {
+        par.skipChildren();
       }
     }
     return req;
@@ -329,8 +336,15 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
     NativeResponse.Builder resp = NativeResponse.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
-      if (par.nextToken() != JsonToken.VALUE_NULL) {
-        readNativeResponseField(par, resp, fieldName);
+      if (par.nextToken() != JsonToken.VALUE_NULL && "native".equals(fieldName)) {
+        for (startObject(par); endObject(par); par.nextToken()) {
+          fieldName = getCurrentName(par);
+          if (par.nextToken() != JsonToken.VALUE_NULL) {
+            readNativeResponseField(par, resp, fieldName);
+          }
+        }
+      } else {
+        par.skipChildren();
       }
     }
     return resp;
