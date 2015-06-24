@@ -30,12 +30,12 @@ message NativeRequest {
   optional string ver = 1;
   /**
    * The Layout ID of the native ad unit.
-   * This field is not required, but it’s highly recommended.
+   * This field is not required, but it's highly recommended.
    */
   optional LayoutID layout = 2;
   /**
    * The Ad unit ID of the native ad unit. This corresponds to one of IAB Core-6 native ad units.
-   * This field is not required, but it’s highly recommended.
+   * This field is not required, but it's highly recommended.
    */
   optional AdunitID adunit = 3;
   /**
@@ -173,7 +173,7 @@ message NativeRequest {
       optional int32 hmin = 5;
       /**
        * Whitelist of content MIME types supported. Popular MIME types include, but are not
-       * limited to “image/jpg” and “image/gif”. Each implementing Exchange should have their
+       * limited to "image/jpg" and "image/gif". Each implementing Exchange should have their
        * own list of supported types in the integration docs. See Wikipedia's MIME page for
        * more information and links to all IETF RFCs. If blank, assume all types are allowed.
        */
@@ -212,7 +212,7 @@ message NativeRequest {
     message Video {
       /**
        * Content MIME types supported. Popular MIME types include, but are not limited to
-       * “video/x-ms-wmv” for Windows Media, and “video/x-flv” for Flash Video.
+       * "video/x-ms-wmv" for Windows Media, and "video/x-flv" for Flash Video.
        */
       repeated string mimes = 1;
       /**
@@ -248,7 +248,7 @@ message NativeRequest {
        */
       required DataAssetType type = 1;
       /**
-       * Maximum length of the text in the element’s response.
+       * Maximum length of the text in the element's response.
        */
       optional int32 len = 2;
       /**
@@ -269,10 +269,10 @@ message NativeRequest {
         DESC = 2;
         /**
          * Rating of the product being offered to the user.
-         * For example an app’s rating in an app store from 0-5.
+         * For example an app's rating in an app store from 0-5.
          */
         RATING = 3;
-        /** Number of social ratings or “likes” of the product being offered to the user. */
+        /** Number of social ratings or "likes" of the product being offered to the user. */
         LIKES = 4;
         /** Number downloads/installs of this product. */
         DOWNLOADS = 5;
@@ -294,7 +294,7 @@ message NativeRequest {
         DESC2 = 10;
         /** Display URL for the text ad. */
         DISPLAYURL = 11;
-        /** Text describing a ‘call to action’ button for the destination URL. */
+        /** Text describing a "call to action" button for the destination URL. */
         CTATEXT = 12;
         // Exchange-specific values above 500.
       }
@@ -312,7 +312,7 @@ message NativeResponse {
    */
   optional string ver = 1;
   /**
-   * List of native ad’s assets.
+   * List of native ad's assets.
    */
   repeated Asset assets = 2;
   /**
@@ -335,7 +335,7 @@ message NativeResponse {
   extensions 100 to 9999;
 
   /**
-   * OpenRTB Native 5.8: Used for ‘call to action’ assets, or other links from the Native ad.
+   * OpenRTB Native 5.8: Used for "call to action" assets, or other links from the Native ad.
    * This Object should be associated to its peer object in the parent Asset Object.
    * When that peer object is activated (clicked) the action should take the user to the
    * location of the link.
@@ -429,12 +429,12 @@ message NativeResponse {
       optional string url = 1;
       /**
        * Width of the image in pixels.
-       * This field is not required, but it’s highly recommended.
+       * This field is not required, but it's highly recommended.
        */
       optional int32 w = 2;
       /**
        * Height of the image in pixels.
-       * This field is not required, but it’s highly recommended.
+       * This field is not required, but it's highly recommended.
        */
       optional int32 h = 3;
       /**
@@ -456,7 +456,7 @@ message NativeResponse {
       optional string label = 1;
       /**
        * The formatted string of data to be displayed. Can contain a formatted value such as
-       * “5 stars” or “$10” or “3.4 stars out of 5”.
+       * "5 stars" or "$10" or "3.4 stars out of 5".
        */
       required string value = 2;
       /**

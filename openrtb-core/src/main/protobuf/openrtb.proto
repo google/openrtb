@@ -58,17 +58,17 @@ message BidRequest {
    */
   repeated Imp imp = 2;
   /*
-   * Details via a Site object (Section 3.2.6) about the publisher’s website.
+   * Details via a Site object (Section 3.2.6) about the publisher's website.
    * Only applicable and recommended for websites.
    */
   optional Site site = 3;
   /*
-   * Details via an App object (Section 3.2.7) about the publisher’s app
+   * Details via an App object (Section 3.2.7) about the publisher's app
    * (i.e., non-browser applications). Only applicable and recommended for apps.
    */
   optional App app = 4;
   /*
-   * Details via a Device object (Section 3.2.11) about the user’s
+   * Details via a Device object (Section 3.2.11) about the user's
    * device to which the impression will be delivered.
    */
   optional Device device = 5;
@@ -114,7 +114,7 @@ message BidRequest {
    */
   repeated ContentCategory bcat = 12 [packed = true];
   /*
-   * Block list of advertisers by their domains (e.g., “ford.com”).
+   * Block list of advertisers by their domains (e.g., "ford.com").
    */
   repeated string badv = 13;
   /*
@@ -221,7 +221,7 @@ message BidRequest {
      *
      * This OpenRTB table has values derived from the IAB Quality Assurance Guidelines (QAG).
      * Practitioners should keep in sync with updates to the QAG values as published on IAB.net.
-     * Values “3” – “6” apply to apps per the mobile addendum to QAG version 1.5.
+     * Values "3" - "6" apply to apps per the mobile addendum to QAG version 1.5.
      */
     enum AdPosition {
       UNKNOWN = 0;
@@ -236,10 +236,10 @@ message BidRequest {
 
     /*
      * OpenRTB 5.6: The following table is a list of API frameworks supported by the publisher.
-     * Note that MRAID-1 is a subset of MRAID-2. In OpenRTB 2.1 and prior, value “3” was “MRAID”.
+     * Note that MRAID-1 is a subset of MRAID-2. In OpenRTB 2.1 and prior, value "3" was "MRAID".
      * However, not all MRAID capable APIs understand MRAID-2 features and as such the only safe
-     * interpretation of value “3” is MRAID-1. In OpenRTB 2.2, this was made explicit and MRAID-2
-     * has been added as value “5”.
+     * interpretation of value "3" is MRAID-1. In OpenRTB 2.2, this was made explicit and MRAID-2
+     * has been added as value "5".
      */
     enum APIFramework {
       VPAID_1 = 1;
@@ -251,14 +251,14 @@ message BidRequest {
 
     /*
      * OpenRTB 3.2.3: This object represents the most general type of impression.
-     * Although the term “banner” may have very specific meaning in other contexts,
+     * Although the term "banner" may have very specific meaning in other contexts,
      * here it can be many things including a simple static image, an expandable ad unit,
      * or even in-banner video (refer to the Video object in Section 3.2.4 for the more
      * generalized and full featured video ad units). An array of Banner objects can also
      * appear within the Video to describe optional companion ads defined in the VAST specification.
      *
      * The presence of a Banner as a subordinate of the Imp object indicates that this impression
-     * is offered as a banner type impression. At the publisher’s discretion, that same impression
+     * is offered as a banner type impression. At the publisher's discretion, that same impression
      * may also be offered as video and/or native by also including as Imp subordinates the Video
      * and/or Native objects, respectively. However, any given bid for the impression must conform
      * to one of the offered types.
@@ -321,7 +321,7 @@ message BidRequest {
       optional AdPosition pos = 4 [default = UNKNOWN];
       /*
        * Whitelist of content MIME types supported. Popular MIME types include,
-       * but are not limited to “image/jpg”, “image/gif” and “application/x-shockwave-flash”.
+       * but are not limited to "image/jpg", "image/gif" and "application/x-shockwave-flash".
        */
       repeated string mimes = 7;
       /*
@@ -387,7 +387,7 @@ message BidRequest {
      * that define these companion ads.
      *
      * The presence of a Video as a subordinate of the Imp object indicates that this impression
-     * is offered as a video type impression. At the publisher’s discretion, that same impression
+     * is offered as a video type impression. At the publisher's discretion, that same impression
      * may also be offered as banner and/or native by also including as Imp subordinates the
      * Banner and/or Native objects, respectively. However, any given bid for the impression
      * must conform to one of the offered types.
@@ -395,17 +395,17 @@ message BidRequest {
     message Video {
       /*
        * Whitelist of content MIME types supported. Popular MIME types include,
-       * but are not limited to “image/jpg”, “image/gif” and “application/x-shockwave-flash”.
+       * but are not limited to "image/jpg", "image/gif" and "application/x-shockwave-flash".
        */
       repeated string mimes = 1;
       /*
        * Minimum video ad duration in seconds.
-       * This field is not required, but it’s highly recommended.
+       * This field is not required, but it's highly recommended.
        */
       optional int32 minduration = 3;
       /*
        * Maximum video ad duration in seconds.
-       * This field is not required, but it’s highly recommended.
+       * This field is not required, but it's highly recommended.
        */
       optional int32 maxduration = 4;
       /*
@@ -420,18 +420,18 @@ message BidRequest {
       repeated VideoBidResponseProtocol protocols = 21 [packed = true];
       /*
        * Width of the player in pixels.
-       * This field is not required, but it’s highly recommended.
+       * This field is not required, but it's highly recommended.
        */
       optional int32 w = 6;
       /*
        * Height of the player in pixels.
-       * This field is not required, but it’s highly recommended.
+       * This field is not required, but it's highly recommended.
        */
       optional int32 h = 7;
       /*
        * Indicates the start delay in seconds for pre-roll, mid-roll, or post-roll ad placements.
        * Refer to List 5.10 (enum VideoStartDelay) for additional generic values.
-       * This field is not required, but it’s highly recommended.
+       * This field is not required, but it's highly recommended.
        */
       optional int32 startdelay = 8;
       /*
@@ -517,9 +517,9 @@ message BidRequest {
 
       /*
        * OpenRTB 5.7: The following table indicates the options for video linearity.
-       * “In-stream” or “linear” video refers to pre-roll, post-roll, or mid-roll video ads
+       * "In-stream" or "linear" video refers to pre-roll, post-roll, or mid-roll video ads
        * where the user is forced to watch ad in order to see the video content.
-       * “Overlay” or “non-linear” refer to ads that are shown on top of the video content.
+       * "Overlay" or "non-linear" refer to ads that are shown on top of the video content.
        *
        * This field is optional. The following is the interpretation of the bidder based upon the
        * presence or absence of the field in the bid request:
@@ -570,7 +570,7 @@ message BidRequest {
 
       /*
        * OpenRTB 5.12: The following table lists the options for the video quality.
-       * These values are defined by the IAB –
+       * These values are defined by the IAB -
        * http://www.iab.net/media/file/long-form-video-final.pdf.
        */
       enum VASTCompanionType {
@@ -603,7 +603,7 @@ message BidRequest {
      * will be structured according to that specification.
      *
      * The presence of a Native as a subordinate of the Imp object indicates that this
-     * impression is offered as a native type impression. At the publisher’s discretion,
+     * impression is offered as a native type impression. At the publisher's discretion,
      * that same impression may also be offered as banner and/or video by also including as
      * Imp subordinates the Banner and/or Video objects, respectively.
      * However, any given bid for the impression must conform to one of the offered types.
@@ -708,15 +708,15 @@ message BidRequest {
   message Site {
     /*
      * Site ID on the exchange.
-     * This field is not required, but it’s highly recommended.
+     * This field is not required, but it's highly recommended.
      */
     optional string id = 1;
     /*
-     * Site name (may be masked at publisher’s request).
+     * Site name (may be masked at publisher's request).
      */
     optional string name = 2;
     /*
-     * Domain of the site, used for advertiser side blocking. For example, “foo.com”.
+     * Domain of the site, used for advertiser side blocking. For example, "foo.com".
      */
     optional string domain = 3;
     /*
@@ -780,11 +780,11 @@ message BidRequest {
   message App {
     /*
      * Application ID on the exchange.
-     * This field is not required, but it’s highly recommended.
+     * This field is not required, but it's highly recommended.
      */
     optional string id = 1;
     /*
-     * Application name (may be aliased at publisher’s request).
+     * Application name (may be aliased at publisher's request).
      */
     optional string name = 2;
     /*
@@ -793,7 +793,7 @@ message BidRequest {
      */
     optional string bundle = 8;
     /*
-     * Domain of the application. For example, “mygame.foo.com”.
+     * Domain of the application. For example, "mygame.foo.com".
      */
     optional string domain = 3;
     /*
@@ -854,7 +854,7 @@ message BidRequest {
      */
     optional string id = 1;
     /*
-     * Publisher name (may be aliased at publisher’s request).
+     * Publisher name (may be aliased at publisher's request).
      */
     optional string name = 2;
     /*
@@ -862,7 +862,7 @@ message BidRequest {
      */
     repeated ContentCategory cat = 3 [packed = true];
     /*
-     * Highest level domain of the publisher (e.g., “publisher.com”).
+     * Highest level domain of the publisher (e.g., "publisher.com").
      */
     optional string domain = 4;
     /**
@@ -874,7 +874,7 @@ message BidRequest {
   /*
    * OpenRTB 3.2.9: This object describes the content in which the impression will appear,
    * which may be syndicated or non-syndicated content. This object may be useful when
-   * syndicated content contains impressions and does not necessarily match the publisher’s
+   * syndicated content contains impressions and does not necessarily match the publisher's
    * general content. The exchange might or might not have knowledge of the page where
    * the content is running, as a result of the syndication method. For example might be
    * a video impression embedded in an iframe on an unknown web property or device.
@@ -890,20 +890,20 @@ message BidRequest {
     optional int32 episode = 2;
     /*
      * Content title.
-     * Video Examples: “Search Committee” (television), “A New Hope” (movie),
-     * or “Endgame” (made for web).
-     * Non-Video Example: “Why an Antarctic Glacier Is Melting So Quickly” (Time magazine article).
+     * Video Examples: "Search Committee" (television), "A New Hope" (movie),
+     * or "Endgame" (made for web).
+     * Non-Video Example: "Why an Antarctic Glacier Is Melting So Quickly" (Time magazine article).
      */
     optional string title = 3;
     /*
      * Content series.
-     * Video Examples: “The Office” (television), “Star Wars” (movie), or “Arby ‘N’ The Chief”
+     * Video Examples: "The Office" (television), "Star Wars" (movie), or "Arby 'N' The Chief"
      * (made for web).
-     * Non-Video Example: “Ecocentric” (Time Magazine blog).
+     * Non-Video Example: "Ecocentric" (Time Magazine blog).
      */
     optional string series = 4;
     /*
-     * Content season; typically for video content (e.g., “Season 3”).
+     * Content season; typically for video content (e.g., "Season 3").
      */
     optional string season = 5;
     /*
@@ -919,7 +919,7 @@ message BidRequest {
      */
     repeated ContentCategory cat = 7;
     /*
-     * Video quality per IAB’s classification. Refer to List 5.11.
+     * Video quality per IAB's classification. Refer to List 5.11.
      */
     optional VideoQuality videoquality = 8;
     /*
@@ -970,7 +970,7 @@ message BidRequest {
 
     /*
      * OpenRTB 5.11: The following table lists the options for the video quality.
-     * These values are defined by the IAB – http://www.iab.net/media/file/long-form-video-final.pdf.
+     * These values are defined by the IAB - http://www.iab.net/media/file/long-form-video-final.pdf.
      */
     enum VideoQuality {
       QUALITY_UNKNOWN = 0;
@@ -1021,7 +1021,7 @@ message BidRequest {
      */
     optional string id = 1;
     /*
-     * Content producer or originator name (e.g., “Warner Bros”).
+     * Content producer or originator name (e.g., "Warner Bros").
      */
     optional string name = 2;
     /*
@@ -1029,7 +1029,7 @@ message BidRequest {
      */
     repeated ContentCategory cat = 3 [packed = true];
     /*
-     * Highest level domain of the content producer (e.g., “producer.com”).
+     * Highest level domain of the content producer (e.g., "producer.com").
      */
     optional string domain = 4;
     /**
@@ -1047,30 +1047,30 @@ message BidRequest {
   message Device {
     /*
      * Browser user agent string.
-     * This field is not required, but it’s highly recommended.
+     * This field is not required, but it's highly recommended.
      */
     optional string ua = 2;
     /*
-     * Location of the device assumed to be the user’s current location defined by a
+     * Location of the device assumed to be the user's current location defined by a
      * Geo object (Section 3.2.12).
-     * This field is not required, but it’s highly recommended.
+     * This field is not required, but it's highly recommended.
      */
     optional Geo geo = 4;
     /*
-     * Standard “Do Not Track” flag as set in the header by the browser,
+     * Standard "Do Not Track" flag as set in the header by the browser,
      * where 0 = tracking is unrestricted, 1 = do not track.
-     * This field is not required, but it’s highly recommended.
+     * This field is not required, but it's highly recommended.
      */
     optional bool dnt = 1;
     /**
-     * “Limit Ad Tracking” signal commercially endorsed (e.g., iOS, Android),
+     * "Limit Ad Tracking" signal commercially endorsed (e.g., iOS, Android),
      * where 0 = tracking is unrestricted, 1 = tracking must be limited per commercial guidelines.
-     * This field is not required, but it’s highly recommended.
+     * This field is not required, but it's highly recommended.
      */
     optional bool lmt = 23;
     /*
      * IPv4 address closest to device.
-     * This field is not required, but it’s highly recommended.
+     * This field is not required, but it's highly recommended.
      */
     optional string ip = 3;
     /*
@@ -1082,19 +1082,19 @@ message BidRequest {
      */
     optional DeviceType devicetype = 18;
     /*
-     * Device make (e.g., “Apple”).
+     * Device make (e.g., "Apple").
      */
     optional string make = 12;
     /*
-     * Device model (e.g., “iPhone”).
+     * Device model (e.g., "iPhone").
      */
     optional string model = 13;
     /*
-     * Device operating system (e.g., “iOS”).
+     * Device operating system (e.g., "iOS").
      */
     optional string os = 14;
     /*
-     * Device operating system version (e.g., “3.1.2”).
+     * Device operating system version (e.g., "3.1.2").
      */
     optional string osv = 15;
     /**
@@ -1211,8 +1211,8 @@ message BidRequest {
   /*
    * OpenRTB 3.2.12: This object encapsulates various methods for specifying a geographic location.
    * When subordinate to a Device object, it indicates the location of the device which can also
-   * be interpreted as the user’s current location. When subordinate to a User object, it
-   * indicates the location of the user’s home base (i.e., not necessarily their current location).
+   * be interpreted as the user's current location. When subordinate to a User object, it
+   * indicates the location of the user's home base (i.e., not necessarily their current location).
    *
    * The lat/lon attributes should only be passed if they conform to the accuracy depicted
    * in the type attribute. For example, the centroid of a geographic region such as postal code
@@ -1300,7 +1300,7 @@ message BidRequest {
      */
     optional int32 yob = 3;
     /*
-     * Gender as “M” male, “F” female, “O” Other. (Null indicates unknown)
+     * Gender as "M" male, "F" female, "O" Other. (Null indicates unknown)
      */
     optional Gender gender = 4;
     /*
@@ -1308,13 +1308,13 @@ message BidRequest {
      */
     repeated string keywords = 5;
     /*
-     * Optional feature to pass bidder data that was set in the exchange’s cookie.
+     * Optional feature to pass bidder data that was set in the exchange's cookie.
      * The string must be in base85 cookie safe characters and be in any format.
-     * Proper JSON encoding must be used to include “escaped” quotation marks.
+     * Proper JSON encoding must be used to include "escaped" quotation marks.
      */
     optional string customdata = 6;
     /*
-     * Location of the user’s home base defined by a Geo object (Section 3.2.12).
+     * Location of the user's home base defined by a Geo object (Section 3.2.12).
      * This is not necessarily their current location.
      */
     optional Geo geo = 7;
@@ -1388,8 +1388,8 @@ message BidRequest {
   /*
    * OpenRTB 3.2.16: This object contains any legal, governmental, or industry regulations
    * that apply to the request. The coppa flag signals whether or not the request falls under
-   * the United States Federal Trade Commission’s regulations for the United States Children’s
-   * Online Privacy Protection Act (“COPPA”). Refer to Section 7.1 for more information.
+   * the United States Federal Trade Commission's regulations for the United States Children's
+   * Online Privacy Protection Act ("COPPA"). Refer to Section 7.1 for more information.
    */
   message Regs {
     /*
@@ -1410,7 +1410,7 @@ message BidRequest {
  * Similarly, bidid is an optional response tracking ID for bidders. If specified, it can be
  * included in the subsequent win notice call if the bidder wins. At least one seatbid object
  * is required, which contains at least one bid for an impression. Other attributes are optional.
- * To express a “no-bid”, the options are to return an empty response with HTTP 204.
+ * To express a "no-bid", the options are to return an empty response with HTTP 204.
  * Alternately if the bidder wishes to convey to the exchange a reason for not bidding,
  * just a BidResponse object is returned with a reason code in the nbr attribute.
  */
@@ -1432,9 +1432,9 @@ message BidResponse {
    */
   optional string cur = 4 [default = "USD"];
   /*
-   * Optional feature to allow a bidder to set data in the exchange’s cookie.
+   * Optional feature to allow a bidder to set data in the exchange's cookie.
    * The string must be in base85 cookie safe characters and be in any format.
-   * Proper JSON encoding must be used to include “escaped” quotation marks.
+   * Proper JSON encoding must be used to include "escaped" quotation marks.
    */
   optional string customdata = 5;
   /**
@@ -1523,11 +1523,11 @@ message BidResponse {
       optional string adm = 6;
       /**
        * Native ad response.
-       * You can only set one of adm and admNative; either will generate the "adm" field in JSON.
+       * You can only set one of adm and adm_native; either will generate the "adm" field in JSON.
        */
-      optional NativeResponse admNative = 50;
+      optional NativeResponse adm_native = 50;
       /*
-       * Advertiser domain for block list checking (e.g., “ford.com”). This can be an array of
+       * Advertiser domain for block list checking (e.g., "ford.com"). This can be an array of
        * for the case of rotating creatives. Exchanges can mandate that only one domain is allowed.
        */
       repeated string adomain = 7;
@@ -1580,7 +1580,7 @@ message BidResponse {
 }
 
 /*
- * OpenRTB 5.1: The following list represents the IAB’s contextual taxonomy for categorization.
+ * OpenRTB 5.1: The following list represents the IAB's contextual taxonomy for categorization.
  * Standard IDs have been adopted to easily support the communication of primary and secondary
  * categories for various objects.
  *
