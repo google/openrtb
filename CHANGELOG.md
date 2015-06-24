@@ -1,6 +1,15 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 0.8.6, 24-06-2015
+
+* Support for the OpenRTB 2.3.1 specification:
+  - Macro `${AUCTION_BID_ID}` expands to `BidResponse.bidid` (not `.id`)
+  - `User.buyerid` fixed back to `buyeruid`. This was correct already in
+    the library, but now the JSON parser will accept the wrong field name
+    `buyerid` for backwards compatibility with the broken 2.3.0 spec.
+* Fixed JSON serialization of Native Ads.
+
 ## Version 0.8.5, 11-06-2015
 
 * Fix `Bid.bcat` cardinality to repeated.
