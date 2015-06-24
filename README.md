@@ -6,7 +6,7 @@ bindings for all protobuf-supported languages, and additional
 support for Java such as JSON serialization and validation.
 
 See our [wiki](https://github.com/google/openrtb/wiki) to get started!
-Use the Github issue tracker for bugs, RFEs for any support. Check the
+Use the Github issue tracker for bugs, RFEs or any support. Check the
 [changelog](CHANGELOG.md) for detailed release notes.
 
 
