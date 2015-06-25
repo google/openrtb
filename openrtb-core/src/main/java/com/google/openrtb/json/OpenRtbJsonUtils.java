@@ -33,7 +33,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -146,25 +145,21 @@ public class OpenRtbJsonUtils {
    * to be of either type in OpenRTB 2.2; now in 2.3 they are all CSV strings only.
    * TODO: Simplify this to only accept CSV strings after 2.2 compatibility is dropped.
    */
-  public static Iterable<String> readCsvString(JsonParser par) throws IOException {
+  public static String readCsvString(JsonParser par) throws IOException {
     JsonToken currentToken = par.getCurrentToken();
     if (currentToken == JsonToken.START_ARRAY) {
-      List<String> keywords = new ArrayList<>();
+      StringBuilder keywords = new StringBuilder();
       for (startArray(par); endArray(par); par.nextToken()) {
-        keywords.add(par.getText());
+        if (keywords.length() != 0) {
+          keywords.append(',');
+        }
+        keywords.append(par.getText());
       }
-      return keywords;
+      return keywords.toString();
     } else if (currentToken == JsonToken.VALUE_STRING) {
-      return CSV_SPLITTER.split(par.getText());
+      return par.getText();
     } else {
       throw new JsonParseException("Expected string or array", par.getCurrentLocation());
-    }
-  }
-
-  public static void writeCsvString(String fieldName, List<String> data, JsonGenerator gen)
-      throws IOException {
-    if (!data.isEmpty()) {
-      gen.writeStringField(fieldName, CSV_JOINER.join(data));
     }
   }
 

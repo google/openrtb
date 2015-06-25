@@ -660,7 +660,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         site.setContent(readContent(par));
         break;
       case "keywords":
-        site.addAllKeywords(readCsvString(par));
+        site.setKeywords(readCsvString(par));
         break;
       default:
         readOther(site, par, fieldName);
@@ -736,7 +736,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         app.setContent(readContent(par));
         break;
       case "keywords":
-        app.addAllKeywords(readCsvString(par));
+        app.setKeywords(readCsvString(par));
         break;
       default:
         readOther(app, par, fieldName);
@@ -807,7 +807,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         content.setQagmediarating(QAGMediaRating.valueOf(par.getIntValue()));
         break;
       case "keywords":
-        content.addAllKeywords(readCsvString(par));
+        content.setKeywords(readCsvString(par));
         break;
       case "livestream":
         content.setLivestream(getIntBoolValue(par));
@@ -1085,7 +1085,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       }
       case "keywords":
-        user.addAllKeywords(readCsvString(par));
+        user.setKeywords(readCsvString(par));
         break;
       case "customdata":
         user.setCustomdata(par.getText());

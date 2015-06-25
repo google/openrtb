@@ -258,7 +258,7 @@ public class OpenRtbJsonTest {
         + "\"keywords\":  [\"foo\", \"bar\"]},\n \"id\": \"56600\",\n \"cat\": [\"IAB19\"],\n "
         + "\"keywords\": \"\",\n \"name\": \"Emoji Free!\",\n \"ver\": null\n } \n}";
     BidRequest bidRequest = newJsonFactory().newReader().readBidRequest(test);
-    assertEquals(asList("foo", "bar"), bidRequest.getSite().getContent().getKeywordsList());
+    assertEquals("foo,bar", bidRequest.getSite().getContent().getKeywords());
   }
 
   static void testRequest(OpenRtbJsonFactory jsonFactory, BidRequest req) throws IOException {
@@ -468,7 +468,7 @@ public class OpenRtbJsonTest {
             .setBuyeruid("Picard")
             .setYob(1973)
             .setGender(Gender.MALE)
-            .addAllKeywords(asList("boldly", "going"))
+            .setKeywords("boldly,going")
             .setCustomdata("data1")
             .setGeo(Geo.newBuilder().setZip("12345"))
             .addData(Data.newBuilder()
@@ -524,7 +524,7 @@ public class OpenRtbJsonTest {
             .setUrl("http://who.com")
             .addCat(ContentCategory.IAB10_2)
             .setVideoquality(VideoQuality.PROFESSIONAL)
-            .addAllKeywords(asList("sci-fi", "aliens"))
+            .setKeywords("sci-fi,aliens")
             .setContentrating("R")
             .setUserrating("Awesome!")
             .setContext(ContentContext.OTHER)
@@ -541,7 +541,7 @@ public class OpenRtbJsonTest {
             .setEmbeddable(false)
             .setLanguage("en")
             .setExtension(TestExt.testContent, test1))
-        .addAllKeywords(asList("news", "politics"))
+        .setKeywords("news,politics")
         .setExtension(TestExt.testSite, test1);
   }
 
@@ -559,7 +559,7 @@ public class OpenRtbJsonTest {
         .setPaid(false)
         .setPublisher(Publisher.newBuilder().setId("pub9"))
         .setContent(Content.newBuilder().setId("cont9"))
-        .addAllKeywords(asList("news", "politics"))
+        .setKeywords("news,politics")
         .setStoreurl("http://appstore.com/cnn")
         .setExtension(TestExt.testApp, test1);
   }

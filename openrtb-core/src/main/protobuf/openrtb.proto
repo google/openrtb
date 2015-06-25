@@ -764,7 +764,7 @@ message BidRequest {
     /*
      * Comma separated list of keywords about this site.
      */
-    repeated string keywords = 13;
+    optional string keywords = 13;
     /**
      * Extensions.
      */
@@ -837,7 +837,7 @@ message BidRequest {
     /*
      * Comma separated list of keywords about the app.
      */
-    repeated string keywords = 13;
+    optional string keywords = 13;
     /**
      * Extensions.
      */
@@ -926,6 +926,10 @@ message BidRequest {
      * Type of content (game, video, text, etc.). Refer to List 5.14.
      */
     optional ContentContext context = 12;
+    /**
+     * OpenRTB <= 2.2 compatibility; use context for 2.3+.
+     */
+    optional string context_22 = 20;
     /*
      * Content rating (e.g., MPAA).
      */
@@ -941,7 +945,7 @@ message BidRequest {
     /*
      * Comma separated list of keywords describing the content.
      */
-    repeated string keywords = 9;
+    optional string keywords = 9;
     /*
      * 0 = not live, 1 = content is live (e.g., stream, live blog).
      */
@@ -1306,7 +1310,7 @@ message BidRequest {
     /*
      * Comma separated list of keywords, interests, or intent.
      */
-    repeated string keywords = 5;
+    optional string keywords = 5;
     /*
      * Optional feature to pass bidder data that was set in the exchange's cookie.
      * The string must be in base85 cookie safe characters and be in any format.
