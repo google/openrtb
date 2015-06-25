@@ -19,10 +19,13 @@ package com.google.openrtb.json;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
-import com.google.openrtb.OpenRtbNative.NativeRequest;
-import com.google.openrtb.OpenRtbNative.NativeResponse;
+import com.google.openrtb.OpenRtb.BidRequest;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VideoBidResponseProtocol;
+import com.google.openrtb.OpenRtb.NativeRequest;
+import com.google.openrtb.OpenRtb.NativeResponse;
 import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
+import com.google.openrtb.TestExt;
 import com.google.openrtb.TestNExt;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -55,7 +58,7 @@ public class OpenRtbNativeJsonTest {
             .setTitle(NativeRequest.Asset.Title.newBuilder()
                 .setLen(100))
             .setImg(NativeRequest.Asset.Image.newBuilder())
-            .setVideo(NativeRequest.Asset.Video.newBuilder()
+            .setVideo(BidRequest.Imp.Video.newBuilder()
                 .setMinduration(100)
                 .setMaxduration(200))
             .setData(NativeRequest.Asset.Data.newBuilder()
@@ -121,8 +124,8 @@ public class OpenRtbNativeJsonTest {
             NativeRequest.Asset.Title.Builder.class)
         .register(new Test1Reader<NativeRequest.Asset.Image.Builder>(TestNExt.testNReqImage),
             NativeRequest.Asset.Image.Builder.class)
-        .register(new Test1Reader<NativeRequest.Asset.Video.Builder>(TestNExt.testNReqVideo),
-            NativeRequest.Asset.Video.Builder.class)
+        .register(new Test1Reader<BidRequest.Imp.Video.Builder>(TestExt.testVideo),
+            BidRequest.Imp.Video.Builder.class)
         .register(new Test1Reader<NativeRequest.Asset.Data.Builder>(TestNExt.testNReqData),
             NativeRequest.Asset.Data.Builder.class)
         // NativeResponse Readers
@@ -147,7 +150,7 @@ public class OpenRtbNativeJsonTest {
         .register(new Test1Writer(), Test1.class, NativeRequest.Asset.class)
         .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Title.class)
         .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Image.class)
-        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Video.class)
+        .register(new Test1Writer(), Test1.class, BidRequest.Imp.Video.class)
         .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Data.class)
         .register(new Test1Writer(), Test1.class, NativeResponse.class)
         .register(new Test1Writer(), Test1.class, NativeResponse.Link.class)
@@ -163,8 +166,8 @@ public class OpenRtbNativeJsonTest {
   static NativeRequest.Builder newNativeRequest() {
     return NativeRequest.newBuilder()
         .setVer("1")
-        .setLayout(NativeRequest.LayoutID.APP_WALL)
-        .setAdunit(NativeRequest.AdunitID.PROMOTED_LISTING)
+        .setLayout(NativeRequest.LayoutId.APP_WALL)
+        .setAdunit(NativeRequest.AdUnitId.PROMOTED_LISTING)
         .setPlcmtcnt(4)
         .setSeq(5)
         .addAssets(NativeRequest.Asset.newBuilder()
@@ -181,12 +184,12 @@ public class OpenRtbNativeJsonTest {
                 .setHmin(4)
                 .addAllMimes(asList("a", "b"))
                 .setExtension(TestNExt.testNReqImage, test1))
-            .setVideo(NativeRequest.Asset.Video.newBuilder()
+            .setVideo(BidRequest.Imp.Video.newBuilder()
                 .addAllMimes(asList("a", "b"))
                 .setMinduration(100)
                 .setMaxduration(200)
-                .addAllProtocols(asList(1, 2, 3))
-                .setExtension(TestNExt.testNReqVideo, test1))
+                .addProtocols(VideoBidResponseProtocol.VAST_3_0)
+                .setExtension(TestExt.testVideo, test1))
             .setData(NativeRequest.Asset.Data.newBuilder()
                 .setType(NativeRequest.Asset.Data.DataAssetType.SPONSORED)
                 .setLen(10)

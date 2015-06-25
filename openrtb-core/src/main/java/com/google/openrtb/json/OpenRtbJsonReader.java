@@ -66,7 +66,6 @@ import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.NoBidReason;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
-import com.google.openrtb.OpenRtb.ContentCategory;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
 import com.google.protobuf.ByteString;
 
@@ -184,10 +183,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "bcat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          ContentCategory cat = OpenRtbJsonUtils.categoryFromJsonName(par.getText());
-          if (cat != null) {
-            req.addBcat(cat);
-          }
+          req.addBcat(par.getText());
         }
         break;
       case "badv":
@@ -616,26 +612,17 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "cat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          ContentCategory cat = OpenRtbJsonUtils.categoryFromJsonName(par.getText());
-          if (cat != null) {
-            site.addCat(cat);
-          }
+          site.addCat(par.getText());
         }
         break;
       case "sectioncat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          ContentCategory cat = OpenRtbJsonUtils.categoryFromJsonName(par.getText());
-          if (cat != null) {
-            site.addSectioncat(cat);
-          }
+          site.addSectioncat(par.getText());
         }
         break;
       case "pagecat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          ContentCategory cat = OpenRtbJsonUtils.categoryFromJsonName(par.getText());
-          if (cat != null) {
-            site.addPagecat(cat);
-          }
+          site.addPagecat(par.getText());
         }
         break;
       case "page":
@@ -698,26 +685,17 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "cat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          ContentCategory cat = OpenRtbJsonUtils.categoryFromJsonName(par.getText());
-          if (cat != null) {
-            app.addCat(cat);
-          }
+          app.addCat(par.getText());
         }
         break;
       case "sectioncat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          ContentCategory cat = OpenRtbJsonUtils.categoryFromJsonName(par.getText());
-          if (cat != null) {
-            app.addSectioncat(cat);
-          }
+          app.addSectioncat(par.getText());
         }
         break;
       case "pagecat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          ContentCategory cat = OpenRtbJsonUtils.categoryFromJsonName(par.getText());
-          if (cat != null) {
-            app.addPagecat(cat);
-          }
+          app.addPagecat(par.getText());
         }
         break;
       case "ver":
@@ -780,10 +758,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "cat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          ContentCategory cat = OpenRtbJsonUtils.categoryFromJsonName(par.getText());
-          if (cat != null) {
-            content.addCat(cat);
-          }
+          content.addCat(par.getText());
         }
         break;
       case "videoquality":
@@ -851,10 +826,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "cat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          ContentCategory cat = OpenRtbJsonUtils.categoryFromJsonName(par.getText());
-          if (cat != null) {
-            producer.addCat(cat);
-          }
+          producer.addCat(par.getText());
         }
         break;
       case "domain":
@@ -887,10 +859,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "cat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          ContentCategory cat = OpenRtbJsonUtils.categoryFromJsonName(par.getText());
-          if (cat != null) {
-            publisher.addCat(cat);
-          }
+          publisher.addCat(par.getText());
         }
         break;
       case "domain":
@@ -1317,10 +1286,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "cat":
         for (startArray(par); endArray(par); par.nextToken()) {
-          ContentCategory cat = OpenRtbJsonUtils.categoryFromJsonName(par.getText());
-          if (cat != null) {
-            bid.addCat(cat);
-          }
+          bid.addCat(par.getText());
         }
         break;
       case "attr":
