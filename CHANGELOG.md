@@ -1,6 +1,15 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 0.9.0, 01-07-2015
+* Unfortunately we had to revert two recent changes that would cause
+  interoperability problems in some scenarios.
+  - Revert all `keywords` fields to be single strings with internal CSV
+    content (instead of string arrays with automatic CSV conversion).
+  - Revert all fields of `ContentCategory` type ('bcat`, `cat`,
+    `sectioncat`, `pagecat`) back to strings. You can still use the enums
+    with `name()` and `valueOf()` to not lose type-safety. 
+
 ## Version 0.8.6, 24-06-2015
 
 * Support for the OpenRTB 2.3.1 specification:
