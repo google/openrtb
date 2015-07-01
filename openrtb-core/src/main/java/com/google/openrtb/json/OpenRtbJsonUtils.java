@@ -16,8 +16,7 @@
 
 package com.google.openrtb.json;
 
-import com.google.common.collect.ImmutableBiMap;
-import com.google.openrtb.OpenRtb.BidRequest.User.Gender;
+import com.google.openrtb.util.OpenRtbUtils;
 import com.google.protobuf.ProtocolMessageEnum;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -28,25 +27,10 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 /**
  * Utilities for writing JSON serialization code.
  */
 public class OpenRtbJsonUtils {
-  private static final ImmutableBiMap<String, Gender> GENDER_NAME = ImmutableBiMap.of(
-      "M", Gender.MALE,
-      "F", Gender.FEMALE,
-      "O", Gender.OTHER);
-
-  public static @Nullable Gender genderFromJsonName(String cat) {
-    return GENDER_NAME.get(cat);
-  }
-
-  public static @Nullable String genderToJsonName(Gender cat) {
-    return GENDER_NAME.inverse().get(cat);
-  }
-
   public static String getCurrentName(JsonParser par) throws IOException {
     String name = par.getCurrentName();
     return name == null ? "" : name;
@@ -175,6 +159,19 @@ public class OpenRtbJsonUtils {
       gen.writeArrayFieldStart(fieldName);
       for (ProtocolMessageEnum e : enums) {
         gen.writeNumber(e.getNumber());
+      }
+      gen.writeEndArray();
+    }
+  }
+
+  public static void writeContentCategories(
+      String fieldName, List<String> cats, JsonGenerator gen)
+      throws IOException {
+    if (!cats.isEmpty()) {
+      gen.writeArrayFieldStart(fieldName);
+      for (String cat : cats) {
+        if (OpenRtbUtils.categoryFromName(cat) != null)
+        gen.writeString(cat);
       }
       gen.writeEndArray();
     }

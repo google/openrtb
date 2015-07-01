@@ -25,13 +25,16 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.Imp;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
+import com.google.openrtb.OpenRtb.BidRequest.User.Gender;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
+import com.google.openrtb.OpenRtb.ContentCategory;
 
 import java.util.Iterator;
 import java.util.List;
@@ -43,6 +46,22 @@ import javax.annotation.Nullable;
  * {@link com.google.openrtb.OpenRtb.BidResponse.Builder}.
  */
 public final class OpenRtbUtils {
+  private static final ImmutableMap<Object, String> CAT_TO_JSON;
+  private static final ImmutableMap<String, ContentCategory> NAME_TO_CAT;
+  private static final ImmutableMap<String, Gender> NAME_TO_GENDER =
+      ImmutableMap.<String, Gender>builder()
+          .put("M", Gender.MALE)
+          .put(Gender.MALE.name(), Gender.MALE)
+          .put("F", Gender.FEMALE)
+          .put(Gender.FEMALE.name(), Gender.FEMALE)
+          .put("O", Gender.OTHER)
+          .put(Gender.OTHER.name(), Gender.OTHER)
+          .build();
+  private static final ImmutableMap<Gender, String> GENDER_TO_JSON = ImmutableMap.of(
+      Gender.MALE, "M",
+      Gender.FEMALE, "F",
+      Gender.OTHER, "O");
+
   public static final Predicate<Imp> IMP_HAS_BANNER = new Predicate<Imp>() {
     @Override public boolean apply(Imp imp) {
       assert imp != null;
@@ -53,6 +72,58 @@ public final class OpenRtbUtils {
       assert imp != null;
       return imp.hasVideo();
     }};
+
+  static {
+    ImmutableMap.Builder<Object, String> catToJson = ImmutableMap.builder();
+    ImmutableMap.Builder<String, ContentCategory> nameToCat = ImmutableMap.builder();
+    for (ContentCategory cat : ContentCategory.values()) {
+      String json = cat.name().replace('_', '-');
+      catToJson.put(cat.name(), json);
+      catToJson.put(cat, json);
+      nameToCat.put(cat.name(), cat);
+      if (!json.equals(cat.name())) {
+        catToJson.put(json, json);
+        nameToCat.put(json, cat);
+      }
+    }
+    CAT_TO_JSON = catToJson.build();
+    NAME_TO_CAT = nameToCat.build();
+  }
+
+  /**
+   * Get a {@link Gender} from its name (either Java or JSON name).
+   */
+  public static @Nullable Gender genderFromName(String genderName) {
+    return NAME_TO_GENDER.get(genderName);
+  }
+
+  /**
+   * Get a {@link Gender}'s JSON name, from its Java name.
+   */
+  public static @Nullable String genderToJsonName(Gender gender) {
+    return GENDER_TO_JSON.get(gender);
+  }
+
+  /**
+   * Get a {@link ContentCategory} from its name (either Java or JSON name).
+   */
+  public static @Nullable ContentCategory categoryFromName(String catName) {
+    return NAME_TO_CAT.get(catName);
+  }
+
+  /**
+   * Get a {@link ContentCategory}'s JSON name, from its Java name.
+   */
+  public static @Nullable String categoryToJsonName(String catName) {
+    return CAT_TO_JSON.get(catName);
+  }
+
+  /**
+   * Get a {@link ContentCategory}'s JSON name.
+   */
+  public static @Nullable String categoryToJsonName(ContentCategory cat) {
+    return CAT_TO_JSON.get(cat);
+  }
 
   /**
    * @return The OpenRTB SeatBid with the specified ID; will be created if not existent.

@@ -57,12 +57,10 @@ import com.google.openrtb.OpenRtb.BidRequest.Publisher;
 import com.google.openrtb.OpenRtb.BidRequest.Regs;
 import com.google.openrtb.OpenRtb.BidRequest.Site;
 import com.google.openrtb.OpenRtb.BidRequest.User;
-import com.google.openrtb.OpenRtb.BidRequest.User.Gender;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.NoBidReason;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
-import com.google.openrtb.OpenRtb.ContentCategory;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
 import com.google.openrtb.OpenRtb.NativeRequest;
 import com.google.openrtb.OpenRtb.NativeResponse;
@@ -467,7 +465,7 @@ public class OpenRtbJsonTest {
             .setId("user1")
             .setBuyeruid("Picard")
             .setYob(1973)
-            .setGender(Gender.MALE)
+            .setGender("M")
             .setKeywords("boldly,going")
             .setCustomdata("data1")
             .setGeo(Geo.newBuilder().setZip("12345"))
@@ -486,7 +484,7 @@ public class OpenRtbJsonTest {
         .addWseat("seat1")
         .setAllimps(false)
         .addCur("USD")
-        .addAllBcat(asList(ContentCategory.IAB11.name(), ContentCategory.IAB11_4.name()))
+        .addAllBcat(asList("IAB11", "IAB11-4"))
         .addBadv("badguy")
         .setRegs(Regs.newBuilder()
             .setCoppa(true)
@@ -501,9 +499,9 @@ public class OpenRtbJsonTest {
         .setId("88")
         .setName("CNN")
         .setDomain("cnn.com")
-        .addCat(ContentCategory.IAB1.name())
-        .addSectioncat(ContentCategory.IAB1_2.name())
-        .addPagecat(ContentCategory.IAB1_2.name())
+        .addCat("IAB1")
+        .addSectioncat("IAB1-2")
+        .addPagecat("IAB1-2")
         .setPage("http://cnn.com/news/elections.html")
         .setPrivacypolicy(true)
         .setRef("http://referrer.com")
@@ -512,7 +510,7 @@ public class OpenRtbJsonTest {
         .setPublisher(Publisher.newBuilder()
             .setId("pub1")
             .setName("Turner")
-            .addCat(ContentCategory.IAB1.name())
+            .addCat("IAB1")
             .setDomain("tbs.com")
             .setExtension(TestExt.testPublisher, test1))
         .setContent(Content.newBuilder()
@@ -522,7 +520,7 @@ public class OpenRtbJsonTest {
             .setSeries("Dr. Who")
             .setSeason("S4")
             .setUrl("http://who.com")
-            .addCat(ContentCategory.IAB10_2.name())
+            .addCat("IAB10-2")
             .setVideoquality(VideoQuality.PROFESSIONAL)
             .setKeywords("sci-fi,aliens")
             .setContentrating("R")
@@ -533,7 +531,7 @@ public class OpenRtbJsonTest {
             .setProducer(Producer.newBuilder()
                 .setId("prod1")
                 .setName("Warner")
-                .addCat(ContentCategory.IAB10.name())
+                .addCat("IAB10")
                 .setDomain("http://bros.com")
                 .setExtension(TestExt.testProducer, test1))
             .setLen(240)
@@ -550,9 +548,9 @@ public class OpenRtbJsonTest {
         .setId("PewDiePie")
         .setName("CNN App")
         .setDomain("cnn.com")
-        .addCat(ContentCategory.IAB1.name())
-        .addSectioncat(ContentCategory.IAB1_1.name())
-        .addPagecat(ContentCategory.IAB1_2.name())
+        .addCat("IAB1")
+        .addSectioncat("IAB1-1")
+        .addPagecat("IAB1-2")
         .setVer("1.0")
         .setBundle("com.cnn.app")
         .setPrivacypolicy(true)
@@ -580,7 +578,7 @@ public class OpenRtbJsonTest {
         .setW(100)
         .setH(80)
         .setBundle("com.google.testapp")
-        .addCat(ContentCategory.IAB10_2.name())
+        .addCat("IAB10-2")
         .setExtension(TestExt.testBid, test1);
     if (admNative) {
       bid.setAdmNative(NativeResponse.newBuilder()
