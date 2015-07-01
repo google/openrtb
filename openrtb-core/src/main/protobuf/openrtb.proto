@@ -923,11 +923,11 @@ message BidRequest {
     /*
      * Type of content (game, video, text, etc.). Refer to List 5.14.
      */
-    optional ContentContext context = 12;
+    optional ContentContext context = 20;
     /**
      * OpenRTB <= 2.2 compatibility; use context for 2.3+.
      */
-    optional string context_22 = 20;
+    optional string context_22 = 12;
     /*
      * Content rating (e.g., MPAA).
      */
@@ -1304,7 +1304,7 @@ message BidRequest {
     /*
      * Gender as "M" male, "F" female, "O" Other. (Null indicates unknown)
      */
-    optional Gender gender = 4;
+    optional string gender = 4;
     /*
      * Comma separated list of keywords, interests, or intent.
      */

@@ -60,7 +60,7 @@ public class ProtobufTest {
              .setId("234563")
              .setName("Site ABCD")
              .setDomain("siteabcd.com")
-             .addAllCat(asList(ContentCategory.IAB2_1.name(), ContentCategory.IAB2_2.name()))
+             .addAllCat(asList("IAB2-1", "IAB2-2"))
              .setPrivacypolicy(true)
              .setPage("http://siteabcd.com/page.htm")
              .setRef("http://referringsite.com/referringpage.htm")

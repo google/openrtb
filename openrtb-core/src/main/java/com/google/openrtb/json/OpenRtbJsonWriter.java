@@ -17,6 +17,7 @@
 package com.google.openrtb.json;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.openrtb.json.OpenRtbJsonUtils.writeContentCategories;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeEnums;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeIntBoolField;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeStrings;
@@ -43,6 +44,7 @@ import com.google.openrtb.OpenRtb.BidRequest.User;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
+import com.google.openrtb.util.OpenRtbUtils;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -148,7 +150,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
       writeIntBoolField("allimps", req.getAllimps(), gen);
     }
     writeStrings("cur", req.getCurList(), gen);
-    writeStrings("bcat", req.getBcatList(), gen);
+    writeContentCategories("bcat", req.getBcatList(), gen);
     writeStrings("badv", req.getBadvList(), gen);
     if (req.hasRegs()) {
       gen.writeFieldName("regs");
@@ -415,9 +417,9 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     if (site.hasDomain()) {
       gen.writeStringField("domain", site.getDomain());
     }
-    writeStrings("cat", site.getCatList(), gen);
-    writeStrings("sectioncat", site.getSectioncatList(), gen);
-    writeStrings("pagecat", site.getPagecatList(), gen);
+    writeContentCategories("cat", site.getCatList(), gen);
+    writeContentCategories("sectioncat", site.getSectioncatList(), gen);
+    writeContentCategories("pagecat", site.getPagecatList(), gen);
     if (site.hasPage()) {
       gen.writeStringField("page", site.getPage());
     }
@@ -469,9 +471,9 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     if (app.hasStoreurl()) {
       gen.writeStringField("storeurl", app.getStoreurl());
     }
-    writeStrings("cat", app.getCatList(), gen);
-    writeStrings("sectioncat", app.getSectioncatList(), gen);
-    writeStrings("pagecat", app.getPagecatList(), gen);
+    writeContentCategories("cat", app.getCatList(), gen);
+    writeContentCategories("sectioncat", app.getSectioncatList(), gen);
+    writeContentCategories("pagecat", app.getPagecatList(), gen);
     if (app.hasVer()) {
       gen.writeStringField("ver", app.getVer());
     }
@@ -524,7 +526,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     if (content.hasUrl()) {
       gen.writeStringField("url", content.getUrl());
     }
-    writeStrings("cat", content.getCatList(), gen);
+    writeContentCategories("cat", content.getCatList(), gen);
     if (content.hasVideoquality()) {
       gen.writeNumberField("videoquality", content.getVideoquality().getNumber());
     }
@@ -574,7 +576,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     if (producer.hasName()) {
       gen.writeStringField("name", producer.getName());
     }
-    writeStrings("cat", producer.getCatList(), gen);
+    writeContentCategories("cat", producer.getCatList(), gen);
     if (producer.hasDomain()) {
       gen.writeStringField("domain", producer.getDomain());
     }
@@ -594,7 +596,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     if (publisher.hasName()) {
       gen.writeStringField("name", publisher.getName());
     }
-    writeStrings("cat", publisher.getCatList(), gen);
+    writeContentCategories("cat", publisher.getCatList(), gen);
     if (publisher.hasDomain()) {
       gen.writeStringField("domain", publisher.getDomain());
     }
@@ -752,8 +754,8 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     if (user.hasYob()) {
       gen.writeNumberField("yob", user.getYob());
     }
-    if (user.hasGender()) {
-      gen.writeStringField("gender", OpenRtbJsonUtils.genderToJsonName(user.getGender()));
+    if (user.hasGender() && OpenRtbUtils.genderFromName(user.getGender()) != null) {
+      gen.writeStringField("gender", user.getGender());
     }
     if (user.hasKeywords()) {
       gen.writeStringField("keywords", user.getKeywords());
@@ -954,7 +956,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     if (bid.hasCrid()) {
       gen.writeStringField("crid", bid.getCrid());
     }
-    writeStrings("cat", bid.getCatList(), gen);
+    writeContentCategories("cat", bid.getCatList(), gen);
     writeEnums("attr", bid.getAttrList(), gen);
     if (bid.hasDealid()) {
       gen.writeStringField("dealid", bid.getDealid());

@@ -45,7 +45,7 @@ public class OpenRtbValidatorTest {
   private static BidRequest requestBanner = BidRequest.newBuilder()
       .setId("1")
       .addAllBadv(asList("adv1.com", "adv2.com"))
-      .addAllBcat(asList(ContentCategory.IAB1.name(), ContentCategory.IAB2.name()))
+      .addAllBcat(asList("IAB1", "IAB2"))
       .addImp(Imp.newBuilder()
           .setId("1")
           .setBanner(Banner.newBuilder()

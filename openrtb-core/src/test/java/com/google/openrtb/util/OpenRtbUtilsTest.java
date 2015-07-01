@@ -36,6 +36,7 @@ import com.google.openrtb.OpenRtb.BidRequest.Imp.Video;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
+import com.google.openrtb.OpenRtb.ContentCategory;
 
 import org.junit.Test;
 
@@ -47,6 +48,15 @@ import javax.annotation.Nullable;
  * Tests for {@link OpenRtbUtils}.
  */
 public class OpenRtbUtilsTest {
+
+  @Test
+  public void testCatUtils() {
+    assertEquals(ContentCategory.IAB10_1, OpenRtbUtils.categoryFromName("IAB10_1"));
+    assertEquals(ContentCategory.IAB10_1, OpenRtbUtils.categoryFromName("IAB10-1"));
+    assertEquals("IAB10-1", OpenRtbUtils.categoryToJsonName("IAB10-1"));
+    assertEquals("IAB10-1", OpenRtbUtils.categoryToJsonName("IAB10_1"));
+    assertEquals("IAB10-1", OpenRtbUtils.categoryToJsonName(ContentCategory.IAB10_1));
+  }
 
   @Test
   public void testRequest_imps() {
