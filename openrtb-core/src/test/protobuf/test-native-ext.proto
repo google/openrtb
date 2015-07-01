@@ -18,7 +18,7 @@ syntax = "proto2";
 package com.google.openrtb;
 option java_outer_classname = "TestNExt";
 
-import "openrtb-native.proto";
+import "openrtb.proto";
 import "test-common.proto";
 
 extend com.google.openrtb.NativeRequest {
@@ -33,9 +33,6 @@ extend com.google.openrtb.NativeRequest.Asset.Title {
 }
 extend com.google.openrtb.NativeRequest.Asset.Image {
   optional Test1 testNReqImage = 110;
-}
-extend com.google.openrtb.NativeRequest.Asset.Video {
-  optional Test1 testNReqVideo = 110;
 }
 extend com.google.openrtb.NativeRequest.Asset.Data {
   optional Test1 testNReqData = 110;

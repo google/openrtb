@@ -17,11 +17,10 @@
 package com.google.openrtb.json;
 
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeIntBoolField;
-import static com.google.openrtb.json.OpenRtbJsonUtils.writeInts;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeStrings;
 
-import com.google.openrtb.OpenRtbNative.NativeRequest;
-import com.google.openrtb.OpenRtbNative.NativeResponse;
+import com.google.openrtb.OpenRtb.NativeRequest;
+import com.google.openrtb.OpenRtb.NativeResponse;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -40,6 +39,7 @@ import java.io.Writer;
  * This class is threadsafe.
  */
 public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
+  private OpenRtbJsonWriter coreWriter;
 
   protected OpenRtbNativeJsonWriter(OpenRtbJsonFactory factory) {
     super(factory);
@@ -137,7 +137,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     }
     if (asset.hasVideo()) {
       gen.writeFieldName("video");
-      writeReqVideo(asset.getVideo(), gen);
+      coreWriter().writeVideo(asset.getVideo(), gen);
     }
     if (asset.hasData()) {
       gen.writeFieldName("data");
@@ -185,26 +185,6 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     }
     if (checkRequired(image.getMimesCount())) {
       writeStrings("mimes", image.getMimesList(), gen);
-    }
-  }
-
-  public final void writeReqVideo(NativeRequest.Asset.Video video, JsonGenerator gen)
-      throws IOException {
-    gen.writeStartObject();
-    writeReqVideoFields(video, gen);
-    writeExtensions(video, gen);
-    gen.writeEndObject();
-  }
-
-  protected void writeReqVideoFields(NativeRequest.Asset.Video video, JsonGenerator gen)
-      throws IOException {
-    if (checkRequired(video.getMimesCount())) {
-      writeStrings("mimes", video.getMimesList(), gen);
-    }
-    gen.writeNumberField("minduration", video.getMinduration());
-    gen.writeNumberField("maxduration", video.getMaxduration());
-    if (checkRequired(video.getProtocolsCount())) {
-      writeInts("protocols", video.getProtocolsList(), gen);
     }
   }
 
@@ -404,5 +384,12 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     if (link.hasFallback()) {
       gen.writeStringField("fallback", link.getFallback());
     }
+  }
+
+  protected final OpenRtbJsonWriter coreWriter() {
+    if (coreWriter == null) {
+      coreWriter = factory().newWriter();
+    }
+    return coreWriter;
   }
 }

@@ -24,12 +24,12 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
 import com.google.common.io.Closeables;
-import com.google.openrtb.OpenRtbNative.NativeRequest;
-import com.google.openrtb.OpenRtbNative.NativeRequest.AdunitID;
-import com.google.openrtb.OpenRtbNative.NativeRequest.Asset.Data.DataAssetType;
-import com.google.openrtb.OpenRtbNative.NativeRequest.Asset.Image.ImageAssetType;
-import com.google.openrtb.OpenRtbNative.NativeRequest.LayoutID;
-import com.google.openrtb.OpenRtbNative.NativeResponse;
+import com.google.openrtb.OpenRtb.NativeRequest;
+import com.google.openrtb.OpenRtb.NativeRequest.AdUnitId;
+import com.google.openrtb.OpenRtb.NativeRequest.Asset.Data.DataAssetType;
+import com.google.openrtb.OpenRtb.NativeRequest.Asset.Image.ImageAssetType;
+import com.google.openrtb.OpenRtb.NativeRequest.LayoutId;
+import com.google.openrtb.OpenRtb.NativeResponse;
 import com.google.protobuf.ByteString;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -45,6 +45,7 @@ import java.io.Reader;
  * This class is threadsafe.
  */
 public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
+  private OpenRtbJsonReader coreReader;
 
   protected OpenRtbNativeJsonReader(OpenRtbJsonFactory factory) {
     super(factory);
@@ -111,10 +112,10 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         req.setVer(par.getText());
         break;
       case "layout":
-        req.setLayout(LayoutID.valueOf(par.getIntValue()));
+        req.setLayout(LayoutId.valueOf(par.getIntValue()));
         break;
       case "adunit":
-        req.setAdunit(AdunitID.valueOf(par.getIntValue()));
+        req.setAdunit(AdUnitId.valueOf(par.getIntValue()));
         break;
       case "plcmtcnt":
         req.setPlcmtcnt(par.getIntValue());
@@ -159,7 +160,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         asset.setImg(readReqImage(par));
         break;
       case "video":
-        asset.setVideo(readReqVideo(par));
+        asset.setVideo(coreReader().readVideo(par));
         break;
       case "data":
         asset.setData(readReqData(par));
@@ -231,43 +232,6 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         break;
       default:
         readOther(image, par, fieldName);
-    }
-  }
-
-  public final NativeRequest.Asset.Video.Builder readReqVideo(JsonParser par)
-      throws IOException {
-    NativeRequest.Asset.Video.Builder video = NativeRequest.Asset.Video.newBuilder();
-    for (startObject(par); endObject(par); par.nextToken()) {
-      String fieldName = getCurrentName(par);
-      if (par.nextToken() != JsonToken.VALUE_NULL) {
-        readReqVideoField(par, video, fieldName);
-      }
-    }
-    return video;
-  }
-
-  protected void readReqVideoField(
-      JsonParser par, NativeRequest.Asset.Video.Builder video, String fieldName)
-      throws IOException {
-    switch (fieldName) {
-      case "mimes":
-        for (startArray(par); endArray(par); par.nextToken()) {
-          video.addMimes(par.getText());
-        }
-        break;
-      case "minduration":
-        video.setMinduration(par.getIntValue());
-        break;
-      case "maxduration":
-        video.setMaxduration(par.getIntValue());
-        break;
-      case "protocols":
-        for (startArray(par); endArray(par); par.nextToken()) {
-          video.addProtocols(par.getIntValue());
-        }
-        break;
-      default:
-        readOther(video, par, fieldName);
     }
   }
 
@@ -550,5 +514,12 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       default:
         readOther(link, par, fieldName);
     }
+  }
+
+  protected final OpenRtbJsonReader coreReader() {
+    if (coreReader == null) {
+      coreReader = factory().newReader();
+    }
+    return coreReader;
   }
 }
