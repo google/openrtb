@@ -2,13 +2,19 @@ RELEASE NOTES
 ----------------------------------------------------------------------
 
 ## Version 0.9.0, 01-07-2015
-* Unfortunately we had to revert two recent changes that would cause
-  interoperability problems in some scenarios.
+* This release brings some breaking changes, but hopefully the last;
+  now pending only field testing before the first stable, v1.0 release.
+* Merge Native Ads into the same proto descriptor, so the generated
+  model moves from `OpenRtbNative.*` to `OpenRtb.*`. The Native-specific
+  and incomplete `Video` object is gone, now native requests reuse the
+  core model's `Video`.  You need only to fix `import` statements.
+* Reverted some recent changes that would cause interoperability issues:
   - Revert all `keywords` fields to be single strings with internal CSV
     content (instead of string arrays with automatic CSV conversion).
-  - Revert all fields of `ContentCategory` type ('bcat`, `cat`,
-    `sectioncat`, `pagecat`) back to strings. You can still use the enums
-    with `name()` and `valueOf()` to not lose type-safety. 
+  - Revert all `ContentCategory` fields ('bcat`, `cat`, `sectioncat`,
+    `pagecat`), and `User.gender`, from enum to string. You can still
+    use the enum, converting with utility methods from `OpenRtbUtils`.
+    The JSON serializer will also validate the string fields.
 
 ## Version 0.8.6, 24-06-2015
 
