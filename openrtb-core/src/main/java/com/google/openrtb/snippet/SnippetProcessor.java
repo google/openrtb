@@ -72,25 +72,25 @@ public abstract class SnippetProcessor {
 
     boolean processedMacros = false;
     int snippetPos = 0;
+    int macroPos = currSnippet.indexOf("${");
 
-    while (snippetPos < currSnippet.length()) {
-      char c = currSnippet.charAt(snippetPos);
-
-      int macroEnd = (c == '$'
-          && currSnippet.length() - snippetPos > 1 && currSnippet.charAt(snippetPos + 1) == '{')
-          ? processMacroAt(ctx, currSnippet, snippetPos, sb)
-          : -1;
+    while (macroPos != -1) {
+      sb.append(currSnippet.substring(snippetPos, macroPos));
+      int macroEnd = processMacroAt(ctx, currSnippet, macroPos, sb);
 
       if (macroEnd == -1) {
-        sb.append(c);
-        ++snippetPos;
+        sb.append("${");
+        snippetPos = macroPos + 2;
       } else {
         snippetPos = macroEnd;
         processedMacros = true;
       }
+
+      macroPos = currSnippet.indexOf("${", snippetPos);
     }
 
     if (processedMacros) {
+      sb.append(currSnippet, snippetPos, currSnippet.length());
       currSnippet = sb.toString();
     }
     sb.setLength(0);
@@ -103,6 +103,21 @@ public abstract class SnippetProcessor {
     for (SnippetMacroType macroDef : SCAN_MACROS) {
       if (macroDef.key().regionMatches(0, snippet, macroStart, macroDef.key().length())) {
         processMacroAt(ctx, sb, macroDef);
+
+        // Handle recursive macros
+        int macroPos = sb.indexOf("${");
+        if (macroPos != -1) {
+          String recSnippet = sb.substring(macroPos);
+          // Avoid infinite recursion if the macro expands to itself!
+          if (!macroDef.key().equals(recSnippet)) {
+            String recReplaced = process(ctx, recSnippet);
+            if (recReplaced != recSnippet) {
+              sb.setLength(macroPos);
+              sb.append(recReplaced);
+            }
+          }
+        }
+
         return macroStart + macroDef.key().length();
       }
     }
