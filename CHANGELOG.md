@@ -11,7 +11,7 @@ RELEASE NOTES
 * Reverted some recent changes that would cause interoperability issues:
   - Revert all `keywords` fields to be single strings with internal CSV
     content (instead of string arrays with automatic CSV conversion).
-  - Revert all `ContentCategory` fields ('bcat`, `cat`, `sectioncat`,
+  - Revert all `ContentCategory` fields (`bcat`, `cat`, `sectioncat`,
     `pagecat`), and `User.gender`, from enum to string. You can still
     use the enum, converting with utility methods from `OpenRtbUtils`.
     The JSON serializer will also validate the string fields.
