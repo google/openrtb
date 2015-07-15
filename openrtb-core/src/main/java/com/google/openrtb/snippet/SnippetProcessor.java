@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -49,20 +50,23 @@ public abstract class SnippetProcessor {
       return checkNotNull(snippet);
     }
     @Override protected void processMacroAt(
-        SnippetProcessorContext ctx, StringBuilder sb, SnippetMacroType<?> macroDef) {
+        SnippetProcessorContext ctx, StringBuilder sb, SnippetMacroType macroDef) {
     }
   };
 
-  private final ImmutableList<SnippetMacroType<?>> scanMacros;
+  private final ImmutableList<SnippetMacroType> scanMacros;
 
   public SnippetProcessor() {
-    List<SnippetMacroType<?>> registered = registerMacros();
-    SnippetMacroType<?>[] macros = registered.toArray(new SnippetMacroType<?>[registered.size()]);
-    Arrays.sort(macros);
+    List<SnippetMacroType> registered = registerMacros();
+    SnippetMacroType[] macros = registered.toArray(new SnippetMacroType[registered.size()]);
+    Arrays.sort(macros, new Comparator<SnippetMacroType>() {
+      @Override public int compare(SnippetMacroType o1, SnippetMacroType o2) {
+        return o1.key().compareTo(o2.key());
+      }});
     this.scanMacros = ImmutableList.copyOf(macros);
   }
 
-  protected List<SnippetMacroType<?>> registerMacros() {
+  protected List<SnippetMacroType> registerMacros() {
     return ImmutableList.of();
   }
 
@@ -108,7 +112,7 @@ public abstract class SnippetProcessor {
 
   private int processMacroAt(SnippetProcessorContext ctx,
       String snippet, int macroStart, StringBuilder sb) {
-    SnippetMacroType<?> macroDef = match(snippet, macroStart);
+    SnippetMacroType macroDef = match(snippet, macroStart);
     if (macroDef == null) {
       return -1;
     }
@@ -132,8 +136,8 @@ public abstract class SnippetProcessor {
     return macroStart + macroDef.key().length();
   }
 
-  private SnippetMacroType<?> match(String snippet, int macroStart) {
-    for (SnippetMacroType<?> macroDef : scanMacros) {
+  private SnippetMacroType match(String snippet, int macroStart) {
+    for (SnippetMacroType macroDef : scanMacros) {
       if (macroDef.key().regionMatches(0, snippet, macroStart, macroDef.key().length())) {
         return macroDef;
       }
@@ -141,8 +145,8 @@ public abstract class SnippetProcessor {
     return null;
   }
 
-  protected abstract void processMacroAt(SnippetProcessorContext ctx,
-      StringBuilder sb, SnippetMacroType<?> macroDef);
+  protected abstract void processMacroAt(
+      SnippetProcessorContext ctx, StringBuilder sb, SnippetMacroType macroDef);
 
   protected static String urlEncode(String snippet, StringBuilder sb) {
     int snippetPos = snippet.indexOf("%{");

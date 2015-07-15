@@ -20,7 +20,7 @@ package com.google.openrtb.snippet;
  * Macros for snippet generation. Enum types will implement this interface and provide
  * groups of macros supported by some implementation of {@link SnippetProcessor}.
  */
-public interface SnippetMacroType<T extends SnippetMacroType<T>> extends Comparable<T> {
+public interface SnippetMacroType {
 
   /**
    * Returns the macro key (value that will be substituted).

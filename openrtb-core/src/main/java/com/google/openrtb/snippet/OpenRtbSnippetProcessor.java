@@ -45,12 +45,12 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
   public OpenRtbSnippetProcessor() {
   }
 
-  @Override protected List<SnippetMacroType<?>> registerMacros() {
-    return ImmutableList.<SnippetMacroType<?>>copyOf(OpenRtbMacros.values());
+  @Override protected List<SnippetMacroType> registerMacros() {
+    return ImmutableList.<SnippetMacroType>copyOf(OpenRtbMacros.values());
   }
 
   @Override protected void processMacroAt(
-      SnippetProcessorContext ctx, StringBuilder sb, SnippetMacroType<?> macroDef) {
+      SnippetProcessorContext ctx, StringBuilder sb, SnippetMacroType macroDef) {
     if (macroDef instanceof OpenRtbMacros) {
       switch ((OpenRtbMacros) macroDef) {
         // Standard OpenRTB macros (OpenRTB 4.6) ----------------------------
@@ -148,7 +148,7 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
     }
   }
 
-  private SeatBidOrBuilder findSeat(SnippetProcessorContext ctx, SnippetMacroType<?> macro) {
+  private SeatBidOrBuilder findSeat(SnippetProcessorContext ctx, SnippetMacroType macro) {
     for (SeatBidOrBuilder seatBid : ctx.response().getSeatbidOrBuilderList()) {
       for (BidOrBuilder lookupBid : seatBid.getBidOrBuilderList()) {
         if (lookupBid == ctx.getBid()) {
@@ -161,7 +161,7 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
         macro, "Bid doesn't belong to this request");
   }
 
-  protected ImpOrBuilder findImp(SnippetProcessorContext ctx, SnippetMacroType<?> macro) {
+  protected ImpOrBuilder findImp(SnippetProcessorContext ctx, SnippetMacroType macro) {
     for (ImpOrBuilder imp : ctx.request().getImpOrBuilderList()) {
       if (imp.getId().equals(ctx.getBid().getImpid())) {
         return imp;
