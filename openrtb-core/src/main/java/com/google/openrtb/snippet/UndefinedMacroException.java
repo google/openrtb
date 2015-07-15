@@ -22,19 +22,19 @@ import javax.annotation.Nullable;
  * A snippet macro cannot be used, because its value was not defined correctly.
  */
 public class UndefinedMacroException extends RuntimeException {
-  private final SnippetMacroType key;
+  private final SnippetMacroType<?> key;
 
-  public UndefinedMacroException(SnippetMacroType key) {
+  public UndefinedMacroException(SnippetMacroType<?> key) {
     super("Macro " + key + " was not correctly defined and cannot be used");
     this.key = key;
   }
 
-  public UndefinedMacroException(SnippetMacroType key, @Nullable String message) {
+  public UndefinedMacroException(SnippetMacroType<?> key, @Nullable String message) {
     super(message);
     this.key = key;
   }
 
-  public final SnippetMacroType key() {
+  public final SnippetMacroType<?> key() {
     return key;
   }
 }

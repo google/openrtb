@@ -33,8 +33,7 @@ import java.io.IOException;
  */
 public class Test4Reader extends OpenRtbJsonExtReader<BidResponse.Builder, Message.Builder> {
 
-  @Override
-  protected void read(BidResponse.Builder msg, JsonParser par) throws IOException {
+  @Override protected void read(BidResponse.Builder msg, JsonParser par) throws IOException {
     switch (getCurrentName(par)) {
       case "test4":
         for (startArray(par); endArray(par); par.nextToken()) {

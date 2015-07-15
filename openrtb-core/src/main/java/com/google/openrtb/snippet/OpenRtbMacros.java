@@ -38,7 +38,7 @@ import com.google.common.collect.ImmutableMap;
  *         to the bid's {code Imp.id}, not to the bid's own {code impid} property.</li>
  * </ul>
  */
-public enum OpenRtbMacros implements SnippetMacroType {
+public enum OpenRtbMacros implements SnippetMacroType<OpenRtbMacros> {
   /**
    * ID of the ad markup the bid wishes to serve; from "adid" attribute.
    */
@@ -91,8 +91,7 @@ public enum OpenRtbMacros implements SnippetMacroType {
   /**
    * Returns the key for this macro (string that will be substituted when the macro is processed).
    */
-  @Override
-  public final String key() {
+  @Override public final String key() {
     return key;
   }
 

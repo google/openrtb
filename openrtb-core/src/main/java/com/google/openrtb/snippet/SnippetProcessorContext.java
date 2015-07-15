@@ -27,7 +27,7 @@ import com.google.openrtb.util.ProtoUtils;
 /**
  * Context for {@link SnippetProcessor}.
  * <p>
- * This class is threadsafe.
+ * This class is NOT threadsafe.
  */
 public class SnippetProcessorContext {
   private final BidRequestOrBuilder request;
@@ -65,8 +65,7 @@ public class SnippetProcessorContext {
     return bid;
   }
 
-  @Override
-  public String toString() {
+  @Override public String toString() {
     return MoreObjects.toStringHelper(this).omitNullValues()
         .add("request", request)
         .add("response", ProtoUtils.built(response))

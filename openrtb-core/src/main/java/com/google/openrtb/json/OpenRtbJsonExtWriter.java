@@ -84,8 +84,7 @@ public abstract class OpenRtbJsonExtWriter<T> {
     gen.writeEndArray();
   }
 
-  @Override
-  public String toString() {
+  @Override public String toString() {
     return getClass().getName()
         + (isMessage ? " (message" : " (scalar")
         + (fieldName == null ? ")" : " " + fieldName + ")");

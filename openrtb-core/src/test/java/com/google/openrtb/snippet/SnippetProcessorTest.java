@@ -49,14 +49,14 @@ public class SnippetProcessorTest {
       .addSeatbid(SeatBid.newBuilder()
           .addBid(bid));
   private final SnippetProcessor processor = new SnippetProcessor() {
-    @Override protected List<SnippetMacroType> registerMacros() {
-      return ImmutableList.<SnippetMacroType>builder()
+    @Override protected List<SnippetMacroType<?>> registerMacros() {
+      return ImmutableList.<SnippetMacroType<?>>builder()
           .addAll(super.registerMacros())
           .addAll(asList(TestMacros.values()))
           .build();
     }
     @Override protected void processMacroAt(
-        SnippetProcessorContext ctx, StringBuilder sb, SnippetMacroType macroDef) {
+        SnippetProcessorContext ctx, StringBuilder sb, SnippetMacroType<?> macroDef) {
       sb.append("#");
     }
   };
@@ -164,7 +164,7 @@ public class SnippetProcessorTest {
     return esc(esc(s));
   }
 
-  static enum TestMacros implements SnippetMacroType {
+  static enum TestMacros implements SnippetMacroType<TestMacros> {
     TEST;
 
     @Override public String key() {
