@@ -18,44 +18,58 @@ package com.google.openrtb.snippet;
 
 import com.google.common.base.MoreObjects;
 import com.google.openrtb.OpenRtb.BidRequestOrBuilder;
+import com.google.openrtb.OpenRtb.BidResponse;
+import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.BidOrBuilder;
 import com.google.openrtb.OpenRtb.BidResponseOrBuilder;
+import com.google.openrtb.util.ProtoUtils;
 
 /**
  * Context for {@link SnippetProcessor}.
  * <p>
- * This class is threadsafe.
+ * This class is NOT threadsafe.
  */
 public class SnippetProcessorContext {
   private final BidRequestOrBuilder request;
-  private final BidResponseOrBuilder response;
-  private final BidOrBuilder bid;
+  private final BidResponse.Builder response;
+  private Bid.Builder bid;
 
-  public SnippetProcessorContext(
-      BidRequestOrBuilder request, BidResponseOrBuilder response, BidOrBuilder bid) {
+  /**
+   * @deprecated
+   */
+  @Deprecated
+  public SnippetProcessorContext(BidRequestOrBuilder request, BidResponseOrBuilder response,
+      BidOrBuilder bid) {
+    this(request, (BidResponse.Builder) ProtoUtils.builder(response));
+    this.bid = ProtoUtils.builder(bid);
+  }
+
+  public SnippetProcessorContext(BidRequestOrBuilder request, BidResponse.Builder response) {
     this.request = request;
     this.response = response;
-    this.bid = bid;
   }
 
   public final BidRequestOrBuilder request() {
     return request;
   }
 
-  public final BidResponseOrBuilder response() {
+  public final BidResponse.Builder response() {
     return response;
   }
 
-  public final BidOrBuilder bid() {
+  public final void setBid(Bid.Builder bid) {
+    this.bid = bid;
+  }
+
+  public final Bid.Builder getBid() {
     return bid;
   }
 
-  @Override
-  public String toString() {
+  @Override public String toString() {
     return MoreObjects.toStringHelper(this).omitNullValues()
         .add("request", request)
-        .add("response", response)
-        .add("bid", bid)
+        .add("response", ProtoUtils.built(response))
+        .add("bid", ProtoUtils.built(bid))
         .toString();
   }
 }

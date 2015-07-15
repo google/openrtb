@@ -40,16 +40,14 @@ public class SnippetProcessorTest {
   private static BidRequest req = BidRequest.newBuilder()
       .setId("1")
       .build();
-  private static Bid bid = Bid.newBuilder()
+  private static Bid.Builder bid = Bid.newBuilder()
       .setId("1")
       .setImpid("1")
-      .setPrice(10000)
-      .build();
-  private static BidResponse resp = BidResponse.newBuilder()
+      .setPrice(10000);
+  private static BidResponse.Builder resp = BidResponse.newBuilder()
       .setId("1")
       .addSeatbid(SeatBid.newBuilder()
-          .addBid(bid))
-          .build();
+          .addBid(bid));
   private final SnippetProcessor processor = new SnippetProcessor() {
     @Override protected List<SnippetMacroType> registerMacros() {
       return ImmutableList.<SnippetMacroType>builder()
@@ -65,16 +63,18 @@ public class SnippetProcessorTest {
 
   @Test
   public void testContext() {
-    SnippetProcessorContext ctx = new SnippetProcessorContext(req, resp, bid);
+    SnippetProcessorContext ctx = new SnippetProcessorContext(req, resp);
+    ctx.setBid(bid);
     TestUtil.testCommonMethods(ctx);
     assertSame(req, ctx.request());
     assertSame(resp, ctx.response());
-    assertSame(bid, ctx.bid());
+    assertSame(bid, ctx.getBid());
   }
 
   @Test
   public void testNullProcessor() {
-    SnippetProcessorContext ctx = new SnippetProcessorContext(req, resp, bid);
+    SnippetProcessorContext ctx = new SnippetProcessorContext(req, resp);
+    ctx.setBid(bid);
     String snippet = OpenRtbMacros.AUCTION_ID.key();
     assertSame(snippet, SnippetProcessor.NULL.process(ctx, snippet));
   }
@@ -132,12 +132,13 @@ public class SnippetProcessorTest {
         .setId("1")
         .addImp(Imp.newBuilder()
             .setId("1")).build();
-    BidResponse response = createBidResponse(snippet, full);
-    return processor.process(
-        new SnippetProcessorContext(request, response, response.getSeatbid(0).getBid(0)), snippet);
+    BidResponse.Builder response = createBidResponse(snippet, full);
+    SnippetProcessorContext ctx = new SnippetProcessorContext(request, response);
+    ctx.setBid(response.getSeatbidBuilder(0).getBidBuilder(0));
+    return processor.process(ctx, snippet);
   }
 
-  private static BidResponse createBidResponse(String snippet, boolean full) {
+  private static BidResponse.Builder createBidResponse(String snippet, boolean full) {
     Bid.Builder bid = Bid.newBuilder()
         .setId("bid1")
         .setImpid("1")
@@ -152,8 +153,7 @@ public class SnippetProcessorTest {
         .setId("1")
         .addSeatbid(SeatBid.newBuilder()
             .setSeat("seat1")
-            .addBid(bid))
-        .build();
+            .addBid(bid));
   }
 
   private static String esc(String s) {

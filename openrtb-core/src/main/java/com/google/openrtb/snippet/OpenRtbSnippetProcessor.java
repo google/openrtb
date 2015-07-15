@@ -49,16 +49,15 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
     return ImmutableList.<SnippetMacroType>copyOf(OpenRtbMacros.values());
   }
 
-  @Override
-  protected void processMacroAt(SnippetProcessorContext ctx,
-      StringBuilder sb, SnippetMacroType macroDef) {
+  @Override protected void processMacroAt(
+      SnippetProcessorContext ctx, StringBuilder sb, SnippetMacroType macroDef) {
     if (macroDef instanceof OpenRtbMacros) {
       switch ((OpenRtbMacros) macroDef) {
         // Standard OpenRTB macros (OpenRTB 4.6) ----------------------------
 
         case AUCTION_AD_ID: {
-          if (ctx.bid().hasAdid()) {
-            sb.append(ctx.bid().getAdid());
+          if (ctx.getBid().hasAdid()) {
+            sb.append(ctx.getBid().getAdid());
           }
           break;
         }
@@ -103,13 +102,20 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
   }
 
   /**
+   * @deprecated Use {@link #process(SnippetProcessorContext)}
+   */
+  @Deprecated
+  public void process(BidRequest request, BidResponse.Builder response) {
+    process(new SnippetProcessorContext(request, response));
+  }
+
+  /**
    * Processes the context's response in-place, modifying properties that may contain macros.
    */
-  public void process(BidRequest request, BidResponse.Builder response) {
-    for (SeatBid.Builder seat : response.getSeatbidBuilderList()) {
+  public void process(SnippetProcessorContext bidCtx) {
+    for (SeatBid.Builder seat : bidCtx.response().getSeatbidBuilderList()) {
       for (Bid.Builder bid : seat.getBidBuilderList()) {
-        SnippetProcessorContext bidCtx = new SnippetProcessorContext(request, response, bid);
-
+        bidCtx.setBid(bid);
         // Properties that can also be in the RHS of macros used by other properties.
 
         if (bid.hasAdid()) {
@@ -145,7 +151,7 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
   private SeatBidOrBuilder findSeat(SnippetProcessorContext ctx, SnippetMacroType macro) {
     for (SeatBidOrBuilder seatBid : ctx.response().getSeatbidOrBuilderList()) {
       for (BidOrBuilder lookupBid : seatBid.getBidOrBuilderList()) {
-        if (lookupBid == ctx.bid()) {
+        if (lookupBid == ctx.getBid()) {
           return seatBid;
         }
       }
@@ -157,12 +163,12 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
 
   protected ImpOrBuilder findImp(SnippetProcessorContext ctx, SnippetMacroType macro) {
     for (ImpOrBuilder imp : ctx.request().getImpOrBuilderList()) {
-      if (imp.getId().equals(ctx.bid().getImpid())) {
+      if (imp.getId().equals(ctx.getBid().getImpid())) {
         return imp;
       }
     }
 
     throw new UndefinedMacroException(macro,
-        "Bid's impression id: " + ctx.bid().getImpid() + " doesn't match request");
+        "Bid's impression id: " + ctx.getBid().getImpid() + " doesn't match request");
   }
 }

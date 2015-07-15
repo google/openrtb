@@ -155,8 +155,7 @@ public abstract class OpenRtbJsonExtReader<
     }
   }
 
-  @Override
-  public String toString() {
+  @Override public String toString() {
     return getClass().getName()
         + (key == null ? " (scalar " : " (" + key.getDescriptor().getFullName() + ")");
   }

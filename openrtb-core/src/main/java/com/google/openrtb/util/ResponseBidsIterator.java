@@ -43,25 +43,21 @@ class ResponseBidsIterator implements Iterator<Bid.Builder>, Iterable<Bid.Builde
     }
   }
 
-  @Override
-  public boolean hasNext() {
+  @Override public boolean hasNext() {
     skipSeats();
     return bidIter.hasNext();
   }
 
-  @Override
-  public Bid.Builder next() {
+  @Override public Bid.Builder next() {
     skipSeats();
     return bidIter.next();
   }
 
-  @Override
-  public void remove() {
+  @Override public void remove() {
     throw new UnsupportedOperationException();
   }
 
-  @Override
-  public Iterator<Bid.Builder> iterator() {
+  @Override public Iterator<Bid.Builder> iterator() {
     return this;
   }
 }

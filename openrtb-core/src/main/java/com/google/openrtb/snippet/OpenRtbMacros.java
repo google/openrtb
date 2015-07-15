@@ -91,8 +91,7 @@ public enum OpenRtbMacros implements SnippetMacroType {
   /**
    * Returns the key for this macro (string that will be substituted when the macro is processed).
    */
-  @Override
-  public final String key() {
+  @Override public final String key() {
     return key;
   }
 

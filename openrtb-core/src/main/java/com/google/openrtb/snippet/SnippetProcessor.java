@@ -28,6 +28,8 @@ import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -41,7 +43,7 @@ import java.util.List;
  */
 public abstract class SnippetProcessor {
   private static final Logger logger = LoggerFactory.getLogger(SnippetProcessor.class);
-  private static final Escaper escaper = new PercentEscaper("-_.*", true);
+  private static final Escaper ESCAPER = new PercentEscaper("-_.*", true);
   public static final SnippetProcessor NULL = new SnippetProcessor() {
     @Override public String process(SnippetProcessorContext ctx, String snippet) {
       checkNotNull(ctx);
@@ -52,14 +54,24 @@ public abstract class SnippetProcessor {
     }
   };
 
-  private final ImmutableList<SnippetMacroType> SCAN_MACROS = ImmutableList.copyOf(registerMacros());
+  private final ImmutableList<SnippetMacroType> scanMacros;
+
+  public SnippetProcessor() {
+    List<SnippetMacroType> registered = registerMacros();
+    SnippetMacroType[] macros = registered.toArray(new SnippetMacroType[registered.size()]);
+    Arrays.sort(macros, new Comparator<SnippetMacroType>() {
+      @Override public int compare(SnippetMacroType o1, SnippetMacroType o2) {
+        return o1.key().compareTo(o2.key());
+      }});
+    this.scanMacros = ImmutableList.copyOf(macros);
+  }
 
   protected List<SnippetMacroType> registerMacros() {
     return ImmutableList.of();
   }
 
   public static Escaper getEscaper() {
-    return escaper;
+    return ESCAPER;
   }
 
   /**
@@ -72,25 +84,25 @@ public abstract class SnippetProcessor {
 
     boolean processedMacros = false;
     int snippetPos = 0;
+    int macroPos = currSnippet.indexOf("${");
 
-    while (snippetPos < currSnippet.length()) {
-      char c = currSnippet.charAt(snippetPos);
-
-      int macroEnd = (c == '$'
-          && currSnippet.length() - snippetPos > 1 && currSnippet.charAt(snippetPos + 1) == '{')
-          ? processMacroAt(ctx, currSnippet, snippetPos, sb)
-          : -1;
+    while (macroPos != -1) {
+      sb.append(currSnippet.substring(snippetPos, macroPos));
+      int macroEnd = processMacroAt(ctx, currSnippet, macroPos, sb);
 
       if (macroEnd == -1) {
-        sb.append(c);
-        ++snippetPos;
+        sb.append("${");
+        snippetPos = macroPos + 2;
       } else {
         snippetPos = macroEnd;
         processedMacros = true;
       }
+
+      macroPos = currSnippet.indexOf("${", snippetPos);
     }
 
     if (processedMacros) {
+      sb.append(currSnippet, snippetPos, currSnippet.length());
       currSnippet = sb.toString();
     }
     sb.setLength(0);
@@ -100,18 +112,41 @@ public abstract class SnippetProcessor {
 
   private int processMacroAt(SnippetProcessorContext ctx,
       String snippet, int macroStart, StringBuilder sb) {
-    for (SnippetMacroType macroDef : SCAN_MACROS) {
-      if (macroDef.key().regionMatches(0, snippet, macroStart, macroDef.key().length())) {
-        processMacroAt(ctx, sb, macroDef);
-        return macroStart + macroDef.key().length();
+    SnippetMacroType macroDef = match(snippet, macroStart);
+    if (macroDef == null) {
+      return -1;
+    }
+
+    processMacroAt(ctx, sb, macroDef);
+
+    // Handle recursive macros
+    int macroPos = sb.indexOf("${");
+    if (macroPos != -1) {
+      String recSnippet = sb.substring(macroPos);
+      // Avoid infinite recursion if the macro expands to itself!
+      if (!macroDef.key().equals(recSnippet)) {
+        String recReplaced = process(ctx, recSnippet);
+        if (recReplaced != recSnippet) {
+          sb.setLength(macroPos);
+          sb.append(recReplaced);
+        }
       }
     }
 
-    return -1;
+    return macroStart + macroDef.key().length();
   }
 
-  protected abstract void processMacroAt(SnippetProcessorContext ctx,
-      StringBuilder sb, SnippetMacroType macroDef);
+  private SnippetMacroType match(String snippet, int macroStart) {
+    for (SnippetMacroType macroDef : scanMacros) {
+      if (macroDef.key().regionMatches(0, snippet, macroStart, macroDef.key().length())) {
+        return macroDef;
+      }
+    }
+    return null;
+  }
+
+  protected abstract void processMacroAt(
+      SnippetProcessorContext ctx, StringBuilder sb, SnippetMacroType macroDef);
 
   protected static String urlEncode(String snippet, StringBuilder sb) {
     int snippetPos = snippet.indexOf("%{");
@@ -156,8 +191,7 @@ public abstract class SnippetProcessor {
     return substr;
   }
 
-  @Override
-  public final String toString() {
+  @Override public final String toString() {
     return toStringHelper().toString();
   }
 

@@ -44,7 +44,8 @@ public class OpenRtbSnippetProcessorTest {
         .setId("bid1")
         .setImpid(macro)
         .setPrice(10000);
-    SnippetProcessorContext ctx = new SnippetProcessorContext(req, resp, bid);
+    SnippetProcessorContext ctx = new SnippetProcessorContext(req, resp);
+    ctx.setBid(bid);
     assertSame(macro, OpenRtbSnippetProcessor.ORTB_NULL.process(ctx, macro));
   }
 
@@ -82,7 +83,7 @@ public class OpenRtbSnippetProcessorTest {
             .setSeat("seat1")
             .addBid(bid));
     OpenRtbSnippetProcessor processor = new OpenRtbSnippetProcessor();
-    processor.process(req, resp);
+    processor.process(new SnippetProcessorContext(req, resp));
     bid = resp.getSeatbidBuilder(0).getBidBuilder(0);
     assertEquals("ad-USD", bid.getAdid());
     assertEquals("adm-${AUCTION_PRICE}", bid.getAdm());
@@ -109,7 +110,7 @@ public class OpenRtbSnippetProcessorTest {
     BidResponse.Builder resp = BidResponse.newBuilder()
         .addSeatbid(SeatBid.newBuilder().addBid(bid));
     OpenRtbSnippetProcessor processor = new OpenRtbSnippetProcessor();
-    processor.process(request, resp);
+    processor.process(new SnippetProcessorContext(request, resp));
     bid = resp.getSeatbidBuilder(0).getBidBuilder(0);
     assertEquals("bid-", bid.getId());
     assertEquals("imp-", bid.getImpid());
@@ -118,20 +119,21 @@ public class OpenRtbSnippetProcessorTest {
   @Test(expected = UndefinedMacroException.class)
   public void testUndefinedImp() {
     OpenRtbSnippetProcessor processor = new OpenRtbSnippetProcessor();
-    processor.process(new SnippetProcessorContext(
-            BidRequest.newBuilder().setId("req1").build(),
-            BidResponse.newBuilder(),
-            Bid.newBuilder().setId("bid1").setImpid("imp1").setPrice(10000)),
-        OpenRtbMacros.AUCTION_IMP_ID.key());
+    SnippetProcessorContext ctx = new SnippetProcessorContext(
+        BidRequest.newBuilder().setId("req1").build(),
+        BidResponse.newBuilder());
+    ctx.setBid(Bid.newBuilder().setId("bid1").setImpid("imp1").setPrice(10000));
+    processor.process(ctx, OpenRtbMacros.AUCTION_IMP_ID.key());
   }
 
   @Test(expected = UndefinedMacroException.class)
   public void testUndefinedSeat() {
     OpenRtbSnippetProcessor processor = new OpenRtbSnippetProcessor();
-    processor.process(new SnippetProcessorContext(
-            BidRequest.newBuilder().setId("req1").build(),
-            BidResponse.newBuilder().addSeatbid(SeatBid.newBuilder().setSeat("seat1")),
-            Bid.newBuilder().setId("bid1").setImpid("imp1").setPrice(10000)),
+    SnippetProcessorContext ctx = new SnippetProcessorContext(
+        BidRequest.newBuilder().setId("req1").build(),
+        BidResponse.newBuilder().addSeatbid(SeatBid.newBuilder().setSeat("seat1")));
+    ctx.setBid(Bid.newBuilder().setId("bid1").setImpid("imp1").setPrice(10000));
+    processor.process(ctx,
         OpenRtbMacros.AUCTION_SEAT_ID.key());
   }
 }

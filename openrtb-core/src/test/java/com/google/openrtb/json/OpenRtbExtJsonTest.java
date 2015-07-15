@@ -61,13 +61,11 @@ public class OpenRtbExtJsonTest {
       return new MyOpenRtbJsonFactory(null, null, null);
     }
 
-    @Override
-    public OpenRtbJsonReader newReader() {
+    @Override public OpenRtbJsonReader newReader() {
       return new MyOpenRtbJsonReader(new MyOpenRtbJsonFactory(this));
     }
 
-    @Override
-    public OpenRtbJsonWriter newWriter() {
+    @Override public OpenRtbJsonWriter newWriter() {
       return new MyOpenRtbJsonWriter(new MyOpenRtbJsonFactory(this));
     }
   }
@@ -77,8 +75,8 @@ public class OpenRtbExtJsonTest {
       super(factory);
     }
 
-    @Override
-    protected void readBidRequestField(JsonParser par, BidRequest.Builder req, String fieldName)
+    @Override protected void readBidRequestField(
+        JsonParser par, BidRequest.Builder req, String fieldName)
         throws IOException {
       switch (fieldName) {
         case "crtype": {
@@ -97,8 +95,8 @@ public class OpenRtbExtJsonTest {
       super(factory);
     }
 
-    @Override
-    protected void writeBidRequestFields(BidRequest req, JsonGenerator gen) throws IOException {
+    @Override protected void writeBidRequestFields(
+        BidRequest req, JsonGenerator gen) throws IOException {
       super.writeBidRequestFields(req, gen);
 
       if (req.hasExtension(TestExt.crtype)) {

@@ -30,7 +30,6 @@ import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VideoLinearity;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
-import com.google.openrtb.OpenRtb.ContentCategory;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
 
 import com.codahale.metrics.MetricRegistry;

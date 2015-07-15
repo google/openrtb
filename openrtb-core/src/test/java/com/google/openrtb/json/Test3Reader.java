@@ -34,8 +34,7 @@ import java.io.IOException;
  */
 public class Test3Reader extends OpenRtbJsonExtReader<BidResponse.Builder, Message.Builder> {
 
-  @Override
-  protected void read(BidResponse.Builder msg, JsonParser par) throws IOException {
+  @Override protected void read(BidResponse.Builder msg, JsonParser par) throws IOException {
     switch (getCurrentName(par)) {
       case "test3":
         msg.setExtension(TestExt.testResponse3, par.nextIntValue(0));
