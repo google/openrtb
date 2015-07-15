@@ -1,6 +1,14 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 0.9.1, 15-07-2015
+* The `SnippetProcessor` API was improved for extensibility:
+  - Subclasses can use specializations of `SnippetProcessorContext`.
+  - Recursive macro expansion is supported.  Notice the processor will
+    detect simple infinite recursion (`${X}` => `${X}` will stop: good
+    for "pass-through" macros), but not indirect recursion (`${X}` =>
+    `${Y}` => `${X}` or `${X}` => `x${X}`: `StackOverflowError`).
+
 ## Version 0.9.0, 01-07-2015
 * This release brings some breaking changes, but hopefully the last;
   now pending only field testing before the first stable, v1.0 release.
