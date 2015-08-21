@@ -790,13 +790,13 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         content.setVideoquality(VideoQuality.valueOf(par.getIntValue()));
         break;
       case "context":
-          try {
-              //JsonParseException may be thrown because value is string in
-              //2.2 and earlier, this allows for backwards compatibility.
-              content.setContext(ContentContext.valueOf(par.getIntValue()));
-          } catch (JsonParseException jpe) {
-          }
-          break;
+        try {
+          // JsonParseException may be thrown because value is string in
+          // 2.2 and earlier, this allows for backwards compatibility.
+          content.setContext(ContentContext.valueOf(par.getIntValue()));
+        } catch (JsonParseException jpe) {
+        }
+        break;
       case "contentrating":
         content.setContentrating(par.getText());
         break;

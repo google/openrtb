@@ -93,35 +93,35 @@ public final class OpenRtbUtils {
   /**
    * Get a {@link Gender} from its name (either Java or JSON name).
    */
-  public static @Nullable Gender genderFromName(String genderName) {
+  @Nullable public static Gender genderFromName(String genderName) {
     return NAME_TO_GENDER.get(genderName);
   }
 
   /**
    * Get a {@link Gender}'s JSON name, from its Java name.
    */
-  public static @Nullable String genderToJsonName(Gender gender) {
+  @Nullable public static String genderToJsonName(Gender gender) {
     return GENDER_TO_JSON.get(gender);
   }
 
   /**
    * Get a {@link ContentCategory} from its name (either Java or JSON name).
    */
-  public static @Nullable ContentCategory categoryFromName(String catName) {
+  @Nullable public static ContentCategory categoryFromName(String catName) {
     return NAME_TO_CAT.get(catName);
   }
 
   /**
    * Get a {@link ContentCategory}'s JSON name, from its Java name.
    */
-  public static @Nullable String categoryToJsonName(String catName) {
+  @Nullable public static String categoryToJsonName(String catName) {
     return CAT_TO_JSON.get(catName);
   }
 
   /**
    * Get a {@link ContentCategory}'s JSON name.
    */
-  public static @Nullable String categoryToJsonName(ContentCategory cat) {
+  @Nullable public static String categoryToJsonName(ContentCategory cat) {
     return CAT_TO_JSON.get(cat);
   }
 
@@ -188,7 +188,7 @@ public final class OpenRtbUtils {
    * @param id Bid ID, assumed to be unique within the response
    * @return Matching bid's builder, or {@code null} if not found
    */
-  public static @Nullable Bid.Builder bidWithId(BidResponse.Builder response, String id) {
+  @Nullable public static Bid.Builder bidWithId(BidResponse.Builder response, String id) {
     checkNotNull(id);
 
     for (SeatBid.Builder seatbid : response.getSeatbidBuilderList()) {
@@ -208,7 +208,7 @@ public final class OpenRtbUtils {
    * @param id Bid ID, assumed to be unique within the seat
    * @return Matching bid's builder, or {@code null} if not found
    */
-  public static @Nullable Bid.Builder bidWithId(
+  @Nullable public static Bid.Builder bidWithId(
       BidResponse.Builder response, @Nullable String seat, String id) {
     checkNotNull(id);
 
@@ -353,7 +353,7 @@ public final class OpenRtbUtils {
    *
    * @return The {@link Imp}s that has the given id, or {@code null} if not found.
    */
-  public static @Nullable Imp impWithId(BidRequest request, final String id) {
+  @Nullable public static Imp impWithId(BidRequest request, final String id) {
     checkNotNull(id);
 
     for (Imp imp : request.getImpList()) {
@@ -373,7 +373,7 @@ public final class OpenRtbUtils {
    * @return The {@link Imp} for a given impression ID x banner ID,
    * or {@code null} if not found.
    */
-  public static @Nullable Imp bannerImpWithId(
+  @Nullable public static Imp bannerImpWithId(
       BidRequest request, @Nullable String impId, String bannerId) {
     checkNotNull(bannerId);
 
