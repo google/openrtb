@@ -136,7 +136,7 @@ public class TestUtil {
         Constructor<E> constr1 = klass.getConstructor();
         E e = constr1.newInstance();
         testCommonException(e);
-      } catch (NoSuchMethodException e) {}
+      } catch (NoSuchMethodException e) { }
 
       try {
         Constructor<E> constr2 = klass.getConstructor(String.class);
@@ -144,7 +144,7 @@ public class TestUtil {
         E e = constr2.newInstance(msg);
         testCommonException(e);
         assertEquals(msg, e.getMessage());
-      } catch (NoSuchMethodException e) {}
+      } catch (NoSuchMethodException e) { }
 
       try {
         Constructor<E> constr3 = klass.getConstructor(Throwable.class);
@@ -152,7 +152,7 @@ public class TestUtil {
         E e = constr3.newInstance(cause);
         testCommonException(e);
         assertEquals(cause, e.getCause());
-      } catch (NoSuchMethodException e) {}
+      } catch (NoSuchMethodException e) { }
 
       try {
         Constructor<E> constr4 = klass.getConstructor(String.class, Throwable.class);
@@ -161,17 +161,9 @@ public class TestUtil {
         testCommonException(e);
         assertEquals(msg, e.getMessage());
         assertEquals(cause, e.getCause());
-      } catch (NoSuchMethodException e) {}
+      } catch (NoSuchMethodException e) { }
     } catch (ReflectiveOperationException e) {
       fail(e.getMessage());
-    }
-  }
-
-  private static <T extends Throwable> void testParameterAnnotations(Constructor<T> constr) {
-    Annotation[][] anns = constr.getParameterAnnotations();
-
-    for (Annotation[] ann : anns) {
-      assertTrue(ann.length == 1 && ann[0] instanceof Nullable);
     }
   }
 
@@ -187,6 +179,14 @@ public class TestUtil {
   public static void testCommonEnum(Enum<?>[] e) {
     for (int i = 1; i < e.length; ++i) {
       testCommonMethods(e[i - 1], e[i]);
+    }
+  }
+
+  private static <T extends Throwable> void testParameterAnnotations(Constructor<T> constr) {
+    Annotation[][] anns = constr.getParameterAnnotations();
+
+    for (Annotation[] ann : anns) {
+      assertTrue(ann.length == 1 && ann[0] instanceof Nullable);
     }
   }
 }

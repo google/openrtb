@@ -46,15 +46,6 @@ public class ProtoUtilsTest {
   public void testFilter() {
     Test1 test1 = Test1.newBuilder().setTest1("test1").build();
     Test2 test2 = Test2.newBuilder().setTest2("test2").build();
-    BidRequest reqPlainClear = BidRequest.newBuilder()
-        .setId("0")
-        .addImp(Imp.newBuilder().setId("1"))
-        .build();
-    BidRequest reqPlainNoClear = BidRequest.newBuilder()
-        .setId("0")
-        .addImp(Imp.newBuilder().setId("1")
-            .setBanner(Banner.newBuilder()))
-        .build();
     BidRequest reqExt = BidRequest.newBuilder()
         .setId("0")
         .addImp(Imp.newBuilder()
@@ -65,19 +56,31 @@ public class ProtoUtilsTest {
         .setExtension(TestExt.testRequest1, test1)
         .setExtension(TestExt.testRequest2, test2)
         .build();
-    BidRequest reqExtNoImp = reqExt.toBuilder().clearImp().build();
-    BidRequest reqDiff = reqPlainClear.toBuilder().setId("1").build();
     assertSame(reqExt, ProtoUtils.filter(reqExt, true, Predicates.<FieldDescriptor>alwaysTrue()));
     assertNull(ProtoUtils.filter(reqExt, true, Predicates.<FieldDescriptor>alwaysFalse()));
     assertSame(BidRequest.getDefaultInstance(), ProtoUtils.filter(
         reqExt, false, Predicates.<FieldDescriptor>alwaysFalse()));
+
+    BidRequest reqPlainClear = BidRequest.newBuilder()
+        .setId("0")
+        .addImp(Imp.newBuilder().setId("1"))
+        .build();
     assertEquals(reqPlainClear, ProtoUtils.filter(reqExt, true, ProtoUtils.NOT_EXTENSION));
+
+    BidRequest reqPlainNoClear = BidRequest.newBuilder()
+        .setId("0")
+        .addImp(Imp.newBuilder().setId("1")
+            .setBanner(Banner.newBuilder()))
+        .build();
     assertEquals(reqPlainNoClear, ProtoUtils.filter(reqExt, false, ProtoUtils.NOT_EXTENSION));
+
+    BidRequest reqExtNoImp = reqExt.toBuilder().clearImp().build();
     assertEquals(reqExtNoImp, ProtoUtils.filter(reqExt, false, new Predicate<FieldDescriptor>() {
       @Override public boolean apply(FieldDescriptor fd) {
         return !"imp".equals(fd.getName());
       }}));
 
+    BidRequest reqDiff = reqPlainClear.toBuilder().setId("1").build();
     ImmutableList<BidRequest> list = ImmutableList.of(reqPlainClear, reqDiff);
     assertEquals(
         ImmutableList.of(reqPlainClear),

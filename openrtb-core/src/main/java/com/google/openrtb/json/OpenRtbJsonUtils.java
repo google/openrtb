@@ -170,8 +170,9 @@ public class OpenRtbJsonUtils {
     if (!cats.isEmpty()) {
       gen.writeArrayFieldStart(fieldName);
       for (String cat : cats) {
-        if (OpenRtbUtils.categoryFromName(cat) != null)
-        gen.writeString(cat);
+        if (OpenRtbUtils.categoryFromName(cat) != null) {
+          gen.writeString(cat);
+        }
       }
       gen.writeEndArray();
     }

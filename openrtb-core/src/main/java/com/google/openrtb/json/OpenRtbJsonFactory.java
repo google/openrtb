@@ -53,9 +53,9 @@ public class OpenRtbJsonFactory {
   private final Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters;
 
   protected OpenRtbJsonFactory(
-      JsonFactory jsonFactory,
-      SetMultimap<String, OpenRtbJsonExtReader<?, ?>> extReaders,
-      Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters) {
+      @Nullable JsonFactory jsonFactory,
+      @Nullable SetMultimap<String, OpenRtbJsonExtReader<?, ?>> extReaders,
+      @Nullable Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters) {
     this.jsonFactory = jsonFactory;
     this.extReaders = extReaders == null
         ? LinkedHashMultimap.<String, OpenRtbJsonExtReader<?, ?>>create()

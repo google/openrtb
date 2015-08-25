@@ -51,7 +51,7 @@ public final class ProtoUtils {
    * Given a message-or-builder, returns a message, invoking the builder if necessary.
    */
   @SuppressWarnings("unchecked")
-  public static <I extends MessageLiteOrBuilder, O extends MessageLite> O built(I msg) {
+  public static <I extends MessageLiteOrBuilder, O extends MessageLite> O built(@Nullable I msg) {
     return msg instanceof MessageLite.Builder
         ? (O) ((MessageLite.Builder) msg).build()
         : (O) msg;
@@ -61,7 +61,8 @@ public final class ProtoUtils {
    * Given a message-or-builder, return a builder, invoking toBuilder() if necessary.
    */
   @SuppressWarnings("unchecked")
-  public static <I extends MessageLiteOrBuilder, O extends MessageLite.Builder> O builder(I msg) {
+  public static <I extends MessageLiteOrBuilder, O extends MessageLite.Builder> O builder(
+      @Nullable I msg) {
     return msg instanceof MessageLite
         ? (O) ((MessageLite) msg).toBuilder()
         : (O) msg;
@@ -151,7 +152,7 @@ public final class ProtoUtils {
    * If all fields are discarded, returns {@code null} if {@code clearEmpty==true}
    * or a default instance of {@code msg}'s message type if {@code clearEmpty==false}
    */
-  public static @Nullable <M extends Message> M filter(
+  @Nullable public static <M extends Message> M filter(
       M msg, boolean clearEmpty, Predicate<FieldDescriptor> filter) {
 
     int i = 0;
@@ -170,7 +171,7 @@ public final class ProtoUtils {
     return msg;
   }
 
-  private static @Nullable <M extends Message> M filterFrom(
+  @Nullable private static <M extends Message> M filterFrom(
       M msg, boolean clearEmpty, Predicate<FieldDescriptor> filter, int firstDiscarded) {
 
     // At least one field was discarded; we have to work harder and maybe create

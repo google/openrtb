@@ -31,6 +31,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 /**
  * Tests for {@link OpenRtbJsonFactory}, {@link OpenRtbJsonReader}, {@link OpenRtbJsonWriter}.
  * Specifically, subclassing all the above.
@@ -47,9 +49,10 @@ import java.util.Map;
 public class OpenRtbExtJsonTest {
 
   static class MyOpenRtbJsonFactory extends OpenRtbJsonFactory {
-    protected MyOpenRtbJsonFactory(JsonFactory jsonFactory,
-        SetMultimap<String, OpenRtbJsonExtReader<?, ?>> extReaders,
-        Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters) {
+    protected MyOpenRtbJsonFactory(
+        @Nullable JsonFactory jsonFactory,
+        @Nullable SetMultimap<String, OpenRtbJsonExtReader<?, ?>> extReaders,
+        @Nullable Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters) {
       super(jsonFactory, extReaders, extWriters);
     }
 
