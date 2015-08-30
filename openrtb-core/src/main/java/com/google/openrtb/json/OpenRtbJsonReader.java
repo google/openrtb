@@ -26,6 +26,7 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.readCsvString;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
+import com.google.common.io.CharSource;
 import com.google.common.io.Closeables;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.App;
@@ -101,7 +102,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
    * Desserializes a {@link BidRequest} from a JSON string, provided as a {@link CharSequence}.
    */
   public BidRequest readBidRequest(CharSequence chars) throws IOException {
-    return readBidRequest(new CharSequenceReader(chars));
+    return readBidRequest(CharSource.wrap(chars).openStream());
   }
 
   /**
@@ -1172,7 +1173,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
    * Desserializes a {@link BidResponse} from a JSON string, provided as a {@link CharSequence}.
    */
   public BidResponse readBidResponse(CharSequence chars) throws IOException {
-    return readBidResponse(new CharSequenceReader(chars));
+    return readBidResponse(CharSource.wrap(chars).openStream());
   }
 
   /**

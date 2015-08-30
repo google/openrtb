@@ -23,6 +23,7 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.getIntBoolValue;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
+import com.google.common.io.CharSource;
 import com.google.common.io.Closeables;
 import com.google.openrtb.OpenRtb.NativeRequest;
 import com.google.openrtb.OpenRtb.NativeRequest.AdUnitId;
@@ -62,7 +63,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
    * Desserializes a {@link NativeRequest} from a JSON string, provided as a {@link CharSequence}.
    */
   public NativeRequest readNativeRequest(CharSequence chars) throws IOException {
-    return readNativeRequest(new CharSequenceReader(chars));
+    return readNativeRequest(CharSource.wrap(chars).openStream());
   }
 
   /**
@@ -271,7 +272,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
    * Desserializes a {@link NativeResponse} from a JSON string, provided as a {@link CharSequence}.
    */
   public NativeResponse readNativeResponse(CharSequence chars) throws IOException {
-    return readNativeResponse(new CharSequenceReader(chars));
+    return readNativeResponse(CharSource.wrap(chars).openStream());
   }
 
   /**
