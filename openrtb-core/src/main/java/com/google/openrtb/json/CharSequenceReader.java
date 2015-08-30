@@ -30,8 +30,7 @@ import java.nio.CharBuffer;
  *
  * @author Colin Decker
  */
-// TODO(user): make this public? as a type, or a method in CharStreams?
-final class CharSequenceReader extends Reader {
+public final class CharSequenceReader extends Reader {
 
   private CharSequence seq;
   private int pos;
