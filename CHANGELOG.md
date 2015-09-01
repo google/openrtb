@@ -1,7 +1,7 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
-## Version 0.9.2, 01-08-2015
+## Version 0.9.2, 01-09-2015
 * Fixed typo `NoBidReason.BLOCKED_PUBISHER` -> `BLOCKED_PUBLISHER`.
 
 ## Version 0.9.1, 15-07-2015
