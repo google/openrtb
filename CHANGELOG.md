@@ -1,6 +1,9 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 0.9.2, 01-08-2015
+* Fixed typo `NoBidReason.BLOCKED_PUBISHER` -> `BLOCKED_PUBLISHER`.
+
 ## Version 0.9.1, 15-07-2015
 * The `SnippetProcessor` API was improved for extensibility:
   - Subclasses can use specializations of `SnippetProcessorContext`.
