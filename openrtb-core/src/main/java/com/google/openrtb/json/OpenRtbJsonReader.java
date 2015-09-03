@@ -302,7 +302,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     switch (fieldName) {
       case "request": {
           OpenRtbNativeJsonReader nativeReader = factory().newNativeReader();
-          nativ.setRequest(nativeReader.readNativeRequest(new CharArrayReader(
+          nativ.setRequestNative(nativeReader.readNativeRequest(new CharArrayReader(
               par.getTextCharacters(), par.getTextOffset(), par.getTextLength())));
         }
         break;

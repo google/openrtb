@@ -414,7 +414,7 @@ public class OpenRtbJsonTest {
         .addImp(Imp.newBuilder()
             .setId("imp3")
             .setNative(Native.newBuilder()
-                .setRequest(NativeRequest.newBuilder().setVer("1"))
+                .setRequestNative(NativeRequest.newBuilder().setVer("1"))
                 .setVer("1.0")
                 .addApi(APIFramework.MRAID_1)
                 .addBattr(CreativeAttribute.TEXT_ONLY)

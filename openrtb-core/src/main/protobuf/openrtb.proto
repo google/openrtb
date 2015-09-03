@@ -609,8 +609,16 @@ message BidRequest {
     message Native {
       /**
        * Request payload complying with the Native Ad Specification.
+       * Exactly one of {request, request_native} should be used;
+       * this is the OpenRTB-compliant field for JSON serialization.
        */
-      required NativeRequest request = 1;
+      optional string request = 1;
+      /**
+       * Request payload complying with the Native Ad Specification.
+       * Exactly one of {request, request_native} should be used;
+       * this is an alternate field preferred for Protobuf serialization.
+       */
+      optional NativeRequest request_native = 50;
       /**
        * Version of the Native Ad Specification to which request complies;
        * highly recommended for efficient parsing.
@@ -1521,11 +1529,14 @@ message BidResponse {
       /*
        * Optional means of conveying ad markup in case the bid wins; supersedes the win notice
        * if markup is included in both.
+       * For native ad bids, exactly one of {adm, adm_native} should be used;
+       * this is the OpenRTB-compliant field for JSON serialization.
        */
       optional string adm = 6;
       /**
        * Native ad response.
-       * You can only set one of adm and adm_native; either will generate the "adm" field in JSON.
+       * For native ad bids, exactly one of {adm, adm_native} should be used;
+       * this is an alternate field preferred for Protobuf serialization.
        */
       optional NativeResponse adm_native = 50;
       /*

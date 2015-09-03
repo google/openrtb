@@ -350,7 +350,11 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
   }
 
   protected void writeNativeFields(Native nativ, JsonGenerator gen) throws IOException {
-    gen.writeStringField("request", nativeWriter().writeNativeRequest(nativ.getRequest()));
+    if (nativ.hasRequestNative()) {
+      gen.writeStringField("request", nativeWriter().writeNativeRequest(nativ.getRequestNative()));
+    } else if (nativ.hasRequest()) {
+      gen.writeStringField("request", nativ.getRequest());
+    }
     if (nativ.hasVer()) {
       gen.writeStringField("ver", nativ.getVer());
     }
