@@ -164,8 +164,12 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "test":
         req.setTest(getIntBoolValue(par));
         break;
-      case "at":
-        req.setAt(AuctionType.valueOf(par.getIntValue()));
+      case "at": {
+          AuctionType value = AuctionType.valueOf(par.getIntValue());
+          if (value != null) {
+            req.setAt(value);
+          }
+        }
         break;
       case "tmax":
         req.setTmax(par.getIntValue());
@@ -311,12 +315,18 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "api":
         for (startArray(par); endArray(par); par.nextToken()) {
-          nativ.addApi(APIFramework.valueOf(par.getIntValue()));
+          APIFramework value = APIFramework.valueOf(par.getIntValue());
+          if (value != null) {
+            nativ.addApi(value);
+          }
         }
         break;
       case "battr":
         for (startArray(par); endArray(par); par.nextToken()) {
-          nativ.addBattr(CreativeAttribute.valueOf(par.getIntValue()));
+          CreativeAttribute value = CreativeAttribute.valueOf(par.getIntValue());
+          if (value != null) {
+            nativ.addBattr(value);
+          }
         }
         break;
       default:
@@ -384,8 +394,12 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
           deal.addWadomain(par.getText());
         }
         break;
-      case "at":
-        deal.setAt(AuctionType.valueOf(par.getIntValue()));
+      case "at": {
+          AuctionType value = AuctionType.valueOf(par.getIntValue());
+          if (value != null) {
+            deal.setAt(value);
+          }
+        }
         break;
       default:
         readOther(deal, par, fieldName);
@@ -418,12 +432,19 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "maxduration":
         video.setMaxduration(par.getIntValue());
         break;
-      case "protocol":
-        video.setProtocol(VideoBidResponseProtocol.valueOf(par.getIntValue()));
+      case "protocol": {
+          VideoBidResponseProtocol value = VideoBidResponseProtocol.valueOf(par.getIntValue());
+          if (value != null) {
+            video.setProtocol(value);
+          }
+        }
         break;
       case "protocols":
         for (startArray(par); endArray(par); par.nextToken()) {
-          video.addProtocols(VideoBidResponseProtocol.valueOf(par.getIntValue()));
+          VideoBidResponseProtocol value = VideoBidResponseProtocol.valueOf(par.getIntValue());
+          if (value != null) {
+            video.addProtocols(value);
+          }
         }
         break;
       case "w":
@@ -435,15 +456,22 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "startdelay":
         video.setStartdelay(par.getIntValue());
         break;
-      case "linearity":
-        video.setLinearity(VideoLinearity.valueOf(par.getIntValue()));
+      case "linearity": {
+          VideoLinearity value = VideoLinearity.valueOf(par.getIntValue());
+          if (value != null) {
+            video.setLinearity(value);
+          }
+        }
         break;
       case "sequence":
         video.setSequence(par.getIntValue());
         break;
       case "battr":
         for (startArray(par); endArray(par); par.nextToken()) {
-          video.addBattr(CreativeAttribute.valueOf(par.getIntValue()));
+          CreativeAttribute value = CreativeAttribute.valueOf(par.getIntValue());
+          if (value != null) {
+            video.addBattr(value);
+          }
         }
         break;
       case "maxextended":
@@ -460,16 +488,24 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "playbackmethod":
         for (startArray(par); endArray(par); par.nextToken()) {
-          video.addPlaybackmethod(VideoPlaybackMethod.valueOf(par.getIntValue()));
+          VideoPlaybackMethod value = VideoPlaybackMethod.valueOf(par.getIntValue());
+          if (value != null) {
+            video.addPlaybackmethod(value);
+          }
         }
         break;
       case "delivery":
         for (startArray(par); endArray(par); par.nextToken()) {
-          video.addDelivery(ContentDeliveryMethod.valueOf(par.getIntValue()));
+          ContentDeliveryMethod value = ContentDeliveryMethod.valueOf(par.getIntValue());
+          if (value != null) {
+            video.addDelivery(value);
+          }
         }
         break;
-      case "pos":
-        video.setPos(AdPosition.valueOf(par.getIntValue()));
+      case "pos": {
+          AdPosition value = AdPosition.valueOf(par.getIntValue());
+          video.setPos(value);
+        }
         break;
       case "companionad":
         if (peekStruct(par) == JsonToken.START_ARRAY) {
@@ -484,12 +520,18 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "api":
         for (startArray(par); endArray(par); par.nextToken()) {
-          video.addApi(APIFramework.valueOf(par.getIntValue()));
+          APIFramework value = APIFramework.valueOf(par.getIntValue());
+          if (value != null) {
+            video.addApi(value);
+          }
         }
         break;
       case "companiontype":
         for (startArray(par); endArray(par); par.nextToken()) {
-          video.addCompaniontype(VASTCompanionType.valueOf(par.getIntValue()));
+          VASTCompanionType value = VASTCompanionType.valueOf(par.getIntValue());
+          if (value != null) {
+            video.addCompaniontype(value);
+          }
         }
         break;
       default:
@@ -558,16 +600,26 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "btype":
         for (startArray(par); endArray(par); par.nextToken()) {
-          banner.addBtype(BannerAdType.valueOf(par.getIntValue()));
+          BannerAdType value = BannerAdType.valueOf(par.getIntValue());
+          if (value != null) {
+            banner.addBtype(value);
+          }
         }
         break;
       case "battr":
         for (startArray(par); endArray(par); par.nextToken()) {
-          banner.addBattr(CreativeAttribute.valueOf(par.getIntValue()));
+          CreativeAttribute value = CreativeAttribute.valueOf(par.getIntValue());
+          if (value != null) {
+            banner.addBattr(value);
+          }
         }
         break;
-      case "pos":
-        banner.setPos(AdPosition.valueOf(par.getIntValue()));
+      case "pos": {
+          AdPosition value = AdPosition.valueOf(par.getIntValue());
+          if (value != null) {
+            banner.setPos(value);
+          }
+        }
         break;
       case "mimes":
         for (startArray(par); endArray(par); par.nextToken()) {
@@ -579,12 +631,18 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "expdir":
         for (startArray(par); endArray(par); par.nextToken()) {
-          banner.addExpdir(ExpandableDirection.valueOf(par.getIntValue()));
+          ExpandableDirection value = ExpandableDirection.valueOf(par.getIntValue());
+          if (value != null) {
+            banner.addExpdir(value);
+          }
         }
         break;
       case "api":
         for (startArray(par); endArray(par); par.nextToken()) {
-          banner.addApi(APIFramework.valueOf(par.getIntValue()));
+          APIFramework value = APIFramework.valueOf(par.getIntValue());
+          if (value != null) {
+            banner.addApi(value);
+          }
         }
         break;
       default:
@@ -787,14 +845,21 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
           }
         }
         break;
-      case "videoquality":
-        content.setVideoquality(VideoQuality.valueOf(par.getIntValue()));
+      case "videoquality": {
+          VideoQuality value = VideoQuality.valueOf(par.getIntValue());
+          if (value != null) {
+            content.setVideoquality(value);
+          }
+        }
         break;
       case "context":
         try {
           // JsonParseException may be thrown because value is string in
           // 2.2 and earlier, this allows for backwards compatibility.
-          content.setContext(ContentContext.valueOf(par.getIntValue()));
+          ContentContext value = ContentContext.valueOf(par.getIntValue());
+          if (value != null) {
+            content.setContext(value);
+          }
         } catch (JsonParseException jpe) {
         }
         break;
@@ -804,8 +869,12 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "userrating":
         content.setUserrating(par.getText());
         break;
-      case "qagmediarating":
-        content.setQagmediarating(QAGMediaRating.valueOf(par.getIntValue()));
+      case "qagmediarating": {
+          QAGMediaRating value = QAGMediaRating.valueOf(par.getIntValue());
+          if (value != null) {
+            content.setQagmediarating(value);
+          }
+        }
         break;
       case "keywords":
         content.setKeywords(readCsvString(par));
@@ -934,8 +1003,12 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "ipv6":
         device.setIpv6(par.getText());
         break;
-      case "devicetype":
-        device.setDevicetype(DeviceType.valueOf(par.getIntValue()));
+      case "devicetype": {
+          DeviceType value = DeviceType.valueOf(par.getIntValue());
+          if (value != null) {
+            device.setDevicetype(value);
+          }
+        }
         break;
       case "make":
         device.setMake(par.getText());
@@ -976,9 +1049,12 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "carrier":
         device.setCarrier(par.getText());
         break;
-      case "connectiontype":
-        device.setConnectiontype(ConnectionType.valueOf(par.getIntValue()));
-        break;
+      case "connectiontype": {
+          ConnectionType value = ConnectionType.valueOf(par.getIntValue());
+          if (value != null) {
+            device.setConnectiontype(value);
+          }
+        } break;
       case "ifa":
         device.setIfa(par.getText());
         break;
@@ -1025,8 +1101,12 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "lon":
         geo.setLon(getDoubleValue(par));
         break;
-      case "type":
-        geo.setType(LocationType.valueOf(par.getIntValue()));
+      case "type": {
+          LocationType value = LocationType.valueOf(par.getIntValue());
+          if (value != null) {
+            geo.setType(value);
+          }
+        }
         break;
       case "country":
         geo.setCountry(par.getText());
@@ -1229,8 +1309,12 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "customdata":
         resp.setCustomdata(par.getText());
         break;
-      case "nbr":
-        resp.setNbr(NoBidReason.valueOf(par.getIntValue()));
+      case "nbr": {
+          NoBidReason value = NoBidReason.valueOf(par.getIntValue());
+          if (value != null) {
+            resp.setNbr(value);
+          }
+        }
         break;
       default:
         readOther(resp, par, fieldName);
@@ -1326,7 +1410,10 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "attr":
         for (startArray(par); endArray(par); par.nextToken()) {
-          bid.addAttr(CreativeAttribute.valueOf(par.getIntValue()));
+          CreativeAttribute value = CreativeAttribute.valueOf(par.getIntValue());
+          if (value != null) {
+            bid.addAttr(value);
+          }
         }
         break;
       case "dealid":
