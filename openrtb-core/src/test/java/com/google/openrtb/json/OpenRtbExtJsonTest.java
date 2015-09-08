@@ -51,9 +51,10 @@ public class OpenRtbExtJsonTest {
   static class MyOpenRtbJsonFactory extends OpenRtbJsonFactory {
     protected MyOpenRtbJsonFactory(
         @Nullable JsonFactory jsonFactory,
+        boolean strict,
         @Nullable SetMultimap<String, OpenRtbJsonExtReader<?, ?>> extReaders,
         @Nullable Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters) {
-      super(jsonFactory, extReaders, extWriters);
+      super(jsonFactory, strict, extReaders, extWriters);
     }
 
     protected MyOpenRtbJsonFactory(MyOpenRtbJsonFactory config) {
@@ -61,7 +62,7 @@ public class OpenRtbExtJsonTest {
     }
 
     public static MyOpenRtbJsonFactory create() {
-      return new MyOpenRtbJsonFactory(null, null, null);
+      return new MyOpenRtbJsonFactory(null, false, null, null);
     }
 
     @Override public OpenRtbJsonReader newReader() {

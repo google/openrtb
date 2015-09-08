@@ -114,14 +114,14 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "layout": {
           LayoutId value = LayoutId.valueOf(par.getIntValue());
-          if (value != null) {
+          if (checkEnum(value)) {
             req.setLayout(value);
           }
         }
         break;
       case "adunit": {
           AdUnitId value = AdUnitId.valueOf(par.getIntValue());
-          if (value != null) {
+          if (checkEnum(value)) {
             req.setAdunit(value);
           }
         }
@@ -221,7 +221,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
     switch (fieldName) {
       case "type": {
           ImageAssetType value = ImageAssetType.valueOf(par.getIntValue());
-          if (value != null) {
+          if (checkEnum(value)) {
             image.setType(value);
           }
         }
@@ -264,7 +264,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
     switch (fieldName) {
       case "type": {
           DataAssetType value = DataAssetType.valueOf(par.getIntValue());
-          if (value != null) {
+          if (checkEnum(value)) {
             data.setType(value);
           }
         }
