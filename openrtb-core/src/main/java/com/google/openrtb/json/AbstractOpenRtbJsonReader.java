@@ -42,7 +42,7 @@ public abstract class AbstractOpenRtbJsonReader {
     return factory;
   }
 
-  protected <EB extends ExtendableBuilder<?, EB>>
+  protected final <EB extends ExtendableBuilder<?, EB>>
   void readOther(EB msg, JsonParser par, String fieldName) throws IOException {
     if ("ext".equals(fieldName)) {
       readExtensions(msg, par);
@@ -58,7 +58,7 @@ public abstract class AbstractOpenRtbJsonReader {
    * @param par The JSON parser, positioned at the "ext" field
    * @throws IOException any parsing error
    */
-  protected <EB extends ExtendableBuilder<?, EB>>
+  protected final <EB extends ExtendableBuilder<?, EB>>
   void readExtensions(EB msg, JsonParser par) throws IOException {
     @SuppressWarnings("unchecked")
     Set<OpenRtbJsonExtReader<EB, ?>> extReaders = factory.getReaders((Class<EB>) msg.getClass());
@@ -99,5 +99,16 @@ public abstract class AbstractOpenRtbJsonReader {
       }
       // Else loop, try all readers again
     }
+  }
+
+  protected final boolean checkEnum(Enum<?> e) {
+    if (e == null) {
+      if (factory.isStrict()) {
+        throw new IllegalArgumentException("Invalid enumerated value");
+      } else {
+        return false;
+      }
+    }
+    return true;
   }
 }

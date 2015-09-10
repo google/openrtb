@@ -30,7 +30,6 @@ import java.util.Map;
  */
 public class AbstractOpenRtbJsonWriter {
   private final OpenRtbJsonFactory factory;
-  private final boolean requiredAlways = false;
 
   protected AbstractOpenRtbJsonWriter(OpenRtbJsonFactory factory) {
     this.factory = factory;
@@ -48,7 +47,7 @@ public class AbstractOpenRtbJsonWriter {
    * @throws IOException any serialization error
    */
   @SuppressWarnings("unchecked")
-  protected <EM extends ExtendableMessage<EM>>
+  protected final <EM extends ExtendableMessage<EM>>
   void writeExtensions(EM msg, JsonGenerator gen) throws IOException {
     boolean openExt = false;
 
@@ -68,7 +67,7 @@ public class AbstractOpenRtbJsonWriter {
     }
   }
 
-  protected <EM extends ExtendableMessage<EM>> boolean writeSingle(
+  private <EM extends ExtendableMessage<EM>> boolean writeSingle(
       EM msg, JsonGenerator gen, String fieldName, Object extValue, boolean openExtP)
       throws IOException {
     boolean openExt = openExtP;
@@ -81,7 +80,7 @@ public class AbstractOpenRtbJsonWriter {
     return openExt;
   }
 
-  protected <EM extends ExtendableMessage<EM>> boolean writeRepeated(
+  private <EM extends ExtendableMessage<EM>> boolean writeRepeated(
       EM msg, JsonGenerator gen, String fieldName, List<Object> extList, boolean openExtP)
       throws IOException {
     boolean openExt = openExtP;
@@ -103,11 +102,25 @@ public class AbstractOpenRtbJsonWriter {
     return true;
   }
 
-  protected boolean checkRequired(boolean hasProperty) {
-    return requiredAlways || hasProperty;
+  protected final boolean checkRequired(boolean hasProperty) {
+    if (!hasProperty) {
+      if (factory.isStrict()) {
+        throw new IllegalArgumentException("Required property not set");
+      } else {
+        return false;
+      }
+    }
+    return true;
   }
 
-  protected boolean checkRequired(int propertyCount) {
-    return requiredAlways || propertyCount != 0;
+  protected final boolean checkRequired(int propertyCount) {
+    if (propertyCount == 0) {
+      if (factory.isStrict()) {
+        throw new IllegalArgumentException("Required property is empty");
+      } else {
+        return false;
+      }
+    }
+    return true;
   }
 }

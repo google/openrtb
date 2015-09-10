@@ -132,7 +132,7 @@ public abstract class OpenRtbJsonExtReader<
   }
 
   @SuppressWarnings("unchecked")
-  protected void readRepeated(EB msg, JsonParser par) throws IOException {
+  private void readRepeated(EB msg, JsonParser par) throws IOException {
     par.nextToken();
     JsonToken tokLast = par.getCurrentToken();
     JsonLocation locLast = par.getCurrentLocation();

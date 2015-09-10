@@ -49,14 +49,17 @@ public class OpenRtbJsonFactory {
   private static final String FIELDNAME_ALL = "*";
 
   private JsonFactory jsonFactory;
+  private boolean strict;
   private final SetMultimap<String, OpenRtbJsonExtReader<?, ?>> extReaders;
   private final Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters;
 
   protected OpenRtbJsonFactory(
       @Nullable JsonFactory jsonFactory,
+      boolean strict,
       @Nullable SetMultimap<String, OpenRtbJsonExtReader<?, ?>> extReaders,
       @Nullable Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters) {
     this.jsonFactory = jsonFactory;
+    this.strict = strict;
     this.extReaders = extReaders == null
         ? LinkedHashMultimap.<String, OpenRtbJsonExtReader<?, ?>>create()
         : extReaders;
@@ -92,7 +95,7 @@ public class OpenRtbJsonFactory {
    * Creates a new factory with default configuration.
    */
   public static OpenRtbJsonFactory create() {
-    return new OpenRtbJsonFactory(null, null, null);
+    return new OpenRtbJsonFactory(null, false, null, null);
   }
 
   /**
@@ -101,6 +104,21 @@ public class OpenRtbJsonFactory {
   public final OpenRtbJsonFactory setJsonFactory(JsonFactory jsonFactory) {
     this.jsonFactory = checkNotNull(jsonFactory);
     return this;
+  }
+  
+  /**
+   * Sets strict mode.
+   */
+  public final OpenRtbJsonFactory setStrict(boolean strict) {
+    this.strict = strict;
+    return this;
+  }
+  
+  /**
+   * Returns {@code true} for strict mode, {@code false} lenient mode.
+   */
+  public final boolean isStrict() {
+    return strict;
   }
 
   /**

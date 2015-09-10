@@ -112,11 +112,19 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       case "ver":
         req.setVer(par.getText());
         break;
-      case "layout":
-        req.setLayout(LayoutId.valueOf(par.getIntValue()));
+      case "layout": {
+          LayoutId value = LayoutId.valueOf(par.getIntValue());
+          if (checkEnum(value)) {
+            req.setLayout(value);
+          }
+        }
         break;
-      case "adunit":
-        req.setAdunit(AdUnitId.valueOf(par.getIntValue()));
+      case "adunit": {
+          AdUnitId value = AdUnitId.valueOf(par.getIntValue());
+          if (checkEnum(value)) {
+            req.setAdunit(value);
+          }
+        }
         break;
       case "plcmtcnt":
         req.setPlcmtcnt(par.getIntValue());
@@ -211,8 +219,12 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       JsonParser par, NativeRequest.Asset.Image.Builder image, String fieldName)
       throws IOException {
     switch (fieldName) {
-      case "type":
-        image.setType(ImageAssetType.valueOf(par.getIntValue()));
+      case "type": {
+          ImageAssetType value = ImageAssetType.valueOf(par.getIntValue());
+          if (checkEnum(value)) {
+            image.setType(value);
+          }
+        }
         break;
       case "w":
         image.setW(par.getIntValue());
@@ -250,8 +262,12 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
   protected void readReqDataField(
       JsonParser par, NativeRequest.Asset.Data.Builder data, String fieldName) throws IOException {
     switch (fieldName) {
-      case "type":
-        data.setType(DataAssetType.valueOf(par.getIntValue()));
+      case "type": {
+          DataAssetType value = DataAssetType.valueOf(par.getIntValue());
+          if (checkEnum(value)) {
+            data.setType(value);
+          }
+        }
         break;
       case "len":
         data.setLen(par.getIntValue());
