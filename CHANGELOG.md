@@ -1,6 +1,16 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 0.9.3, ??-09-2015
+* OpenRTB proto schema review:
+  - Documentation updates; some fixes to field defaults
+  - Mutually exclusive: `BidRequest.site/app`; `Bid.adm/adm_native`;
+    `Native.request/request_native` (introducing the latter);
+    `Asset.title/img/video/data` for both Native request and response.
+* JSON support:
+  - New config `OpenRtbJsonFactory.strict`.
+  - Parsing of unknown enums improved, lenient and strict options.
+
 ## Version 0.9.2, 01-09-2015
 * Fixed typo `NoBidReason.BLOCKED_PUBISHER` -> `BLOCKED_PUBLISHER`.
 
