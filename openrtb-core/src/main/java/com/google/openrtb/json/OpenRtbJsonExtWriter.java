@@ -16,12 +16,14 @@
 
 package com.google.openrtb.json;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkArgument;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 
 import java.io.IOException;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 /**
  * A serialization extension, can add children of "ext" fields.
@@ -38,20 +40,21 @@ public abstract class OpenRtbJsonExtWriter<T> {
    * Use this constructor for writers of regular extensions.
    */
   protected OpenRtbJsonExtWriter() {
-    fieldName = null;
-    isMessage = false;
+    this(null, false);
   }
 
   /**
-   * Use this constructor for writers of repeated extensions, so you only need
-   * to write the message contents in {@link #write(Object, JsonGenerator)}.
+   * This constructor supports extensions of any kind, including repeated and message type, so you
+   * only need to write the message contents or array item in {@link #write(Object, JsonGenerator)}.
    *
-   * @param fieldName name for the JSON field that contains the [array of] extension value[s]
+   * @param fieldName name for the JSON field that contains an array or object; {@code null} for
+   * regular extensions (single value of scalar type). 
    * @param isMessage {@code true} if the extension value is of message type, {@code false} scalar
    */
-  protected OpenRtbJsonExtWriter(String fieldName, boolean isMessage) {
-    this.fieldName = checkNotNull(fieldName);
+  protected OpenRtbJsonExtWriter(@Nullable String fieldName, boolean isMessage) {
+    this.fieldName = fieldName;
     this.isMessage = isMessage;
+    checkArgument(!(isMessage && fieldName == null), "isMessage=true requires fieldName");
   }
 
   protected final String getFieldName() {
@@ -100,7 +103,5 @@ public abstract class OpenRtbJsonExtWriter<T> {
    * @param gen The JSON generator
    * @throws IOException any serialization error
    */
-  protected void write(T value, JsonGenerator gen) throws IOException {
-    throw new AbstractMethodError();
-  }
+  protected abstract void write(T value, JsonGenerator gen) throws IOException;
 }
