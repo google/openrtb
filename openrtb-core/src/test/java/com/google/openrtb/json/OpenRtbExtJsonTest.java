@@ -52,7 +52,7 @@ public class OpenRtbExtJsonTest {
     protected MyOpenRtbJsonFactory(
         @Nullable JsonFactory jsonFactory,
         boolean strict,
-        @Nullable SetMultimap<String, OpenRtbJsonExtReader<?, ?>> extReaders,
+        @Nullable SetMultimap<String, OpenRtbJsonExtReader<?>> extReaders,
         @Nullable Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters) {
       super(jsonFactory, strict, extReaders, extWriters);
     }

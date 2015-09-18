@@ -10,6 +10,9 @@ RELEASE NOTES
 * JSON support:
   - New config `OpenRtbJsonFactory.strict`.
   - Parsing of unknown enums improved, lenient and strict options.
+  - Reviews in the JSON extension APIs, `OpenRtbJsonExtWriter` and
+    `OpenRtbJsonExtReader`. The latter has breaking changes, and some
+    implementations need to override `OpenRtbJsonExtComplexReader`.
 
 ## Version 0.9.2, 01-09-2015
 * Fixed typo `NoBidReason.BLOCKED_PUBISHER` -> `BLOCKED_PUBLISHER`.

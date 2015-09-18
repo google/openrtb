@@ -61,7 +61,7 @@ public abstract class AbstractOpenRtbJsonReader {
   protected final <EB extends ExtendableBuilder<?, EB>>
   void readExtensions(EB msg, JsonParser par) throws IOException {
     @SuppressWarnings("unchecked")
-    Set<OpenRtbJsonExtReader<EB, ?>> extReaders = factory.getReaders((Class<EB>) msg.getClass());
+    Set<OpenRtbJsonExtReader<EB>> extReaders = factory.getReaders((Class<EB>) msg.getClass());
     if (extReaders.isEmpty()) {
       par.skipChildren();
       return;
@@ -73,29 +73,36 @@ public abstract class AbstractOpenRtbJsonReader {
 
     while (true) {
       boolean extRead = false;
-      for (OpenRtbJsonExtReader<EB, ?> extReader : extReaders) {
-        extReader.read(msg, par);
-        JsonToken tokNew = par.getCurrentToken();
-        JsonLocation locNew = par.getCurrentLocation();
-        boolean advanced = tokNew != tokLast || !locNew.equals(locLast);
-        extRead |= advanced;
+      for (OpenRtbJsonExtReader<EB> extReader : extReaders) {
+        if (extReader.filter(par)) {
+          extReader.read(msg, par);
+          JsonToken tokNew = par.getCurrentToken();
+          JsonLocation locNew = par.getCurrentLocation();
+          boolean advanced = tokNew != tokLast || !locNew.equals(locLast);
+          extRead |= advanced;
 
-        if (!endObject(par)) {
-          return;
-        } else if (advanced && par.getCurrentToken() != JsonToken.FIELD_NAME) {
-          tokLast = par.nextToken();
-          locLast = par.getCurrentLocation();
-        } else {
-          tokLast = tokNew;
-          locLast = locNew;
+          if (!endObject(par)) {
+            return;
+          } else if (advanced && par.getCurrentToken() != JsonToken.FIELD_NAME) {
+            tokLast = par.nextToken();
+            locLast = par.getCurrentLocation();
+          } else {
+            tokLast = tokNew;
+            locLast = locNew;
+          }
         }
       }
 
       if (!extRead) {
+        // No field was consumed by any reader, so we need to skip the field to make progress.
         par.nextToken();
         par.skipChildren();
         tokLast = par.nextToken();
         locLast = par.getCurrentLocation();
+        if (!endObject(par)) {
+          // Can't rely on this exit condition inside the for loop because no readers may filter.
+          return;
+        }
       }
       // Else loop, try all readers again
     }

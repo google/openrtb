@@ -84,8 +84,8 @@ import java.io.IOException;
  */
 public class OpenRtbJsonTest {
   private static final Logger logger = LoggerFactory.getLogger(OpenRtbJsonTest.class);
-  private static final Test1 test1 = Test1.newBuilder().setTest1("test1").build();
-  private static final Test2 test2 = Test2.newBuilder().setTest2("test2").build();
+  private static final Test1 test1 = Test1.newBuilder().setTest1("data1").build();
+  private static final Test2 test2 = Test2.newBuilder().setTest2("data2").build();
 
   @Test
   public void testJsonFactory() {
@@ -111,10 +111,10 @@ public class OpenRtbJsonTest {
     testRequest(newJsonFactory()
         .register(new OpenRtbJsonExtWriter<Test1>() {
           @Override protected void write(Test1 ext, JsonGenerator gen) throws IOException {
-            gen.writeStringField("test1", "test1");
-            gen.writeStringField("test2", "test2");
-            gen.writeStringField("test1", "test1");
-            gen.writeStringField("test2", "test2");
+            gen.writeStringField("test1", "data1");
+            gen.writeStringField("test2", "data2");
+            gen.writeStringField("test1", "data1");
+            gen.writeStringField("test2", "data2");
           }
         }, Test1.class, BidRequest.class),
         newBidRequest().build());
@@ -194,6 +194,53 @@ public class OpenRtbJsonTest {
     BidResponse resp = newBidResponse(false).build();
     String jsonResp = testResponse(jsonFactory, resp);
     assertEquals(jsonResp, jsonFactory.newWriter().writeBidResponse(newBidResponse(true).build()));
+  }
+
+  @Test
+  public void testExt1() throws IOException {
+    OpenRtbJsonFactory jsonFactory = newJsonFactory();
+    testResponse(jsonFactory, BidResponse.newBuilder()
+        .setId("0")
+        .setExtension(TestExt.testResponse1, test1)
+        .build());
+  }
+
+  @Test
+  public void testExt2Repeated() throws IOException {
+    OpenRtbJsonFactory jsonFactory = newJsonFactory();
+    testResponse(jsonFactory, BidResponse.newBuilder()
+        .setId("0")
+        .addExtension(TestExt.testResponse2, test2)
+        .addExtension(TestExt.testResponse2, test2)
+        .build());
+  }
+
+  @Test
+  public void testExt3() throws IOException {
+    OpenRtbJsonFactory jsonFactory = newJsonFactory();
+    testResponse(jsonFactory, BidResponse.newBuilder()
+        .setId("0")
+        .setExtension(TestExt.testResponse3, 99)
+        .build());
+  }
+
+  @Test
+  public void testExt4() throws IOException {
+    OpenRtbJsonFactory jsonFactory = newJsonFactory();
+    testResponse(jsonFactory, BidResponse.newBuilder()
+        .setId("0")
+        .addExtension(TestExt.testResponse4, 10)
+        .addExtension(TestExt.testResponse4, 20)
+        .build());
+  }
+
+  @Test
+  public void testExt2Scalar() throws IOException {
+    OpenRtbJsonFactory jsonFactory = newJsonFactory();
+    testRequest(jsonFactory, BidRequest.newBuilder()
+        .setId("0")
+        .setExtension(TestExt.testRequest2, test2)
+        .build());
   }
 
   @Test

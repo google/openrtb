@@ -21,15 +21,12 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import java.io.IOException;
 
 /**
- * Sample JSON writer for a regular or repeated extension of scalar type.
- * <p>
- * Nothing different is necessary for repeated extensions; the {@link #write} method
- * will simply be invoked multiple times, for each item in the sequence.
+ * Repeated extension: {@code "test4arr": [10, 20]}, scalar type {@code Integer}.
  */
 class Test4Writer extends OpenRtbJsonExtWriter<Integer> {
 
-  Test4Writer() {
-    super("test4", false);
+  public Test4Writer() {
+    super("test4arr", false);
   }
 
   @Override protected void write(Integer ext, JsonGenerator gen) throws IOException {

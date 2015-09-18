@@ -50,18 +50,18 @@ public class OpenRtbJsonFactory {
 
   private JsonFactory jsonFactory;
   private boolean strict;
-  private final SetMultimap<String, OpenRtbJsonExtReader<?, ?>> extReaders;
+  private final SetMultimap<String, OpenRtbJsonExtReader<?>> extReaders;
   private final Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters;
 
   protected OpenRtbJsonFactory(
       @Nullable JsonFactory jsonFactory,
       boolean strict,
-      @Nullable SetMultimap<String, OpenRtbJsonExtReader<?, ?>> extReaders,
+      @Nullable SetMultimap<String, OpenRtbJsonExtReader<?>> extReaders,
       @Nullable Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters) {
     this.jsonFactory = jsonFactory;
     this.strict = strict;
     this.extReaders = extReaders == null
-        ? LinkedHashMultimap.<String, OpenRtbJsonExtReader<?, ?>>create()
+        ? LinkedHashMultimap.<String, OpenRtbJsonExtReader<?>>create()
         : extReaders;
     this.extWriters = extWriters == null
         ? new LinkedHashMap<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>>()
@@ -128,7 +128,7 @@ public class OpenRtbJsonFactory {
    * @param msgKlass class of container message's builder, e.g. {@code MyImp.Builder.class}
    */
   public final <EB extends ExtendableBuilder<?, EB>> OpenRtbJsonFactory register(
-      OpenRtbJsonExtReader<EB, ?> extReader, Class<EB> msgKlass) {
+      OpenRtbJsonExtReader<EB> extReader, Class<EB> msgKlass) {
     extReaders.put(msgKlass.getName(), extReader);
     return this;
   }
@@ -201,9 +201,8 @@ public class OpenRtbJsonFactory {
 
   @SuppressWarnings("unchecked")
   final <EB extends ExtendableBuilder<?, EB>>
-  Set<OpenRtbJsonExtReader<EB, ?>> getReaders(Class<EB> msgClass) {
-    return (Set<OpenRtbJsonExtReader<EB, ?>>) (Set<?>)
-        extReaders.get(msgClass.getName());
+  Set<OpenRtbJsonExtReader<EB>> getReaders(Class<EB> msgClass) {
+    return (Set<OpenRtbJsonExtReader<EB>>) (Set<?>) extReaders.get(msgClass.getName());
   }
 
   @SuppressWarnings("unchecked")

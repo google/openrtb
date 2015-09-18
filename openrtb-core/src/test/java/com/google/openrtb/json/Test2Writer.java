@@ -23,23 +23,21 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import java.io.IOException;
 
 /**
- * Sample JSON writer for a repeated extension of message type.
+ * Regular extension: <code>"test2ext": {"test2": "data2", "test3": ["data3"]}</code>,
+ * message type {@code Test2}.
  * <p>
- * To support repeated extensions, the super-call needs the field name and object/scalar option.
- * The field name, the array-open and array-close tokens, and (for objects) the object-open
- * and object-close tokens, will all be emitted by the framework, so the {@link #write} method
- * provided here is the same you need for a regular extension: just write all fields for one item.
- * Suppose {@code x: ( ext: ( a: 10 ))} and {@code y: ( ext: ( b: [ ( a: 1 ), ( a: 2 ) ] ))}.
- * where {@code x.ext.a} is a regular extension and {@code y.ext.b} is a repeated extension
- * which value is a sequence of the same {@code x.ext.a} objects, you can share the writer.
+ * Repeated extension: <code>"test2ext": [{"test2": "data2", "test3": ["data3"]},
+ *                                        {"test2": "data4", "test3": ["data5"]}}</code>,
+ * message type {@code Test2}.
  */
 class Test2Writer extends OpenRtbJsonExtWriter<Test2> {
 
   public Test2Writer() {
-    super("test2obj", true);
+    super("test2ext", true);
   }
 
   @Override protected void write(Test2 ext, JsonGenerator gen) throws IOException {
     gen.writeStringField("test2", ext.getTest2());
+    OpenRtbJsonUtils.writeStrings("test3", ext.getTest3List(), gen);
   }
 }
