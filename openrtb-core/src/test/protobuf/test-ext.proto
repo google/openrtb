@@ -24,7 +24,7 @@ import "test-common.proto";
 extend com.google.openrtb.BidRequest {
   optional Test1 testRequest1 = 110;
   optional Test2 testRequest2 = 111;
-  optional string crtype = 114;
+  optional string crtype = 112;
 }
 extend com.google.openrtb.BidRequest.App {
   optional Test1 testApp = 110;
@@ -81,8 +81,10 @@ extend com.google.openrtb.BidRequest.User {
 extend com.google.openrtb.BidResponse {
   optional Test1 testResponse1 = 110;
   repeated Test2 testResponse2 = 111;
-  optional int32 testResponse3 = 112;
-  repeated int32 testResponse4 = 113;
+  optional Test2 testResponse2a = 112;
+  optional Test2 testResponse2b = 113;
+  optional int32 testResponse3 = 114;
+  repeated int32 testResponse4 = 115;
 }
 extend com.google.openrtb.BidResponse.SeatBid {
   optional Test1 testSeat = 110;

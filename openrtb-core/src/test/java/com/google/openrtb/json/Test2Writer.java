@@ -32,8 +32,8 @@ import java.io.IOException;
  */
 class Test2Writer extends OpenRtbJsonExtWriter<Test2> {
 
-  public Test2Writer() {
-    super("test2ext", true);
+  public Test2Writer(String name) {
+    super(name, true);
   }
 
   @Override protected void write(Test2 ext, JsonGenerator gen) throws IOException {

@@ -25,6 +25,9 @@ import java.io.IOException;
 
 /**
  * A desserialization extension, can consume children of "ext" fields.
+ * This base class is good for extensions stored directly in the parent Message;
+ * for wrapper extensions use the subclass {@link OpenRtbJsonExtComplexReader}.
+ *
  * <p>
  * Implementations of this interface have to be threadsafe.
  *
@@ -36,7 +39,7 @@ public abstract class OpenRtbJsonExtReader<EB extends ExtendableBuilder<?, EB>> 
 
   /**
    * Use this constructor for readers of scalar type.
-   * 
+   *
    * @param rootNameFilters Filter for the root names (direct fields of "ext").
    * If empty, this reader will be invoked for any field.
    */
@@ -54,12 +57,11 @@ public abstract class OpenRtbJsonExtReader<EB extends ExtendableBuilder<?, EB>> 
   }
 
   /**
-   * Reads a field, which will be stored as direct extensions in the {@code msg}. 
+   * Reads a field, which will be stored as direct extensions in the {@code msg}.
    *
    * @param msg Builder for the container message, where an extension message will be set
    * @param par JSON parser, positioned at the property to be desserialized
    * @throws IOException any parsing error
    */
-  @SuppressWarnings("unchecked")
   protected abstract void read(EB msg, JsonParser par) throws IOException;
 }

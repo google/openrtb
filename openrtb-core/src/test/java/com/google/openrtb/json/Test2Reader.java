@@ -39,8 +39,8 @@ import java.io.IOException;
 class Test2Reader<EB extends ExtendableBuilder<?, EB>>
 extends OpenRtbJsonExtComplexReader<EB, Test2.Builder> {
 
-  public Test2Reader(GeneratedExtension<?, ?> key) {
-    super(key, true, "test2ext");
+  public Test2Reader(GeneratedExtension<?, ?> key, String name) {
+    super(key, true, name);
   }
 
   @Override protected void read(Test2.Builder ext, JsonParser par) throws IOException {
