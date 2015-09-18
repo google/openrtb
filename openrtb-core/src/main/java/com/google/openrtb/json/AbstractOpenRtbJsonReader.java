@@ -25,6 +25,9 @@ import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.util.Set;
 
@@ -32,6 +35,7 @@ import java.util.Set;
  * Desserializes OpenRTB messages from JSON.
  */
 public abstract class AbstractOpenRtbJsonReader {
+  static final Logger logger = LoggerFactory.getLogger(AbstractOpenRtbJsonReader.class);
   private final OpenRtbJsonFactory factory;
 
   protected AbstractOpenRtbJsonReader(OpenRtbJsonFactory factory) {
@@ -61,7 +65,7 @@ public abstract class AbstractOpenRtbJsonReader {
   protected final <EB extends ExtendableBuilder<?, EB>>
   void readExtensions(EB msg, JsonParser par) throws IOException {
     @SuppressWarnings("unchecked")
-    Set<OpenRtbJsonExtReader<EB, ?>> extReaders = factory.getReaders((Class<EB>) msg.getClass());
+    Set<OpenRtbJsonExtReader<EB>> extReaders = factory.getReaders((Class<EB>) msg.getClass());
     if (extReaders.isEmpty()) {
       par.skipChildren();
       return;
@@ -73,25 +77,37 @@ public abstract class AbstractOpenRtbJsonReader {
 
     while (true) {
       boolean extRead = false;
-      for (OpenRtbJsonExtReader<EB, ?> extReader : extReaders) {
-        extReader.read(msg, par);
-        JsonToken tokNew = par.getCurrentToken();
-        JsonLocation locNew = par.getCurrentLocation();
-        boolean advanced = tokNew != tokLast || !locNew.equals(locLast);
-        extRead |= advanced;
+      for (OpenRtbJsonExtReader<EB> extReader : extReaders) {
+        if (extReader.filter(par)) {
+          extReader.read(msg, par);
+          JsonToken tokNew = par.getCurrentToken();
+          JsonLocation locNew = par.getCurrentLocation();
+          boolean advanced = tokNew != tokLast || !locNew.equals(locLast);
+          extRead |= advanced;
 
-        if (!endObject(par)) {
-          return;
-        } else if (advanced && par.getCurrentToken() != JsonToken.FIELD_NAME) {
-          tokLast = par.nextToken();
-          locLast = par.getCurrentLocation();
-        } else {
-          tokLast = tokNew;
-          locLast = locNew;
+          if (!endObject(par)) {
+            return;
+          } else if (advanced && par.getCurrentToken() != JsonToken.FIELD_NAME) {
+            tokLast = par.nextToken();
+            locLast = par.getCurrentLocation();
+          } else {
+            tokLast = tokNew;
+            locLast = locNew;
+          }
         }
       }
 
+      if (!endObject(par)) {
+        // Can't rely on this exit condition inside the for loop because no readers may filter.
+        return;
+      }
+
       if (!extRead) {
+        // No field was consumed by any reader, so we need to skip the field to make progress.
+        if (logger.isDebugEnabled()) {
+          logger.debug("Extension field not consumed by any reader, skipping: {} @{}:{}",
+              par.getCurrentName(), locLast.getLineNr(), locLast.getCharOffset());
+        }
         par.nextToken();
         par.skipChildren();
         tokLast = par.nextToken();

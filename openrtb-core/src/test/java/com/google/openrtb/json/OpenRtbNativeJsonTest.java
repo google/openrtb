@@ -116,7 +116,7 @@ public class OpenRtbNativeJsonTest {
         // NativeRequest Readers
         .register(new Test1Reader<NativeRequest.Builder>(TestNExt.testNRequest1),
             NativeRequest.Builder.class)
-        .register(new Test2Reader<NativeRequest.Builder>(TestNExt.testNRequest2),
+        .register(new Test2Reader<NativeRequest.Builder>(TestNExt.testNRequest2, "test2ext"),
             NativeRequest.Builder.class)
         .register(new Test1Reader<NativeRequest.Asset.Builder>(TestNExt.testNReqAsset),
             NativeRequest.Asset.Builder.class)
@@ -131,7 +131,7 @@ public class OpenRtbNativeJsonTest {
         // NativeResponse Readers
         .register(new Test1Reader<NativeResponse.Builder>(TestNExt.testNResponse1),
             NativeResponse.Builder.class)
-        .register(new Test2Reader<NativeResponse.Builder>(TestNExt.testNResponse2),
+        .register(new Test2Reader<NativeResponse.Builder>(TestNExt.testNResponse2, "test2ext"),
             NativeResponse.Builder.class)
         .register(new Test1Reader<NativeResponse.Link.Builder>(TestNExt.testNRespLink),
             NativeResponse.Link.Builder.class)
@@ -159,8 +159,8 @@ public class OpenRtbNativeJsonTest {
         .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Image.class)
         .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Video.class)
         .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Data.class)
-        .register(new Test2Writer(), Test2.class, NativeRequest.class)
-        .register(new Test2Writer(), Test2.class, NativeResponse.class);
+        .register(new Test2Writer("test2ext"), Test2.class, NativeRequest.class)
+        .register(new Test2Writer("test2ext"), Test2.class, NativeResponse.class);
   }
 
   static NativeRequest.Builder newNativeRequest() {

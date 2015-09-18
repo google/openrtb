@@ -16,7 +16,6 @@
 
 package com.google.openrtb.json;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeContentCategories;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeEnums;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeIntBoolField;
@@ -120,13 +119,17 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
       }
       gen.writeEndArray();
     }
-    if (req.hasSite()) {
-      gen.writeFieldName("site");
-      writeSite(req.getSite(), gen);
-    }
-    if (req.hasApp()) {
-      gen.writeFieldName("app");
-      writeApp(req.getApp(), gen);
+    switch (req.getDistributionchannelOneofCase()) {
+      case SITE:
+        gen.writeFieldName("site");
+        writeSite(req.getSite(), gen);
+        break;
+      case APP:
+        gen.writeFieldName("app");
+        writeApp(req.getApp(), gen);
+        break;
+      case DISTRIBUTIONCHANNELONEOF_NOT_SET:
+        checkRequired(false);
     }
     if (req.hasDevice()) {
       gen.writeFieldName("device");
@@ -350,10 +353,16 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
   }
 
   protected void writeNativeFields(Native nativ, JsonGenerator gen) throws IOException {
-    if (nativ.hasRequestNative()) {
-      gen.writeStringField("request", nativeWriter().writeNativeRequest(nativ.getRequestNative()));
-    } else if (nativ.hasRequest()) {
-      gen.writeStringField("request", nativ.getRequest());
+    switch (nativ.getRequestOneofCase()) {
+      case REQUEST_NATIVE:
+        gen.writeStringField(
+            "request", nativeWriter().writeNativeRequest(nativ.getRequestNative()));
+        break;
+      case REQUEST:
+        gen.writeStringField("request", nativ.getRequest());
+        break;
+      case REQUESTONEOF_NOT_SET:
+        checkRequired(false);
     }
     if (nativ.hasVer()) {
       gen.writeStringField("ver", nativ.getVer());
@@ -931,8 +940,6 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
   }
 
   protected void writeBidFields(Bid bid, JsonGenerator gen) throws IOException {
-    checkArgument(!(bid.hasAdm() && bid.hasAdmNative()),
-        "Bid.adm and Bid.admNative cannot both be populated");
     gen.writeStringField("id", bid.getId());
     gen.writeStringField("impid", bid.getImpid());
     gen.writeNumberField("price", bid.getPrice());
@@ -942,10 +949,15 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     if (bid.hasNurl()) {
       gen.writeStringField("nurl", bid.getNurl());
     }
-    if (bid.hasAdm()) {
-      gen.writeStringField("adm", bid.getAdm());
-    } else if (bid.hasAdmNative()) {
-      gen.writeStringField("adm", nativeWriter().writeNativeResponse(bid.getAdmNative()));
+    switch (bid.getAdmOneofCase()) {
+      case ADM:
+        gen.writeStringField("adm", bid.getAdm());
+        break;
+      case ADM_NATIVE:
+        gen.writeStringField("adm", nativeWriter().writeNativeResponse(bid.getAdmNative()));
+        break;
+      case ADMONEOF_NOT_SET:
+        checkRequired(false);
     }
     writeStrings("adomain", bid.getAdomainList(), gen);
     if (bid.hasBundle()) {

@@ -22,5 +22,6 @@ message Test1 {
   required string test1 = 1;
 }
 message Test2 {
-  required string test2 = 1;
+  optional string test2 = 1;
+  repeated string test3 = 2;
 }

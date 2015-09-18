@@ -84,15 +84,15 @@ import java.io.IOException;
  */
 public class OpenRtbJsonTest {
   private static final Logger logger = LoggerFactory.getLogger(OpenRtbJsonTest.class);
-  private static final Test1 test1 = Test1.newBuilder().setTest1("test1").build();
-  private static final Test2 test2 = Test2.newBuilder().setTest2("test2").build();
+  private static final Test1 test1 = Test1.newBuilder().setTest1("data1").build();
+  private static final Test2 test2 = Test2.newBuilder().setTest2("data2").build();
 
   @Test
   public void testJsonFactory() {
     assertNotNull(OpenRtbJsonFactory.create().getJsonFactory());
     JsonFactory jf = new JsonFactory();
     assertSame(jf, OpenRtbJsonFactory.create().setJsonFactory(jf).getJsonFactory());
-    TestUtil.testCommonMethods(new Test2Reader<BidRequest.Builder>(TestExt.testRequest2));
+    TestUtil.testCommonMethods(new Test2Reader<BidRequest.Builder>(TestExt.testRequest2, "x"));
     TestUtil.testCommonMethods(new Test4Writer());
   }
 
@@ -111,10 +111,10 @@ public class OpenRtbJsonTest {
     testRequest(newJsonFactory()
         .register(new OpenRtbJsonExtWriter<Test1>() {
           @Override protected void write(Test1 ext, JsonGenerator gen) throws IOException {
-            gen.writeStringField("test1", "test1");
-            gen.writeStringField("test2", "test2");
-            gen.writeStringField("test1", "test1");
-            gen.writeStringField("test2", "test2");
+            gen.writeStringField("test1", "data1");
+            gen.writeStringField("test2", "data2");
+            gen.writeStringField("test1", "data1");
+            gen.writeStringField("test2", "data2");
           }
         }, Test1.class, BidRequest.class),
         newBidRequest().build());
@@ -194,6 +194,63 @@ public class OpenRtbJsonTest {
     BidResponse resp = newBidResponse(false).build();
     String jsonResp = testResponse(jsonFactory, resp);
     assertEquals(jsonResp, jsonFactory.newWriter().writeBidResponse(newBidResponse(true).build()));
+  }
+
+  @Test
+  public void testExt1() throws IOException {
+    OpenRtbJsonFactory jsonFactory = newJsonFactory();
+    testResponse(jsonFactory, BidResponse.newBuilder()
+        .setId("0")
+        .setExtension(TestExt.testResponse1, test1)
+        .build());
+  }
+
+  @Test
+  public void testExt2Repeated() throws IOException {
+    OpenRtbJsonFactory jsonFactory = newJsonFactory();
+    testResponse(jsonFactory, BidResponse.newBuilder()
+        .setId("0")
+        .addExtension(TestExt.testResponse2, test2)
+        .addExtension(TestExt.testResponse2, test2)
+        .build());
+  }
+
+  @Test
+  public void testExt3() throws IOException {
+    OpenRtbJsonFactory jsonFactory = newJsonFactory();
+    testResponse(jsonFactory, BidResponse.newBuilder()
+        .setId("0")
+        .setExtension(TestExt.testResponse3, 99)
+        .build());
+  }
+
+  @Test
+  public void testExt4() throws IOException {
+    OpenRtbJsonFactory jsonFactory = newJsonFactory();
+    testResponse(jsonFactory, BidResponse.newBuilder()
+        .setId("0")
+        .addExtension(TestExt.testResponse4, 10)
+        .addExtension(TestExt.testResponse4, 20)
+        .build());
+  }
+
+  @Test
+  public void testExt2Scalar() throws IOException {
+    OpenRtbJsonFactory jsonFactory = newJsonFactory();
+    testRequest(jsonFactory, BidRequest.newBuilder()
+        .setId("0")
+        .setExtension(TestExt.testRequest2, test2)
+        .build());
+  }
+
+  @Test
+  public void testExt2Double() throws IOException {
+    OpenRtbJsonFactory jsonFactory = newJsonFactory();
+    testResponse(jsonFactory, BidResponse.newBuilder()
+        .setId("0")
+        .setExtension(TestExt.testResponse2A, Test2.newBuilder().setTest2("data2a").build())
+        .setExtension(TestExt.testResponse2B, Test2.newBuilder().setTest2("data2b").build())
+        .build());
   }
 
   @Test
@@ -284,7 +341,7 @@ public class OpenRtbJsonTest {
         // BidRequest Readers
         .register(new Test1Reader<BidRequest.Builder>(TestExt.testRequest1),
             BidRequest.Builder.class)
-        .register(new Test2Reader<BidRequest.Builder>(TestExt.testRequest2),
+        .register(new Test2Reader<BidRequest.Builder>(TestExt.testRequest2, "test2ext"),
             BidRequest.Builder.class)
         .register(new Test1Reader<App.Builder>(TestExt.testApp), App.Builder.class)
         .register(new Test1Reader<Content.Builder>(TestExt.testContent), Content.Builder.class)
@@ -307,7 +364,11 @@ public class OpenRtbJsonTest {
         // BidResponse Readers
         .register(new Test1Reader<BidResponse.Builder>(TestExt.testResponse1),
             BidResponse.Builder.class)
-        .register(new Test2Reader<BidResponse.Builder>(TestExt.testResponse2),
+        .register(new Test2Reader<BidResponse.Builder>(TestExt.testResponse2, "test2arr"),
+            BidResponse.Builder.class)
+        .register(new Test2Reader<BidResponse.Builder>(TestExt.testResponse2A, "test2a"),
+            BidResponse.Builder.class)
+        .register(new Test2Reader<BidResponse.Builder>(TestExt.testResponse2B, "test2b"),
             BidResponse.Builder.class)
         .register(new Test3Reader(), BidResponse.Builder.class)
         .register(new Test4Reader(), BidResponse.Builder.class)
@@ -315,7 +376,7 @@ public class OpenRtbJsonTest {
         .register(new Test1Reader<Bid.Builder>(TestExt.testBid), Bid.Builder.class)
         // BidRequest Writers
         .register(new Test1Writer(), Test1.class, BidRequest.class)
-        .register(new Test2Writer(), Test2.class, BidRequest.class)
+        .register(new Test2Writer("test2ext"), Test2.class, BidRequest.class)
         .register(new Test1Writer(), Test1.class, App.class)
         .register(new Test1Writer(), Test1.class, Device.class)
         .register(new Test1Writer(), Test1.class, Site.class)
@@ -337,7 +398,9 @@ public class OpenRtbJsonTest {
         .register(new Test1Writer(), Test1.class, Bid.class)
         // BidResponse Writers
         .register(new Test1Writer(), Test1.class, BidResponse.class, "testResponse1")
-        .register(new Test2Writer(), Test2.class, BidResponse.class, "testResponse2")
+        .register(new Test2Writer("test2arr"), Test2.class, BidResponse.class, "testResponse2")
+        .register(new Test2Writer("test2a"), Test2.class, BidResponse.class, "testResponse2a")
+        .register(new Test2Writer("test2b"), Test2.class, BidResponse.class, "testResponse2b")
         .register(new Test3Writer(), Integer.class, BidResponse.class, "testResponse3")
         .register(new Test4Writer(), Integer.class, BidResponse.class, "testResponse4");
   }
@@ -605,6 +668,8 @@ public class OpenRtbJsonTest {
         .setExtension(TestExt.testResponse1, test1)
         .addExtension(TestExt.testResponse2, test2)
         .addExtension(TestExt.testResponse2, test2)
+        .setExtension(TestExt.testResponse2A, test2)
+        .setExtension(TestExt.testResponse2B, test2)
         .setExtension(TestExt.testResponse3, 99)
         .addExtension(TestExt.testResponse4, 10)
         .addExtension(TestExt.testResponse4, 20);

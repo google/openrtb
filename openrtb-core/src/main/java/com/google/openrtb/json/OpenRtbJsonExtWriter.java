@@ -31,76 +31,64 @@ import java.util.List;
  * Implementations of this interface have to be threadsafe.
  */
 public abstract class OpenRtbJsonExtWriter<T> {
-  private final String fieldName;
-  private final boolean isMessage;
+  private final String rootName;
+  private final boolean isJsonObject;
 
   /**
    * Use this constructor for writers of regular extensions.
    */
   protected OpenRtbJsonExtWriter() {
-    fieldName = null;
-    isMessage = false;
+    this.rootName = null;
+    this.isJsonObject = false;
   }
 
   /**
-   * Use this constructor for writers of repeated extensions, so you only need
-   * to write the message contents in {@link #write(Object, JsonGenerator)}.
+   * Use this constructor for writers of repeated extensions.
    *
-   * @param fieldName name for the JSON field that contains the [array of] extension value[s]
-   * @param isMessage {@code true} if the extension value is of message type, {@code false} scalar
+   * @param rootName Name for the "root" entity: the field that holds an array or the object
+   * @param isJsonObject {@code true} if the extension value is serialized to a JSON object
    */
-  protected OpenRtbJsonExtWriter(String fieldName, boolean isMessage) {
-    this.fieldName = checkNotNull(fieldName);
-    this.isMessage = isMessage;
+  protected OpenRtbJsonExtWriter(String rootName, boolean isJsonObject) {
+    this.rootName = checkNotNull(rootName);
+    this.isJsonObject = isJsonObject;
   }
 
-  protected final String getFieldName() {
-    return fieldName;
-  }
-
-  protected final boolean isMessage() {
-    return isMessage;
-  }
-
-  /**
-   * Write a repeated extension. The default implementation will emit a JSON array; you
-   * can override this if you need to provide a different encoding (e.g., a CSV string).
-   *
-   * @param list The list of extension values (repeated field)
-   * @param gen The JSON generator
-   * @throws IOException any serialization error
-   */
-  protected void writeRepeated(List<T> list, JsonGenerator gen) throws IOException {
-    gen.writeArrayFieldStart(getFieldName());
-    for (T item : list) {
-      if (isMessage) {
+  protected final void writeRepeated(List<T> extList, JsonGenerator gen) throws IOException {
+    gen.writeArrayFieldStart(rootName);
+    for (T ext : extList) {
+      if (isJsonObject) {
         gen.writeStartObject();
       }
-      write(item, gen);
-      if (isMessage) {
+      write(ext, gen);
+      if (isJsonObject) {
         gen.writeEndObject();
       }
     }
     gen.writeEndArray();
   }
 
-  @Override public String toString() {
-    return getClass().getName()
-        + (isMessage ? " (message" : " (scalar")
-        + (fieldName == null ? ")" : " " + fieldName + ")");
+  protected final void writeSingle(T value, JsonGenerator gen) throws IOException {
+    if (isJsonObject) {
+      gen.writeObjectFieldStart(rootName);
+    }
+    write(value, gen);
+    if (isJsonObject) {
+      gen.writeEndObject();
+    }
   }
 
   /**
    * Write the fields of an extension value.
-   * <p>
-   * You need to override this if you want to rely on the default implementation of
-   * {@link #writeRepeated(List, JsonGenerator)} for repeated extensions.
    *
    * @param value The extension value (scalar field)
    * @param gen The JSON generator
    * @throws IOException any serialization error
    */
-  protected void write(T value, JsonGenerator gen) throws IOException {
-    throw new AbstractMethodError();
+  protected abstract void write(T value, JsonGenerator gen) throws IOException;
+
+  @Override public String toString() {
+    return getClass().getName()
+        + (isJsonObject ? " JSON=object" : " JSON=scalar")
+        + (rootName == null ? " regular" : " repeated:" + rootName);
   }
 }

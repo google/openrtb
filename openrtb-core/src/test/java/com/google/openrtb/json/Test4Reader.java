@@ -22,24 +22,25 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.TestExt;
-import com.google.protobuf.Message;
 
 import com.fasterxml.jackson.core.JsonParser;
 
 import java.io.IOException;
 
 /**
- * Sample JSON reader for a repeated extension of scalar type.
+ * Repeated extension: {@code "test4arr": [10, 20]}, scalar type {@code Integer}.
  */
-public class Test4Reader extends OpenRtbJsonExtReader<BidResponse.Builder, Message.Builder> {
+public class Test4Reader extends OpenRtbJsonExtReader<BidResponse.Builder> {
+
+  public Test4Reader() {
+    super("test4arr");
+  }
 
   @Override protected void read(BidResponse.Builder msg, JsonParser par) throws IOException {
-    switch (getCurrentName(par)) {
-      case "test4":
-        for (startArray(par); endArray(par); par.nextToken()) {
-          msg.addExtension(TestExt.testResponse4, par.getIntValue());
-        }
-        break;
+    if ("test4arr".equals(getCurrentName(par))) {
+      for (startArray(par); endArray(par); par.nextToken()) {
+        msg.addExtension(TestExt.testResponse4, par.getIntValue());
+      }
     }
   }
 }

@@ -127,21 +127,25 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     if (asset.hasRequired()) {
       writeIntBoolField("required", asset.getRequired(), gen);
     }
-    if (asset.hasTitle()) {
-      gen.writeFieldName("title");
-      writeReqTitle(asset.getTitle(), gen);
-    }
-    if (asset.hasImg()) {
-      gen.writeFieldName("img");
-      writeReqImage(asset.getImg(), gen);
-    }
-    if (asset.hasVideo()) {
-      gen.writeFieldName("video");
-      coreWriter().writeVideo(asset.getVideo(), gen);
-    }
-    if (asset.hasData()) {
-      gen.writeFieldName("data");
-      writeReqData(asset.getData(), gen);
+    switch (asset.getAssetOneofCase()) {
+      case TITLE:
+        gen.writeFieldName("title");
+        writeReqTitle(asset.getTitle(), gen);
+        break;
+      case IMG:
+        gen.writeFieldName("img");
+        writeReqImage(asset.getImg(), gen);
+        break;
+      case VIDEO:
+        gen.writeFieldName("video");
+        coreWriter().writeVideo(asset.getVideo(), gen);
+        break;
+      case DATA:
+        gen.writeFieldName("data");
+        writeReqData(asset.getData(), gen);
+        break;
+      case ASSETONEOF_NOT_SET:
+        checkRequired(false);
     }
   }
 
@@ -282,25 +286,29 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     if (asset.hasRequired()) {
       writeIntBoolField("required", asset.getRequired(), gen);
     }
-    if (asset.hasTitle()) {
-      gen.writeFieldName("title");
-      writeRespTitle(asset.getTitle(), gen);
-    }
-    if (asset.hasImg()) {
-      gen.writeFieldName("img");
-      writeRespImage(asset.getImg(), gen);
-    }
-    if (asset.hasVideo()) {
-      gen.writeFieldName("video");
-      writeRespVideo(asset.getVideo(), gen);
-    }
-    if (asset.hasData()) {
-      gen.writeFieldName("data");
-      writeRespData(asset.getData(), gen);
-    }
     if (asset.hasLink()) {
       gen.writeFieldName("link");
       writeRespLink(asset.getLink(), gen);
+    }
+    switch (asset.getAssetOneofCase()) {
+      case TITLE:
+        gen.writeFieldName("title");
+        writeRespTitle(asset.getTitle(), gen);
+        break;
+      case IMG:
+        gen.writeFieldName("img");
+        writeRespImage(asset.getImg(), gen);
+        break;
+      case VIDEO:
+        gen.writeFieldName("video");
+        writeRespVideo(asset.getVideo(), gen);
+        break;
+      case DATA:
+        gen.writeFieldName("data");
+        writeRespData(asset.getData(), gen);
+        break;
+      case ASSETONEOF_NOT_SET:
+        checkRequired(false);
     }
   }
 

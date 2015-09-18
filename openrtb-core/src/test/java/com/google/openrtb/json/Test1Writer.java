@@ -23,7 +23,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import java.io.IOException;
 
 /**
- * Sample JSON writer for a regular extension of message type.
+ * Regular extension: {@code "test1": "data1"}, message type {@code Test1}.
  */
 class Test1Writer extends OpenRtbJsonExtWriter<Test1> {
 

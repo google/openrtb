@@ -20,25 +20,26 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
 
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.TestExt;
-import com.google.protobuf.Message;
 
 import com.fasterxml.jackson.core.JsonParser;
 
 import java.io.IOException;
 
 /**
- * Sample JSON reader for a regular extension of scalar type.
+ * Regular extension: {@code "test3": 99}, scalar type {@code Integer}.
  *
  * <p>This reader can only be used in a single message, in this case the {@code BidRequest}.
  * See {@link Test1Reader} how to keep the reader open to any message.
  */
-public class Test3Reader extends OpenRtbJsonExtReader<BidResponse.Builder, Message.Builder> {
+public class Test3Reader extends OpenRtbJsonExtReader<BidResponse.Builder> {
+
+  public Test3Reader() {
+    super("test3");
+  }
 
   @Override protected void read(BidResponse.Builder msg, JsonParser par) throws IOException {
-    switch (getCurrentName(par)) {
-      case "test3":
-        msg.setExtension(TestExt.testResponse3, par.nextIntValue(0));
-        break;
+    if ("test3".equals(getCurrentName(par))) {
+      msg.setExtension(TestExt.testResponse3, par.nextIntValue(0));
     }
   }
 }

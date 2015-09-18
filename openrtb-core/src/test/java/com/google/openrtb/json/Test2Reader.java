@@ -16,7 +16,9 @@
 
 package com.google.openrtb.json;
 
+import static com.google.openrtb.json.OpenRtbJsonUtils.endArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
+import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 
 import com.google.openrtb.Test.Test2;
 import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
@@ -27,21 +29,29 @@ import com.fasterxml.jackson.core.JsonParser;
 import java.io.IOException;
 
 /**
- * Sample JSON reader for a repeated extension of message type.
- * (Exactly the same code as for regular extension of message type / {@link Test1Reader}.)
+ * Regular extension: <code>"test2ext": {"test2": "data2", "test3": ["data3"]}</code>,
+ * message type {@code Test2}.
+ * <p>
+ * Repeated extension: <code>"test2ext": [{"test2": "data2", "test3": ["data3"]},
+ *                                        {"test2": "data4", "test3": ["data5"]}}</code>,
+ * message type {@code Test2}.
  */
 class Test2Reader<EB extends ExtendableBuilder<?, EB>>
-extends OpenRtbJsonExtReader<EB, Test2.Builder> {
+extends OpenRtbJsonExtComplexReader<EB, Test2.Builder> {
 
-  public Test2Reader(GeneratedExtension<?, ?> key) {
-    super(key);
+  public Test2Reader(GeneratedExtension<?, ?> key, String name) {
+    super(key, true, name);
   }
 
-  @Override protected void read(EB msg, Test2.Builder ext, JsonParser par)
-      throws IOException {
+  @Override protected void read(Test2.Builder ext, JsonParser par) throws IOException {
     switch (getCurrentName(par)) {
       case "test2":
         ext.setTest2(par.nextTextValue());
+        break;
+      case "test3":
+        for (startArray(par); endArray(par); par.nextToken()) {
+          ext.addTest3(par.getText());
+        }
         break;
     }
   }

@@ -55,9 +55,23 @@ public class AbstractOpenRtbJsonWriter {
       FieldDescriptor fd = field.getKey();
       if (fd.isExtension()) {
         if (fd.isRepeated()) {
-          openExt = writeRepeated(msg, gen, fd.getName(), (List<Object>) field.getValue(), openExt);
+          List<Object> extValue = (List<Object>) field.getValue();
+          if (!extValue.isEmpty()) {
+            OpenRtbJsonExtWriter<Object> extWriter =
+                factory.getWriter(msg.getClass(), extValue.get(0).getClass(), fd.getName());
+            if (extWriter != null) {
+              openExt = openExt(gen, openExt);
+              extWriter.writeRepeated(extValue, gen);
+            }
+          }
         } else {
-          openExt = writeSingle(msg, gen, fd.getName(), field.getValue(), openExt);
+          Object extValue = field.getValue();
+          OpenRtbJsonExtWriter<Object> extWriter =
+              factory.getWriter(msg.getClass(), extValue.getClass(), fd.getName());
+          if (extWriter != null) {
+            openExt = openExt(gen, openExt);
+            extWriter.writeSingle(extValue, gen);
+          }
         }
       }
     }
@@ -65,34 +79,6 @@ public class AbstractOpenRtbJsonWriter {
     if (openExt) {
       gen.writeEndObject();
     }
-  }
-
-  private <EM extends ExtendableMessage<EM>> boolean writeSingle(
-      EM msg, JsonGenerator gen, String fieldName, Object extValue, boolean openExtP)
-      throws IOException {
-    boolean openExt = openExtP;
-    OpenRtbJsonExtWriter<Object> extWriter =
-        factory.getWriter(msg.getClass(), extValue.getClass(), fieldName);
-    if (extWriter != null) {
-      openExt = openExt(gen, openExt);
-      extWriter.write(extValue, gen);
-    }
-    return openExt;
-  }
-
-  private <EM extends ExtendableMessage<EM>> boolean writeRepeated(
-      EM msg, JsonGenerator gen, String fieldName, List<Object> extList, boolean openExtP)
-      throws IOException {
-    boolean openExt = openExtP;
-    if (!extList.isEmpty()) {
-      OpenRtbJsonExtWriter<Object> extWriter =
-          factory.getWriter(msg.getClass(), extList.get(0).getClass(), fieldName);
-      if (extWriter != null) {
-        openExt = openExt(gen, openExt);
-        extWriter.writeRepeated(extList, gen);
-      }
-    }
-    return openExt;
   }
 
   private static boolean openExt(JsonGenerator gen, boolean openExt) throws IOException {
