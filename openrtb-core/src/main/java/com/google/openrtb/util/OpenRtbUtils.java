@@ -72,6 +72,11 @@ public final class OpenRtbUtils {
       assert imp != null;
       return imp.hasVideo();
     }};
+  public static final Predicate<Imp> IMP_HAS_NATIVE = new Predicate<Imp>() {
+    @Override public boolean apply(Imp imp) {
+      assert imp != null;
+      return imp.hasNative();
+    }};
 
   static {
     ImmutableMap.Builder<Object, String> catToJson = ImmutableMap.builder();
@@ -387,6 +392,12 @@ public final class OpenRtbUtils {
     return null;
   }
 
+  @Deprecated
+  public static Iterable<Imp> impsWith(
+      BidRequest request, final Predicate<Imp> predicate, boolean banner, boolean video) {
+    return impsWith(request, addFilters(predicate, banner, video, false));
+  }
+
   /**
    * Optimized code for most filtered lookups. This is worth the effort
    * because bidder code may invoke these lookup methods intensely;
@@ -394,27 +405,23 @@ public final class OpenRtbUtils {
    * and simpler code previously used needed lots of temporary collections.
    *
    * @param request Container of impressions
-   * @param predicate Filters impressions; will be executed exactly once,
+   * @param filter Filters impressions; will be executed exactly once,
    * and only for impressions that pass the banner/video type filters
    * @return Immutable or unmodifiable view for the filtered impressions
    */
-  public static Iterable<Imp> impsWith(
-      BidRequest request, final Predicate<Imp> predicate, boolean banner, boolean video) {
-    checkNotNull(predicate);
+  public static Iterable<Imp> impsWith(BidRequest request, final Predicate<Imp> filter) {
+    checkNotNull(filter);
 
     final List<Imp> imps = request.getImpList();
     if (imps.isEmpty()) {
       return ImmutableList.of();
     }
 
-    final Predicate<Imp> impTypeFilter = banner && video
-        ? Predicates.<Imp>alwaysTrue()
-        : banner ? IMP_HAS_BANNER : IMP_HAS_VIDEO;
-    final boolean included = filter(imps.get(0), impTypeFilter, predicate);
+    final boolean included = filter.apply(imps.get(0));
     int size = imps.size(), i;
 
     for (i = 1; i < size; ++i) {
-      if (filter(imps.get(i), impTypeFilter, predicate) != included) {
+      if (filter.apply(imps.get(i)) != included) {
         break;
       }
     }
@@ -436,7 +443,7 @@ public final class OpenRtbUtils {
               Imp imp = unfiltered.next();
               if ((heading++ < headingSize)
                   ? included
-                  : OpenRtbUtils.filter(imp, impTypeFilter, predicate)) {
+                  : filter.apply(imp)) {
                 return imp;
               }
             }
@@ -445,8 +452,26 @@ public final class OpenRtbUtils {
       }};
   }
 
-  private static boolean filter(
-      Imp imp, Predicate<Imp> typePredicate, Predicate<Imp> predicate) {
-    return typePredicate.apply(imp) && predicate.apply(imp);
+  public static Predicate<Imp> addFilters(
+      Predicate<Imp> predicate, boolean banner, boolean video, boolean nativ) {
+    if (predicate == Predicates.<Imp>alwaysFalse()) {
+      return predicate;
+    }
+
+    Predicate<Imp> impPred = null;
+    if (banner) {
+      impPred = impPred == null ? IMP_HAS_BANNER : Predicates.or(impPred, IMP_HAS_BANNER);
+    }
+    if (video) {
+      impPred = impPred == null ? IMP_HAS_VIDEO : Predicates.or(impPred, IMP_HAS_VIDEO);
+    }
+    if (nativ) {
+      impPred = impPred == null ? IMP_HAS_NATIVE : Predicates.or(impPred, IMP_HAS_NATIVE);
+    }
+    return impPred == null
+        ? predicate
+        : predicate == Predicates.<Imp>alwaysTrue()
+            ? impPred
+            : Predicates.and(predicate, impPred);
   }
 }
