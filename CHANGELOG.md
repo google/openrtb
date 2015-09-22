@@ -1,9 +1,9 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
-## Version 0.9.3, ??-09-2015
+## Version 0.9.3, 22-09-2015
 * OpenRTB proto schema review:
-  - Documentation updates; some fixes to field defaults
+  - Documentation updates; some fixes to field defaults.
   - Mutually exclusive: `BidRequest.site/app`; `Bid.adm/adm_native`;
     `Native.request/request_native` (introducing the latter);
     `Asset.title/img/video/data` for both Native request and response.
