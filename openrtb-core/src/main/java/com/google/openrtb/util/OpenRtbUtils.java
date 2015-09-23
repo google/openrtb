@@ -36,6 +36,7 @@ import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.ContentCategory;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -61,6 +62,8 @@ public final class OpenRtbUtils {
       Gender.MALE, "M",
       Gender.FEMALE, "F",
       Gender.OTHER, "O");
+  private static final Predicate<Imp> ALWAYS_FALSE = Predicates.<Imp>alwaysFalse();
+  private static final Predicate<Imp> ALWAYS_TRUE = Predicates.<Imp>alwaysTrue();
 
   public static final Predicate<Imp> IMP_HAS_BANNER = new Predicate<Imp>() {
     @Override public boolean apply(Imp imp) {
@@ -392,6 +395,10 @@ public final class OpenRtbUtils {
     return null;
   }
 
+  /**
+   * @deprecated Use {@link #impsWith(BidRequest, Predicate)}, with the help of
+   * {@link #addFilters(Predicate, boolean, boolean, boolean)} if necessary.
+   */
   @Deprecated
   public static Iterable<Imp> impsWith(
       BidRequest request, final Predicate<Imp> predicate, boolean banner, boolean video) {
@@ -413,7 +420,9 @@ public final class OpenRtbUtils {
     checkNotNull(filter);
 
     final List<Imp> imps = request.getImpList();
-    if (imps.isEmpty()) {
+    if (imps.isEmpty() || filter == ALWAYS_TRUE) {
+      return imps;
+    } else if (filter == ALWAYS_FALSE) {
       return ImmutableList.of();
     }
 
@@ -452,26 +461,43 @@ public final class OpenRtbUtils {
       }};
   }
 
+  /**
+   * Adds "impression type" subfilters to a base filter, to further restricts impressions
+   * that contain a banner, video and/or native object.
+   * 
+   * @param baseFilter base filter for impressions
+   * @param banner {@code true} to include impressions with
+   * {@link com.google.openrtb.OpenRtb.BidRequest.Imp.Banner}s 
+   * @param video {@code true} to include impressions with
+   * {@link com.google.openrtb.OpenRtb.BidRequest.Imp.Video}s
+   * @param nativ {@code true} to include impressions with
+   * {@link com.google.openrtb.OpenRtb.BidRequest.Imp.Native}s
+   * @return A filter in the form: {@code baseFilter AND (banner OR video OR native)}
+   */
   public static Predicate<Imp> addFilters(
-      Predicate<Imp> predicate, boolean banner, boolean video, boolean nativ) {
-    if (predicate == Predicates.<Imp>alwaysFalse()) {
-      return predicate;
+      Predicate<Imp> baseFilter, boolean banner, boolean video, boolean nativ) {
+    int orCount = (banner ? 1 : 0) + (video ? 1 : 0) + (nativ ? 1 : 0);
+    if (baseFilter == ALWAYS_FALSE || orCount == 0) {
+      return baseFilter;
     }
 
-    Predicate<Imp> impPred = null;
-    if (banner) {
-      impPred = impPred == null ? IMP_HAS_BANNER : Predicates.or(impPred, IMP_HAS_BANNER);
+    Predicate<Imp> typeFilter;
+    if (orCount == 1) {
+      typeFilter = banner ? IMP_HAS_BANNER : video ? IMP_HAS_VIDEO : IMP_HAS_NATIVE;
+    } else {
+      List<Predicate<Imp>> typeFilters = new ArrayList<>(3);
+      if (banner) {
+        typeFilters.add(IMP_HAS_BANNER);
+      }
+      if (video) {
+        typeFilters.add(IMP_HAS_VIDEO);
+      }
+      if (nativ) {
+        typeFilters.add(IMP_HAS_NATIVE);
+      }
+      typeFilter = Predicates.or(typeFilters);
     }
-    if (video) {
-      impPred = impPred == null ? IMP_HAS_VIDEO : Predicates.or(impPred, IMP_HAS_VIDEO);
-    }
-    if (nativ) {
-      impPred = impPred == null ? IMP_HAS_NATIVE : Predicates.or(impPred, IMP_HAS_NATIVE);
-    }
-    return impPred == null
-        ? predicate
-        : predicate == Predicates.<Imp>alwaysTrue()
-            ? impPred
-            : Predicates.and(predicate, impPred);
+
+    return baseFilter == ALWAYS_TRUE ? typeFilter : Predicates.and(baseFilter, typeFilter);
   }
 }
