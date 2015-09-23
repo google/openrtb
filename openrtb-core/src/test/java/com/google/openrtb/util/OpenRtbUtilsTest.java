@@ -32,6 +32,7 @@ import com.google.common.collect.Iterables;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.Imp;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Native;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Video;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
@@ -61,81 +62,93 @@ public class OpenRtbUtilsTest {
   @Test
   public void testRequest_imps() {
     BidRequest request = BidRequest.newBuilder().setId("1").build();
-    assertTrue(Iterables.isEmpty(OpenRtbUtils.impsWith(
-        request, Predicates.<Imp>alwaysTrue(), true, true)));
+    assertTrue(Iterables.isEmpty(OpenRtbUtils.impsWith(request, Predicates.<Imp>alwaysTrue())));
     request = request.toBuilder().addImp(Imp.newBuilder().setId("1")).build();
-    assertEquals(1, Iterables.size(OpenRtbUtils.impsWith(
-        request, Predicates.<Imp>alwaysTrue(), true, true)));
+    assertEquals(1, Iterables.size(OpenRtbUtils.impsWith(request, Predicates.<Imp>alwaysTrue())));
     assertTrue(Iterables.isEmpty(OpenRtbUtils.impsWith(request, new Predicate<Imp>() {
       @Override public boolean apply(Imp imp) {
         return "notfound".equals(imp.getId());
       }
-    }, true, true)));
+    })));
     assertEquals(1, Iterables.size(OpenRtbUtils.impsWith(request, new Predicate<Imp>() {
       @Override public boolean apply(Imp imp) {
         return "1".equals(imp.getId());
       }
-    }, true, true)));
+    })));
     assertNotNull(OpenRtbUtils.impWithId(request, "1"));
   }
 
   @Test
-  public void testRequest_banners() {
+  public void testRequest_imps_oftype() {
     BidRequest request = BidRequest.newBuilder()
         .setId("1")
         .addImp(Imp.newBuilder().setId("1").setBanner(Banner.newBuilder().setId("0")))
         .addImp(Imp.newBuilder().setId("2").setBanner(Banner.newBuilder().setId("0")))
         .addImp(Imp.newBuilder().setId("3").setBanner(Banner.newBuilder().setId("0")))
         .addImp(Imp.newBuilder().setId("4").setBanner(Banner.newBuilder().setId("0")))
+        .addImp(Imp.newBuilder().setId("5").setVideo(Video.newBuilder()))
+        .addImp(Imp.newBuilder().setId("6").setVideo(Video.newBuilder()))
+        .addImp(Imp.newBuilder().setId("7").setNative(Native.newBuilder()))
         .build();
+
+    // Banner
+
     assertEquals(4, Iterables.size(OpenRtbUtils.impsWith(
-        request, Predicates.<Imp>alwaysTrue(), true, false)));
+        request, OpenRtbUtils.addFilters(Predicates.<Imp>alwaysTrue(), true, false, false))));
     assertTrue(Iterables.isEmpty(OpenRtbUtils.impsWith(
-        request, Predicates.<Imp>alwaysFalse(), true, false)));
+        request, OpenRtbUtils.addFilters(Predicates.<Imp>alwaysFalse(), true, false, false))));
     // Filter-all case
-    assertEquals(4, Iterables.size(OpenRtbUtils.impsWith(request, new Predicate<Imp>() {
-      @Override public boolean apply(Imp imp) {
-        return "0".equals(imp.getBanner().getId());
-      }
-    }, true, false)));
+    assertEquals(4, Iterables.size(OpenRtbUtils.impsWith(
+        request, OpenRtbUtils.addFilters(new Predicate<Imp>() {
+          @Override public boolean apply(Imp imp) {
+            return "0".equals(imp.getBanner().getId());
+          }
+        }, true, false, false))));
     // Filter-none case
-    assertEquals(0, Iterables.size(OpenRtbUtils.impsWith(request, new Predicate<Imp>() {
-      @Override public boolean apply(Imp imp) {
-        return "1".equals(imp.getBanner().getId());
-      }
-    }, true, false)));
+    assertEquals(0, Iterables.size(OpenRtbUtils.impsWith(
+        request, OpenRtbUtils.addFilters(new Predicate<Imp>() {
+          @Override public boolean apply(Imp imp) {
+            return "1".equals(imp.getBanner().getId());
+          }
+        }, true, false, false))));
     // Filter-1 case
-    assertEquals(1, Iterables.size(OpenRtbUtils.impsWith(request, new Predicate<Imp>() {
-      @Override public boolean apply(Imp imp) {
-        return "1".equals(imp.getId());
-      }
-    }, true, false)));
+    assertEquals(1, Iterables.size(OpenRtbUtils.impsWith(
+        request, OpenRtbUtils.addFilters(new Predicate<Imp>() {
+          @Override public boolean apply(Imp imp) {
+            return "1".equals(imp.getId());
+          }
+        }, true, false, false))));
     // Filter-N case
-    assertEquals(3, Iterables.size(OpenRtbUtils.impsWith(request, new Predicate<Imp>() {
-      @Override public boolean apply(Imp imp) {
-        return imp.getId().compareTo("1") > 0;
-      }
-    }, true, false)));
+    assertEquals(3, Iterables.size(OpenRtbUtils.impsWith(
+        request, OpenRtbUtils.addFilters(new Predicate<Imp>() {
+          @Override public boolean apply(Imp imp) {
+            return imp.getId().compareTo("1") > 0;
+          }
+        }, true, false, false))));
     assertNull(OpenRtbUtils.bannerImpWithId(request, "notfound", "2"));
     assertNull(OpenRtbUtils.bannerImpWithId(request, "1", "notfound"));
     assertNotNull(OpenRtbUtils.bannerImpWithId(request, "1", "0"));
-  }
 
-  @Test
-  public void testRequest_videos() {
-    BidRequest request = BidRequest.newBuilder()
-        .setId("1")
-        .addImp(Imp.newBuilder().setId("1").setVideo(Video.newBuilder()))
-        .build();
-    assertEquals(1, Iterables.size(OpenRtbUtils.impsWith(
-        request, Predicates.<Imp>alwaysTrue(), false, true)));
-    assertTrue(Iterables.isEmpty(OpenRtbUtils.impsWith(
-        request, Predicates.<Imp>alwaysFalse(), false, true)));
-    assertEquals(1, Iterables.size(OpenRtbUtils.impsWith(request, new Predicate<Imp>() {
-      @Override public boolean apply(Imp imp) {
-        return imp.hasVideo();
-      }
-    }, false, true)));
+    // Video
+
+    assertEquals(2, Iterables.size(OpenRtbUtils.impsWith(request, OpenRtbUtils.addFilters(
+        Predicates.<Imp>alwaysTrue(), false, true, false))));
+
+    // Native
+
+    assertEquals(1, Iterables.size(OpenRtbUtils.impsWith(request, OpenRtbUtils.addFilters(
+        Predicates.<Imp>alwaysTrue(), false, false, true))));
+
+    // Mixed
+
+    assertEquals(6, Iterables.size(OpenRtbUtils.impsWith(request, OpenRtbUtils.addFilters(
+        Predicates.<Imp>alwaysTrue(), true, true, false))));
+    assertEquals(5, Iterables.size(OpenRtbUtils.impsWith(request, OpenRtbUtils.addFilters(
+        Predicates.<Imp>alwaysTrue(), true, false, true))));
+    assertEquals(3, Iterables.size(OpenRtbUtils.impsWith(request, OpenRtbUtils.addFilters(
+        Predicates.<Imp>alwaysTrue(), false, true, true))));
+    assertEquals(7, Iterables.size(OpenRtbUtils.impsWith(request, OpenRtbUtils.addFilters(
+        Predicates.<Imp>alwaysTrue(), true, true, true))));
   }
 
   @Test
