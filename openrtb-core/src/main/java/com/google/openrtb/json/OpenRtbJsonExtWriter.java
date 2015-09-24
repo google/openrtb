@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * A serialization extension, can add children of "ext" fields.
  *
- * @param <T> type of extension field
+ * @param <T> Type of extension field
  * <p>
  * Implementations of this interface have to be threadsafe.
  */

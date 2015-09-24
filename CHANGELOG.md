@@ -1,7 +1,7 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
-## Version 0.9.4, 22-09-2015
+## Version 0.9.4, 24-09-2015
 * `OpenRtbUtils` improved for filtering impressions with Native ads.
 
 ## Version 0.9.3, 22-09-2015

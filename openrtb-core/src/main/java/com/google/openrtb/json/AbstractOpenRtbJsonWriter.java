@@ -44,6 +44,7 @@ public class AbstractOpenRtbJsonWriter {
    *
    * @param msg A message that may contain extensions
    * @param gen The JSON generator
+   * @param <EM> Type of message being serialized, containing extensions
    * @throws IOException any serialization error
    */
   @SuppressWarnings("unchecked")
