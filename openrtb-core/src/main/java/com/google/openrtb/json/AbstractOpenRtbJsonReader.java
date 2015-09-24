@@ -60,6 +60,7 @@ public abstract class AbstractOpenRtbJsonReader {
    *
    * @param msg Builder of a message that may contain extensions
    * @param par The JSON parser, positioned at the "ext" field
+   * @param <EB> Type of message builder being constructed
    * @throws IOException any parsing error
    */
   protected final <EB extends ExtendableBuilder<?, EB>>

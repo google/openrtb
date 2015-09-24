@@ -43,8 +43,8 @@ public abstract class OpenRtbJsonExtComplexReader<
     EB extends ExtendableBuilder<?, EB>,
     XB extends Message.Builder> extends OpenRtbJsonExtReader<EB> {
   @SuppressWarnings("rawtypes")
-  final GeneratedExtension key;
-  final boolean isJsonObject;
+  private final GeneratedExtension key;
+  private final boolean isJsonObject;
 
   /**
    * Use this constructor for readers of message type.
@@ -74,30 +74,12 @@ public abstract class OpenRtbJsonExtComplexReader<
   }
 
   /**
-   * Override this method for extensions of message type.
-   * <p>
-   * Makes easy to implement an {@link OpenRtbJsonExtReader} that supports very flexible
-   * mapping from JSON fields into the model extension messages.
-   * <p>
-   * Consider an example with "imp": { ..., "ext": { p1: 1, p2: 2, p3: 3 } }, and three
-   * extension readers where ER1 reads {p4}, ER2 reads {p2}, ER3 reads {p1,p3}.
-   * The main {@link OpenRtbJsonReader} will start at p1, invoking all compatible
-   * {@link OpenRtbJsonExtReader}s until some of them consumes that property.
-   * We also need to consider some complications:
-   * <p>
-   * 1) ER3 will read p1, but then comes p2 which ER3 doesn't recognize. We need to store
-   *    what we have been able to read, then return false, so the main reader knows that
-   *    it needs to reset the loop and try all ExtReaders again (ER2 will read p2).
-   * 2) ER2 won't recognize p3, so the same thing happens: return false, main reader
-   *    tries all ExtReader's, ER3 will handle p3.  This will be the second invocation
-   *    to ER3 for the same "ext" object, that's why we need the ternary conditional
-   *    below to reuse the {@code MyExt.Imp.Builder} if that was already set previously.
-   * 3) ER1 will be invoked several times, but never find any property it recognizes.
-   *    It shouldn'set set an extension object that will be always empty.
+   * Reads extensions of message type.
    *
    * @param ext Builder for the extension object, where properties will be set
    * @param par JSON parser, positioned at the property to be desserialized
    * {@code false} if the property was ignored, leaving the parser in the same position
+   * @throws IOException any parsing error
    */
   protected abstract void read(XB ext, JsonParser par) throws IOException;
 
