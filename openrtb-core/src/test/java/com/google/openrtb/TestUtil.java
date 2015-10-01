@@ -16,11 +16,7 @@
 
 package com.google.openrtb;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import java.lang.annotation.Annotation;
@@ -48,16 +44,16 @@ public class TestUtil {
   public static <T> Map<T, String> testCommonMethods(T single) {
     Map<T, String> hash = new HashMap<>();
     hash.put(single, "0");
-    assertEquals("0", hash.get(single));
+    assertThat(hash.get(single)).isEqualTo("0");
 
-    assertTrue(single.equals(single)); // covers optimized code for reference equality
-    assertFalse(single.equals(null)); // covers null
-    assertNotNull(single.toString());
+    assertThat(single.equals(single)).isTrue(); // covers optimized code for reference equality
+    assertThat(single.equals(null)).isFalse(); // covers null
+    assertThat(single.toString()).isNotNull();
 
     if (single instanceof Comparable<?>) {
       @SuppressWarnings("rawtypes")
       Comparable comp = (Comparable) single;
-      assertEquals(0, comp.compareTo(comp));
+      assertThat(comp.compareTo(comp)).isEqualTo(0);
     }
     return hash;
   }
@@ -67,22 +63,22 @@ public class TestUtil {
    *
    * @param different1 Some object, optionally Comparable.
    * @param different2 Some independent object that's not equal to different1. If the objects
-   * are Comparable, you should provide different1 < different2.
+   *     are Comparable, you should provide different1 < different2.
    * @return a map that contains <code>{ different1 : "0", different2 : "1" }</code>.
    */
   @SuppressWarnings("unchecked")
   public static <T> Map<T, String> testCommonMethods(T different1, T different2) {
-    assertEquals(different1, different1);
-    assertFalse(different1.equals(SOMETHING_ELSE)); // covers special code for incompatible type
-    assertFalse(different1.equals(different2));
-    assertNotNull(different1.toString());
+    assertThat(different1).isEqualTo(different1);
+    assertThat(different1).isNotEqualTo(SOMETHING_ELSE);
+    assertThat(different1).isNotEqualTo(different2);
+    assertThat(different1.toString()).isNotNull();
 
     Map<T, String> hash = testCommonMethods(different1);
     hash.put(different1, "0"); // replaces
     hash.put(different2, "1"); // adds
-    assertEquals(2, hash.size());
-    assertEquals("0", hash.get(different1)); // still there
-    assertEquals("1", hash.get(different2));
+    assertThat(hash.size()).isEqualTo(2);
+    assertThat(hash.get(different1)).isEqualTo("0"); // still there
+    assertThat(hash.get(different2)).isEqualTo("1");
 
     if (different1 instanceof Comparable<?>) {
       @SuppressWarnings("rawtypes")
@@ -90,7 +86,7 @@ public class TestUtil {
       @SuppressWarnings("rawtypes")
       Comparable compBigger = (Comparable) different2;
 
-      assertTrue(compSmaller.compareTo(compBigger) < 0);
+      assertThat(compSmaller.compareTo(compBigger) < 0).isTrue();
     }
 
     return hash;
@@ -102,18 +98,18 @@ public class TestUtil {
    * @param equal1 Some object, optionally Comparable.
    * @param equal2 Some independent object that's equal to equal1
    * @param different Some independent object that's not equal to equal1 or equal2. If the objects
-   * are Comparable, you should provide equals1 < different.
+   *     are Comparable, you should provide equals1 < different.
    */
   @SuppressWarnings("unchecked")
   public static <T> Map<T, String> testCommonMethods(T equal1, T equal2, T different) {
-    assertEquals(equal1.hashCode(), equal2.hashCode());
-    assertTrue(equal1.equals(equal2));
+    assertThat(equal2.hashCode()).isEqualTo(equal1.hashCode());
+    assertThat(equal1.equals(equal2)).isTrue();
 
     Map<T, String> hash = testCommonMethods(equal1, different);
     hash.put(equal2, "2");
-    assertEquals("2", hash.get(equal1));
-    assertEquals("2", hash.get(equal2));
-    assertEquals("1", hash.get(different));
+    assertThat(hash.get(equal1)).isEqualTo("2");
+    assertThat(hash.get(equal2)).isEqualTo("2");
+    assertThat(hash.get(different)).isEqualTo("1");
 
     if (equal1 instanceof Comparable<?>) {
       @SuppressWarnings("rawtypes")
@@ -121,7 +117,7 @@ public class TestUtil {
       @SuppressWarnings("rawtypes")
       Comparable compEqual2 = (Comparable) equal2;
 
-      assertEquals(0, compEqual1.compareTo(compEqual2));
+      assertThat(compEqual1.compareTo(compEqual2)).isEqualTo(0);
     }
 
     return hash;
@@ -143,7 +139,7 @@ public class TestUtil {
         testParameterAnnotations(constr2);
         E e = constr2.newInstance(msg);
         testCommonException(e);
-        assertEquals(msg, e.getMessage());
+        assertThat(e.getMessage()).isEqualTo(msg);
       } catch (NoSuchMethodException e) { }
 
       try {
@@ -151,7 +147,7 @@ public class TestUtil {
         testParameterAnnotations(constr3);
         E e = constr3.newInstance(cause);
         testCommonException(e);
-        assertEquals(cause, e.getCause());
+        assertThat(e.getCause()).isEqualTo(cause);
       } catch (NoSuchMethodException e) { }
 
       try {
@@ -159,8 +155,8 @@ public class TestUtil {
         testParameterAnnotations(constr4);
         E e = constr4.newInstance(msg, cause);
         testCommonException(e);
-        assertEquals(msg, e.getMessage());
-        assertEquals(cause, e.getCause());
+        assertThat(e.getMessage()).isEqualTo(msg);
+        assertThat(e.getCause()).isEqualTo(cause);
       } catch (NoSuchMethodException e) { }
     } catch (ReflectiveOperationException e) {
       fail(e.getMessage());
@@ -172,7 +168,7 @@ public class TestUtil {
       e.toString();
       throw e;
     } catch (Exception ee) {
-      assertSame(ee, e);
+      assertThat(e).isSameAs(ee);
     }
   }
 
@@ -186,7 +182,7 @@ public class TestUtil {
     Annotation[][] anns = constr.getParameterAnnotations();
 
     for (Annotation[] ann : anns) {
-      assertTrue(ann.length == 1 && ann[0] instanceof Nullable);
+      assertThat(ann.length == 1 && ann[0] instanceof Nullable).isTrue();
     }
   }
 }

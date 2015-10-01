@@ -16,8 +16,8 @@
 
 package com.google.openrtb.json;
 
+import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
 
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VideoBidResponseProtocol;
@@ -112,14 +112,14 @@ public class OpenRtbNativeJsonTest {
     String jsonReq = jsonFactory.newNativeWriter().writeNativeRequest(req);
     logger.info(jsonReq);
     NativeRequest req2 = jsonFactory.newNativeReader().readNativeRequest(jsonReq);
-    assertEquals(req, req2);
+    assertThat(req2).isEqualTo(req);
   }
 
   static void testResponse(OpenRtbJsonFactory jsonFactory, NativeResponse resp) throws IOException {
     String jsonResp = jsonFactory.newNativeWriter().writeNativeResponse(resp);
     logger.info(jsonResp);
     NativeResponse resp2 = jsonFactory.newNativeReader().readNativeResponse(jsonResp);
-    assertEquals(resp, resp2);
+    assertThat(resp2).isEqualTo(resp);
   }
 
   static OpenRtbJsonFactory newJsonFactory() {

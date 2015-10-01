@@ -23,8 +23,8 @@ import javax.annotation.Nullable;
 
 /**
  * Converts between OpenRTB and exchange-specific requests/response.
- * <p>
- * Implementations of this interface have to be threadsafe.
+ *
+ * <p>Implementations of this interface have to be threadsafe.
  *
  * @param <ReqIn> Type for the exchange-specific bid request model (input)
  * @param <RespIn> Type for the exchange-specific bid response model (input)

@@ -16,11 +16,9 @@
 
 package com.google.openrtb.util;
 
+import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
-import com.google.common.collect.Iterables;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.Imp;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
@@ -81,14 +79,14 @@ public class OpenRtbValidatorTest {
         .addAllAdomain(asList("adv0.com", "adv3.com"))
         .addAllAttr(asList(CreativeAttribute.SURVEYS)));
     validator.validate(requestBanner, response);
-    assertFalse(Iterables.isEmpty(OpenRtbUtils.bids(response)));
+    assertThat(OpenRtbUtils.bids(response)).isNotEmpty();
   }
 
   @Test
   public void testBannerNoAttrs() {
     BidResponse.Builder response = testResponse(testBid());
     validator.validate(requestBanner, response);
-    assertFalse(Iterables.isEmpty(OpenRtbUtils.bids(response)));
+    assertThat(OpenRtbUtils.bids(response)).isNotEmpty();
   }
 
   @Test
@@ -97,7 +95,7 @@ public class OpenRtbValidatorTest {
         .addAllAdomain(asList("adv0.com", "adv2.com", "adv3.com"))
         .addAllAttr(asList(CreativeAttribute.SURVEYS)));
     validator.validate(requestBanner, response);
-    assertTrue(Iterables.isEmpty(OpenRtbUtils.bids(response)));
+    assertThat(OpenRtbUtils.bids(response)).isEmpty();
   }
 
   @Test
@@ -106,7 +104,7 @@ public class OpenRtbValidatorTest {
         .addAllAdomain(asList("adv0.com", "adv2.com", "adv3.com"))
         .addAllAttr(asList(CreativeAttribute.SURVEYS, CreativeAttribute.ANNOYING)));
     validator.validate(requestBanner, response);
-    assertTrue(Iterables.isEmpty(OpenRtbUtils.bids(response)));
+    assertThat(OpenRtbUtils.bids(response)).isEmpty();
   }
 
   @Test
@@ -115,7 +113,7 @@ public class OpenRtbValidatorTest {
         .addAllAdomain(asList("adv0.com", "adv3.com"))
         .addAllAttr(asList(CreativeAttribute.SURVEYS)));
     validator.validate(requestVideo, response);
-    assertFalse(Iterables.isEmpty(OpenRtbUtils.bids(response)));
+    assertThat(OpenRtbUtils.bids(response)).isNotEmpty();
   }
 
   @Test
@@ -124,7 +122,7 @@ public class OpenRtbValidatorTest {
         .addAllAdomain(asList("adv0.com", "adv2.com", "adv3.com"))
         .addAllAttr(asList(CreativeAttribute.SURVEYS, CreativeAttribute.ANNOYING)));
     validator.validate(requestVideo, response);
-    assertTrue(Iterables.isEmpty(OpenRtbUtils.bids(response)));
+    assertThat(OpenRtbUtils.bids(response)).isEmpty();
   }
 
   @Test
@@ -133,14 +131,14 @@ public class OpenRtbValidatorTest {
         .addAllAdomain(asList("adv0.com", "adv2.com", "adv3.com"))
         .addAllAttr(asList(CreativeAttribute.SURVEYS, CreativeAttribute.TEXT_ONLY)));
     validator.validate(requestVideo, response);
-    assertTrue(Iterables.isEmpty(OpenRtbUtils.bids(response)));
+    assertThat(OpenRtbUtils.bids(response)).isEmpty();
   }
 
   @Test
   public void testNoImp() {
     BidResponse.Builder response = testResponse(testBid().setImpid("2"));
     validator.validate(requestBanner, response);
-    assertTrue(Iterables.isEmpty(OpenRtbUtils.bids(response)));
+    assertThat(OpenRtbUtils.bids(response)).isEmpty();
   }
 
   private static BidResponse.Builder testResponse(Bid.Builder bid) {

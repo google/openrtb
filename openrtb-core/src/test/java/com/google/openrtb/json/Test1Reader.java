@@ -28,15 +28,15 @@ import java.io.IOException;
 
 /**
  * Regular extension: {@code "test1": "data1"}, message type {@code Test1}.
- * <p> 
- * (Exactly the same code as for repeated extension of message type / {@link Test2Reader}.)
+ *
+ * <p>(Exactly the same code as for repeated extension of message type / {@link Test2Reader}.)
  *
  * @param <EB> Type of message builder being constructed.  Keeping this generic parameter
- * open here allows this extension to be used inside any message; if you don't need that,
- * you can bind this to a specific message builder type, see {@link Test3Reader}.
+ *     open here allows this extension to be used inside any message; if you don't need that,
+ *     you can bind this to a specific message builder type, see {@link Test3Reader}.
  */
 class Test1Reader<EB extends ExtendableBuilder<?, EB>>
-extends OpenRtbJsonExtComplexReader<EB, Test1.Builder> {
+    extends OpenRtbJsonExtComplexReader<EB, Test1.Builder> {
 
   public Test1Reader(GeneratedExtension<?, ?> key) {
     super(key, false, "test1");

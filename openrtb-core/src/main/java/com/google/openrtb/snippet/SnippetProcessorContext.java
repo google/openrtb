@@ -26,8 +26,8 @@ import com.google.openrtb.util.ProtoUtils;
 
 /**
  * Context for {@link SnippetProcessor}.
- * <p>
- * This class is NOT threadsafe.
+ *
+ * <p>This class is NOT threadsafe.
  */
 public class SnippetProcessorContext {
   private final BidRequestOrBuilder request;

@@ -42,8 +42,8 @@ import java.io.Reader;
 
 /**
  * Desserializes OpenRTB {@link NativeRequest}/{@link NativeResponse} messages from JSON.
- * <p>
- * This class is threadsafe.
+ *
+ * <p>This class is threadsafe.
  */
 public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
   private OpenRtbJsonReader coreReader;
