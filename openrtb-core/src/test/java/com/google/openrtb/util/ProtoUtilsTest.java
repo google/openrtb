@@ -16,16 +16,12 @@
 
 package com.google.openrtb.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.AuctionType;
 import com.google.openrtb.OpenRtb.BidRequest.Imp;
@@ -56,46 +52,44 @@ public class ProtoUtilsTest {
         .setExtension(TestExt.testRequest1, test1)
         .setExtension(TestExt.testRequest2, test2)
         .build();
-    assertSame(reqExt, ProtoUtils.filter(reqExt, true, Predicates.<FieldDescriptor>alwaysTrue()));
-    assertNull(ProtoUtils.filter(reqExt, true, Predicates.<FieldDescriptor>alwaysFalse()));
-    assertSame(BidRequest.getDefaultInstance(), ProtoUtils.filter(
-        reqExt, false, Predicates.<FieldDescriptor>alwaysFalse()));
+    assertThat(ProtoUtils.filter(reqExt, true, Predicates.<FieldDescriptor>alwaysTrue()))
+        .isSameAs(reqExt);
+    assertThat(ProtoUtils.filter(reqExt, true, Predicates.<FieldDescriptor>alwaysFalse())).isNull();
+    assertThat(ProtoUtils.filter(reqExt, false, Predicates.<FieldDescriptor>alwaysFalse()))
+        .isSameAs(BidRequest.getDefaultInstance());
 
     BidRequest reqPlainClear = BidRequest.newBuilder()
         .setId("0")
         .addImp(Imp.newBuilder().setId("1"))
         .build();
-    assertEquals(reqPlainClear, ProtoUtils.filter(reqExt, true, ProtoUtils.NOT_EXTENSION));
+    assertThat(ProtoUtils.filter(reqExt, true, ProtoUtils.NOT_EXTENSION)).isEqualTo(reqPlainClear);
 
     BidRequest reqPlainNoClear = BidRequest.newBuilder()
         .setId("0")
         .addImp(Imp.newBuilder().setId("1")
             .setBanner(Banner.newBuilder()))
         .build();
-    assertEquals(reqPlainNoClear, ProtoUtils.filter(reqExt, false, ProtoUtils.NOT_EXTENSION));
+    assertThat(ProtoUtils.filter(reqExt, false, ProtoUtils.NOT_EXTENSION))
+        .isEqualTo(reqPlainNoClear);
 
     BidRequest reqExtNoImp = reqExt.toBuilder().clearImp().build();
-    assertEquals(reqExtNoImp, ProtoUtils.filter(reqExt, false, new Predicate<FieldDescriptor>() {
+    assertThat(ProtoUtils.filter(reqExt, false, new Predicate<FieldDescriptor>() {
       @Override public boolean apply(FieldDescriptor fd) {
         return !"imp".equals(fd.getName());
-      }}));
+      }})).isEqualTo(reqExtNoImp);
 
     BidRequest reqDiff = reqPlainClear.toBuilder().setId("1").build();
     ImmutableList<BidRequest> list = ImmutableList.of(reqPlainClear, reqDiff);
-    assertEquals(
-        ImmutableList.of(reqPlainClear),
-        ProtoUtils.filter(list, new Predicate<BidRequest>() {
-          @Override public boolean apply(BidRequest req) {
-            return "0".equals(req.getId());
-          }}));
-    assertEquals(
-        ImmutableList.of(reqPlainClear),
-        ProtoUtils.filter(list, new Predicate<BidRequest>() {
-          @Override public boolean apply(BidRequest req) {
-            return "0".equals(req.getId());
-          }}));
-    assertSame(list, ProtoUtils.filter(list, Predicates.<BidRequest>alwaysTrue()));
-    assertTrue(Iterables.isEmpty(ProtoUtils.filter(list, Predicates.<BidRequest>alwaysFalse())));
+    assertThat(ProtoUtils.filter(list, new Predicate<BidRequest>() {
+        @Override public boolean apply(BidRequest req) {
+          return "0".equals(req.getId());
+        }})).containsExactly(reqPlainClear);
+    assertThat(ProtoUtils.filter(list, new Predicate<BidRequest>() {
+        @Override public boolean apply(BidRequest req) {
+          return "0".equals(req.getId());
+        }})).containsExactly(reqPlainClear);
+    assertThat(ProtoUtils.filter(list, Predicates.<BidRequest>alwaysTrue())).isSameAs(list);
+    assertThat(ProtoUtils.filter(list, Predicates.<BidRequest>alwaysFalse())).isEmpty();
   }
 
   @Test
@@ -106,18 +100,18 @@ public class ProtoUtilsTest {
         req.setAt(AuctionType.FIRST_PRICE);
         return true;
       }});
-    assertEquals(AuctionType.FIRST_PRICE, req.getAt());
+    assertThat(req.getAt()).isEqualTo(AuctionType.FIRST_PRICE);
   }
 
   @Test
   public void testBuilderConversions() {
     BidRequest.Builder reqBuilder = BidRequest.newBuilder().setId("0");
     BidRequest req = reqBuilder.build();
-    assertEquals(req, ProtoUtils.built(reqBuilder));
-    assertSame(req, ProtoUtils.built(req));
-    assertNull(ProtoUtils.built(null));
-    assertEquals(reqBuilder.build(), ProtoUtils.builder(req).build());
-    assertSame(reqBuilder, ProtoUtils.builder(reqBuilder));
-    assertNull(ProtoUtils.builder(null));
+    assertThat(ProtoUtils.built(reqBuilder)).isEqualTo(req);
+    assertThat(ProtoUtils.built(req)).isSameAs(req);
+    assertThat(ProtoUtils.built(null)).isNull();
+    assertThat(ProtoUtils.builder(req).build()).isEqualTo(reqBuilder.build());
+    assertThat(ProtoUtils.builder(reqBuilder)).isSameAs(reqBuilder);
+    assertThat(ProtoUtils.builder(null)).isNull();
   }
 }

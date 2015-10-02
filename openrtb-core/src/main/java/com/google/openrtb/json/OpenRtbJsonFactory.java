@@ -41,8 +41,8 @@ import javax.annotation.Nullable;
  *   <li>Core model: {@link OpenRtbJsonWriter} and {@link OpenRtbJsonReader}</li>
  *   <li>Native model: {@link OpenRtbNativeJsonWriter} and {@link OpenRtbNativeJsonReader}</li>
  * </ul>
- * <p>
- * This class is NOT threadsafe. You should use only to configure and create the
+ *
+ * <p>This class is NOT threadsafe. You should use only to configure and create the
  * reader/writer objects, which will be threadsafe.
  */
 public class OpenRtbJsonFactory {
@@ -105,7 +105,7 @@ public class OpenRtbJsonFactory {
     this.jsonFactory = checkNotNull(jsonFactory);
     return this;
   }
-  
+
   /**
    * Sets strict mode.
    */
@@ -113,7 +113,7 @@ public class OpenRtbJsonFactory {
     this.strict = strict;
     return this;
   }
-  
+
   /**
    * Returns {@code true} for strict mode, {@code false} lenient mode.
    */
@@ -144,7 +144,7 @@ public class OpenRtbJsonFactory {
    * @see #register(OpenRtbJsonExtWriter, Class, Class)
    */
   public final <T> OpenRtbJsonFactory register(OpenRtbJsonExtWriter<T> extWriter,
-    Class<T> extKlass, Class<? extends Message> msgKlass, String fieldName) {
+      Class<T> extKlass, Class<? extends Message> msgKlass, String fieldName) {
     Map<String, Map<String, OpenRtbJsonExtWriter<?>>> mapMsg = extWriters.get(msgKlass.getName());
     if (mapMsg == null) {
       extWriters.put(msgKlass.getName(), mapMsg = new LinkedHashMap<>());
@@ -201,7 +201,7 @@ public class OpenRtbJsonFactory {
 
   @SuppressWarnings("unchecked")
   final <EB extends ExtendableBuilder<?, EB>>
-  Set<OpenRtbJsonExtReader<EB>> getReaders(Class<EB> msgClass) {
+      Set<OpenRtbJsonExtReader<EB>> getReaders(Class<EB> msgClass) {
     return (Set<OpenRtbJsonExtReader<EB>>) (Set<?>) extReaders.get(msgClass.getName());
   }
 

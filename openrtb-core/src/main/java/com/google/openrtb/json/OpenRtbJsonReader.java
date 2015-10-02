@@ -82,8 +82,8 @@ import java.io.Reader;
 
 /**
  * Desserializes OpenRTB {@link BidRequest}/{@link BidResponse} messages from JSON.
- * <p>
- * This class is threadsafe.
+ *
+ * <p>This class is threadsafe.
  */
 public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
 

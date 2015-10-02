@@ -32,11 +32,11 @@ import java.io.Writer;
 
 /**
  * Serializes OpenRTB {@link NativeRequest}/{@link NativeResponse} messages to JSON.
- * <p>
- * Note: Among methods that write to a {@link JsonGenerator} parameter, only the {@code public}
+ *
+ * <p>Note: Among methods that write to a {@link JsonGenerator} parameter, only the {@code public}
  * methods will call {@code flush()} on the generator before returning.
- * <p>
- * This class is threadsafe.
+ *
+ * <p>This class is threadsafe.
  */
 public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
   private OpenRtbJsonWriter coreWriter;

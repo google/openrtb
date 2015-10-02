@@ -135,7 +135,7 @@ public final class OpenRtbUtils {
 
   /**
    * @return The OpenRTB SeatBid with the specified ID; will be created if not existent.
-   * The ID should be present in the request's wseat.
+   *     The ID should be present in the request's wseat.
    *
    * @see #seatBid(com.google.openrtb.OpenRtb.BidResponse.Builder)
    * Use for the anonymous seat
@@ -153,7 +153,7 @@ public final class OpenRtbUtils {
 
   /**
    * @return The anonymous OpenRTB SeatBid, used by non-seat-specific bids (the seat ID is not set).
-   * Will be created if not existent.
+   *     Will be created if not existent.
    */
   public static SeatBid.Builder seatBid(BidResponse.Builder response) {
     for (SeatBid.Builder seatbid : response.getSeatbidBuilderList()) {
@@ -168,7 +168,7 @@ public final class OpenRtbUtils {
    * Iterates all bids.
    *
    * @return Read-only sequence of all bis in the response.
-   * May have bids from multiple seats, grouped by seat
+   *     May have bids from multiple seats, grouped by seat
    */
   public static Iterable<Bid.Builder> bids(BidResponse.Builder response) {
     return new ResponseBidsIterator(response);
@@ -179,7 +179,7 @@ public final class OpenRtbUtils {
    *
    * @param seat Seat ID, or {@code null} to select the anonymous seat
    * @return View for the seat's internal sequence of bids; or an empty, read-only
-   * view if that seat doesn't exist.
+   *     view if that seat doesn't exist.
    */
   public static List<Bid.Builder> bids(BidResponse.Builder response, @Nullable String seat) {
     for (SeatBid.Builder seatbid : response.getSeatbidBuilderList()) {
@@ -238,7 +238,7 @@ public final class OpenRtbUtils {
    *
    * @param filter Selection criteria
    * @return Read-only sequence of bids that satisfy the filter.
-   * May have bids from multiple seats, grouped by seat
+   *     May have bids from multiple seats, grouped by seat
    */
   public static Iterable<Bid.Builder> bidsWith(
       BidResponse.Builder response, Predicate<Bid.Builder> filter) {
@@ -251,7 +251,7 @@ public final class OpenRtbUtils {
    * @param seat Seat ID, or {@code null} to select the anonymous seat
    * @param filter Selection criteria
    * @return Sequence of all bids that satisfy the filter.
-   * May have bids from multiple seats, grouped by seat
+   *     May have bids from multiple seats, grouped by seat
    */
   public static Iterable<Bid.Builder> bidsWith(
       BidResponse.Builder response, @Nullable String seat, Predicate<Bid.Builder> filter) {
@@ -267,7 +267,7 @@ public final class OpenRtbUtils {
    * Updates bids, from all seats.
    *
    * @param updater Update function. The {@code apply()} method can decide or not to update each
-   * object, and it's expected to return {@code true} for objects that were updated
+   *     object, and it's expected to return {@code true} for objects that were updated
    * @return {@code true} if at least one bid was updated
    * @see ProtoUtils#update(Iterable, Function) for more general updating support
    */
@@ -287,7 +287,7 @@ public final class OpenRtbUtils {
    *
    * @param seat Seat ID, or {@code null} to select the anonymous seat
    * @param updater Update function. The {@code apply()} method can decide or not to update each
-   * object, and it's expected to return {@code true} for objects that were updated
+   *     object, and it's expected to return {@code true} for objects that were updated
    * @return {@code true} if at least one bid was updated
    * @see ProtoUtils#update(Iterable, Function) for more general updating support
    */
@@ -378,8 +378,7 @@ public final class OpenRtbUtils {
    *
    * @param impId Imp ID; optional if the Banner IDs are unique within the request
    * @param bannerId Banner ID
-   * @return The {@link Imp} for a given impression ID x banner ID,
-   * or {@code null} if not found.
+   * @return The {@link Imp} for a given impression ID x banner ID, or {@code null} if not found
    */
   @Nullable public static Imp bannerImpWithId(
       BidRequest request, @Nullable String impId, String bannerId) {
@@ -413,7 +412,7 @@ public final class OpenRtbUtils {
    *
    * @param request Container of impressions
    * @param filter Filters impressions; will be executed exactly once,
-   * and only for impressions that pass the banner/video type filters
+   *     and only for impressions that pass the banner/video type filters
    * @return Immutable or unmodifiable view for the filtered impressions
    */
   public static Iterable<Imp> impsWith(BidRequest request, final Predicate<Imp> filter) {
@@ -464,10 +463,10 @@ public final class OpenRtbUtils {
   /**
    * Adds "impression type" subfilters to a base filter, to further restricts impressions
    * that contain a banner, video and/or native object.
-   * 
+   *
    * @param baseFilter base filter for impressions
    * @param banner {@code true} to include impressions with
-   * {@link com.google.openrtb.OpenRtb.BidRequest.Imp.Banner}s 
+   * {@link com.google.openrtb.OpenRtb.BidRequest.Imp.Banner}s
    * @param video {@code true} to include impressions with
    * {@link com.google.openrtb.OpenRtb.BidRequest.Imp.Video}s
    * @param nativ {@code true} to include impressions with

@@ -31,13 +31,13 @@ import java.io.IOException;
 /**
  * Regular extension: <code>"test2ext": {"test2": "data2", "test3": ["data3"]}</code>,
  * message type {@code Test2}.
- * <p>
- * Repeated extension: <code>"test2ext": [{"test2": "data2", "test3": ["data3"]},
- *                                        {"test2": "data4", "test3": ["data5"]}}</code>,
+ *
+ * <p>Repeated extension: <code>"test2ext": [{"test2": "data2", "test3": ["data3"]},
+ *                                           {"test2": "data4", "test3": ["data5"]}}</code>,
  * message type {@code Test2}.
  */
 class Test2Reader<EB extends ExtendableBuilder<?, EB>>
-extends OpenRtbJsonExtComplexReader<EB, Test2.Builder> {
+    extends OpenRtbJsonExtComplexReader<EB, Test2.Builder> {
 
   public Test2Reader(GeneratedExtension<?, ?> key, String name) {
     super(key, true, name);

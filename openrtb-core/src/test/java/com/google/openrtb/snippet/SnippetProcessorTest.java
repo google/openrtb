@@ -16,10 +16,8 @@
 
 package com.google.openrtb.snippet;
 
+import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
 
 import com.google.common.collect.ImmutableList;
 import com.google.openrtb.OpenRtb.BidRequest;
@@ -55,6 +53,7 @@ public class SnippetProcessorTest {
           .addAll(asList(TestMacros.values()))
           .build();
     }
+
     @Override protected void processMacroAt(
         SnippetProcessorContext ctx, StringBuilder sb, SnippetMacroType macroDef) {
       sb.append("#");
@@ -66,9 +65,9 @@ public class SnippetProcessorTest {
     SnippetProcessorContext ctx = new SnippetProcessorContext(req, resp);
     ctx.setBid(bid);
     TestUtil.testCommonMethods(ctx);
-    assertSame(req, ctx.request());
-    assertSame(resp, ctx.response());
-    assertSame(bid, ctx.getBid());
+    assertThat(ctx.request()).isSameAs(req);
+    assertThat(ctx.response()).isSameAs(resp);
+    assertThat(ctx.getBid()).isSameAs(bid);
   }
 
   @Test
@@ -76,51 +75,50 @@ public class SnippetProcessorTest {
     SnippetProcessorContext ctx = new SnippetProcessorContext(req, resp);
     ctx.setBid(bid);
     String snippet = OpenRtbMacros.AUCTION_ID.key();
-    assertSame(snippet, SnippetProcessor.NULL.process(ctx, snippet));
+    assertThat(SnippetProcessor.NULL.process(ctx, snippet)).isSameAs(snippet);
   }
 
   @Test
   public void testUndefinedMacro1() {
     UndefinedMacroException e = new UndefinedMacroException(TestMacros.TEST);
-    assertSame(TestMacros.TEST, e.key());
+    assertThat(e.key()).isSameAs(TestMacros.TEST);
   }
 
   @Test
   public void testUndefinedMacro2() {
     UndefinedMacroException e = new UndefinedMacroException(TestMacros.TEST, "msg");
-    assertSame(TestMacros.TEST, e.key());
+    assertThat(e.key()).isSameAs(TestMacros.TEST);
   }
 
   @Test
   public void testUrlEncoding() {
-    assertEquals("", process(""));
-    assertEquals("{!+/}", process("{!+/}"));
-    assertEquals("%!+/%", process("%!+/%"));
-    assertEquals(esc("aaa"), process("%{aaa}%"));
-    assertEquals(esc("!+/"), process("%{!+/}%"));
-    assertEquals(esc("!+/") + esc("aaa"), process("%{!+/}%%{aaa}%"));
-    assertEquals(esc2("!+/") + esc("aaa"), process("%{%{!+/}%aaa}%"));
-    assertEquals(
-        esc2(esc2(esc2(esc2(esc2("!"))))),
-        process("%{%{%{%{%{%{%{%{%{%{!}%}%}%}%}%}%}%}%}%}%"));
+    assertThat(process("")).isEqualTo("");
+    assertThat(process("{!+/}")).isEqualTo("{!+/}");
+    assertThat(process("%!+/%")).isEqualTo("%!+/%");
+    assertThat(process("%{aaa}%")).isEqualTo(esc("aaa"));
+    assertThat(process("%{!+/}%")).isEqualTo(esc("!+/"));
+    assertThat(process("%{!+/}%%{aaa}%")).isEqualTo(esc("!+/") + esc("aaa"));
+    assertThat(process("%{%{!+/}%aaa}%")).isEqualTo(esc2("!+/") + esc("aaa"));
+    assertThat(process("%{%{%{%{%{%{%{%{%{%{!}%}%}%}%}%}%}%}%}%}%"))
+        .isEqualTo(esc2(esc2(esc2(esc2(esc2("!"))))));
   }
 
   @Test
   public void testUrlEncodingBad() {
-    assertEquals("bad!}%", process("bad!}%"));
-    assertEquals("bad!}%" + esc("+"), process("bad!}%%{+}%"));
-    assertEquals("bad!", process("bad!%{"));
-    assertEquals("bad!", process("%{bad!"));
-    assertEquals(esc("good!") + "{bad!}%", process("%{good!}%{bad!}%"));
+    assertThat(process("bad!}%")).isEqualTo("bad!}%");
+    assertThat(process("bad!}%%{+}%")).isEqualTo("bad!}%" + esc("+"));
+    assertThat(process("bad!%{")).isEqualTo("bad!");
+    assertThat(process("%{bad!")).isEqualTo("bad!");
+    assertThat(process("%{good!}%{bad!}%")).isEqualTo(esc("good!") + "{bad!}%");
   }
 
   @Test
   public void testMacro() {
-    assertNotNull(processor.toString());
+    assertThat(processor.toString()).isNotNull();
 
-    assertEquals("${UNKNOWN_MACRO}", process("${UNKNOWN_MACRO}"));
-    assertEquals("#", process(TestMacros.TEST.key()));
-    assertEquals(esc("#"), process("%{" + TestMacros.TEST.key() + "}%"));
+    assertThat(process("${UNKNOWN_MACRO}")).isEqualTo("${UNKNOWN_MACRO}");
+    assertThat(process(TestMacros.TEST.key())).isEqualTo("#");
+    assertThat(process("%{" + TestMacros.TEST.key() + "}%")).isEqualTo(esc("#"));
   }
 
   private String process(String snippet) {

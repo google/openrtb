@@ -73,7 +73,7 @@ public final class ProtoUtils {
    *
    * @param objs List of builders to update
    * @param updater Update function. The {@code apply()} method can decide or not to update each
-   * object, and it's expected to return {@code true} if some update was made
+   *     object, and it's expected to return {@code true} if some update was made
    * @return {@code true} if at least one object was updated
    */
   public static <B extends MessageLite.Builder> boolean update(
@@ -93,12 +93,12 @@ public final class ProtoUtils {
    * @param objs Message-or-builder objects
    * @param filter Function that returns {@code true} to retain an object, {@code false} to discard
    * @return Retained objects. If some elements are retained and others are discarded,
-   * this will be a new, mutable {@link List} that contains only the retained elements.
-   * If all elements are retained, returns the same, unmodified input sequence.
-   * If all elements are discarded, returns an immutable, empty sequence
+   *     this will be a new, mutable {@link List} that contains only the retained elements.
+   *     If all elements are retained, returns the same, unmodified input sequence.
+   *     If all elements are discarded, returns an immutable, empty sequence
    */
   public static <M extends MessageLiteOrBuilder>
-  Iterable<M> filter(Iterable<M> objs, Predicate<M> filter) {
+      Iterable<M> filter(Iterable<M> objs, Predicate<M> filter) {
 
     int i = 0;
     for (M obj : objs) {
@@ -147,10 +147,10 @@ public final class ProtoUtils {
    * {@code msg} are removed; {@code false} will return an "empty" message in that case
    * @param filter Function that returns {@code true} to retain a field, {@code false} to discard
    * @return Message with the retained fieldsfrom {@code msg}.
-   * If some fields are retained and others discarded, returns a new message object.
-   * If all fields are retained, returns the same {@code msg} object.
-   * If all fields are discarded, returns {@code null} if {@code clearEmpty==true}
-   * or a default instance of {@code msg}'s message type if {@code clearEmpty==false}
+   *     If some fields are retained and others discarded, returns a new message object.
+   *     If all fields are retained, returns the same {@code msg} object.
+   *     If all fields are discarded, returns {@code null} if {@code clearEmpty==true}
+   *     or a default instance of {@code msg}'s message type if {@code clearEmpty==false}
    */
   @Nullable public static <M extends Message> M filter(
       M msg, boolean clearEmpty, Predicate<FieldDescriptor> filter) {

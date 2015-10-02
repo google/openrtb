@@ -52,7 +52,7 @@ public abstract class OpenRtbJsonExtComplexReader<
    * @param key Extension key
    * @param isJsonObject {@code true} if the extension value is desserialized from a JSON object
    * @param rootNameFilters Filter for the root names (direct fields of "ext").
-   * If empty, this reader will be invoked for any field.
+   *     If empty, this reader will be invoked for any field.
    */
   protected OpenRtbJsonExtComplexReader(
       GeneratedExtension<?, ?> key, boolean isJsonObject, String... rootNameFilters) {

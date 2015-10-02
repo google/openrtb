@@ -59,6 +59,7 @@
     <metricsVersion>3.0.2</metricsVersion>
     <protobufVersion>2.6.1</protobufVersion>
     <slf4jVersion>1.7.12</slf4jVersion>
+    <truthVersion>0.27</truthVersion>
 
     <!-- Plugin versions -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

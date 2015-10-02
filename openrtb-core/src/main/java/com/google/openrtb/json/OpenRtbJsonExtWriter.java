@@ -26,9 +26,9 @@ import java.util.List;
 /**
  * A serialization extension, can add children of "ext" fields.
  *
+ * <p>Implementations of this interface have to be threadsafe.
+ *
  * @param <T> Type of extension field
- * <p>
- * Implementations of this interface have to be threadsafe.
  */
 public abstract class OpenRtbJsonExtWriter<T> {
   private final String rootName;

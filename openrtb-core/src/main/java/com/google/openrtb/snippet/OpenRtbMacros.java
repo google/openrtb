@@ -20,8 +20,9 @@ import com.google.common.collect.ImmutableMap;
 
 /**
  * OpenRTB 4.6: Standard OpenRTB macros.
- * <p>
- * All {@code Bid} properties of type String can use macros. Important notes about macro expansion:
+ *
+ * <p>All {@code Bid} properties of type String can use macros.
+ * Important notes about macro expansion:
  *
  * <ul><li>All properties can safely use macros that refer to values from the request:
  *         {@code AUCTION_ID, AUCTION_CURRENCY, AUCTION_IMP_ID, AUCTION_SEAT_ID}.</li>

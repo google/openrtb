@@ -16,10 +16,8 @@
 
 package com.google.openrtb.json;
 
+import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
 
 import com.google.openrtb.OpenRtb;
 import com.google.openrtb.OpenRtb.BidRequest;
@@ -89,9 +87,9 @@ public class OpenRtbJsonTest {
 
   @Test
   public void testJsonFactory() {
-    assertNotNull(OpenRtbJsonFactory.create().getJsonFactory());
+    assertThat(OpenRtbJsonFactory.create().getJsonFactory()).isNotNull();
     JsonFactory jf = new JsonFactory();
-    assertSame(jf, OpenRtbJsonFactory.create().setJsonFactory(jf).getJsonFactory());
+    assertThat(OpenRtbJsonFactory.create().setJsonFactory(jf).getJsonFactory()).isSameAs(jf);
     TestUtil.testCommonMethods(new Test2Reader<BidRequest.Builder>(TestExt.testRequest2, "x"));
     TestUtil.testCommonMethods(new Test4Writer());
   }
@@ -159,7 +157,7 @@ public class OpenRtbJsonTest {
     OpenRtbJsonReader reader = OpenRtbJsonFactory.create().newReader();
     BidRequest req = BidRequest.newBuilder().setId("0").build();
     // Based on Issue #34
-    assertEquals(req, reader.readBidRequest("{ \"ext\": { \"x\": 0 }, \"id\": \"0\" }"));
+    assertThat(reader.readBidRequest("{ \"ext\": { \"x\": 0 }, \"id\": \"0\" }")).isEqualTo(req);
   }
 
   @Test
@@ -167,7 +165,7 @@ public class OpenRtbJsonTest {
     OpenRtbJsonReader reader = newJsonFactory().newReader();
     BidRequest req = BidRequest.newBuilder().setId("0").build();
     // Based on Issue #34
-    assertEquals(req, reader.readBidRequest("{ \"ext\": { \"x\": { } }, \"id\": \"0\" }"));
+    assertThat(reader.readBidRequest("{ \"ext\": { \"x\": { } }, \"id\": \"0\" }")).isEqualTo(req);
   }
 
   @Test
@@ -175,7 +173,8 @@ public class OpenRtbJsonTest {
     OpenRtbJsonReader reader = OpenRtbJsonFactory.create().newReader();
     BidRequest req = BidRequest.newBuilder().setId("0").build();
     // Based on Issue #34
-    assertEquals(req, reader.readBidRequest("{ \"ext\": { \"x\": 0, \"y\": {} }, \"id\": \"0\" }"));
+    assertThat(reader.readBidRequest("{ \"ext\": { \"x\": 0, \"y\": {} }, \"id\": \"0\" }"))
+        .isEqualTo(req);
   }
 
   @Test(expected = JsonParseException.class)
@@ -193,7 +192,8 @@ public class OpenRtbJsonTest {
     OpenRtbJsonFactory jsonFactory = newJsonFactory();
     BidResponse resp = newBidResponse(false).build();
     String jsonResp = testResponse(jsonFactory, resp);
-    assertEquals(jsonResp, jsonFactory.newWriter().writeBidResponse(newBidResponse(true).build()));
+    assertThat(jsonFactory.newWriter().writeBidResponse(newBidResponse(true).build()))
+        .isEqualTo(jsonResp);
   }
 
   @Test
@@ -266,14 +266,16 @@ public class OpenRtbJsonTest {
   @Test(expected = JsonParseException.class)
   public void testBadArrayField() throws IOException, JsonParseException {
     String test = // based on Issue #10; sample message from SpotXchange with non-array "cat"
-      "{\n \"id\": \"0\",\n \"imp\": [\n {\n \"id\": \"1\",\n \"banner\": "
-    + "{\n \"h\": 250,\n \"w\": 300,\n \"pos\": 1\n },\n \"bidfloor\": 0.05\n }\n ],\n "
-    + "\"site\": {\n \"id\": \"15047\",\n \"domain\": \"dailymotion.com\",\n \"cat\": \"IAB1\",\n "
-    + "\"page\": \"http://www.dailymotion.com\",\n "
-    + "\"publisher\": {\n \"id\": \"8796\",\n \"name\": \"dailymotion\",\n \"cat\": \"IAB3-1\",\n "
-    + "\"domain\": \"dailymotion.com\"\n }\n },\n \"user\": {\n \"id\": \"0\"\n },\n "
-    + "\"device\": {\n \"ua\": \"Mozilla/4.0\",\n "
-    + "\"ip\": \"1.2.3.4\"\n },\n \"at\": 1,\n \"cur\": [\n \"USD\"\n ]\n}";
+          "{\n \"id\": \"0\",\n \"imp\": [\n {\n \"id\": \"1\",\n \"banner\": "
+        + "{\n \"h\": 250,\n \"w\": 300,\n \"pos\": 1\n },\n \"bidfloor\": 0.05\n }\n ],\n "
+        + "\"site\": {\n \"id\": \"15047\",\n \"domain\": \"dailymotion.com\",\n "
+        + "\"cat\": \"IAB1\",\n "
+        + "\"page\": \"http://www.dailymotion.com\",\n "
+        + "\"publisher\": {\n \"id\": \"8796\",\n \"name\": \"dailymotion\",\n "
+        + "\"cat\": \"IAB3-1\",\n "
+        + "\"domain\": \"dailymotion.com\"\n }\n },\n \"user\": {\n \"id\": \"0\"\n },\n "
+        + "\"device\": {\n \"ua\": \"Mozilla/4.0\",\n "
+        + "\"ip\": \"1.2.3.4\"\n },\n \"at\": 1,\n \"cur\": [\n \"USD\"\n ]\n}";
     newJsonFactory().newReader().readBidRequest(test);
   }
 
@@ -286,15 +288,14 @@ public class OpenRtbJsonTest {
         + "\"x4\": { \"x5\": [] }, \"tmax\": 100, "
         + "\"ext\": { \"x6\": [ { \"x7\": 100, \"x8\": 3.1415 } ], \"test1\": \"*\" }"
         + "}";
-    assertEquals(
-        BidRequest.newBuilder()
+    assertThat(newJsonFactory().newReader().readBidRequest(test))
+        .isEqualTo(BidRequest.newBuilder()
             .setId("0")
             .setAt(AuctionType.FIRST_PRICE)
             .setTest(true)
             .setTmax(100)
             .setExtension(TestExt.testRequest1, Test1.newBuilder().setTest1("*").build())
-            .build(),
-        newJsonFactory().newReader().readBidRequest(test));
+            .build());
   }
 
   @Test
@@ -313,7 +314,7 @@ public class OpenRtbJsonTest {
         + "\"keywords\":  [\"foo\", \"bar\"]},\n \"id\": \"56600\",\n \"cat\": [\"IAB19\"],\n "
         + "\"keywords\": \"\",\n \"name\": \"Emoji Free!\",\n \"ver\": null\n } \n}";
     BidRequest bidRequest = newJsonFactory().newReader().readBidRequest(test);
-    assertEquals("foo,bar", bidRequest.getSite().getContent().getKeywords());
+    assertThat(bidRequest.getSite().getContent().getKeywords()).isEqualTo("foo,bar");
   }
 
   static void testRequest(OpenRtbJsonFactory jsonFactory, BidRequest req) throws IOException {
@@ -321,7 +322,7 @@ public class OpenRtbJsonTest {
     logger.info(jsonReq);
     jsonFactory.setStrict(true).newWriter().writeBidRequest(req);
     BidRequest req2 = jsonFactory.newReader().readBidRequest(jsonReq);
-    assertEquals(req, req2);
+    assertThat(req2).isEqualTo(req);
     jsonFactory.setStrict(true).newReader().readBidRequest(jsonReq);
   }
 
@@ -330,7 +331,7 @@ public class OpenRtbJsonTest {
     logger.info(jsonResp);
     jsonFactory.setStrict(true).newWriter().writeBidResponse(resp);
     OpenRtb.BidResponse resp2 = jsonFactory.newReader().readBidResponse(jsonResp);
-    assertEquals(resp, resp2);
+    assertThat(resp2).isEqualTo(resp);
     jsonFactory.setStrict(true).newReader().readBidResponse(jsonResp);
     return jsonResp;
   }

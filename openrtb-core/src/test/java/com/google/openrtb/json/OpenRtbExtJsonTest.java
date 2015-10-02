@@ -16,7 +16,7 @@
 
 package com.google.openrtb.json;
 
-import static org.junit.Assert.assertEquals;
+import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.SetMultimap;
 import com.google.openrtb.OpenRtb.BidRequest;
@@ -37,7 +37,7 @@ import javax.annotation.Nullable;
  * Tests for {@link OpenRtbJsonFactory}, {@link OpenRtbJsonReader}, {@link OpenRtbJsonWriter}.
  * Specifically, subclassing all the above.
  *
- * This test shows how to extend the JSON support to process non-standard extensions,
+ * <p>This test shows how to extend the JSON support to process non-standard extensions,
  * i.e. new fields added directly to the model objects (not to "ext.*" subfields).
  * Using the real-world example of MoPub's BidRequest.crtype field.
  * Here, we map the non-standard extensions to a regular extension node in the model,
@@ -117,8 +117,7 @@ public class OpenRtbExtJsonTest {
         .build();
     MyOpenRtbJsonFactory factory = MyOpenRtbJsonFactory.create();
     String jsonReq = factory.newWriter().writeBidRequest(req1);
-    assertEquals("{\"id\":\"0\",\"crtype\":\"5\"}", jsonReq);
-    BidRequest req2 = factory.newReader().readBidRequest(jsonReq);
-    assertEquals(req1, req2);
+    assertThat(jsonReq).isEqualTo("{\"id\":\"0\",\"crtype\":\"5\"}");
+    assertThat(factory.newReader().readBidRequest(jsonReq)).isEqualTo(req1);
   }
 }
