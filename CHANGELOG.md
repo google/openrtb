@@ -1,6 +1,10 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 0.9.5, 02-10-2015
+* No changes! This release contains only a round of reviews in code
+  style, javadocs, and unit tests (converted to Truth).
+
 ## Version 0.9.4, 24-09-2015
 * `OpenRtbUtils` improved for filtering impressions with Native ads.
 
