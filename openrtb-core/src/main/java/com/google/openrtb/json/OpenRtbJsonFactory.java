@@ -144,7 +144,7 @@ public class OpenRtbJsonFactory {
    * @see #register(OpenRtbJsonExtWriter, Class, Class)
    */
   public final <T> OpenRtbJsonFactory register(OpenRtbJsonExtWriter<T> extWriter,
-    Class<T> extKlass, Class<? extends Message> msgKlass, String fieldName) {
+      Class<T> extKlass, Class<? extends Message> msgKlass, String fieldName) {
     Map<String, Map<String, OpenRtbJsonExtWriter<?>>> mapMsg = extWriters.get(msgKlass.getName());
     if (mapMsg == null) {
       extWriters.put(msgKlass.getName(), mapMsg = new LinkedHashMap<>());

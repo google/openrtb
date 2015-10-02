@@ -46,8 +46,8 @@ public class TestUtil {
     hash.put(single, "0");
     assertThat(hash.get(single)).isEqualTo("0");
 
-    assertThat(single.equals(single)).isTrue(); // covers optimized code for reference equality
-    assertThat(single.equals(null)).isFalse(); // covers null
+    assertThat(single).isEqualTo(single);
+    assertThat(single).isNotEqualTo(null);
     assertThat(single.toString()).isNotNull();
 
     if (single instanceof Comparable<?>) {
@@ -76,7 +76,7 @@ public class TestUtil {
     Map<T, String> hash = testCommonMethods(different1);
     hash.put(different1, "0"); // replaces
     hash.put(different2, "1"); // adds
-    assertThat(hash.size()).isEqualTo(2);
+    assertThat(hash).hasSize(2);
     assertThat(hash.get(different1)).isEqualTo("0"); // still there
     assertThat(hash.get(different2)).isEqualTo("1");
 
@@ -86,7 +86,7 @@ public class TestUtil {
       @SuppressWarnings("rawtypes")
       Comparable compBigger = (Comparable) different2;
 
-      assertThat(compSmaller.compareTo(compBigger) < 0).isTrue();
+      assertThat(compSmaller.compareTo(compBigger)).isLessThan(0);
     }
 
     return hash;
