@@ -108,6 +108,13 @@ public class OpenRtbNativeJsonTest {
         .build());
   }
 
+  @Test
+  public void testRequest_emptyToNull() throws IOException {
+    OpenRtbNativeJsonReader reader = OpenRtbJsonFactory.create().setStrict(false).newNativeReader();
+    assertThat(reader.readNativeRequest("")).isNull();
+    assertThat(reader.readNativeResponse("")).isNull();
+  }
+
   static void testRequest(OpenRtbJsonFactory jsonFactory, NativeRequest req) throws IOException {
     String jsonReq = jsonFactory.newNativeWriter().writeNativeRequest(req);
     logger.info(jsonReq);

@@ -153,6 +153,13 @@ public class OpenRtbJsonTest {
   }
 
   @Test
+  public void testRequest_emptyToNull() throws IOException {
+    OpenRtbJsonReader reader = OpenRtbJsonFactory.create().setStrict(false).newReader();
+    assertThat(reader.readBidRequest("")).isNull();
+    assertThat(reader.readBidResponse("")).isNull();
+  }
+
+  @Test
   public void testRequest_extNoReadersRegistered() throws IOException {
     OpenRtbJsonReader reader = OpenRtbJsonFactory.create().newReader();
     BidRequest req = BidRequest.newBuilder().setId("0").build();

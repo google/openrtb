@@ -128,4 +128,16 @@ public abstract class AbstractOpenRtbJsonReader {
     }
     return true;
   }
+
+  /**
+   * Special case for empty-string input. Returning null in non-@Nullable method,
+   * but this is non-strict mode anyway.
+   */
+  protected boolean emptyToNull(JsonParser par) throws IOException {
+    JsonToken token = par.getCurrentToken();
+    if (token == null) {
+      token = par.nextToken();
+    }
+    return !factory().isStrict() && token == null;
+  }
 }

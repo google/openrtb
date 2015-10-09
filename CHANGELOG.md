@@ -1,6 +1,12 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 0.9.6, ??-10-2015
+* JSON factory now enables strict parsing by default; previous behavior
+  was a bug. Use `setStrict(false)` if this breaks things for you.
+* In non-strict mode, the JSON readers will now return `null` instead
+  of an exception if the input is empty.
+
 ## Version 0.9.5, 02-10-2015
 * No changes! This release contains only a round of reviews in code
   style, javadocs, and unit tests (converted to Truth).
