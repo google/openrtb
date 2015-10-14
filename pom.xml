@@ -50,10 +50,10 @@
   </prerequisites>
 
   <properties>
-    <findBugsJsr305Version>3.0.0</findBugsJsr305Version>
+    <findBugsJsr305Version>3.0.1</findBugsJsr305Version>
     <gpg.skip>true</gpg.skip>
     <guavaVersion>18.0</guavaVersion>
-    <fasterxmlJacksonVersion>2.6.2</fasterxmlJacksonVersion>
+    <fasterxmlJacksonVersion>2.6.3</fasterxmlJacksonVersion>
     <injectVersion>1</injectVersion>
     <junitVersion>4.12</junitVersion>
     <metricsVersion>3.0.2</metricsVersion>
