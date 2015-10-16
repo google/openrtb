@@ -1928,7 +1928,7 @@ message NativeRequest {
       }
     }
 
-    // OpenRT Native 4.6: The Data Object is to be used for all non-core
+    // OpenRTB Native 4.6: The Data Object is to be used for all non-core
     // elements of the native unit such as Ratings, Review Count, Stars,
     // Download count, descriptions etc. It is also generic for future of Native
     // elements not contemplated at the time of the writing of this document.
