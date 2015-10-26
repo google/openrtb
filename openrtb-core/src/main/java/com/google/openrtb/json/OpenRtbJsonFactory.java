@@ -95,7 +95,7 @@ public class OpenRtbJsonFactory {
    * Creates a new factory with default configuration.
    */
   public static OpenRtbJsonFactory create() {
-    return new OpenRtbJsonFactory(null, false, null, null);
+    return new OpenRtbJsonFactory(null, true, null, null);
   }
 
   /**

@@ -69,6 +69,7 @@ import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
 import com.google.openrtb.util.OpenRtbUtils;
+import com.google.openrtb.util.ProtoUtils;
 import com.google.protobuf.ByteString;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -109,7 +110,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
    * Desserializes a {@link BidRequest} from JSON, streamed from a {@link Reader}.
    */
   public BidRequest readBidRequest(Reader reader) throws IOException {
-    return readBidRequest(factory().getJsonFactory().createParser(reader)).build();
+    return ProtoUtils.built(readBidRequest(factory().getJsonFactory().createParser(reader)));
   }
 
   /**
@@ -117,7 +118,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
    */
   public BidRequest readBidRequest(InputStream is) throws IOException {
     try {
-      return readBidRequest(factory().getJsonFactory().createParser(is)).build();
+      return ProtoUtils.built(readBidRequest(factory().getJsonFactory().createParser(is)));
     } finally {
       Closeables.closeQuietly(is);
     }
@@ -128,6 +129,10 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
    * which allows several choices of input and encoding.
    */
   public final BidRequest.Builder readBidRequest(JsonParser par) throws IOException {
+    if (emptyToNull(par)) {
+      return null;
+    }
+
     BidRequest.Builder req = BidRequest.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -1260,7 +1265,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
    * Desserializes a {@link BidResponse} from JSON, streamed from a {@link Reader}.
    */
   public BidResponse readBidResponse(Reader reader) throws IOException {
-    return readBidResponse(factory().getJsonFactory().createParser(reader)).build();
+    return ProtoUtils.built(readBidResponse(factory().getJsonFactory().createParser(reader)));
   }
 
   /**
@@ -1268,7 +1273,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
    */
   public BidResponse readBidResponse(InputStream is) throws IOException {
     try {
-      return readBidResponse(factory().getJsonFactory().createParser(is)).build();
+      return ProtoUtils.built(readBidResponse(factory().getJsonFactory().createParser(is)));
     } finally {
       Closeables.closeQuietly(is);
     }
@@ -1279,6 +1284,9 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
    * which allows several choices of input and encoding.
    */
   public final BidResponse.Builder readBidResponse(JsonParser par) throws IOException {
+    if (emptyToNull(par)) {
+      return null;
+    }
     BidResponse.Builder resp = BidResponse.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);

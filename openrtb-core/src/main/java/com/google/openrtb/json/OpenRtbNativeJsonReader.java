@@ -31,6 +31,7 @@ import com.google.openrtb.OpenRtb.NativeRequest.Asset.Data.DataAssetType;
 import com.google.openrtb.OpenRtb.NativeRequest.Asset.Image.ImageAssetType;
 import com.google.openrtb.OpenRtb.NativeRequest.LayoutId;
 import com.google.openrtb.OpenRtb.NativeResponse;
+import com.google.openrtb.util.ProtoUtils;
 import com.google.protobuf.ByteString;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -70,7 +71,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
    * Desserializes a {@link NativeRequest} from JSON, streamed from a {@link Reader}.
    */
   public NativeRequest readNativeRequest(Reader reader) throws IOException {
-    return readNativeRequest(factory().getJsonFactory().createParser(reader)).build();
+    return ProtoUtils.built(readNativeRequest(factory().getJsonFactory().createParser(reader)));
   }
 
   /**
@@ -78,7 +79,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
    */
   public NativeRequest readNativeRequest(InputStream is) throws IOException {
     try {
-      return readNativeRequest(factory().getJsonFactory().createParser(is)).build();
+      return ProtoUtils.built(readNativeRequest(factory().getJsonFactory().createParser(is)));
     } finally {
       Closeables.closeQuietly(is);
     }
@@ -89,6 +90,9 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
    * which allows several choices of input and encoding.
    */
   public final NativeRequest.Builder readNativeRequest(JsonParser par) throws IOException {
+    if (emptyToNull(par)) {
+      return null;
+    }
     NativeRequest.Builder req = NativeRequest.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
@@ -295,7 +299,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
    * Desserializes a {@link NativeResponse} from JSON, streamed from a {@link Reader}.
    */
   public NativeResponse readNativeResponse(Reader reader) throws IOException {
-    return readNativeResponse(factory().getJsonFactory().createParser(reader)).build();
+    return ProtoUtils.built(readNativeResponse(factory().getJsonFactory().createParser(reader)));
   }
 
   /**
@@ -303,7 +307,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
    */
   public NativeResponse readNativeResponse(InputStream is) throws IOException {
     try {
-      return readNativeResponse(factory().getJsonFactory().createParser(is)).build();
+      return ProtoUtils.built(readNativeResponse(factory().getJsonFactory().createParser(is)));
     } finally {
       Closeables.closeQuietly(is);
     }
@@ -314,6 +318,9 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
    * which allows several choices of input and encoding.
    */
   public final NativeResponse.Builder readNativeResponse(JsonParser par) throws IOException {
+    if (emptyToNull(par)) {
+      return null;
+    }
     NativeResponse.Builder resp = NativeResponse.newBuilder();
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
