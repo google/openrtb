@@ -179,7 +179,7 @@ public class OpenRtbJsonFactory {
   }
 
   /**
-   * Creates an {@link OpenRtbJsonWriter}, configured to the current state of this factory.
+   * Creates an {@link OpenRtbJsonReader}, configured to the current state of this factory.
    */
   public OpenRtbJsonReader newReader() {
     return new OpenRtbJsonReader(new OpenRtbJsonFactory(this));
@@ -193,7 +193,7 @@ public class OpenRtbJsonFactory {
   }
 
   /**
-   * Creates an {@link OpenRtbNativeJsonWriter}, configured to the current state of this factory.
+   * Creates an {@link OpenRtbNativeJsonReader}, configured to the current state of this factory.
    */
   public OpenRtbNativeJsonReader newNativeReader() {
     return new OpenRtbNativeJsonReader(new OpenRtbJsonFactory(this));
