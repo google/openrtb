@@ -17,16 +17,11 @@
 package com.google.openrtb.util;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static java.util.Collections.emptyList;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.Imp;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
@@ -36,9 +31,13 @@ import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.ContentCategory;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import javax.annotation.Nullable;
 
@@ -47,6 +46,12 @@ import javax.annotation.Nullable;
  * {@link com.google.openrtb.OpenRtb.BidResponse.Builder}.
  */
 public final class OpenRtbUtils {
+  /**
+   * Special value for the {@code seat} parameter of several methods. Notice that you can't
+   * pass any string with the same value, you need to pass a reference to this unique object.
+   */
+  public static final String SEAT_ANY = "*";
+
   private static final ImmutableMap<Object, String> CAT_TO_JSON;
   private static final ImmutableMap<String, ContentCategory> NAME_TO_CAT;
   private static final ImmutableMap<String, Gender> NAME_TO_GENDER =
@@ -62,24 +67,8 @@ public final class OpenRtbUtils {
       Gender.MALE, "M",
       Gender.FEMALE, "F",
       Gender.OTHER, "O");
-  private static final Predicate<Imp> ALWAYS_FALSE = Predicates.<Imp>alwaysFalse();
-  private static final Predicate<Imp> ALWAYS_TRUE = Predicates.<Imp>alwaysTrue();
-
-  public static final Predicate<Imp> IMP_HAS_BANNER = new Predicate<Imp>() {
-    @Override public boolean apply(Imp imp) {
-      assert imp != null;
-      return imp.hasBanner();
-    }};
-  public static final Predicate<Imp> IMP_HAS_VIDEO = new Predicate<Imp>() {
-    @Override public boolean apply(Imp imp) {
-      assert imp != null;
-      return imp.hasVideo();
-    }};
-  public static final Predicate<Imp> IMP_HAS_NATIVE = new Predicate<Imp>() {
-    @Override public boolean apply(Imp imp) {
-      assert imp != null;
-      return imp.hasNative();
-    }};
+  private static final Predicate<Imp> ALWAYS_FALSE = imp -> false;
+  private static final Predicate<Imp> ALWAYS_TRUE = imp -> true;
 
   static {
     ImmutableMap.Builder<Object, String> catToJson = ImmutableMap.builder();
@@ -171,7 +160,7 @@ public final class OpenRtbUtils {
    *     May have bids from multiple seats, grouped by seat
    */
   public static Iterable<Bid.Builder> bids(BidResponse.Builder response) {
-    return new ResponseBidsIterator(response);
+    return new ResponseBidsIterator(response, SEAT_ANY, null);
   }
 
   /**
@@ -212,8 +201,9 @@ public final class OpenRtbUtils {
   /**
    * Finds a bid by seat and ID.
    *
-   * @param seat Seat ID, or {@code null} to select the anonymous seat
-   * @param id Bid ID, assumed to be unique within the seat
+   * @param seat Filter for seat. You can use {@code null} to select the anonymous seat,
+   *     or {@link #SEAT_ANY} to not filter by seat
+   * @param id Bid ID, assumed to be unique within the filtered seats
    * @return Matching bid's builder, or {@code null} if not found
    */
   @Nullable public static Bid.Builder bidWithId(
@@ -221,7 +211,7 @@ public final class OpenRtbUtils {
     checkNotNull(id);
 
     for (SeatBid.Builder seatbid : response.getSeatbidBuilderList()) {
-      if (seatbid.hasSeat() ? seatbid.getSeat().equals(seat) : seat == null) {
+      if (filterSeat(seatbid, seat)) {
         for (Bid.Builder bid : seatbid.getBidBuilderList()) {
           if (id.equals(bid.getId())) {
             return bid;
@@ -236,31 +226,45 @@ public final class OpenRtbUtils {
   /**
    * Finds bids by a custom criteria.
    *
-   * @param filter Selection criteria
+   * @param bidFilter Filter for bids
    * @return Read-only sequence of bids that satisfy the filter.
    *     May have bids from multiple seats, grouped by seat
+   * @deprecated Use {@link #bidsWith(com.google.openrtb.OpenRtb.BidResponse.Builder, String, Predicate)}
+   *     with seat = {@link #SEAT_ANY}
    */
+  @Deprecated
   public static Iterable<Bid.Builder> bidsWith(
-      BidResponse.Builder response, Predicate<Bid.Builder> filter) {
-    return Iterables.filter(new ResponseBidsIterator(response), filter);
+      BidResponse.Builder response, Predicate<Bid.Builder> bidFilter) {
+    return bidsWith(response, SEAT_ANY, bidFilter);
   }
 
   /**
    * Finds bids by a custom criteria.
    *
-   * @param seat Seat ID, or {@code null} to select the anonymous seat
-   * @param filter Selection criteria
+   * @param bidFilter Filter for bids
+   * @param seat Filter for seat. You can use {@code null} to select the anonymous seat,
+   * or {@link #SEAT_ANY} to not filter by seat
+   * @return Read-only sequence of bids that satisfy the filter.
+   *     May have bids from multiple seats, grouped by seat
+   */
+  public static Stream<Bid.Builder> bidStreamWith(
+      BidResponse.Builder response, String seat, Predicate<Bid.Builder> bidFilter) {
+    return StreamSupport.stream(
+        new ResponseBidsIterator(response, seat, bidFilter).spliterator(), false);
+  }
+
+  /**
+   * Finds bids by a custom criteria.
+   *
+   * @param bidFilter Filter for bids
+   * @param seat Filter for seat. You can use {@code null} to select the anonymous seat,
+   * or {@link #SEAT_ANY} to not filter by seat
    * @return Sequence of all bids that satisfy the filter.
    *     May have bids from multiple seats, grouped by seat
    */
   public static Iterable<Bid.Builder> bidsWith(
-      BidResponse.Builder response, @Nullable String seat, Predicate<Bid.Builder> filter) {
-    for (SeatBid.Builder seatbid : response.getSeatbidBuilderList()) {
-      if (seat == null ? !seatbid.hasSeat() : seatbid.hasSeat() && seat.equals(seatbid.getSeat())) {
-        return Iterables.filter(seatbid.getBidBuilderList(), filter);
-      }
-    }
-    return emptyList();
+      BidResponse.Builder response, @Nullable String seat, Predicate<Bid.Builder> bidFilter) {
+    return bidStreamWith(response, seat, bidFilter).collect(Collectors.toList());
   }
 
   /**
@@ -412,7 +416,9 @@ public final class OpenRtbUtils {
    *
    * @param request Container of impressions
    * @param filter Filters impressions; will be executed exactly once,
-   *     and only for impressions that pass the banner/video type filters
+   *     and only for impressions that pass the banner/video type filters.
+   *     The constants {@link #ALWAYS_FALSE} and  {@link #ALWAYS_TRUE} allow
+   *     more efficient execution when you want to filter none/all impressions.
    * @return Immutable or unmodifiable view for the filtered impressions
    */
   public static Iterable<Imp> impsWith(BidRequest request, final Predicate<Imp> filter) {
@@ -425,11 +431,11 @@ public final class OpenRtbUtils {
       return ImmutableList.of();
     }
 
-    final boolean included = filter.apply(imps.get(0));
+    final boolean included = filter.test(imps.get(0));
     int size = imps.size(), i;
 
     for (i = 1; i < size; ++i) {
-      if (filter.apply(imps.get(i)) != included) {
+      if (filter.test(imps.get(i)) != included) {
         break;
       }
     }
@@ -451,7 +457,7 @@ public final class OpenRtbUtils {
               Imp imp = unfiltered.next();
               if ((heading++ < headingSize)
                   ? included
-                  : filter.apply(imp)) {
+                  : filter.test(imp)) {
                 return imp;
               }
             }
@@ -480,23 +486,23 @@ public final class OpenRtbUtils {
       return baseFilter;
     }
 
-    Predicate<Imp> typeFilter;
-    if (orCount == 1) {
-      typeFilter = banner ? IMP_HAS_BANNER : video ? IMP_HAS_VIDEO : IMP_HAS_NATIVE;
-    } else {
-      List<Predicate<Imp>> typeFilters = new ArrayList<>(3);
-      if (banner) {
-        typeFilters.add(IMP_HAS_BANNER);
-      }
-      if (video) {
-        typeFilters.add(IMP_HAS_VIDEO);
-      }
-      if (nativ) {
-        typeFilters.add(IMP_HAS_NATIVE);
-      }
-      typeFilter = Predicates.or(typeFilters);
+    Predicate<Imp> typeFilter = null;
+    if (banner) {
+      typeFilter = Imp::hasBanner;
+    }
+    if (video) {
+      typeFilter = typeFilter == null ? Imp::hasVideo : typeFilter.or(Imp::hasVideo);
+    }
+    if (nativ) {
+      typeFilter = typeFilter == null ? Imp::hasNative : typeFilter.or(Imp::hasNative);
     }
 
-    return baseFilter == ALWAYS_TRUE ? typeFilter : Predicates.and(baseFilter, typeFilter);
+    return baseFilter == ALWAYS_TRUE ? typeFilter : baseFilter.and(typeFilter);
+  }
+
+  protected static boolean filterSeat(SeatBid.Builder seatbid, String seatFilter) {
+    return seatFilter == null
+        ? !seatbid.hasSeat()
+        : seatFilter == SEAT_ANY || seatFilter.equals(seatbid.getSeat());
   }
 }
