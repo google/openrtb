@@ -111,11 +111,10 @@ public final class ProtoUtils {
 
   private static <M extends MessageLiteOrBuilder> List<M> filterFrom(
       Iterable<M> objs, Predicate<M> filter, int firstDiscarded) {
-    int initialCapacity = (objs instanceof Collection)
-        ? ((Collection<?>) objs).size() - 1 : 10;
+    int initialCapacity = (objs instanceof Collection<?>) ? ((Collection<?>) objs).size() - 1 : 10;
     List<M> filtered = (firstDiscarded == 0) ? null : new ArrayList<>(initialCapacity);
 
-        Iterator<M> iter = objs.iterator();
+    Iterator<M> iter = objs.iterator();
     for (int i = 0; i < firstDiscarded; ++i) {
       filtered.add(iter.next());
     }
