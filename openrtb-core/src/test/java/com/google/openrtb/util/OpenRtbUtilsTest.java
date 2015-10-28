@@ -118,6 +118,7 @@ public class OpenRtbUtilsTest {
         imp -> true, true, true, true))).hasSize(7);
   }
 
+  @SuppressWarnings("deprecation")
   @Test
   public void testResponse_bids() {
     BidResponse.Builder response = BidResponse.newBuilder().setCur("USD");

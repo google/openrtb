@@ -47,10 +47,20 @@ import javax.annotation.Nullable;
  */
 public final class OpenRtbUtils {
   /**
-   * Special value for the {@code seat} parameter of several methods. Notice that you can't
+   * Special value for the {@code seat} parameter of some methods. Notice that you can't
    * pass any string with the same value, you need to pass a reference to this unique object.
    */
   public static final String SEAT_ANY = "*";
+  /**
+   * Special value for for {@code impFilter} parameter of some methods, will be more efficient
+   * than an equivalent {@code imp -> false} predicate.
+   */
+  public static final Predicate<Imp> IMP_NONE = imp -> false;
+  /**
+   * Special value for for {@code impFilter} parameter of some methods, will be more efficient
+   * than an equivalent {@code imp -> true} predicate.
+   */
+  public static final Predicate<Imp> IMP_ALL = imp -> true;
 
   private static final ImmutableMap<Object, String> CAT_TO_JSON;
   private static final ImmutableMap<String, ContentCategory> NAME_TO_CAT;
@@ -67,8 +77,6 @@ public final class OpenRtbUtils {
       Gender.MALE, "M",
       Gender.FEMALE, "F",
       Gender.OTHER, "O");
-  private static final Predicate<Imp> ALWAYS_FALSE = imp -> false;
-  private static final Predicate<Imp> ALWAYS_TRUE = imp -> true;
 
   static {
     ImmutableMap.Builder<Object, String> catToJson = ImmutableMap.builder();
@@ -248,7 +256,7 @@ public final class OpenRtbUtils {
    *     May have bids from multiple seats, grouped by seat
    */
   public static Stream<Bid.Builder> bidStreamWith(
-      BidResponse.Builder response, String seat, Predicate<Bid.Builder> bidFilter) {
+      BidResponse.Builder response, String seat, @Nullable Predicate<Bid.Builder> bidFilter) {
     return StreamSupport.stream(
         new ResponseBidsIterator(response, seat, bidFilter).spliterator(), false);
   }
@@ -263,7 +271,8 @@ public final class OpenRtbUtils {
    *     May have bids from multiple seats, grouped by seat
    */
   public static Iterable<Bid.Builder> bidsWith(
-      BidResponse.Builder response, @Nullable String seat, Predicate<Bid.Builder> bidFilter) {
+      BidResponse.Builder response, @Nullable String seat,
+      @Nullable Predicate<Bid.Builder> bidFilter) {
     return bidStreamWith(response, seat, bidFilter).collect(Collectors.toList());
   }
 
@@ -415,27 +424,27 @@ public final class OpenRtbUtils {
    * and simpler code previously used needed lots of temporary collections.
    *
    * @param request Container of impressions
-   * @param filter Filters impressions; will be executed exactly once,
+   * @param impFilter Filters impressions; will be executed exactly once,
    *     and only for impressions that pass the banner/video type filters.
-   *     The constants {@link #ALWAYS_FALSE} and  {@link #ALWAYS_TRUE} allow
+   *     The constants {@link #IMP_NONE} and  {@link #IMP_ALL} allow
    *     more efficient execution when you want to filter none/all impressions.
    * @return Immutable or unmodifiable view for the filtered impressions
    */
-  public static Iterable<Imp> impsWith(BidRequest request, final Predicate<Imp> filter) {
-    checkNotNull(filter);
+  public static Iterable<Imp> impsWith(BidRequest request, final Predicate<Imp> impFilter) {
+    checkNotNull(impFilter);
 
     final List<Imp> imps = request.getImpList();
-    if (imps.isEmpty() || filter == ALWAYS_TRUE) {
+    if (imps.isEmpty() || impFilter == IMP_ALL) {
       return imps;
-    } else if (filter == ALWAYS_FALSE) {
+    } else if (impFilter == IMP_NONE) {
       return ImmutableList.of();
     }
 
-    final boolean included = filter.test(imps.get(0));
+    final boolean included = impFilter.test(imps.get(0));
     int size = imps.size(), i;
 
     for (i = 1; i < size; ++i) {
-      if (filter.test(imps.get(i)) != included) {
+      if (impFilter.test(imps.get(i)) != included) {
         break;
       }
     }
@@ -457,13 +466,17 @@ public final class OpenRtbUtils {
               Imp imp = unfiltered.next();
               if ((heading++ < headingSize)
                   ? included
-                  : filter.test(imp)) {
+                  : impFilter.test(imp)) {
                 return imp;
               }
             }
             return endOfData();
         }};
       }};
+  }
+
+  public static Stream<Imp> impStreamWith(BidRequest request, final Predicate<Imp> impFilter) {
+    return StreamSupport.stream(impsWith(request, impFilter).spliterator(), false);
   }
 
   /**
@@ -482,7 +495,7 @@ public final class OpenRtbUtils {
   public static Predicate<Imp> addFilters(
       Predicate<Imp> baseFilter, boolean banner, boolean video, boolean nativ) {
     int orCount = (banner ? 1 : 0) + (video ? 1 : 0) + (nativ ? 1 : 0);
-    if (baseFilter == ALWAYS_FALSE || orCount == 0) {
+    if (baseFilter == IMP_NONE || orCount == 0) {
       return baseFilter;
     }
 
@@ -497,7 +510,7 @@ public final class OpenRtbUtils {
       typeFilter = typeFilter == null ? Imp::hasNative : typeFilter.or(Imp::hasNative);
     }
 
-    return baseFilter == ALWAYS_TRUE ? typeFilter : baseFilter.and(typeFilter);
+    return baseFilter == IMP_ALL ? typeFilter : baseFilter.and(typeFilter);
   }
 
   protected static boolean filterSeat(SeatBid.Builder seatbid, String seatFilter) {
