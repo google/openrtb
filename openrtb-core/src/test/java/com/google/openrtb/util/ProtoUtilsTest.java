@@ -89,7 +89,7 @@ public class ProtoUtilsTest {
       reqBuilder.setAt(AuctionType.FIRST_PRICE);
       return true;
     });
-    assertThat(req.getAt()).isEqualTo(AuctionType.FIRST_PRICE);
+    assertThat(req.getAt()).isSameAs(AuctionType.FIRST_PRICE);
   }
 
   @Test
