@@ -101,7 +101,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
-        <version>2.6.1</version>
+        <version>3.0.0</version>
       </plugin>
 
       <plugin>
@@ -147,7 +147,7 @@
 
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.18.1</version>
+        <version>2.19</version>
         <configuration>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
           <argLine>-Djava.util.logging.config.file=src/test/resources/logging.properties</argLine>
@@ -183,7 +183,7 @@
 
       <plugin>
         <artifactId>maven-release-plugin</artifactId>
-        <version>2.5.2</version>
+        <version>2.5.3</version>
         <configuration>
           <autoVersionSubmodules>true</autoVersionSubmodules>
           <preparationGoals>clean verify javadoc:aggregate</preparationGoals>
@@ -206,8 +206,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.3</version>
         <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
     </plugins>

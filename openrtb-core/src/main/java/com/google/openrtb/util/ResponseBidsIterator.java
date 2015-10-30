@@ -22,6 +22,10 @@ import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.function.Predicate;
+
+import javax.annotation.Nullable;
 
 /**
  * Iterates all {@link com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid.Builder}s
@@ -29,28 +33,34 @@ import java.util.Iterator;
  * dealing with the intermediate layer of seats transparently.
  */
 class ResponseBidsIterator implements Iterator<Bid.Builder>, Iterable<Bid.Builder> {
+  private final @Nullable String seatFilter;
+  private final Predicate<Bid.Builder> bidFilter;
   private final Iterator<SeatBid.Builder> seatbidIter;
   private Iterator<Bid.Builder> bidIter = Collections.emptyIterator();
+  private Bid.Builder nextBid;
 
-  public ResponseBidsIterator(BidResponse.Builder bidResponse) {
+  public ResponseBidsIterator(
+      BidResponse.Builder bidResponse,
+      @Nullable String seatFilter,
+      @Nullable Predicate<Bid.Builder> bidFilter) {
     this.seatbidIter = bidResponse.getSeatbidBuilderList().iterator();
-  }
-
-  private void skipSeats() {
-    while (!bidIter.hasNext() && seatbidIter.hasNext()) {
-      SeatBid.Builder seatBid = seatbidIter.next();
-      bidIter = seatBid.getBidBuilderList().iterator();
-    }
+    this.seatFilter = seatFilter;
+    this.bidFilter = bidFilter;
   }
 
   @Override public boolean hasNext() {
-    skipSeats();
-    return bidIter.hasNext();
+    scanIters();
+    return nextBid != null;
   }
 
   @Override public Bid.Builder next() {
-    skipSeats();
-    return bidIter.next();
+    scanIters();
+    if (nextBid == null) {
+      throw new NoSuchElementException();
+    }
+    Bid.Builder ret = nextBid;
+    nextBid = null;
+    return ret;
   }
 
   @Override public void remove() {
@@ -59,5 +69,29 @@ class ResponseBidsIterator implements Iterator<Bid.Builder>, Iterable<Bid.Builde
 
   @Override public Iterator<Bid.Builder> iterator() {
     return this;
+  }
+
+  private void scanIters() {
+    while (!scanBidIter() && seatbidIter.hasNext()) {
+      SeatBid.Builder seatBid = seatbidIter.next();
+      if (OpenRtbUtils.filterSeat(seatBid, seatFilter)) {
+        bidIter = seatBid.getBidBuilderList().iterator();
+      }
+    }
+  }
+
+  private boolean scanBidIter() {
+    while (true) {
+      if (nextBid != null) {
+        return true;
+      }
+      if (!bidIter.hasNext()) {
+        return false;
+      }
+      nextBid = bidIter.next();
+      if (bidFilter != null && !bidFilter.test(nextBid)) {
+        nextBid = null;
+      }
+    }
   }
 }

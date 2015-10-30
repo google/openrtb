@@ -18,8 +18,6 @@ package com.google.openrtb.util;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
@@ -31,6 +29,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
@@ -38,11 +38,7 @@ import javax.annotation.Nullable;
  * Some conveniences for protoc-generated classes.
  */
 public final class ProtoUtils {
-  public static final Predicate<FieldDescriptor> NOT_EXTENSION = new Predicate<FieldDescriptor>() {
-    @Override public boolean apply(FieldDescriptor fd) {
-      assert fd != null;
-      return !fd.isExtension();
-    }};
+  public static final Predicate<FieldDescriptor> NOT_EXTENSION = fd -> !fd.isExtension();
 
   private ProtoUtils() {
   }
@@ -102,7 +98,7 @@ public final class ProtoUtils {
 
     int i = 0;
     for (M obj : objs) {
-      if (!filter.apply(obj)) {
+      if (!filter.test(obj)) {
         // At least one discarded object, go to slow-path.
         return filterFrom(objs, filter, i);
       }
@@ -115,11 +111,10 @@ public final class ProtoUtils {
 
   private static <M extends MessageLiteOrBuilder> List<M> filterFrom(
       Iterable<M> objs, Predicate<M> filter, int firstDiscarded) {
-    int initialCapacity = (objs instanceof Collection)
-        ? ((Collection<?>) objs).size() - 1 : 10;
-    List<M> filtered = (firstDiscarded == 0) ? null : new ArrayList<M>(initialCapacity);
+    int initialCapacity = (objs instanceof Collection<?>) ? ((Collection<?>) objs).size() - 1 : 10;
+    List<M> filtered = (firstDiscarded == 0) ? null : new ArrayList<>(initialCapacity);
 
-        Iterator<M> iter = objs.iterator();
+    Iterator<M> iter = objs.iterator();
     for (int i = 0; i < firstDiscarded; ++i) {
       filtered.add(iter.next());
     }
@@ -129,8 +124,8 @@ public final class ProtoUtils {
     while (iter.hasNext()) {
       M obj = iter.next();
 
-      if (filter.apply(obj)) {
-        filtered = (filtered == null) ? new ArrayList<M>(initialCapacity) : filtered;
+      if (filter.test(obj)) {
+        filtered = (filtered == null) ? new ArrayList<>(initialCapacity) : filtered;
         filtered.add(obj);
       }
     }
@@ -159,7 +154,7 @@ public final class ProtoUtils {
     for (Map.Entry<FieldDescriptor, Object> entry : msg.getAllFields().entrySet()) {
       FieldDescriptor fd = entry.getKey();
 
-      if (!filter.apply(fd)) {
+      if (!filter.test(fd)) {
         // At least one discarded field, go to slow-path.
         return filterFrom(msg, clearEmpty, filter, i);
       }
@@ -190,7 +185,7 @@ public final class ProtoUtils {
     while (iter.hasNext()) {
       Map.Entry<FieldDescriptor, Object> entry = iter.next();
 
-      if (filter.apply(entry.getKey())) {
+      if (filter.test(entry.getKey())) {
         builder = (builder == null) ? msg.newBuilderForType() : builder;
         filterValue(clearEmpty, filter, builder, entry);
       }

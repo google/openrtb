@@ -1,6 +1,20 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 0.9.7, 29-10-2015
+* THE BIG MOVE TO JAVA 8! The library now requires JDK 8, and takes
+  advantage of new APIs/features of Java 8.
+  - `ProtoUtils` and `OpenRtbUtils`: parameters with `Function` or
+    `Predicate` APIs from Guava were changed to use `java.util.function`.
+    Most code using these utilities should compile after fixing imports;
+    code already passing lambdas for those parameters must be recompiled
+    but needs no changes. Some utilities have new variants using streams,
+    for example `OpenRtbUtils.bidStreamWith()`; if you like streams, the
+    new methods are easier and often more efficient than calling the old
+    methods and doing your own conversion to a `Stream`.
+  - We won't maintain a JDK 7 compatible version of the library; notice
+    that JDK 7 was EOL'd since April 2015.
+
 ## Version 0.9.6, 26-10-2015
 * JSON factory now enables strict parsing by default; previous behavior
   was a bug. Use `setStrict(false)` if this breaks things for you.

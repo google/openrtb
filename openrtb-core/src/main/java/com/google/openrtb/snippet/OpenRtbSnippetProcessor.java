@@ -17,9 +17,7 @@
 package com.google.openrtb.snippet;
 
 import com.google.common.collect.ImmutableList;
-import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.ImpOrBuilder;
-import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.BidOrBuilder;
@@ -99,14 +97,6 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
         }
       }
     }
-  }
-
-  /**
-   * @deprecated Use {@link #process(SnippetProcessorContext)}
-   */
-  @Deprecated
-  public void process(BidRequest request, BidResponse.Builder response) {
-    process(new SnippetProcessorContext(request, response));
   }
 
   /**
