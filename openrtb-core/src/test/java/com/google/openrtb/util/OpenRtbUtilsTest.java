@@ -184,29 +184,29 @@ public class OpenRtbUtilsTest {
   }
 
   @Test
-  public void testResponse_filter() {
+  public void testResponse_remove() {
     BidResponse.Builder response = BidResponse.newBuilder()
         .addSeatbid(SeatBid.newBuilder()
             .addBid(buildHtmlBid("1", 100))
             .addBid(buildHtmlBid("2", 100))
             .addBid(buildHtmlBid("3", 200)))
         .addSeatbid(SeatBid.newBuilder().setSeat("unused"));
-    OpenRtbUtils.filterBids(response, bid -> true);
+    OpenRtbUtils.removeBids(response, bid -> true);
     assertThat(OpenRtbUtils.bids(response)).hasSize(3);
-    assertThat(OpenRtbUtils.filterBids(response, bid -> !"1".equals(bid.getId()))).isTrue();
+    assertThat(OpenRtbUtils.removeBids(response, bid -> !"1".equals(bid.getId()))).isTrue();
     assertThat(OpenRtbUtils.bids(response)).hasSize(2);
     OpenRtbUtils.seatBid(response, "x").addBid(buildHtmlBid("unused", 100));
     OpenRtbUtils.seatBid(response, "x").addBid(buildHtmlBid("4", 100));
-    assertThat(OpenRtbUtils.filterBids(response, "x", bid -> !"4".equals(bid.getId()))).isTrue();
+    assertThat(OpenRtbUtils.removeBids(response, "x", bid -> !"4".equals(bid.getId()))).isTrue();
     assertThat(OpenRtbUtils.bids(response, "x")).hasSize(1);
-    assertThat(OpenRtbUtils.filterBids(response, "none", bid -> false))
+    assertThat(OpenRtbUtils.removeBids(response, "none", bid -> false))
         .isFalse();
-    assertThat(OpenRtbUtils.filterBids(response, null, bid -> false))
+    assertThat(OpenRtbUtils.removeBids(response, null, bid -> false))
         .isTrue();
-    assertThat(OpenRtbUtils.filterBids(response, "x", bid -> false))
+    assertThat(OpenRtbUtils.removeBids(response, "x", bid -> false))
         .isTrue();
     assertThat(OpenRtbUtils.bids(response, "x")).isEmpty();
-    assertThat(OpenRtbUtils.filterBids(response, bid -> false)).isFalse();
+    assertThat(OpenRtbUtils.removeBids(response, bid -> false)).isFalse();
     assertThat(OpenRtbUtils.bids(response)).isEmpty();
   }
 

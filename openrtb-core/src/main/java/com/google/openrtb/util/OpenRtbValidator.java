@@ -68,7 +68,7 @@ public class OpenRtbValidator {
   }
 
   public boolean validate(final BidRequest request, final BidResponse.Builder response) {
-    return !OpenRtbUtils.filterBids(response, bid -> validate(request, bid));
+    return !OpenRtbUtils.removeBids(response, bid -> validate(request, bid));
   }
 
   public boolean validate(BidRequest request, Bid.Builder bid) {
