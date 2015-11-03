@@ -1,6 +1,9 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 0.9.8, 02-11-2015
+* Improvements to `OpenRtbUtils`.
+
 ## Version 0.9.7, 29-10-2015
 * THE BIG MOVE TO JAVA 8! The library now requires JDK 8, and takes
   advantage of new APIs/features of Java 8.

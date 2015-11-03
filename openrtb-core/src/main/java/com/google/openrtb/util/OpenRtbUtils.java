@@ -29,6 +29,7 @@ import com.google.openrtb.OpenRtb.BidRequest.User.Gender;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
+import com.google.openrtb.OpenRtb.BidResponse.SeatBidOrBuilder;
 import com.google.openrtb.OpenRtb.ContentCategory;
 
 import java.util.Iterator;
@@ -174,13 +175,14 @@ public final class OpenRtbUtils {
   /**
    * Iterates all bids from a specific seat.
    *
-   * @param seat Seat ID, or {@code null} to select the anonymous seat
+   * @param seatFilter Filter for seatFilter. You can use {@code null} to select the anonymous seat,
+   *     or {@link #SEAT_ANY} to not filter by seat
    * @return View for the seat's internal sequence of bids; or an empty, read-only
    *     view if that seat doesn't exist.
    */
-  public static List<Bid.Builder> bids(BidResponse.Builder response, @Nullable String seat) {
+  public static List<Bid.Builder> bids(BidResponse.Builder response, @Nullable String seatFilter) {
     for (SeatBid.Builder seatbid : response.getSeatbidBuilderList()) {
-      if (seatbid.hasSeat() ? seatbid.getSeat().equals(seat) : seat == null) {
+      if (filterSeat(seatbid, seatFilter)) {
         return seatbid.getBidBuilderList();
       }
     }
@@ -209,17 +211,17 @@ public final class OpenRtbUtils {
   /**
    * Finds a bid by seat and ID.
    *
-   * @param seat Filter for seat. You can use {@code null} to select the anonymous seat,
+   * @param seatFilter Filter for seatFilter. You can use {@code null} to select the anonymous seat,
    *     or {@link #SEAT_ANY} to not filter by seat
    * @param id Bid ID, assumed to be unique within the filtered seats
    * @return Matching bid's builder, or {@code null} if not found
    */
   @Nullable public static Bid.Builder bidWithId(
-      BidResponse.Builder response, @Nullable String seat, String id) {
+      BidResponse.Builder response, @Nullable String seatFilter, String id) {
     checkNotNull(id);
 
     for (SeatBid.Builder seatbid : response.getSeatbidBuilderList()) {
-      if (filterSeat(seatbid, seat)) {
+      if (filterSeat(seatbid, seatFilter)) {
         for (Bid.Builder bid : seatbid.getBidBuilderList()) {
           if (id.equals(bid.getId())) {
             return bid;
@@ -250,30 +252,31 @@ public final class OpenRtbUtils {
    * Finds bids by a custom criteria.
    *
    * @param bidFilter Filter for bids
-   * @param seat Filter for seat. You can use {@code null} to select the anonymous seat,
+   * @param seatFilter Filter for seat. You can use {@code null} to select the anonymous seat,
    * or {@link #SEAT_ANY} to not filter by seat
    * @return Read-only sequence of bids that satisfy the filter.
    *     May have bids from multiple seats, grouped by seat
    */
   public static Stream<Bid.Builder> bidStreamWith(
-      BidResponse.Builder response, String seat, @Nullable Predicate<Bid.Builder> bidFilter) {
+      BidResponse.Builder response, @Nullable String seatFilter,
+      @Nullable Predicate<Bid.Builder> bidFilter) {
     return StreamSupport.stream(
-        new ResponseBidsIterator(response, seat, bidFilter).spliterator(), false);
+        new ResponseBidsIterator(response, seatFilter, bidFilter).spliterator(), false);
   }
 
   /**
    * Finds bids by a custom criteria.
    *
    * @param bidFilter Filter for bids
-   * @param seat Filter for seat. You can use {@code null} to select the anonymous seat,
+   * @param seatFilter Filter for seat. You can use {@code null} to select the anonymous seat,
    * or {@link #SEAT_ANY} to not filter by seat
    * @return Sequence of all bids that satisfy the filter.
    *     May have bids from multiple seats, grouped by seat
    */
   public static Iterable<Bid.Builder> bidsWith(
-      BidResponse.Builder response, @Nullable String seat,
+      BidResponse.Builder response, @Nullable String seatFilter,
       @Nullable Predicate<Bid.Builder> bidFilter) {
-    return bidStreamWith(response, seat, bidFilter).collect(Collectors.toList());
+    return bidStreamWith(response, seatFilter, bidFilter).collect(Collectors.toList());
   }
 
   /**
@@ -298,18 +301,19 @@ public final class OpenRtbUtils {
   /**
    * Updates bids from a given seat.
    *
-   * @param seat Seat ID, or {@code null} to select the anonymous seat
+   * @param seatFilter Seat ID, or {@code null} to select the anonymous seat
    * @param updater Update function. The {@code apply()} method can decide or not to update each
    *     object, and it's expected to return {@code true} for objects that were updated
    * @return {@code true} if at least one bid was updated
    * @see ProtoUtils#update(Iterable, Function) for more general updating support
    */
   public static boolean updateBids(
-      BidResponse.Builder response, @Nullable String seat, Function<Bid.Builder, Boolean> updater) {
+      BidResponse.Builder response, @Nullable String seatFilter,
+      Function<Bid.Builder, Boolean> updater) {
     checkNotNull(updater);
 
     for (SeatBid.Builder seatbid : response.getSeatbidBuilderList()) {
-      if (seat == null ? !seatbid.hasSeat() : seatbid.hasSeat() && seat.equals(seatbid.getSeat())) {
+      if (filterSeat(seatbid, seatFilter)) {
         return ProtoUtils.update(seatbid.getBidBuilderList(), updater);
       }
     }
@@ -317,24 +321,32 @@ public final class OpenRtbUtils {
   }
 
   /**
-   * Filter bids from all seats.
+   * Remove bids by bid.
    *
    * @param filter Returns {@code true} to keep bid, {@code false} to remove
    * @return {@code true} if any bid was removed
    * @see ProtoUtils#filter(Iterable, Predicate) for more general filtering support
    */
-  public static boolean filterBids(BidResponse.Builder response, Predicate<Bid.Builder> filter) {
+  public static boolean removeBids(BidResponse.Builder response, Predicate<Bid.Builder> filter) {
     checkNotNull(filter);
     boolean updated = false;
 
     for (SeatBid.Builder seatbid : response.getSeatbidBuilderList()) {
-      updated |= filterSeat(seatbid, filter);
+      updated |= removeBids(seatbid, filter);
     }
 
     return updated;
   }
 
-  private static boolean filterSeat(SeatBid.Builder seatbid, Predicate<Bid.Builder> filter) {
+  /**
+   * @deprecated Use {@link #removeBids(com.google.openrtb.OpenRtb.BidResponse.Builder, Predicate)}
+   */
+  @Deprecated
+  public static boolean filterBids(BidResponse.Builder response, Predicate<Bid.Builder> filter) {
+    return removeBids(response, filter);
+  }
+
+  private static boolean removeBids(SeatBid.Builder seatbid, Predicate<Bid.Builder> filter) {
     List<Bid.Builder> oldBids = seatbid.getBidBuilderList();
     Iterable<Bid.Builder> newBids = ProtoUtils.filter(oldBids, filter);
     if (newBids == oldBids) {
@@ -349,24 +361,34 @@ public final class OpenRtbUtils {
   }
 
   /**
-   * Filter bids from a given seat.
+   * Remove bids by seat and bid.
    *
-   * @param seat Seat ID, or {@code null} to select the anonymous seat
-   * @param filter Returns {@code true} to keep bid, {@code false} to remove
+   * @param seatFilter Seat ID, or {@code null} to select the anonymous seat
+   * @param bidFilter Returns {@code true} to keep bid, {@code false} to remove
    * @return {@code true} if any bid was removed
    * @see ProtoUtils#filter(Iterable, Predicate) for more general filtering support
    */
-  public static boolean filterBids(
-      BidResponse.Builder response, @Nullable String seat, Predicate<Bid.Builder> filter) {
-    checkNotNull(filter);
+  public static boolean removeBids(
+      BidResponse.Builder response, @Nullable String seatFilter, Predicate<Bid.Builder> bidFilter) {
+    checkNotNull(bidFilter);
+    boolean updated = false;
 
     for (SeatBid.Builder seatbid : response.getSeatbidBuilderList()) {
-      if (seat == null ? !seatbid.hasSeat() : seatbid.hasSeat() && seat.equals(seatbid.getSeat())) {
-        return OpenRtbUtils.filterSeat(seatbid, filter);
+      if (filterSeat(seatbid, seatFilter)) {
+        updated |= removeBids(seatbid, bidFilter);
       }
     }
 
-    return false;
+    return updated;
+  }
+
+  /**
+   * @deprecated Use {@link #removeBids(com.google.openrtb.OpenRtb.BidResponse.Builder, String, Predicate)}
+   */
+  @Deprecated
+  public static boolean filterBids(
+      BidResponse.Builder response, @Nullable String seatFilter, Predicate<Bid.Builder> bidFilter) {
+    return removeBids(response, seatFilter, bidFilter);
   }
 
   /**
@@ -513,7 +535,15 @@ public final class OpenRtbUtils {
     return baseFilter == IMP_ALL ? typeFilter : baseFilter.and(typeFilter);
   }
 
-  protected static boolean filterSeat(SeatBid.Builder seatbid, String seatFilter) {
+  /**
+   * Performs a filter by seat.
+   *
+   * @param seatbid Seat to filter
+   * @param seatFilter Filter for seat. You can use {@code null} to select the anonymous seat,
+   * or {@link #SEAT_ANY} to not filter by seat
+   * @return {@code true} if the seat passes the filter
+   */
+  public static boolean filterSeat(SeatBidOrBuilder seatbid, @Nullable String seatFilter) {
     return seatFilter == null
         ? !seatbid.hasSeat()
         : seatFilter == SEAT_ANY || seatFilter.equals(seatbid.getSeat());
