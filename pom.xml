@@ -52,14 +52,14 @@
   <properties>
     <findBugsJsr305Version>3.0.1</findBugsJsr305Version>
     <gpg.skip>true</gpg.skip>
-    <guavaVersion>18.0</guavaVersion>
-    <fasterxmlJacksonVersion>2.6.3</fasterxmlJacksonVersion>
+    <guavaVersion>19.0</guavaVersion>
+    <fasterxmlJacksonVersion>2.6.4</fasterxmlJacksonVersion>
     <injectVersion>1</injectVersion>
     <junitVersion>4.12</junitVersion>
     <metricsVersion>3.0.2</metricsVersion>
     <protobufVersion>2.6.1</protobufVersion>
-    <slf4jVersion>1.7.12</slf4jVersion>
-    <truthVersion>0.27</truthVersion>
+    <slf4jVersion>1.7.13</slf4jVersion>
+    <truthVersion>0.28</truthVersion>
 
     <!-- Plugin versions -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -142,7 +142,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.9.1</version>
+        <version>1.10</version>
       </plugin>
 
       <plugin>
