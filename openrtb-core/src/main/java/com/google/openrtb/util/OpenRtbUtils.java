@@ -99,35 +99,35 @@ public final class OpenRtbUtils {
   /**
    * Get a {@link Gender} from its name (either Java or JSON name).
    */
-  @Nullable public static Gender genderFromName(String genderName) {
+  @Nullable public static Gender genderFromName(@Nullable String genderName) {
     return NAME_TO_GENDER.get(genderName);
   }
 
   /**
    * Get a {@link Gender}'s JSON name, from its Java name.
    */
-  @Nullable public static String genderToJsonName(Gender gender) {
+  @Nullable public static String genderToJsonName(@Nullable Gender gender) {
     return GENDER_TO_JSON.get(gender);
   }
 
   /**
    * Get a {@link ContentCategory} from its name (either Java or JSON name).
    */
-  @Nullable public static ContentCategory categoryFromName(String catName) {
+  @Nullable public static ContentCategory categoryFromName(@Nullable String catName) {
     return NAME_TO_CAT.get(catName);
   }
 
   /**
    * Get a {@link ContentCategory}'s JSON name, from its Java name.
    */
-  @Nullable public static String categoryToJsonName(String catName) {
+  @Nullable public static String categoryToJsonName(@Nullable String catName) {
     return CAT_TO_JSON.get(catName);
   }
 
   /**
    * Get a {@link ContentCategory}'s JSON name.
    */
-  @Nullable public static String categoryToJsonName(ContentCategory cat) {
+  @Nullable public static String categoryToJsonName(@Nullable ContentCategory cat) {
     return CAT_TO_JSON.get(cat);
   }
 
@@ -237,21 +237,6 @@ public final class OpenRtbUtils {
    * Finds bids by a custom criteria.
    *
    * @param bidFilter Filter for bids
-   * @return Read-only sequence of bids that satisfy the filter.
-   *     May have bids from multiple seats, grouped by seat
-   * @deprecated Use {@link #bidsWith(com.google.openrtb.OpenRtb.BidResponse.Builder, String, Predicate)}
-   *     with seat = {@link #SEAT_ANY}
-   */
-  @Deprecated
-  public static Iterable<Bid.Builder> bidsWith(
-      BidResponse.Builder response, Predicate<Bid.Builder> bidFilter) {
-    return bidsWith(response, SEAT_ANY, bidFilter);
-  }
-
-  /**
-   * Finds bids by a custom criteria.
-   *
-   * @param bidFilter Filter for bids
    * @param seatFilter Filter for seat. You can use {@code null} to select the anonymous seat,
    * or {@link #SEAT_ANY} to not filter by seat
    * @return Read-only sequence of bids that satisfy the filter.
@@ -338,14 +323,6 @@ public final class OpenRtbUtils {
     return updated;
   }
 
-  /**
-   * @deprecated Use {@link #removeBids(com.google.openrtb.OpenRtb.BidResponse.Builder, Predicate)}
-   */
-  @Deprecated
-  public static boolean filterBids(BidResponse.Builder response, Predicate<Bid.Builder> filter) {
-    return removeBids(response, filter);
-  }
-
   private static boolean removeBids(SeatBid.Builder seatbid, Predicate<Bid.Builder> filter) {
     List<Bid.Builder> oldBids = seatbid.getBidBuilderList();
     Iterable<Bid.Builder> newBids = ProtoUtils.filter(oldBids, filter);
@@ -383,20 +360,11 @@ public final class OpenRtbUtils {
   }
 
   /**
-   * @deprecated Use {@link #removeBids(com.google.openrtb.OpenRtb.BidResponse.Builder, String, Predicate)}
-   */
-  @Deprecated
-  public static boolean filterBids(
-      BidResponse.Builder response, @Nullable String seatFilter, Predicate<Bid.Builder> bidFilter) {
-    return removeBids(response, seatFilter, bidFilter);
-  }
-
-  /**
    * Finds an {@link Imp} by ID.
    *
    * @return The {@link Imp}s that has the given id, or {@code null} if not found.
    */
-  @Nullable public static Imp impWithId(BidRequest request, final String id) {
+  @Nullable public static Imp impWithId(BidRequest request, String id) {
     checkNotNull(id);
 
     for (Imp imp : request.getImpList()) {
@@ -427,16 +395,6 @@ public final class OpenRtbUtils {
     }
 
     return null;
-  }
-
-  /**
-   * @deprecated Use {@link #impsWith(BidRequest, Predicate)}, with the help of
-   * {@link #addFilters(Predicate, boolean, boolean, boolean)} if necessary.
-   */
-  @Deprecated
-  public static Iterable<Imp> impsWith(
-      BidRequest request, final Predicate<Imp> predicate, boolean banner, boolean video) {
-    return impsWith(request, addFilters(predicate, banner, video, false));
   }
 
   /**
@@ -497,7 +455,7 @@ public final class OpenRtbUtils {
       }};
   }
 
-  public static Stream<Imp> impStreamWith(BidRequest request, final Predicate<Imp> impFilter) {
+  public static Stream<Imp> impStreamWith(BidRequest request, Predicate<Imp> impFilter) {
     return StreamSupport.stream(impsWith(request, impFilter).spliterator(), false);
   }
 

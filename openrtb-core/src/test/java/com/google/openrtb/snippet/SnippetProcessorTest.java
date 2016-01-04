@@ -20,6 +20,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.Imp;
 import com.google.openrtb.OpenRtb.BidResponse;
@@ -56,7 +57,21 @@ public class SnippetProcessorTest {
 
     @Override protected void processMacroAt(
         SnippetProcessorContext ctx, StringBuilder sb, SnippetMacroType macroDef) {
-      sb.append("#");
+      if (macroDef instanceof TestMacros) {
+        switch ((TestMacros) macroDef) {
+          case TEST:
+            sb.append("#");
+            break;
+
+          case MACRO_NREC:
+            sb.append(TestMacros.TEST.key());
+            break;
+
+          case MACRO_REC:
+            sb.append(TestMacros.MACRO_REC.key());
+            break;
+        }
+      }
     }
   };
 
@@ -119,6 +134,8 @@ public class SnippetProcessorTest {
     assertThat(process("${UNKNOWN_MACRO}")).isEqualTo("${UNKNOWN_MACRO}");
     assertThat(process(TestMacros.TEST.key())).isEqualTo("#");
     assertThat(process("%{" + TestMacros.TEST.key() + "}%")).isEqualTo(esc("#"));
+    assertThat(process(TestMacros.MACRO_NREC.key())).isEqualTo("#");
+    assertThat(process(TestMacros.MACRO_REC.key())).isEqualTo(TestMacros.MACRO_REC.key());
   }
 
   private String process(String snippet) {
@@ -163,10 +180,32 @@ public class SnippetProcessorTest {
   }
 
   static enum TestMacros implements SnippetMacroType {
-    TEST;
+    TEST("${TEST}"),
+    MACRO_NREC("${MACRO_NREC}"),
+    MACRO_REC("${MACRO_REC}");
 
-    @Override public String key() {
-      return "${TEST}";
+    private static final ImmutableMap<String, TestMacros> LOOKUP_KEY;
+
+    static {
+      ImmutableMap.Builder<String, TestMacros> builder = ImmutableMap.builder();
+      for (TestMacros snippetMacro : values()) {
+        builder.put(snippetMacro.key, snippetMacro);
+      }
+      LOOKUP_KEY = builder.build();
+    }
+
+    private final String key;
+
+    private TestMacros(String key) {
+      this.key = key;
+    }
+
+    @Override public final String key() {
+      return key;
+    }
+
+    public static TestMacros valueOfKey(String key) {
+      return LOOKUP_KEY.get(key);
     }
   }
 }
