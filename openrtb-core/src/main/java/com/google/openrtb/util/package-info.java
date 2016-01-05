@@ -16,6 +16,10 @@
 
 /**
  * General utilities.
+ *
+ * <p>Warning: These utilities are intended in part for internal use, in part as
+ * building blocks for higher-level libraries.  They are stable and supported, but
+ * designed for efficiency and power above ease-of-use or convenience.
  */
 @javax.annotation.ParametersAreNonnullByDefault
 package com.google.openrtb.util;

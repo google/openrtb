@@ -95,6 +95,7 @@ public final class ProtoUtils {
    */
   public static <M extends MessageLiteOrBuilder>
       Iterable<M> filter(Iterable<M> objs, Predicate<M> filter) {
+    checkNotNull(filter);
 
     int i = 0;
     for (M obj : objs) {
@@ -149,6 +150,7 @@ public final class ProtoUtils {
    */
   @Nullable public static <M extends Message> M filter(
       M msg, boolean clearEmpty, Predicate<FieldDescriptor> filter) {
+    checkNotNull(filter);
 
     int i = 0;
     for (Map.Entry<FieldDescriptor, Object> entry : msg.getAllFields().entrySet()) {

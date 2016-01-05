@@ -67,6 +67,8 @@ public class OpenRtbUtilsTest {
     assertThat(OpenRtbUtils.impsWith(request, imp -> "notfound".equals(imp.getId()))).isEmpty();
     assertThat(OpenRtbUtils.impsWith(request, imp -> "1".equals(imp.getId()))).hasSize(1);
     assertThat(OpenRtbUtils.impWithId(request, "1")).isNotNull();
+    assertThat(OpenRtbUtils.impStreamWith(request, imp -> "1".equals(imp.getId())).count())
+        .isEqualTo(1);
   }
 
   @Test
@@ -87,7 +89,11 @@ public class OpenRtbUtilsTest {
     assertThat(OpenRtbUtils.impsWith(request, OpenRtbUtils.addFilters(
         imp -> true, true, false, false))).hasSize(4);
     assertThat(OpenRtbUtils.impsWith(request, OpenRtbUtils.addFilters(
+        OpenRtbUtils.IMP_ALL, true, false, false))).hasSize(4);
+    assertThat(OpenRtbUtils.impsWith(request, OpenRtbUtils.addFilters(
         imp -> false, true, false, false))).isEmpty();
+    assertThat(OpenRtbUtils.impsWith(request, OpenRtbUtils.addFilters(
+        OpenRtbUtils.IMP_NONE, true, false, false))).isEmpty();
     // Filter-all case
     assertThat(OpenRtbUtils.impsWith(request, OpenRtbUtils.addFilters(
         imp -> "0".equals(imp.getBanner().getId()), true, false, false))).hasSize(4);
@@ -124,6 +130,16 @@ public class OpenRtbUtilsTest {
         imp -> true, false, true, true))).hasSize(3);
     assertThat(OpenRtbUtils.impsWith(request, OpenRtbUtils.addFilters(
         imp -> true, true, true, true))).hasSize(7);
+  }
+
+  @Test
+  public void testAddFilter_specialCases() {
+    Predicate<Imp> pred = imp -> true;
+    assertThat(OpenRtbUtils.addFilters(pred, false, false, false)).isSameAs(pred);
+    assertThat(OpenRtbUtils.addFilters(OpenRtbUtils.IMP_NONE, true, true, true))
+        .isSameAs(OpenRtbUtils.IMP_NONE);
+    assertThat(OpenRtbUtils.addFilters(OpenRtbUtils.IMP_ALL, true, true, true))
+        .isNotSameAs(OpenRtbUtils.IMP_ALL);  // Mostly for coverage
   }
 
   @SuppressWarnings("deprecation")
@@ -166,7 +182,7 @@ public class OpenRtbUtilsTest {
     assertThat(OpenRtbUtils.bids(response, "x").stream().map(build).collect(Collectors.toList()))
         .containsExactly(bidUnused, bid2, bid22);
     Predicate<Bid.Builder> filterGoodBids = bid -> !"unused".equals(bid.getId());
-    assertThat(OpenRtbUtils.bidsWith(response, filterGoodBids)).hasSize(4);
+    assertThat(OpenRtbUtils.bidsWith(response, OpenRtbUtils.SEAT_ANY, filterGoodBids)).hasSize(4);
     assertThat(OpenRtbUtils.bidStreamWith(response, OpenRtbUtils.SEAT_ANY, filterGoodBids).count())
         .isEqualTo(4);
     assertThat(OpenRtbUtils.bidsWith(response, "none", filterGoodBids)).isEmpty();
