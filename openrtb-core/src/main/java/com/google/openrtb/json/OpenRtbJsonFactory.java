@@ -111,7 +111,7 @@ public class OpenRtbJsonFactory {
    * Register an extension reader.
    *
    * @param extReader code to desserialize some extension properties
-   * @param msgKlass class of container message's builder, e.g. {@code MyImp.Builder.class}
+   * @param msgKlass class of extension message's builder, e.g. {@code MyImp.Builder.class}
    */
   public final <EB extends ExtendableBuilder<?, EB>> OpenRtbJsonFactory register(
       OpenRtbJsonExtReader<EB> extReader, Class<EB> msgKlass) {
@@ -124,7 +124,8 @@ public class OpenRtbJsonFactory {
    * used in preference to a non-field-specific writer that may exist for the same class.
    *
    * @param extWriter code to serialize some {@code extKlass}'s properties
-   * @param extKlass class of container message, e.g. {@code MyImp.class}
+   * @param extKlass class of extension message, e.g. {@code MyImp.class}
+   * @param msgKlass class of container message, e.g. {@code Imp.class}
    * @param fieldName name of the field containing the extension
    * @param <T> Type of value for the extension
    * @see #register(OpenRtbJsonExtWriter, Class, Class)
@@ -148,7 +149,8 @@ public class OpenRtbJsonFactory {
    * can be used for any extension of the provided class).
    *
    * @param extWriter code to serialize some {@code extKlass}'s properties
-   * @param extKlass class of container message, e.g. {@code MyImp.class}
+   * @param extKlass class of extension message, e.g. {@code MyImp.class}
+   * @param msgKlass class of container message, e.g. {@code Imp.class}
    * @param <T> Type of value for the extension
    * @see #register(OpenRtbJsonExtWriter, Class, Class, String)
    */
