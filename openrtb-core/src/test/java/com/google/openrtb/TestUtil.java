@@ -45,10 +45,11 @@ public class TestUtil {
     Map<T, String> hash = new HashMap<>();
     hash.put(single, "0");
     assertThat(hash.get(single)).isEqualTo("0");
-
-    assertThat(single).isEqualTo(single);
-    assertThat(single).isNotEqualTo(null);
     assertThat(single.toString()).isNotNull();
+
+    // Testing equals(), do not use is[Not]EqualTo()!
+    assertThat(single.equals(single)).isTrue();
+    assertThat(single.equals(null)).isFalse();
 
     if (single instanceof Comparable<?>) {
       @SuppressWarnings("rawtypes")
@@ -68,9 +69,11 @@ public class TestUtil {
    */
   @SuppressWarnings("unchecked")
   public static <T> Map<T, String> testCommonMethods(T different1, T different2) {
-    assertThat(different1).isEqualTo(different1);
-    assertThat(different1).isNotEqualTo(SOMETHING_ELSE);
-    assertThat(different1).isNotEqualTo(different2);
+    // Testing equals(), do not use is[Not]EqualTo()!
+    assertThat(different1.equals(different1)).isTrue();
+    assertThat(different1.equals(SOMETHING_ELSE)).isFalse();
+    assertThat(different1.equals(different2)).isFalse();
+
     assertThat(different1.toString()).isNotNull();
 
     Map<T, String> hash = testCommonMethods(different1);
@@ -102,9 +105,10 @@ public class TestUtil {
    */
   @SuppressWarnings("unchecked")
   public static <T> Map<T, String> testCommonMethods(T equal1, T equal2, T different) {
-    assertThat(equal2.hashCode()).isEqualTo(equal1.hashCode());
+    // Testing equals(), do not use is[Not]EqualTo()!
     assertThat(equal1.equals(equal2)).isTrue();
 
+    assertThat(equal2.hashCode()).isEqualTo(equal1.hashCode());
     Map<T, String> hash = testCommonMethods(equal1, different);
     hash.put(equal2, "2");
     assertThat(hash.get(equal1)).isEqualTo("2");

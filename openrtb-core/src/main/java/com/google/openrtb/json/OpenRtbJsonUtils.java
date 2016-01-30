@@ -141,6 +141,17 @@ public class OpenRtbJsonUtils {
     }
   }
 
+  public static void writeLongs(String fieldName, List<Long> data, JsonGenerator gen)
+      throws IOException {
+    if (!data.isEmpty()) {
+      gen.writeArrayFieldStart(fieldName);
+      for (Long d : data) {
+        gen.writeNumber(d);
+      }
+      gen.writeEndArray();
+    }
+  }
+
   public static void writeEnums(
       String fieldName, List<? extends ProtocolMessageEnum> enums, JsonGenerator gen)
       throws IOException {
