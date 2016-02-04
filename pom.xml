@@ -53,7 +53,8 @@
     <findBugsJsr305Version>3.0.1</findBugsJsr305Version>
     <gpg.skip>true</gpg.skip>
     <guavaVersion>19.0</guavaVersion>
-    <fasterxmlJacksonVersion>2.7.1</fasterxmlJacksonVersion>
+    <!-- Stick to 2.6 for now; 2.7+ breaks SpringFramework and maybe other things. -->
+    <fasterxmlJacksonVersion>2.6.5</fasterxmlJacksonVersion>
     <injectVersion>1</injectVersion>
     <junitVersion>4.12</junitVersion>
     <metricsVersion>3.0.2</metricsVersion>
