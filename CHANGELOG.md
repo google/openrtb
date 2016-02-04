@@ -1,6 +1,9 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 1.0.1, 04-02-2016
+* Minor reviews in `OpenRtbJsonUtils`, javadocs, tests.
+
 ## Version 1.0.0, 04-01-2016
 * Happy new year!!  And here's the one-dot-zero release of the library.
   Series 1.0.x is now frozen, may be updated only for bugfixes.
