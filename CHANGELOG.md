@@ -1,6 +1,9 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 1.0.2, ??-02-2016
+* Fix `ProtoUtils.filter()` for recursive filtering.
+
 ## Version 1.0.1, 04-02-2016
 * Minor reviews in `OpenRtbJsonUtils`, javadocs, tests.
 

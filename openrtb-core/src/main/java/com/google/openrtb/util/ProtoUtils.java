@@ -25,7 +25,6 @@ import com.google.protobuf.MessageLite;
 import com.google.protobuf.MessageLiteOrBuilder;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -84,6 +83,15 @@ public final class ProtoUtils {
   }
 
   /**
+   * @deprecated Use {@link #filter(List, Predicate)}
+   */
+  @Deprecated
+  public static <M extends MessageLiteOrBuilder>
+    Iterable<M> filter(Iterable<M> objs, Predicate<M> filter) {
+    return filter(objs instanceof List<?> ? ((List<M>) objs) : ImmutableList.copyOf(objs), filter);
+  }
+
+  /**
    * Runs a filter through a sequence of objects.
    *
    * @param objs Message-or-builder objects
@@ -94,16 +102,14 @@ public final class ProtoUtils {
    *     If all elements are discarded, returns an immutable, empty sequence
    */
   public static <M extends MessageLiteOrBuilder>
-      Iterable<M> filter(Iterable<M> objs, Predicate<M> filter) {
+      List<M> filter(List<M> objs, Predicate<M> filter) {
     checkNotNull(filter);
 
-    int i = 0;
-    for (M obj : objs) {
-      if (!filter.test(obj)) {
+    for (int i = 0; i < objs.size(); ++i) {
+      if (!filter.test(objs.get(i))) {
         // At least one discarded object, go to slow-path.
         return filterFrom(objs, filter, i);
       }
-      ++i;
     }
 
     // Optimized common case: all items filtered, return the input sequence.
@@ -111,22 +117,25 @@ public final class ProtoUtils {
   }
 
   private static <M extends MessageLiteOrBuilder> List<M> filterFrom(
-      Iterable<M> objs, Predicate<M> filter, int firstDiscarded) {
-    int initialCapacity = (objs instanceof Collection<?>) ? ((Collection<?>) objs).size() - 1 : 10;
-    List<M> filtered = (firstDiscarded == 0) ? null : new ArrayList<>(initialCapacity);
+      List<M> objs, Predicate<M> filter, int firstDiscarded) {
+    List<M> filtered;
 
-    Iterator<M> iter = objs.iterator();
-    for (int i = 0; i < firstDiscarded; ++i) {
-      filtered.add(iter.next());
+    if (firstDiscarded == 0) {
+      filtered = null;
+    } else {
+      filtered = new ArrayList<>(objs.size() - 1);
+      for (int i = 0; i < firstDiscarded; ++i) {
+        filtered.add(objs.get(i));
+      }
     }
 
-    iter.next(); // Ignore object at firstDiscarded position
-
-    while (iter.hasNext()) {
-      M obj = iter.next();
+    for (int i = firstDiscarded + 1; i < objs.size(); ++i) {
+      M obj = objs.get(i);
 
       if (filter.test(obj)) {
-        filtered = (filtered == null) ? new ArrayList<>(initialCapacity) : filtered;
+        if (filtered == null) {
+          filtered = new ArrayList<>(objs.size() - i);
+        }
         filtered.add(obj);
       }
     }
@@ -157,8 +166,11 @@ public final class ProtoUtils {
       FieldDescriptor fd = entry.getKey();
 
       if (!filter.test(fd)) {
-        // At least one discarded field, go to slow-path.
-        return filterFrom(msg, clearEmpty, filter, i);
+        // At least one field discarded, go to slow-path.
+        return filterFrom(msg, clearEmpty, filter, i, true);
+      } else if (fd.getType() == FieldDescriptor.Type.MESSAGE) {
+        // At least one field may have children, go to slow-path.
+        return filterFrom(msg, clearEmpty, filter, i, false);
       }
 
       ++i;
@@ -169,27 +181,34 @@ public final class ProtoUtils {
   }
 
   @Nullable private static <M extends Message> M filterFrom(
-      M msg, boolean clearEmpty, Predicate<FieldDescriptor> filter, int firstDiscarded) {
+      M msg, boolean clearEmpty, Predicate<FieldDescriptor> filter, int first, boolean discard) {
 
-    // At least one field was discarded; we have to work harder and maybe create
+    // At least one field may be discarded; we have to work harder and maybe create
     // a new message that will contain only the retained filters. Use a lazy-allocated
     // builder to also optimize the scenario of all fields being discarded.
 
-    Message.Builder builder = (firstDiscarded == 0) ? null : msg.newBuilderForType();
+    Message.Builder builder = first == 0 ? null : msg.newBuilderForType();
     Iterator<Map.Entry<FieldDescriptor, Object>> iter = msg.getAllFields().entrySet().iterator();
 
-    for (int i = 0; i < firstDiscarded; ++i) {
+    for (int i = 0; i < first; ++i) {
       filterValue(clearEmpty, filter, builder, iter.next());
     }
 
-    iter.next(); // Ignore object at firstDiscarded position
+    if (discard) {
+      iter.next();
+    }
 
+    boolean updated = discard;
     while (iter.hasNext()) {
       Map.Entry<FieldDescriptor, Object> entry = iter.next();
 
       if (filter.test(entry.getKey())) {
-        builder = (builder == null) ? msg.newBuilderForType() : builder;
-        filterValue(clearEmpty, filter, builder, entry);
+        if (builder == null) {
+          builder = msg.newBuilderForType();
+        }
+        updated |= filterValue(clearEmpty, filter, builder, entry);
+      } else {
+        updated = true;
       }
     }
 
@@ -201,34 +220,45 @@ public final class ProtoUtils {
         M ret = (M) msg.getDefaultInstanceForType();
         return ret;
       }
-    } else {
+    } else if (updated) {
       @SuppressWarnings("unchecked")
       M ret = (M) builder.build();
       return ret;
+    } else {
+      return msg;
     }
   }
 
-  protected static void filterValue(boolean clearEmpty, Predicate<FieldDescriptor> filter,
+  protected static boolean filterValue(boolean clearEmpty, Predicate<FieldDescriptor> filter,
       Message.Builder builder, Map.Entry<FieldDescriptor, Object> entry) {
     FieldDescriptor fd = entry.getKey();
     Object value = entry.getValue();
+    boolean updated = false;
 
     if (fd.getType() == FieldDescriptor.Type.MESSAGE) {
       if (fd.isRepeated()) {
         for (Object obj : ((Iterable<?>) value)) {
           Message child = filter((Message) obj, clearEmpty, filter);
-          if (child != null) {
+          if (child == null) {
+            updated = true;
+          } else {
+            updated = child != obj;
             builder.addRepeatedField(fd, child);
           }
         }
       } else {
         Message child = filter((Message) value, clearEmpty, filter);
-        if (child != null) {
+        if (child == null) {
+          updated = true;
+        } else {
+          updated = child != value;
           builder.setField(fd, child);
         }
       }
     } else {
       builder.setField(fd, value);
     }
+
+    return updated;
   }
 }
