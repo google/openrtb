@@ -74,6 +74,8 @@ public class OpenRtbJsonFactory {
    */
   protected OpenRtbJsonFactory(OpenRtbJsonFactory config) {
     this.jsonFactory = config.getJsonFactory();
+    this.strict = config.strict;
+    this.rootNativeField = config.rootNativeField;
     this.extReaders = ImmutableSetMultimap.copyOf(config.extReaders);
     this.extWriters = ImmutableMap.copyOf(Maps.transformValues(config.extWriters,
         (Map<String, Map<String, OpenRtbJsonExtWriter<?>>> map) ->
@@ -84,7 +86,7 @@ public class OpenRtbJsonFactory {
    * Creates a new factory with default configuration.
    */
   public static OpenRtbJsonFactory create() {
-    return new OpenRtbJsonFactory(null, true, true, null, null);
+    return new OpenRtbJsonFactory(null, false, false, null, null);
   }
 
   /**

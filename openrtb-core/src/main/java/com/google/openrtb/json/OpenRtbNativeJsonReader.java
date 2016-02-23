@@ -94,18 +94,26 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       return null;
     }
     NativeRequest.Builder req = NativeRequest.newBuilder();
+    boolean rootNativeField = false;
+    boolean firstField = true;
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
-      if (par.nextToken() != JsonToken.VALUE_NULL && "native".equals(fieldName)) {
-        for (startObject(par); endObject(par); par.nextToken()) {
-          fieldName = getCurrentName(par);
-          if (par.nextToken() != JsonToken.VALUE_NULL) {
-            readNativeRequestField(par, req, fieldName);
+      if (par.nextToken() != JsonToken.VALUE_NULL) {
+        if (firstField) {
+          firstField = false;
+          if ((rootNativeField = "native".equals(fieldName))) {
+            startObject(par);
+            fieldName = getCurrentName(par);
+            par.nextToken();
           }
         }
-      } else {
-        par.skipChildren();
+        if (par.getCurrentToken() != JsonToken.VALUE_NULL) {
+          readNativeRequestField(par, req, fieldName);
+        }
       }
+    }
+    if (rootNativeField) {
+      endObject(par);
     }
     return req;
   }
@@ -322,18 +330,26 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       return null;
     }
     NativeResponse.Builder resp = NativeResponse.newBuilder();
+    boolean rootNativeField = false;
+    boolean firstField = true;
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
-      if (par.nextToken() != JsonToken.VALUE_NULL && "native".equals(fieldName)) {
-        for (startObject(par); endObject(par); par.nextToken()) {
-          fieldName = getCurrentName(par);
-          if (par.nextToken() != JsonToken.VALUE_NULL) {
-            readNativeResponseField(par, resp, fieldName);
+      if (par.nextToken() != JsonToken.VALUE_NULL) {
+        if (firstField) {
+          firstField = false;
+          if ((rootNativeField = "native".equals(fieldName))) {
+            startObject(par);
+            fieldName = getCurrentName(par);
+            par.nextToken();
           }
         }
-      } else {
-        par.skipChildren();
+        if (par.getCurrentToken() != JsonToken.VALUE_NULL) {
+          readNativeResponseField(par, resp, fieldName);
+        }
       }
+    }
+    if (rootNativeField) {
+      endObject(par);
     }
     return resp;
   }
