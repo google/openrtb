@@ -3,6 +3,9 @@ RELEASE NOTES
 
 ## Version 1.0.2, ??-02-2016
 * Fix `ProtoUtils.filter()` for recursive filtering.
+* Mapping documentation added to the proto!  The Google Sheet used for
+  this documentation is now deprecated; just look up the proto, or the
+  API docs in protoc-generated model classes (e.g. Javadoc for Java).
 
 ## Version 1.0.1, 04-02-2016
 * Minor reviews in `OpenRtbJsonUtils`, javadocs, tests.
