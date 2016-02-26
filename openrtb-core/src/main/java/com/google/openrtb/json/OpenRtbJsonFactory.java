@@ -49,16 +49,19 @@ public class OpenRtbJsonFactory {
 
   private JsonFactory jsonFactory;
   private boolean strict;
+  private boolean rootNativeField;
   private final SetMultimap<String, OpenRtbJsonExtReader<?>> extReaders;
   private final Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters;
 
   protected OpenRtbJsonFactory(
       @Nullable JsonFactory jsonFactory,
       boolean strict,
+      boolean rootNativeField,
       @Nullable SetMultimap<String, OpenRtbJsonExtReader<?>> extReaders,
       @Nullable Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters) {
     this.jsonFactory = jsonFactory;
     this.strict = strict;
+    this.rootNativeField = rootNativeField;
     this.extReaders = extReaders == null ? LinkedHashMultimap.create() : extReaders;
     this.extWriters = extWriters == null ? new LinkedHashMap<>() : extWriters;
   }
@@ -71,6 +74,8 @@ public class OpenRtbJsonFactory {
    */
   protected OpenRtbJsonFactory(OpenRtbJsonFactory config) {
     this.jsonFactory = config.getJsonFactory();
+    this.strict = config.strict;
+    this.rootNativeField = config.rootNativeField;
     this.extReaders = ImmutableSetMultimap.copyOf(config.extReaders);
     this.extWriters = ImmutableMap.copyOf(Maps.transformValues(config.extWriters,
         (Map<String, Map<String, OpenRtbJsonExtWriter<?>>> map) ->
@@ -81,7 +86,7 @@ public class OpenRtbJsonFactory {
    * Creates a new factory with default configuration.
    */
   public static OpenRtbJsonFactory create() {
-    return new OpenRtbJsonFactory(null, true, null, null);
+    return new OpenRtbJsonFactory(null, false, false, null, null);
   }
 
   /**
@@ -101,10 +106,25 @@ public class OpenRtbJsonFactory {
   }
 
   /**
+   * Sets root native field generation mode.
+   */
+  public final OpenRtbJsonFactory setRootNativeField(boolean rootNativeField) {
+    this.rootNativeField = rootNativeField;
+    return this;
+  }
+
+  /**
    * Returns {@code true} for strict mode, {@code false} lenient mode.
    */
   public final boolean isStrict() {
     return strict;
+  }
+
+  /**
+   * Returns {@code true} for root native field mode, {@code false} if not.
+   */
+  public final boolean isRootNativeField() {
+    return rootNativeField;
   }
 
   /**

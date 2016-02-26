@@ -1,6 +1,18 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 1.0.2, 26-02-2016
+* Fix `ProtoUtils.filter()` for recursive filtering.
+* JSON writer doesn't emit the top-level `native` field for native
+  request or response objects. That was a poorly specified part of
+  OpenRTB 2.3 & Native 1.0, clarified in the next releases but even
+  in 2.4/1.0 this extra field should not be used.  The factory has a
+  new option `rootNativeField` to opt in the legacy writer's behavior.
+  (The reader always accepted both forms.)
+* Mapping documentation added to the proto!  The Google Sheet used for
+  this documentation is now deprecated; just look up the proto, or the
+  API docs in protoc-generated model classes (e.g. Javadoc for Java).
+
 ## Version 1.0.1, 04-02-2016
 * Minor reviews in `OpenRtbJsonUtils`, javadocs, tests.
 

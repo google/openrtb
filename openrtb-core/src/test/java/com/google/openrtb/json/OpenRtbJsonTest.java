@@ -327,19 +327,19 @@ public class OpenRtbJsonTest {
   static void testRequest(OpenRtbJsonFactory jsonFactory, BidRequest req) throws IOException {
     String jsonReq = jsonFactory.newWriter().writeBidRequest(req);
     logger.info(jsonReq);
-    jsonFactory.setStrict(true).newWriter().writeBidRequest(req);
+    jsonFactory.setStrict(false).newWriter().writeBidRequest(req);
     BidRequest req2 = jsonFactory.newReader().readBidRequest(jsonReq);
     assertThat(req2).isEqualTo(req);
-    jsonFactory.setStrict(true).newReader().readBidRequest(jsonReq);
+    jsonFactory.setStrict(false).newReader().readBidRequest(jsonReq);
   }
 
   static String testResponse(OpenRtbJsonFactory jsonFactory, BidResponse resp) throws IOException {
     String jsonResp = jsonFactory.newWriter().writeBidResponse(resp);
     logger.info(jsonResp);
-    jsonFactory.setStrict(true).newWriter().writeBidResponse(resp);
+    jsonFactory.setStrict(false).newWriter().writeBidResponse(resp);
     OpenRtb.BidResponse resp2 = jsonFactory.newReader().readBidResponse(jsonResp);
     assertThat(resp2).isEqualTo(resp);
-    jsonFactory.setStrict(true).newReader().readBidResponse(jsonResp);
+    jsonFactory.setStrict(false).newReader().readBidResponse(jsonResp);
     return jsonResp;
   }
 
@@ -660,7 +660,7 @@ public class OpenRtbJsonTest {
           .setVer("1.0")
           .setLink(NativeResponse.Link.newBuilder()));
     } else {
-      bid.setAdm("{\"native\":{\"ver\":\"1.0\",\"link\":{}}}");
+      bid.setAdm("{\"ver\":\"1.0\",\"link\":{}}");
     }
     return BidResponse.newBuilder()
         .setId("resp1")

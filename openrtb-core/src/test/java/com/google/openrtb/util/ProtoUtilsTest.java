@@ -43,8 +43,8 @@ public class ProtoUtilsTest {
         .addImp(Imp.newBuilder()
             .setId("1")
             .setBanner(Banner.newBuilder()
-                .setExtension(TestExt.testBanner, test1))
-            .setExtension(TestExt.testImp, test1))
+                .setExtension(TestExt.testBanner, test1)))
+            // No extension on Imp, must recurse anyway
         .setExtension(TestExt.testRequest1, test1)
         .setExtension(TestExt.testRequest2, test2)
         .build();

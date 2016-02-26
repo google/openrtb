@@ -142,7 +142,6 @@ public class OpenRtbUtilsTest {
         .isNotSameAs(OpenRtbUtils.IMP_ALL);  // Mostly for coverage
   }
 
-  @SuppressWarnings("deprecation")
   @Test
   public void testResponse_bids() {
     BidResponse.Builder response = BidResponse.newBuilder().setCur("USD");

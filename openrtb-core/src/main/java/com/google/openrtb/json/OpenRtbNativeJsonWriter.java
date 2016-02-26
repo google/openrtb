@@ -81,10 +81,14 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
    */
   public final void writeNativeRequest(NativeRequest req, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
-    gen.writeObjectFieldStart("native");
+    if (factory().isRootNativeField()) {
+      gen.writeObjectFieldStart("native");
+    }
     writeNativeRequestFields(req, gen);
     writeExtensions(req, gen);
-    gen.writeEndObject();
+    if (factory().isRootNativeField()) {
+      gen.writeEndObject();
+    }
     gen.writeEndObject();
     gen.flush();
   }
@@ -244,10 +248,14 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
    */
   public final void writeNativeResponse(NativeResponse resp, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
-    gen.writeObjectFieldStart("native");
+    if (factory().isRootNativeField()) {
+      gen.writeObjectFieldStart("native");
+    }
     writeNativeResponseFields(resp, gen);
     writeExtensions(resp, gen);
-    gen.writeEndObject();
+    if (factory().isRootNativeField()) {
+      gen.writeEndObject();
+    }
     gen.writeEndObject();
     gen.flush();
   }
