@@ -106,35 +106,17 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
     for (SeatBid.Builder seat : bidCtx.response().getSeatbidBuilderList()) {
       for (Bid.Builder bid : seat.getBidBuilderList()) {
         bidCtx.setBid(bid);
-        // Properties that can also be in the RHS of macros used by other properties.
-
-        if (bid.hasAdid()) {
-          bid.setAdid(process(bidCtx, bid.getAdid()));
-        }
-        bid.setId(process(bidCtx, bid.getId()));
-
-        // Properties that are NOT the RHS of any macro.
-
-        if (bid.hasAdm()) {
-          bid.setAdm(process(bidCtx, bid.getAdm()));
-        }
-        if (bid.hasCid()) {
-          bid.setCid(process(bidCtx, bid.getCid()));
-        }
-        if (bid.hasCrid()) {
-          bid.setCrid(process(bidCtx, bid.getCrid()));
-        }
-        if (bid.hasDealid()) {
-          bid.setDealid(process(bidCtx, bid.getDealid()));
-        }
-        bid.setImpid(process(bidCtx, bid.getImpid()));
-        if (bid.hasIurl()) {
-          bid.setIurl(process(bidCtx, bid.getIurl()));
-        }
-        if (bid.hasNurl()) {
-          bid.setNurl(process(bidCtx, bid.getNurl()));
-        }
+        processFields(bidCtx);
       }
+    }
+  }
+
+  /**
+   * Processes all fields of a bid that should support macro expansion.
+   */
+  protected void processFields(SnippetProcessorContext bidCtx) {
+    if (bidCtx.getBid().hasAdm()) {
+      bidCtx.getBid().setAdm(process(bidCtx, bidCtx.getBid().getAdm()));
     }
   }
 
