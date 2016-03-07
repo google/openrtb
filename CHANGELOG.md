@@ -1,6 +1,11 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 1.0.3, ??-03-2016
+* `SnippetProcessor` allows subclasses to extend the list of fields
+  (including `Bid` extensions) that support macros, and drops the
+  built-in support to `adm` only which is more OpenRTB-compliant.
+
 ## Version 1.0.2, 26-02-2016
 * Fix `ProtoUtils.filter()` for recursive filtering.
 * JSON writer doesn't emit the top-level `native` field for native
