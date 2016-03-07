@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Google Inc. All Rights Reserved.
+ * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,18 @@
  * limitations under the License.
  */
 
-syntax = "proto2";
-package com.google.openrtb;
 option java_outer_classname = "OpenRtb";
+package com.google.openrtb;
 
 // OpenRTB extensions ("ext" fields in the spec & JSON representation)
 // are represented here by Protocol Buffer extensions. This proto only
 // reserves the range of IDs 100-9999 at every extensible object.
-// <p>
 // Reserved ranges:
-// <ol>
-//   <li>100-199: Reserved for Google, including the openrtb-doubleclick
-//                library (DcExt) and Open Bidder project (ObExt).</li>
-//   <li>200-999: Free for use with other exchanges or projects.</li>
-//   <li>1000-1999: Reserved for Google.</li>
-//   <li>2000-9999: Free for use with other exchanges or projects.</li>
-// </ol>
+//   100-199: Reserved for Google, including the openrtb-doubleclick
+//            library (DcExt) and Open Bidder project (ObExt).
+//   200-999: Free for use with other exchanges or projects.
+//   1000-1999: Reserved for Google.
+//   2000-9999: Free for use with other exchanges or projects.
 
 // OpenRTB 3.2.1: The top-level bid request object contains a globally unique
 // bid request or auction ID. This id attribute is required as is at least one
