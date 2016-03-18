@@ -2294,9 +2294,11 @@ message NativeResponse {
     //           BidResponse.Ad.native_ad[0].store]
     optional string url = 1;
 
-    // List of third-party tracker URLs to be fired on click of the URL.
+    // Third-party tracker URLs to be fired on click of the URL. Google click
+    // trackers redirect HTTP 30x to the bidder's tracker. Google only maps the
+    // first click tracking url and the remaining are ignored.
     // [AdX: (NativeResponse.link)
-    //           BidResponse.Ad.click_tracking_url[0]]
+    //           BidResponse.Ad.NativeAd.click_tracking_url[0]]
     repeated string clicktrackers = 2;
 
     // Fallback URL for deeplink. To be used if the URL given in url is not
