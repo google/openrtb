@@ -59,7 +59,7 @@
     <junitVersion>4.12</junitVersion>
     <metricsVersion>3.0.2</metricsVersion>
     <protobufVersion>2.6.1</protobufVersion>
-    <slf4jVersion>1.7.18</slf4jVersion>
+    <slf4jVersion>1.7.19</slf4jVersion>
     <truthVersion>0.28</truthVersion>
 
     <!-- Plugin versions -->
