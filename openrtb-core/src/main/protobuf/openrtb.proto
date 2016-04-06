@@ -41,7 +41,7 @@ package com.google.openrtb;
 message BidRequest {
   // Unique ID of the bid request, provided by the exchange.
   // REQUIRED by the OpenRTB specification.
-  // [AdX: BidRequest.id]
+  // [AdX: BidRequest.id - AdX is binary, OpenRTB is base64 (no padding)]
   required string id = 1;
 
   // Array of Imp objects (Section 3.2.2) representing the impressions offered.
@@ -1042,7 +1042,8 @@ message BidRequest {
     // IPv4 address closest to device.
     // This field is not required, but it's highly recommended.
     // RECOMMENDED by the OpenRTB specification.
-    // [AdX: BidRequest.ip (truncated to the first 3 octets)]
+    // [AdX: BidRequest.ip
+    //     - AdX truncates to first 3 octets; OpenRTB is "X.X.X.0"]
     optional string ip = 3;
 
     // Location of the device assumed to be the user's current location defined
@@ -1062,17 +1063,21 @@ message BidRequest {
     optional string dpidsha1 = 7;
 
     // Platform device ID (e.g., Android ID); hashed via MD5.
-    // [AdX: BidRequest.Mobile.[constrained_usage_][encrypted_]hashed_idfa]
+    // [AdX: BidRequest.Mobile.[encrypted_]hashed_idfa
+    //     - AdX is binary, OpenRTB is base64 (no padding)]
     optional string dpidmd5 = 8;
 
     // IPv6 address closest to device.
-    // [AdX: BidRequest.ip (truncated to the first 12 octets)]
+    // [AdX: BidRequest.ip
+    //     - AdX truncates to first 6 octets; OpenRTB is "X:X:X:::::"]
     optional string ipv6 = 9;
 
     // Carrier or ISP, e.g. "VERIZON", specified using Mobile Network Code (MNC).
     // "WIFI" is often used in mobile to indicate high bandwidth
     // (e.g., video friendly vs. cellular).
-    // [AdX: BidRequest.Device.carrier_id]
+    // [AdX: BidRequest.Device.carrier_id
+    //     - IDs will be the same Criterion IDs as in AdX protocol, see:
+    // https://developers.google.com/adwords/api/docs/appendix/mobilecarriers]
     optional string carrier = 10;
 
     // Browser language using ISO-639-1-alpha-2.
@@ -1127,7 +1132,8 @@ message BidRequest {
     optional string flashver = 19;
 
     // ID sanctioned for advertiser use in the clear (i.e., not hashed).
-    // [AdX: BidRequest.Mobile.[constrained_usage_][encrypted_]advertising_id]
+    // [AdX: BidRequest.Mobile.[encrypted_]advertising_id
+    //     - AdX is binary, OpenRTB is base64 (no padding)]
     optional string ifa = 20;
 
     // MAC address of the device; hashed via SHA1.
@@ -1206,6 +1212,12 @@ message BidRequest {
   // The lat/lon attributes should only be passed if they conform to the
   // accuracy depicted in the type attribute. For example, the centroid of a
   // geographic region such as postal code should not be passed.
+  //
+  // [AdX: Fine geolocation information is limited by the same constraints that
+  //       apply to the AdX Hyperlocal object: not all requests have this info,
+  //       and lat/lon represent some point (not necessarily center) of an area
+  //       the size of which is inversely proportional to population density.
+  //       That's good enough for targeting but not for individual tracking.]
   message Geo {
     // Latitude from -90.0 to +90.0, where negative is south.
     // [AdX: BidRequest.[encrypted_]hyperlocal_set.center_point.latitude]
@@ -1296,7 +1308,8 @@ message BidRequest {
     // Optional feature to pass bidder data set in the exchange's cookie.
     // The string must be in base85 cookie safe characters and be in any format.
     // Proper JSON encoding must be used to include "escaped" quotation marks.
-    // [AdX: BidRequest.[constrained_usage_]hosted_match_data]
+    // [AdX: BidRequest.[constrained_usage_]hosted_match_data
+    //     - AdX is binary, OpenRTB is base64 (no padding)]
     optional string customdata = 6;
 
     // Location of the user's home base defined by a Geo object
@@ -1389,6 +1402,7 @@ message BidRequest {
 message BidResponse {
   // ID of the bid request to which this is a response.
   // REQUIRED by the OpenRTB specification.
+  // [AdX: Not mapped to any field, but validated against the BidRequest.id]
   required string id = 1;
 
   // Array of seatbid objects; 1+ required if a bid is to be made.
@@ -2294,9 +2308,11 @@ message NativeResponse {
     //           BidResponse.Ad.native_ad[0].store]
     optional string url = 1;
 
-    // List of third-party tracker URLs to be fired on click of the URL.
+    // Third-party tracker URLs to be fired on click of the URL. Google click
+    // trackers redirect HTTP 30x to the bidder's tracker. Google only maps the
+    // first click tracking url and the remaining are ignored.
     // [AdX: (NativeResponse.link)
-    //           BidResponse.Ad.click_tracking_url[0]]
+    //           BidResponse.Ad.NativeAd.click_tracking_url[0]]
     repeated string clicktrackers = 2;
 
     // Fallback URL for deeplink. To be used if the URL given in url is not
