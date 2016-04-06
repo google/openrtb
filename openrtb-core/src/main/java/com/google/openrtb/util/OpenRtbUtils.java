@@ -18,6 +18,9 @@ package com.google.openrtb.util;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
@@ -34,11 +37,6 @@ import com.google.openrtb.OpenRtb.ContentCategory;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import javax.annotation.Nullable;
 
@@ -56,12 +54,30 @@ public final class OpenRtbUtils {
    * Special value for for {@code impFilter} parameter of some methods, will be more efficient
    * than an equivalent {@code imp -> false} predicate.
    */
-  public static final Predicate<Imp> IMP_NONE = imp -> false;
+  public static final Predicate<Imp> IMP_NONE = Predicates.<Imp>alwaysFalse();
   /**
    * Special value for for {@code impFilter} parameter of some methods, will be more efficient
    * than an equivalent {@code imp -> true} predicate.
    */
-  public static final Predicate<Imp> IMP_ALL = imp -> true;
+  public static final Predicate<Imp> IMP_ALL = Predicates.<Imp>alwaysTrue();
+
+  private static final Predicate<Imp> IMP_HAS_BANNER = new Predicate<Imp>() {
+    @Override public boolean apply(Imp imp) {
+      assert imp != null;
+      return imp.hasBanner();
+    }};
+
+  private static final Predicate<Imp> IMP_HAS_VIDEO = new Predicate<Imp>() {
+    @Override public boolean apply(Imp imp) {
+      assert imp != null;
+      return imp.hasVideo();
+    }};
+
+  private static final Predicate<Imp> IMP_HAS_NATIVE = new Predicate<Imp>() {
+    @Override public boolean apply(Imp imp) {
+      assert imp != null;
+      return imp.hasNative();
+    }};
 
   private static final ImmutableMap<Object, String> CAT_TO_JSON;
   private static final ImmutableMap<String, ContentCategory> NAME_TO_CAT;
@@ -239,29 +255,13 @@ public final class OpenRtbUtils {
    * @param bidFilter Filter for bids
    * @param seatFilter Filter for seat. You can use {@code null} to select the anonymous seat,
    * or {@link #SEAT_ANY} to not filter by seat
-   * @return Read-only sequence of bids that satisfy the filter.
-   *     May have bids from multiple seats, grouped by seat
-   */
-  public static Stream<Bid.Builder> bidStreamWith(
-      BidResponse.Builder response, @Nullable String seatFilter,
-      @Nullable Predicate<Bid.Builder> bidFilter) {
-    return StreamSupport.stream(
-        new ResponseBidsIterator(response, seatFilter, bidFilter).spliterator(), false);
-  }
-
-  /**
-   * Finds bids by a custom criteria.
-   *
-   * @param bidFilter Filter for bids
-   * @param seatFilter Filter for seat. You can use {@code null} to select the anonymous seat,
-   * or {@link #SEAT_ANY} to not filter by seat
    * @return Sequence of all bids that satisfy the filter.
    *     May have bids from multiple seats, grouped by seat
    */
   public static Iterable<Bid.Builder> bidsWith(
       BidResponse.Builder response, @Nullable String seatFilter,
       @Nullable Predicate<Bid.Builder> bidFilter) {
-    return bidStreamWith(response, seatFilter, bidFilter).collect(Collectors.toList());
+    return new ResponseBidsIterator(response, seatFilter, bidFilter);
   }
 
   /**
@@ -420,11 +420,11 @@ public final class OpenRtbUtils {
       return ImmutableList.of();
     }
 
-    final boolean included = impFilter.test(imps.get(0));
+    final boolean included = impFilter.apply(imps.get(0));
     int size = imps.size(), i;
 
     for (i = 1; i < size; ++i) {
-      if (impFilter.test(imps.get(i)) != included) {
+      if (impFilter.apply(imps.get(i)) != included) {
         break;
       }
     }
@@ -446,17 +446,13 @@ public final class OpenRtbUtils {
               Imp imp = unfiltered.next();
               if ((heading++ < headingSize)
                   ? included
-                  : impFilter.test(imp)) {
+                  : impFilter.apply(imp)) {
                 return imp;
               }
             }
             return endOfData();
         }};
       }};
-  }
-
-  public static Stream<Imp> impStreamWith(BidRequest request, Predicate<Imp> impFilter) {
-    return StreamSupport.stream(impsWith(request, impFilter).spliterator(), false);
   }
 
   /**
@@ -481,16 +477,16 @@ public final class OpenRtbUtils {
 
     Predicate<Imp> typeFilter = null;
     if (banner) {
-      typeFilter = Imp::hasBanner;
+      typeFilter = IMP_HAS_BANNER;
     }
     if (video) {
-      typeFilter = typeFilter == null ? Imp::hasVideo : typeFilter.or(Imp::hasVideo);
+      typeFilter = typeFilter == null ? IMP_HAS_VIDEO : Predicates.or(typeFilter, IMP_HAS_VIDEO);
     }
     if (nativ) {
-      typeFilter = typeFilter == null ? Imp::hasNative : typeFilter.or(Imp::hasNative);
+      typeFilter = typeFilter == null ? IMP_HAS_NATIVE : Predicates.or(typeFilter, IMP_HAS_NATIVE);
     }
 
-    return baseFilter == IMP_ALL ? typeFilter : baseFilter.and(typeFilter);
+    return baseFilter == IMP_ALL ? typeFilter : Predicates.and(baseFilter, typeFilter);
   }
 
   /**

@@ -16,6 +16,7 @@
 
 package com.google.openrtb.util;
 
+import com.google.common.base.Predicate;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
@@ -23,7 +24,6 @@ import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
@@ -89,7 +89,7 @@ class ResponseBidsIterator implements Iterator<Bid.Builder>, Iterable<Bid.Builde
         return false;
       }
       nextBid = bidIter.next();
-      if (bidFilter != null && !bidFilter.test(nextBid)) {
+      if (bidFilter != null && !bidFilter.apply(nextBid)) {
         nextBid = null;
       }
     }

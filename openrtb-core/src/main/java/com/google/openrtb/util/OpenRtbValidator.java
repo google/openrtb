@@ -16,6 +16,7 @@
 
 package com.google.openrtb.util;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.openrtb.OpenRtb.BidRequest;
@@ -68,7 +69,10 @@ public class OpenRtbValidator {
   }
 
   public boolean validate(final BidRequest request, final BidResponse.Builder response) {
-    return !OpenRtbUtils.removeBids(response, bid -> validate(request, bid));
+    return !OpenRtbUtils.removeBids(response, new Predicate<Bid.Builder>() {
+      @Override public boolean apply(Bid.Builder bid) {
+        return validate(request, bid);
+      }});
   }
 
   public boolean validate(BidRequest request, Bid.Builder bid) {

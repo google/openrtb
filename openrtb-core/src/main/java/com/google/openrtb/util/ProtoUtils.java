@@ -18,6 +18,8 @@ package com.google.openrtb.util;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
@@ -28,8 +30,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
@@ -37,7 +37,11 @@ import javax.annotation.Nullable;
  * Some conveniences for protoc-generated classes.
  */
 public final class ProtoUtils {
-  public static final Predicate<FieldDescriptor> NOT_EXTENSION = fd -> !fd.isExtension();
+  public static final Predicate<FieldDescriptor> NOT_EXTENSION = new Predicate<FieldDescriptor>() {
+    @Override public boolean apply(FieldDescriptor fd) {
+      assert fd != null;
+      return !fd.isExtension();
+    }};
 
   private ProtoUtils() {
   }
@@ -106,7 +110,7 @@ public final class ProtoUtils {
     checkNotNull(filter);
 
     for (int i = 0; i < objs.size(); ++i) {
-      if (!filter.test(objs.get(i))) {
+      if (!filter.apply(objs.get(i))) {
         // At least one discarded object, go to slow-path.
         return filterFrom(objs, filter, i);
       }
@@ -132,7 +136,7 @@ public final class ProtoUtils {
     for (int i = firstDiscarded + 1; i < objs.size(); ++i) {
       M obj = objs.get(i);
 
-      if (filter.test(obj)) {
+      if (filter.apply(obj)) {
         if (filtered == null) {
           filtered = new ArrayList<>(objs.size() - i);
         }
@@ -165,7 +169,7 @@ public final class ProtoUtils {
     for (Map.Entry<FieldDescriptor, Object> entry : msg.getAllFields().entrySet()) {
       FieldDescriptor fd = entry.getKey();
 
-      if (!filter.test(fd)) {
+      if (!filter.apply(fd)) {
         // At least one field discarded, go to slow-path.
         return filterFrom(msg, clearEmpty, filter, i, true);
       } else if (fd.getType() == FieldDescriptor.Type.MESSAGE) {
@@ -202,7 +206,7 @@ public final class ProtoUtils {
     while (iter.hasNext()) {
       Map.Entry<FieldDescriptor, Object> entry = iter.next();
 
-      if (filter.test(entry.getKey())) {
+      if (filter.apply(entry.getKey())) {
         if (builder == null) {
           builder = msg.newBuilderForType();
         }

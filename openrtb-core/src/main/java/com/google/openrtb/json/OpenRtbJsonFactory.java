@@ -18,6 +18,7 @@ package com.google.openrtb.json;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.LinkedHashMultimap;
@@ -61,9 +62,12 @@ public class OpenRtbJsonFactory {
       @Nullable Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters) {
     this.jsonFactory = jsonFactory;
     this.strict = strict;
-    this.rootNativeField = rootNativeField;
-    this.extReaders = extReaders == null ? LinkedHashMultimap.create() : extReaders;
-    this.extWriters = extWriters == null ? new LinkedHashMap<>() : extWriters;
+    this.extReaders = extReaders == null
+        ? LinkedHashMultimap.<String, OpenRtbJsonExtReader<?>>create()
+        : extReaders;
+    this.extWriters = extWriters == null
+        ? new LinkedHashMap<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>>()
+        : extWriters;
   }
 
   /**
@@ -77,9 +81,18 @@ public class OpenRtbJsonFactory {
     this.strict = config.strict;
     this.rootNativeField = config.rootNativeField;
     this.extReaders = ImmutableSetMultimap.copyOf(config.extReaders);
-    this.extWriters = ImmutableMap.copyOf(Maps.transformValues(config.extWriters,
-        (Map<String, Map<String, OpenRtbJsonExtWriter<?>>> map) ->
-            ImmutableMap.copyOf(Maps.transformValues(map, map2 -> ImmutableMap.copyOf(map2)))));
+    this.extWriters = ImmutableMap.copyOf(Maps.transformValues(config.extWriters, new Function<
+        Map<String, Map<String, OpenRtbJsonExtWriter<?>>>,
+        Map<String, Map<String, OpenRtbJsonExtWriter<?>>>>() {
+      @Override public Map<String, Map<String, OpenRtbJsonExtWriter<?>>> apply(
+          Map<String, Map<String, OpenRtbJsonExtWriter<?>>> map) {
+        return ImmutableMap.copyOf(Maps.transformValues(map, new Function<
+            Map<String, OpenRtbJsonExtWriter<?>>, Map<String, OpenRtbJsonExtWriter<?>>>() {
+          @Override public Map<String, OpenRtbJsonExtWriter<?>> apply(
+              Map<String, OpenRtbJsonExtWriter<?>> map) {
+            return ImmutableMap.copyOf(map);
+          }}));
+      }}));
   }
 
   /**
