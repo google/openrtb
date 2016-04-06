@@ -41,7 +41,7 @@ package com.google.openrtb;
 message BidRequest {
   // Unique ID of the bid request, provided by the exchange.
   // REQUIRED by the OpenRTB specification.
-  // [AdX: BidRequest.id - AdX is binary, OpenRTB is websafe-base64]
+  // [AdX: BidRequest.id - AdX is binary, OpenRTB is base64 (no padding)]
   required string id = 1;
 
   // Array of Imp objects (Section 3.2.2) representing the impressions offered.
@@ -1064,7 +1064,7 @@ message BidRequest {
 
     // Platform device ID (e.g., Android ID); hashed via MD5.
     // [AdX: BidRequest.Mobile.[encrypted_]hashed_idfa
-    //     - AdX is binary, OpenRTB is base16 (lowercase hex)]
+    //     - AdX is binary, OpenRTB is base64 (no padding)]
     optional string dpidmd5 = 8;
 
     // IPv6 address closest to device.
@@ -1133,7 +1133,7 @@ message BidRequest {
 
     // ID sanctioned for advertiser use in the clear (i.e., not hashed).
     // [AdX: BidRequest.Mobile.[encrypted_]advertising_id
-    //     - AdX is binary, OpenRTB is base16 (lowercase hex)]
+    //     - AdX is binary, OpenRTB is base64 (no padding)]
     optional string ifa = 20;
 
     // MAC address of the device; hashed via SHA1.
@@ -1309,7 +1309,7 @@ message BidRequest {
     // The string must be in base85 cookie safe characters and be in any format.
     // Proper JSON encoding must be used to include "escaped" quotation marks.
     // [AdX: BidRequest.[constrained_usage_]hosted_match_data
-    //     - AdX is binary, OpenRTB is websafe-base64]
+    //     - AdX is binary, OpenRTB is base64 (no padding)]
     optional string customdata = 6;
 
     // Location of the user's home base defined by a Geo object
