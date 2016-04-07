@@ -21,7 +21,7 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.endObject;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getDoubleValue;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getIntBoolValue;
-import static com.google.openrtb.json.OpenRtbJsonUtils.peekStruct;
+import static com.google.openrtb.json.OpenRtbJsonUtils.peekStructStart;
 import static com.google.openrtb.json.OpenRtbJsonUtils.readCsvString;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
@@ -513,7 +513,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         }
         break;
       case "companionad":
-        if (peekStruct(par) == JsonToken.START_ARRAY) {
+        if (peekStructStart(par) == JsonToken.START_ARRAY) {
           // OpenRTB 2.2+
           for (startArray(par); endArray(par); par.nextToken()) {
             video.addCompanionad(readBanner(par));

@@ -364,7 +364,9 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
 
   protected void writeRespVideoFields(NativeResponse.Asset.Video video, JsonGenerator gen)
       throws IOException {
-    writeStrings("vasttag", video.getVasttagList(), gen);
+    if (video.hasVasttag()) {
+      gen.writeStringField("vasttag", video.getVasttag());
+    }
   }
 
   public final void writeRespData(NativeResponse.Asset.Data data, JsonGenerator gen)

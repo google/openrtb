@@ -742,11 +742,13 @@ message BidRequest {
     repeated string cat = 4;
 
     // Array of IAB content categories that describe the current section
-    // of the site. See enum ContentCategory.
+    // of the site.
+    // See enum ContentCategory.
     repeated string sectioncat = 5;
 
     // Array of IAB content categories that describe the current page or view
-    // of the site. See enum ContentCategory.
+    // of the site.
+    // See enum ContentCategory.
     repeated string pagecat = 6;
 
     // URL of the page where the impression will be shown.
@@ -807,11 +809,13 @@ message BidRequest {
     repeated string cat = 4;
 
     // Array of IAB content categories that describe the current section
-    // of the app. See enum ContentCategory.
+    // of the app.
+    // See enum ContentCategory.
     repeated string sectioncat = 5;
 
     // Array of IAB content categories that describe the current page or view
-    // of the app. See enum ContentCategory.
+    // of the app.
+    // See enum ContentCategory.
     repeated string pagecat = 6;
 
     // Application version.
@@ -1537,7 +1541,8 @@ message BidResponse {
       // [AdX: BidResponse.Ad.buyer_creative_id]
       optional string crid = 10;
 
-      // IAB content categories of the creative. See enum ContentCategory.
+      // IAB content categories of the creative.
+      // See enum ContentCategory.
       repeated string cat = 15;
 
       // Set of attributes describing the creative.
@@ -2437,8 +2442,8 @@ message NativeResponse {
     // yet containing a value of a conforming VAST tag as a value.
     message Video {
       // VAST xml.
-      // REQUIRED by the OpenRTB Native specification: at least 1 element.
-      repeated string vasttag = 1;
+      // REQUIRED by the OpenRTB Native specification.
+      optional string vasttag = 1;
 
       // Extensions.
       extensions 100 to 9999;

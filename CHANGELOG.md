@@ -2,6 +2,7 @@ RELEASE NOTES
 ----------------------------------------------------------------------
 
 ## Version 1.0.4, ??-04-2016
+* Fixed native response's `Video.vasttag` to scalar value.
 * Reintroduced JDK 7 support in the "compat" branch.
 * Several documentation updates in the openrtb protobuf.
 
