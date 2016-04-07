@@ -309,7 +309,7 @@ public final class OpenRtbUtils {
    *
    * @param filter Returns {@code true} to keep bid, {@code false} to remove
    * @return {@code true} if any bid was removed
-   * @see ProtoUtils#filter(Iterable, Predicate) for more general filtering support
+   * @see ProtoUtils#filter(List, Predicate) for more general filtering support
    */
   public static boolean removeBids(BidResponse.Builder response, Predicate<Bid.Builder> filter) {
     checkNotNull(filter);
@@ -342,7 +342,7 @@ public final class OpenRtbUtils {
    * @param seatFilter Seat ID, or {@code null} to select the anonymous seat
    * @param bidFilter Returns {@code true} to keep bid, {@code false} to remove
    * @return {@code true} if any bid was removed
-   * @see ProtoUtils#filter(Iterable, Predicate) for more general filtering support
+   * @see ProtoUtils#filter(List, Predicate) for more general filtering support
    */
   public static boolean removeBids(
       BidResponse.Builder response, @Nullable String seatFilter, Predicate<Bid.Builder> bidFilter) {
