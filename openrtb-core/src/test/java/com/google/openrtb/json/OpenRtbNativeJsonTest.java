@@ -249,7 +249,7 @@ public class OpenRtbNativeJsonTest {
         .addAssets(NativeResponse.Asset.newBuilder()
             .setId(2)
             .setVideo(NativeResponse.Asset.Video.newBuilder()
-                .addAllVasttag(asList("a", "b"))
+                .setVasttag("vast")
                 .setExtension(TestNExt.testNRespVideo, test1)))
         .addAssets(NativeResponse.Asset.newBuilder()
             .setId(2)

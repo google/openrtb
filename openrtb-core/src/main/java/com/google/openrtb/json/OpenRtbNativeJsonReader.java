@@ -20,6 +20,7 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.endArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.endObject;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getIntBoolValue;
+import static com.google.openrtb.json.OpenRtbJsonUtils.peekToken;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
@@ -492,8 +493,13 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       throws IOException {
     switch (fieldName) {
       case "vasttag":
-        for (startArray(par); endArray(par); par.nextToken()) {
-          video.addVasttag(par.getText());
+        if (peekToken(par) == JsonToken.START_ARRAY) {
+          // Compatibility with old buggy proto; remove some day.
+          for (startArray(par); endArray(par); par.nextToken()) {
+            video.setVasttag(par.getText());
+          }
+        } else {
+          video.setVasttag(par.getText());
         }
         break;
       default:
