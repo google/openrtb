@@ -70,16 +70,29 @@ public class OpenRtbJsonUtils {
     return token != null && token != JsonToken.END_ARRAY;
   }
 
-  public static JsonToken peekStruct(JsonParser par) throws IOException {
+  public static JsonToken peekToken(JsonParser par) throws IOException {
     JsonToken token = par.getCurrentToken();
     if (token == null || token == JsonToken.FIELD_NAME) {
       token = par.nextToken();
     }
+    return token;
+  }
+
+  public static JsonToken peekStructStart(JsonParser par) throws IOException {
+    JsonToken token = peekToken(par);
     if (token.isStructStart()) {
       return token;
     } else {
       throw new JsonParseException("Expected start of array or object", par.getCurrentLocation());
     }
+  }
+
+  /**
+   * @deprecated Use {@link #peekStructStart(JsonParser)}
+   */
+  @Deprecated
+  public static JsonToken peekStruct(JsonParser par) throws IOException {
+    return peekStruct(par);
   }
 
   public static double getDoubleValue(JsonParser par) throws IOException {
