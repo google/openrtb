@@ -6,6 +6,7 @@ RELEASE NOTES
 * Reintroduced JDK 7 support in the "compat" branch.
 * Several documentation updates in the openrtb protobuf.
 * Reviews in `OpenRtbJsonUtils`.
+* `SnippetProcessor` allows reusing the internal string buffer.
 
 ## Version 1.0.3, 07-03-2016
 * `SnippetProcessor` allows subclasses to extend the list of fields

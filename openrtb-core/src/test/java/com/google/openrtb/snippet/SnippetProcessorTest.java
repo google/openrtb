@@ -56,19 +56,19 @@ public class SnippetProcessorTest {
     }
 
     @Override protected void processMacroAt(
-        SnippetProcessorContext ctx, StringBuilder sb, SnippetMacroType macroDef) {
+        SnippetProcessorContext ctx, SnippetMacroType macroDef) {
       if (macroDef instanceof TestMacros) {
         switch ((TestMacros) macroDef) {
           case TEST:
-            sb.append("#");
+            ctx.builder().append("#");
             break;
 
           case MACRO_NREC:
-            sb.append(TestMacros.TEST.key());
+            ctx.builder().append(TestMacros.TEST.key());
             break;
 
           case MACRO_REC:
-            sb.append(TestMacros.MACRO_REC.key());
+            ctx.builder().append(TestMacros.MACRO_REC.key());
             break;
         }
       }

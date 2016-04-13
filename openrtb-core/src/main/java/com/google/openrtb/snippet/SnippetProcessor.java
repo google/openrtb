@@ -52,7 +52,7 @@ public abstract class SnippetProcessor {
     }
 
     @Override protected void processMacroAt(
-        SnippetProcessorContext ctx, StringBuilder sb, SnippetMacroType macroDef) {
+        SnippetProcessorContext ctx, SnippetMacroType macroDef) {
     }
   };
 
@@ -81,7 +81,8 @@ public abstract class SnippetProcessor {
    */
   public String process(SnippetProcessorContext ctx, String snippet) {
     checkNotNull(ctx);
-    StringBuilder sb = new StringBuilder(snippet.length() * 2);
+    StringBuilder sb = ctx.builder();
+    sb.setLength(0);
     String currSnippet = snippet;
 
     boolean processedMacros = false;
@@ -90,7 +91,7 @@ public abstract class SnippetProcessor {
 
     while (macroPos != -1) {
       sb.append(currSnippet.substring(snippetPos, macroPos));
-      int macroEnd = processMacroAt(ctx, currSnippet, macroPos, sb);
+      int macroEnd = processMacroAt(ctx, currSnippet, macroPos);
 
       if (macroEnd == -1) {
         sb.append("${");
@@ -109,25 +110,28 @@ public abstract class SnippetProcessor {
     }
     sb.setLength(0);
 
-    return urlEncode(currSnippet, sb);
+    String ret = urlEncode(ctx, currSnippet);
+    sb.setLength(0);
+    return ret;
   }
 
   private int processMacroAt(SnippetProcessorContext ctx,
-      String snippet, int macroStart, StringBuilder sb) {
+      String snippet, int macroStart) {
     SnippetMacroType macroDef = match(snippet, macroStart);
     if (macroDef == null) {
       return -1;
     }
 
-    processMacroAt(ctx, sb, macroDef);
+    processMacroAt(ctx, macroDef);
 
     // Handle recursive macros
+    StringBuilder sb = ctx.builder();
     int macroPos = sb.indexOf("${");
     if (macroPos != -1) {
       String recSnippet = sb.substring(macroPos);
       // Avoid infinite recursion if the macro expands to itself!
       if (!macroDef.key().equals(recSnippet)) {
-        String recReplaced = process(ctx, recSnippet);
+        String recReplaced = process(ctx.rec(), recSnippet);
         if (recReplaced != recSnippet) {
           sb.setLength(macroPos);
           sb.append(recReplaced);
@@ -148,14 +152,15 @@ public abstract class SnippetProcessor {
   }
 
   protected abstract void processMacroAt(
-      SnippetProcessorContext ctx, StringBuilder sb, SnippetMacroType macroDef);
+      SnippetProcessorContext ctx, SnippetMacroType macroDef);
 
-  protected static String urlEncode(String snippet, StringBuilder sb) {
+  protected static String urlEncode(SnippetProcessorContext ctx, String snippet) {
     int snippetPos = snippet.indexOf("%{");
     if (snippetPos == -1) {
       return snippet;
     }
 
+    StringBuilder sb = ctx.builder();
     int encodeLevel = 0;
     int encodeStart = 0;
     int lastPos = snippet.length() - 1;

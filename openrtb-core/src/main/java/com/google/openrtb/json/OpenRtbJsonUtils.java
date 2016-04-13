@@ -225,7 +225,7 @@ public class OpenRtbJsonUtils {
   }
 
   /**
-   * @deprecated See {@link AbstractOpenRtbJsonWriter#writeContentCategories(String, List, JsonGenerator)
+   * @deprecated See {@link AbstractOpenRtbJsonWriter#writeContentCategories(String, List, JsonGenerator)}
    */
   @Deprecated
   public static void writeContentCategories(
