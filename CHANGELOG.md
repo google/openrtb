@@ -5,6 +5,7 @@ RELEASE NOTES
 * Fixed native response's `Video.vasttag` to scalar value.
 * Reintroduced JDK 7 support in the "compat" branch.
 * Several documentation updates in the openrtb protobuf.
+* Reviews in `OpenRtbJsonUtils`.
 
 ## Version 1.0.3, 07-03-2016
 * `SnippetProcessor` allows subclasses to extend the list of fields

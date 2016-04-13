@@ -31,11 +31,19 @@ import java.util.List;
  * Utilities for writing JSON serialization code.
  */
 public class OpenRtbJsonUtils {
+  private static final long MAX_JSON_INT = 1L << 53;
+
+  /**
+   * Returns the current field name, or empty string if none.
+   */
   public static String getCurrentName(JsonParser par) throws IOException {
     String name = par.getCurrentName();
     return name == null ? "" : name;
   }
 
+  /**
+   * Starts an Object, skipping the '{' token, and if necessary a field name before it.
+   */
   public static void startObject(JsonParser par) throws IOException {
     JsonToken token = par.getCurrentToken();
     if (token == null || token == JsonToken.FIELD_NAME) {
@@ -48,11 +56,18 @@ public class OpenRtbJsonUtils {
     }
   }
 
+  /**
+   * Returns {@code true} if the JSON Object is NOT finished.
+   * Logic is inverted so this is used as a loop-end condition.
+   */
   public static boolean endObject(JsonParser par) {
     JsonToken token = par.getCurrentToken();
     return token != null && token != JsonToken.END_OBJECT;
   }
 
+  /**
+   * Starts an Array, skipping the '[' token, and if necessary a field name before it.
+   */
   public static void startArray(JsonParser par) throws IOException {
     JsonToken token = par.getCurrentToken();
     if (token == null || token == JsonToken.FIELD_NAME) {
@@ -65,11 +80,18 @@ public class OpenRtbJsonUtils {
     }
   }
 
+  /**
+   * Returns {@code true} if the JSON Object is NOT finished.
+   * Logic is inverted so this is used as a loop-end condition.
+   */
   public static boolean endArray(JsonParser par) {
     JsonToken token = par.getCurrentToken();
     return token != null && token != JsonToken.END_ARRAY;
   }
 
+  /**
+   * Skips a field name if necessary, returning the current token then.
+   */
   public static JsonToken peekToken(JsonParser par) throws IOException {
     JsonToken token = par.getCurrentToken();
     if (token == null || token == JsonToken.FIELD_NAME) {
@@ -78,6 +100,10 @@ public class OpenRtbJsonUtils {
     return token;
   }
 
+  /**
+   * Skips a field name if necessary, returning the current token then, which must be
+   * the start of an Array or Object: '{' or '['.
+   */
   public static JsonToken peekStructStart(JsonParser par) throws IOException {
     JsonToken token = peekToken(par);
     if (token.isStructStart()) {
@@ -95,12 +121,125 @@ public class OpenRtbJsonUtils {
     return peekStruct(par);
   }
 
+  /**
+   * @deprecated Use {@link JsonParser#getValueAsDouble()}
+   */
+  @Deprecated
   public static double getDoubleValue(JsonParser par) throws IOException {
-    return Double.parseDouble(par.getText());
+    return par.getValueAsDouble();
   }
 
+  /**
+   * @deprecated Use {@link JsonParser#getValueAsBoolean()}
+   */
+  @Deprecated
   public static boolean getIntBoolValue(JsonParser par) throws IOException {
-    return par.getIntValue() != 0;
+    return par.getValueAsBoolean();
+  }
+
+  /**
+   * Writes a boolean as int, where false => 0 and true => 1.
+   */
+  public static void writeIntBoolField(String fieldName, boolean data, JsonGenerator gen)
+      throws IOException {
+    gen.writeNumberField(fieldName, data ? 1 : 0);
+  }
+
+  /**
+   * Writes a string array if not empty.
+   */
+  public static void writeStrings(String fieldName, List<String> data, JsonGenerator gen)
+      throws IOException {
+    if (!data.isEmpty()) {
+      gen.writeArrayFieldStart(fieldName);
+      for (String d : data) {
+        gen.writeString(d);
+      }
+      gen.writeEndArray();
+    }
+  }
+
+  /**
+   * Writes an int array if not empty.
+   */
+  public static void writeInts(String fieldName, List<Integer> data, JsonGenerator gen)
+      throws IOException {
+    if (!data.isEmpty()) {
+      gen.writeArrayFieldStart(fieldName);
+      for (Integer d : data) {
+        gen.writeNumber(d);
+      }
+      gen.writeEndArray();
+    }
+  }
+
+  /**
+   * Writes a long, using quotes only if it's too big (>53-bit mantissa).
+   */
+  protected static void writeLong(long data, JsonGenerator gen) throws IOException {
+    if (data > MAX_JSON_INT || data < -MAX_JSON_INT) {
+      gen.writeString(Long.toString(data));
+    } else {
+      gen.writeNumber(data);
+    }
+  }
+
+  /**
+   * Writes a long array if not empty, using quotes for values that are too big.
+   *
+   * @see #writeLong(long, JsonGenerator)
+   */
+  public static void writeLongs(String fieldName, List<Long> data, JsonGenerator gen)
+      throws IOException {
+    if (!data.isEmpty()) {
+      gen.writeArrayFieldStart(fieldName);
+      for (long d : data) {
+        writeLong(d, gen);
+      }
+      gen.writeEndArray();
+    }
+  }
+
+  /**
+   * Writes a enum value as an int, using its Protobuf number.
+   */
+  protected static void writeEnum(ProtocolMessageEnum e, JsonGenerator gen) throws IOException {
+    gen.writeNumber(e.getNumber());
+  }
+
+  /**
+   * Writes a enum array if not empty.
+   *
+   * @see #writeEnum(ProtocolMessageEnum, JsonGenerator)
+   */
+  public static void writeEnums(
+      String fieldName, List<? extends ProtocolMessageEnum> enums, JsonGenerator gen)
+      throws IOException {
+    if (!enums.isEmpty()) {
+      gen.writeArrayFieldStart(fieldName);
+      for (ProtocolMessageEnum e : enums) {
+        writeEnum(e, gen);
+      }
+      gen.writeEndArray();
+    }
+  }
+
+  /**
+   * @deprecated See {@link AbstractOpenRtbJsonWriter#writeContentCategories(String, List, JsonGenerator)
+   */
+  @Deprecated
+  public static void writeContentCategories(
+      String fieldName, List<String> cats, JsonGenerator gen)
+      throws IOException {
+    if (!cats.isEmpty()) {
+      gen.writeArrayFieldStart(fieldName);
+      for (String cat : cats) {
+        if (OpenRtbUtils.categoryFromName(cat) != null) {
+          gen.writeString(cat);
+        }
+      }
+      gen.writeEndArray();
+    }
   }
 
   /**
@@ -124,70 +263,6 @@ public class OpenRtbJsonUtils {
       return par.getText();
     } else {
       throw new JsonParseException("Expected string or array", par.getCurrentLocation());
-    }
-  }
-
-  public static void writeIntBoolField(String fieldName, boolean data, JsonGenerator gen)
-      throws IOException {
-    gen.writeNumberField(fieldName, data ? 1 : 0);
-  }
-
-  public static void writeStrings(String fieldName, List<String> data, JsonGenerator gen)
-      throws IOException {
-    if (!data.isEmpty()) {
-      gen.writeArrayFieldStart(fieldName);
-      for (String d : data) {
-        gen.writeString(d);
-      }
-      gen.writeEndArray();
-    }
-  }
-
-  public static void writeInts(String fieldName, List<Integer> data, JsonGenerator gen)
-      throws IOException {
-    if (!data.isEmpty()) {
-      gen.writeArrayFieldStart(fieldName);
-      for (Integer d : data) {
-        gen.writeNumber(d);
-      }
-      gen.writeEndArray();
-    }
-  }
-
-  public static void writeLongs(String fieldName, List<Long> data, JsonGenerator gen)
-      throws IOException {
-    if (!data.isEmpty()) {
-      gen.writeArrayFieldStart(fieldName);
-      for (Long d : data) {
-        gen.writeNumber(d);
-      }
-      gen.writeEndArray();
-    }
-  }
-
-  public static void writeEnums(
-      String fieldName, List<? extends ProtocolMessageEnum> enums, JsonGenerator gen)
-      throws IOException {
-    if (!enums.isEmpty()) {
-      gen.writeArrayFieldStart(fieldName);
-      for (ProtocolMessageEnum e : enums) {
-        gen.writeNumber(e.getNumber());
-      }
-      gen.writeEndArray();
-    }
-  }
-
-  public static void writeContentCategories(
-      String fieldName, List<String> cats, JsonGenerator gen)
-      throws IOException {
-    if (!cats.isEmpty()) {
-      gen.writeArrayFieldStart(fieldName);
-      for (String cat : cats) {
-        if (OpenRtbUtils.categoryFromName(cat) != null) {
-          gen.writeString(cat);
-        }
-      }
-      gen.writeEndArray();
     }
   }
 }
