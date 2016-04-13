@@ -30,11 +30,18 @@ import com.google.openrtb.util.ProtoUtils;
 public class SnippetProcessorContext {
   private final BidRequestOrBuilder request;
   private final BidResponse.Builder response;
+  private final StringBuilder builder;
   private Bid.Builder bid;
 
   public SnippetProcessorContext(BidRequestOrBuilder request, BidResponse.Builder response) {
+    this(request, response, new StringBuilder(0));
+  }
+
+  public SnippetProcessorContext(BidRequestOrBuilder request, BidResponse.Builder response,
+      StringBuilder builder) {
     this.request = request;
     this.response = response;
+    this.builder = builder;
   }
 
   public final BidRequestOrBuilder request() {
@@ -51,6 +58,14 @@ public class SnippetProcessorContext {
 
   public final Bid.Builder getBid() {
     return bid;
+  }
+
+  public final StringBuilder builder() {
+    return builder;
+  }
+
+  public SnippetProcessorContext rec() {
+    return new SnippetProcessorContext(request, response);
   }
 
   @Override public String toString() {

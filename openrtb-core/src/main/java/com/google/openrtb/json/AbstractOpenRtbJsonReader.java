@@ -19,6 +19,7 @@ package com.google.openrtb.json;
 import static com.google.openrtb.json.OpenRtbJsonUtils.endObject;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
+import com.google.openrtb.util.OpenRtbUtils;
 import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
 
 import com.fasterxml.jackson.core.JsonLocation;
@@ -129,11 +130,22 @@ public abstract class AbstractOpenRtbJsonReader {
     return true;
   }
 
+  protected final boolean checkContentCategory(String cat) {
+    if (OpenRtbUtils.categoryFromName(cat) == null) {
+      if (factory.isStrict()) {
+        throw new IllegalArgumentException("Invalid ContentCategory value");
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
+
   /**
    * Special case for empty-string input. Returning null in non-@Nullable method,
    * but this is non-strict mode anyway.
    */
-  protected boolean emptyToNull(JsonParser par) throws IOException {
+  protected final boolean emptyToNull(JsonParser par) throws IOException {
     JsonToken token = par.getCurrentToken();
     if (token == null) {
       token = par.nextToken();

@@ -16,6 +16,7 @@
 
 package com.google.openrtb.json;
 
+import com.google.openrtb.util.OpenRtbUtils;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.GeneratedMessage.ExtendableMessage;
 
@@ -109,5 +110,35 @@ public class AbstractOpenRtbJsonWriter {
       }
     }
     return true;
+  }
+
+  /**
+   * Writes a string that represents a ContentCategory's JSON name, returning success status.
+   * If the factory is in strict mode, the category name is validated.
+   */
+  protected final boolean writeContentCategory(String cat, JsonGenerator gen) throws IOException {
+    if (!factory.isStrict() || OpenRtbUtils.categoryFromName(cat) != null) {
+      gen.writeString(cat);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Writes an array of ContentCategory if not empty.
+   *
+   * @see #writeContentCategory(String, JsonGenerator)
+   */
+  protected final void writeContentCategories(
+      String fieldName, List<String> cats, JsonGenerator gen)
+      throws IOException {
+    if (!cats.isEmpty()) {
+      gen.writeArrayFieldStart(fieldName);
+      for (String cat : cats) {
+        writeContentCategory(cat, gen);
+      }
+      gen.writeEndArray();
+    }
   }
 }

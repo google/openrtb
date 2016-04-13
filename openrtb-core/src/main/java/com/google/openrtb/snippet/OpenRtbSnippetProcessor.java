@@ -48,44 +48,44 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
   }
 
   @Override protected void processMacroAt(
-      SnippetProcessorContext ctx, StringBuilder sb, SnippetMacroType macroDef) {
+      SnippetProcessorContext ctx, SnippetMacroType macroDef) {
     if (macroDef instanceof OpenRtbMacros) {
       switch ((OpenRtbMacros) macroDef) {
         // Standard OpenRTB macros (OpenRTB 4.6) ----------------------------
 
         case AUCTION_AD_ID: {
           if (ctx.getBid().hasAdid()) {
-            sb.append(ctx.getBid().getAdid());
+            ctx.builder().append(ctx.getBid().getAdid());
           }
           break;
         }
 
         case AUCTION_BID_ID: {
-          sb.append(ctx.response().getBidid());
+          ctx.builder().append(ctx.response().getBidid());
           break;
         }
 
         case AUCTION_CURRENCY: {
           if (ctx.request().getCurCount() == 1) {
-            sb.append(ctx.request().getCur(0));
+            ctx.builder().append(ctx.request().getCur(0));
           }
           break;
         }
 
         case AUCTION_ID: {
-          sb.append(ctx.request().getId());
+          ctx.builder().append(ctx.request().getId());
           break;
         }
 
         case AUCTION_IMP_ID: {
-          sb.append(findImp(ctx, macroDef).getId());
+          ctx.builder().append(findImp(ctx, macroDef).getId());
           break;
         }
 
         case AUCTION_SEAT_ID: {
           SeatBidOrBuilder seatBid = findSeat(ctx, macroDef);
           if (seatBid.hasSeat()) {
-            sb.append(seatBid.getSeat());
+            ctx.builder().append(seatBid.getSeat());
           }
           break;
         }
@@ -93,7 +93,7 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
         // "Server-side" macros: keep the macro untouched, so it will be
         // expanded by the exchange or other system that receives the message.
         case AUCTION_PRICE: {
-          sb.append(((OpenRtbMacros) macroDef).key());
+          ctx.builder().append(((OpenRtbMacros) macroDef).key());
         }
       }
     }

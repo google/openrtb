@@ -19,7 +19,6 @@ package com.google.openrtb.json;
 import static com.google.openrtb.json.OpenRtbJsonUtils.endArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.endObject;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
-import static com.google.openrtb.json.OpenRtbJsonUtils.getIntBoolValue;
 import static com.google.openrtb.json.OpenRtbJsonUtils.peekToken;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
@@ -173,7 +172,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         asset.setId(par.getIntValue());
         break;
       case "required":
-        asset.setRequired(getIntBoolValue(par));
+        asset.setRequired(par.getValueAsBoolean());
         break;
       case "title":
         asset.setTitle(readReqTitle(par));
@@ -400,7 +399,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         asset.setId(par.getIntValue());
         break;
       case "required":
-        asset.setRequired(getIntBoolValue(par));
+        asset.setRequired(par.getValueAsBoolean());
         break;
       case "title":
         asset.setTitle(readRespTitle(par));
