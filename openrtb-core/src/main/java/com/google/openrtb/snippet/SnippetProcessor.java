@@ -51,8 +51,9 @@ public abstract class SnippetProcessor {
       return checkNotNull(snippet);
     }
 
-    @Override protected void processMacroAt(
+    @Override protected boolean processMacroAt(
         SnippetProcessorContext ctx, SnippetMacroType macroDef) {
+      return false;
     }
   };
 
@@ -151,7 +152,7 @@ public abstract class SnippetProcessor {
     return null;
   }
 
-  protected abstract void processMacroAt(
+  protected abstract boolean processMacroAt(
       SnippetProcessorContext ctx, SnippetMacroType macroDef);
 
   protected static String urlEncode(SnippetProcessorContext ctx, String snippet) {
