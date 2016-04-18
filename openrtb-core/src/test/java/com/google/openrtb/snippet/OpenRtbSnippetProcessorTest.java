@@ -65,19 +65,44 @@ public class OpenRtbSnippetProcessorTest {
         .build();
     Bid.Builder bid = Bid.newBuilder()
         // See docs about allowed macro dependencies.
-        .setId("1")
-        .setImpid("1")
-        .setPrice(10000)
-        .setAdm("adm-" + OpenRtbMacros.AUCTION_ID.key());
-    BidResponse.Builder resp = BidResponse.newBuilder()
-        .setBidid("1")
+        .setAdid("ad-" + OpenRtbMacros.AUCTION_CURRENCY.key())
+        .setAdm("adm-" + OpenRtbMacros.AUCTION_PRICE.key())
+        .setCid("c-" + OpenRtbMacros.AUCTION_SEAT_ID.key())
+        .setCrid("cr-" + OpenRtbMacros.AUCTION_ID.key())
+        .setDealid("%{deal-" + OpenRtbMacros.AUCTION_PRICE.key() + "}%")
+        .setId("bid-" + OpenRtbMacros.AUCTION_AD_ID.key())
+        .setImpid("imp1")
+        .setIurl("http://iurl?id=" + OpenRtbMacros.AUCTION_BID_ID.key())
+        .setNurl("http://nurl?id=" + OpenRtbMacros.AUCTION_IMP_ID.key())
+        .setPrice(10000);
+    BidResponse.Builder resp1 = BidResponse.newBuilder()
+        .setBidid("bid-1")
         .addSeatbid(SeatBid.newBuilder()
             .setSeat("seat1")
             .addBid(bid));
-    OpenRtbSnippetProcessor processor = new OpenRtbSnippetProcessor();
-    processor.process(new SnippetProcessorContext(req, resp));
-    bid = resp.getSeatbidBuilder(0).getBidBuilder(0);
-    assertThat(bid.getAdm()).isEqualTo("adm-req1");
+    BidResponse.Builder resp2 = resp1.clone();
+    OpenRtbSnippetProcessor processor = new OpenRtbSnippetProcessor(true);
+    processor.process(new SnippetProcessorContext(req, resp1));
+    bid = resp1.getSeatbidBuilder(0).getBidBuilder(0);
+    assertThat(bid.getAdid()).isEqualTo("ad-USD");
+    assertThat(bid.getAdm()).isEqualTo("adm-${AUCTION_PRICE}");
+    assertThat(bid.getCid()).isEqualTo("c-seat1");
+    assertThat(bid.getCrid()).isEqualTo("cr-req1");
+    assertThat(bid.getDealid()).isEqualTo("deal-%24%7BAUCTION_PRICE%7D");
+    assertThat(bid.getId()).isEqualTo("bid-ad-USD");
+    assertThat(bid.getIurl()).isEqualTo("http://iurl?id=bid-1");
+    assertThat(bid.getNurl()).isEqualTo("http://nurl?id=imp1");
+    processor = new OpenRtbSnippetProcessor(false);
+    processor.process(new SnippetProcessorContext(req, resp2));
+    bid = resp2.getSeatbidBuilder(0).getBidBuilder(0);
+    assertThat(bid.getAdid()).isEqualTo("ad-${AUCTION_CURRENCY}");
+    assertThat(bid.getAdm()).isEqualTo("adm-${AUCTION_PRICE}");
+    assertThat(bid.getCid()).isEqualTo("c-${AUCTION_SEAT_ID}");
+    assertThat(bid.getCrid()).isEqualTo("cr-${AUCTION_ID}");
+    assertThat(bid.getDealid()).isEqualTo("%{deal-${AUCTION_PRICE}}%");
+    assertThat(bid.getId()).isEqualTo("bid-${AUCTION_AD_ID}");
+    assertThat(bid.getIurl()).isEqualTo("http://iurl?id=${AUCTION_BID_ID}");
+    assertThat(bid.getNurl()).isEqualTo("http://nurl?id=${AUCTION_IMP_ID}");
   }
 
   @Test
@@ -85,25 +110,25 @@ public class OpenRtbSnippetProcessorTest {
     BidRequest request = BidRequest.newBuilder()
         .setId("req1")
         .addImp(Imp.newBuilder()
-            .setId("1")
+            .setId("imp1")
             .setBanner(Banner.newBuilder()))
         .build();
     Bid.Builder bid = Bid.newBuilder()
-        .setId("1")
-        .setImpid("1")
-        .setPrice(10000)
-        .setAdm(OpenRtbMacros.AUCTION_CURRENCY.key());
+        .setId("bid-" + OpenRtbMacros.AUCTION_CURRENCY.key())
+        .setImpid("imp-" + OpenRtbMacros.AUCTION_SEAT_ID.key())
+        .setPrice(10000);
     BidResponse.Builder resp = BidResponse.newBuilder()
         .addSeatbid(SeatBid.newBuilder().addBid(bid));
-    OpenRtbSnippetProcessor processor = new OpenRtbSnippetProcessor();
+    OpenRtbSnippetProcessor processor = new OpenRtbSnippetProcessor(true);
     processor.process(new SnippetProcessorContext(request, resp));
     bid = resp.getSeatbidBuilder(0).getBidBuilder(0);
-    assertThat(bid.getAdm()).isEqualTo("");
+    assertThat(bid.getId()).isEqualTo("bid-");
+    assertThat(bid.getImpid()).isEqualTo("imp-");
   }
 
   @Test(expected = UndefinedMacroException.class)
   public void testUndefinedImp() {
-    OpenRtbSnippetProcessor processor = new OpenRtbSnippetProcessor();
+    OpenRtbSnippetProcessor processor = new OpenRtbSnippetProcessor(true);
     SnippetProcessorContext ctx = new SnippetProcessorContext(
         BidRequest.newBuilder().setId("req1").build(),
         BidResponse.newBuilder());
@@ -113,7 +138,7 @@ public class OpenRtbSnippetProcessorTest {
 
   @Test(expected = UndefinedMacroException.class)
   public void testUndefinedSeat() {
-    OpenRtbSnippetProcessor processor = new OpenRtbSnippetProcessor();
+    OpenRtbSnippetProcessor processor = new OpenRtbSnippetProcessor(true);
     SnippetProcessorContext ctx = new SnippetProcessorContext(
         BidRequest.newBuilder().setId("req1").build(),
         BidResponse.newBuilder().addSeatbid(SeatBid.newBuilder().setSeat("seat1")));
