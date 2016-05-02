@@ -141,7 +141,7 @@
                 <phase>generate-sources</phase>
                 <configuration>
                   <target>
-                    <mkdir dir="${protobufGenerated}" />
+                    <!-- mkdir dir="${protobufGenerated}" / -->
                     <path id="proto.path">
                       <fileset dir="${protobufSource}">
                         <include name="**/*.proto" />
