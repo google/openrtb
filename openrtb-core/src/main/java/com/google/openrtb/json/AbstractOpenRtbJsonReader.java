@@ -38,9 +38,19 @@ import java.util.Set;
 public abstract class AbstractOpenRtbJsonReader {
   static final Logger logger = LoggerFactory.getLogger(AbstractOpenRtbJsonReader.class);
   private final OpenRtbJsonFactory factory;
+  private final boolean useNativeAsObject;
 
   protected AbstractOpenRtbJsonReader(OpenRtbJsonFactory factory) {
+    this(factory, false);
+  }
+
+  protected AbstractOpenRtbJsonReader(OpenRtbJsonFactory factory, boolean isNativeAsObject) {
     this.factory = factory;
+    this.useNativeAsObject = isNativeAsObject;
+  }
+
+  public final boolean useNativeAsObject() {
+    return useNativeAsObject;
   }
 
   public final OpenRtbJsonFactory factory() {
