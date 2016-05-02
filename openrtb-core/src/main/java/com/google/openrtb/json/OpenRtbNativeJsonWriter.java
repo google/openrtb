@@ -42,7 +42,11 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
   private OpenRtbJsonWriter coreWriter;
 
   protected OpenRtbNativeJsonWriter(OpenRtbJsonFactory factory) {
-    super(factory);
+    this(factory, false);
+  }
+
+  protected OpenRtbNativeJsonWriter(OpenRtbJsonFactory factory, boolean isNativeAsObject) {
+    super(factory, isNativeAsObject);
   }
 
   /**
