@@ -16,7 +16,9 @@
 
 package com.google.openrtb.json;
 
-import com.fasterxml.jackson.core.JsonFactory;
+import static com.google.common.truth.Truth.assertThat;
+import static java.util.Arrays.asList;
+
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VideoBidResponseProtocol;
 import com.google.openrtb.OpenRtb.NativeRequest;
@@ -25,14 +27,14 @@ import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
 import com.google.openrtb.TestExt;
 import com.google.openrtb.TestNExt;
+
+import com.fasterxml.jackson.core.JsonFactory;
+
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-
-import static com.google.common.truth.Truth.assertThat;
-import static java.util.Arrays.asList;
 
 /**
  * Tests for {@link OpenRtbJsonFactory},
@@ -45,82 +47,65 @@ public class OpenRtbNativeJsonTest {
 
   @Test
   public void testRequest() throws IOException {
-    testRequestWithNativeAsString(newJsonFactory(), newNativeRequest().build());
-    testRequestWithNativeAsObject(newJsonFactory(), newNativeRequest().build());
+    testRequest(newJsonFactory(), newNativeRequest().build());
   }
 
   @Test
   public void testRequest_emptyMessage() throws IOException {
-    final NativeRequest fullNativeRequest = NativeRequest.newBuilder()
-      .addAssets(NativeRequest.Asset.newBuilder()
-        .setId(1)
-        .setTitle(
-          NativeRequest.Asset.Title.newBuilder()
-            .setLen(100)))
-      .addAssets(NativeRequest.Asset.newBuilder()
-        .setId(2)
-        .setImg(
-          NativeRequest.Asset.Image.newBuilder()))
-      .addAssets(NativeRequest.Asset.newBuilder()
-        .setId(3)
-        .setVideo(
-          BidRequest.Imp.Video.newBuilder()
-            .setMinduration(100)
-            .setMaxduration(200)))
-      .addAssets(NativeRequest.Asset.newBuilder()
-        .setId(4)
-        .setData(
-          NativeRequest.Asset.Data.newBuilder()
-            .setType(NativeRequest.Asset.Data.DataAssetType.SPONSORED)))
-      .addAssets(NativeRequest.Asset.newBuilder().setId(5))
-      .build();
-    testRequestWithNativeAsString(newJsonFactory(), fullNativeRequest);
-    final NativeRequest emptyNativeRequest = NativeRequest.newBuilder().build();
-    testRequestWithNativeAsString(newJsonFactory(), emptyNativeRequest);
-    testRequestWithNativeAsObject(newJsonFactory(), fullNativeRequest);
-    testRequestWithNativeAsObject(newJsonFactory(), emptyNativeRequest);
+    testRequest(newJsonFactory(), NativeRequest.newBuilder()
+        .addAssets(NativeRequest.Asset.newBuilder()
+            .setId(1)
+            .setTitle(NativeRequest.Asset.Title.newBuilder()
+                .setLen(100)))
+        .addAssets(NativeRequest.Asset.newBuilder()
+            .setId(2)
+            .setImg(NativeRequest.Asset.Image.newBuilder()))
+        .addAssets(NativeRequest.Asset.newBuilder()
+            .setId(3)
+            .setVideo(BidRequest.Imp.Video.newBuilder()
+                .setMinduration(100)
+                .setMaxduration(200)))
+        .addAssets(NativeRequest.Asset.newBuilder()
+            .setId(4)
+            .setData(NativeRequest.Asset.Data.newBuilder()
+                .setType(NativeRequest.Asset.Data.DataAssetType.SPONSORED)))
+        .addAssets(NativeRequest.Asset.newBuilder()
+            .setId(5))
+        .build());
+    testRequest(newJsonFactory(), NativeRequest.newBuilder().build());
   }
 
   @Test
   public void testResponse() throws IOException {
-    final NativeResponse emptyNativeResponse = newNativeResponse().build();
-    testResponseWithNativeAsString(newJsonFactory(), emptyNativeResponse);
-    testResponseWithNativeAsObject(newJsonFactory(), emptyNativeResponse);
+    testResponse(newJsonFactory(), newNativeResponse().build());
   }
 
   @Test
   public void testResponse_emptyMessage() throws IOException {
-    final NativeResponse fullNativeResponse = NativeResponse.newBuilder()
-      .addAssets(NativeResponse.Asset.newBuilder()
-        .setId(1)
-        .setRequired(true)
-        .setTitle(
-          NativeResponse.Asset.Title.newBuilder()
-            .setText("title")))
-      .addAssets(NativeResponse.Asset.newBuilder()
-        .setId(2)
-        .setImg(
-          NativeResponse.Asset.Image.newBuilder()))
-      .addAssets(NativeResponse.Asset.newBuilder()
-        .setId(3)
-        .setVideo(
-          NativeResponse.Asset.Video.newBuilder()))
-      .addAssets(NativeResponse.Asset.newBuilder()
-        .setId(4)
-        .setData(
-          NativeResponse.Asset.Data.newBuilder()
-            .setValue("v"))
-        .setLink(
-          NativeResponse.Link.newBuilder()))
-      .addAssets(NativeResponse.Asset.newBuilder().setId(5))
+    testResponse(newJsonFactory(), NativeResponse.newBuilder()
+        .addAssets(NativeResponse.Asset.newBuilder()
+            .setId(1)
+            .setRequired(true)
+            .setTitle(NativeResponse.Asset.Title.newBuilder()
+                .setText("title")))
+        .addAssets(NativeResponse.Asset.newBuilder()
+            .setId(2)
+            .setImg(NativeResponse.Asset.Image.newBuilder()))
+        .addAssets(NativeResponse.Asset.newBuilder()
+            .setId(3)
+            .setVideo(NativeResponse.Asset.Video.newBuilder()))
+        .addAssets(NativeResponse.Asset.newBuilder()
+            .setId(4)
+            .setData(NativeResponse.Asset.Data.newBuilder()
+                .setValue("v"))
+            .setLink(NativeResponse.Link.newBuilder()))
+        .addAssets(NativeResponse.Asset.newBuilder()
+            .setId(5))
         .setLink(NativeResponse.Link.newBuilder())
-      .build();
-    final NativeResponse emptyNativeResponse = NativeResponse.newBuilder().setLink(NativeResponse.Link.newBuilder()).build();
-
-    testResponseWithNativeAsString(newJsonFactory(), fullNativeResponse);
-    testResponseWithNativeAsString(newJsonFactory(), emptyNativeResponse);
-    testResponseWithNativeAsObject(newJsonFactory(), fullNativeResponse);
-    testResponseWithNativeAsObject(newJsonFactory(), emptyNativeResponse);
+        .build());
+    testResponse(newJsonFactory(), NativeResponse.newBuilder()
+        .setLink(NativeResponse.Link.newBuilder())
+        .build());
   }
 
   @Test
@@ -130,30 +115,16 @@ public class OpenRtbNativeJsonTest {
     assertThat(reader.readNativeResponse("")).isNull();
   }
 
-  static void testRequestWithNativeAsString(OpenRtbJsonFactory jsonFactory, NativeRequest req) throws IOException {
+  static void testRequest(OpenRtbJsonFactory jsonFactory, NativeRequest req) throws IOException {
     String jsonReq = jsonFactory.newNativeWriter().writeNativeRequest(req);
-    logger.error(jsonReq);
+    logger.info(jsonReq);
     NativeRequest req2 = jsonFactory.newNativeReader().readNativeRequest(jsonReq);
     assertThat(req2).isEqualTo(req);
   }
 
-  static void testRequestWithNativeAsObject(OpenRtbJsonFactory jsonFactory, NativeRequest req) throws IOException {
-    String jsonReq = jsonFactory.newNativeWriter(true).writeNativeRequest(req);
-    logger.error(jsonReq);
-    NativeRequest req2 = jsonFactory.newNativeReader().readNativeRequest(jsonReq);
-    assertThat(req2).isEqualTo(req);
-  }
-
-  static void testResponseWithNativeAsString(OpenRtbJsonFactory jsonFactory, NativeResponse resp) throws IOException {
-    String jsonResp = jsonFactory.newNativeWriter(false).writeNativeResponse(resp);
-    logger.error(jsonResp);
-    NativeResponse resp2 = jsonFactory.newNativeReader().readNativeResponse(jsonResp);
-    assertThat(resp2).isEqualTo(resp);
-  }
-
-  static void testResponseWithNativeAsObject(OpenRtbJsonFactory jsonFactory, NativeResponse resp) throws IOException {
-    String jsonResp = jsonFactory.newNativeWriter(true).writeNativeResponse(resp);
-    logger.error(jsonResp);
+  static void testResponse(OpenRtbJsonFactory jsonFactory, NativeResponse resp) throws IOException {
+    String jsonResp = jsonFactory.newNativeWriter().writeNativeResponse(resp);
+    logger.info(jsonResp);
     NativeResponse resp2 = jsonFactory.newNativeReader().readNativeResponse(jsonResp);
     assertThat(resp2).isEqualTo(resp);
   }
