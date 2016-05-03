@@ -374,8 +374,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
   {
     if(useNativeAsObject()) {
       aGen.writeFieldName("request");
-      final OpenRtbNativeJsonWriter nativeWriterRef = new OpenRtbNativeJsonWriter(factory());
-      nativeWriterRef.writeNativeRequest(aNativ.getRequestNative(), aGen);
+      new OpenRtbNativeJsonWriter(factory(), true).writeNativeRequest(aNativ.getRequestNative(), aGen);
     }
     else {
       aGen.writeStringField("request", nativeWriter().writeNativeRequest(aNativ.getRequestNative()));
