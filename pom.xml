@@ -69,7 +69,7 @@
     <!-- Protobuf properties -->
     <generatedSources>${project.basedir}/target/generated-sources</generatedSources>
     <protobufSource>${project.basedir}/src/main/protobuf</protobufSource>
-    <protobufGenerated>${generatedSources}/protobuf</protobufGenerated>
+    <protobufGenerated>${project.basedir}/src/main/java</protobufGenerated>
     <testGeneratedSources>${project.basedir}/target/generated-test-sources</testGeneratedSources>
     <testProtobufSource>${project.basedir}/src/test/protobuf</testProtobufSource>
     <testProtobufGenerated>${testGeneratedSources}/protobuf</testProtobufGenerated>

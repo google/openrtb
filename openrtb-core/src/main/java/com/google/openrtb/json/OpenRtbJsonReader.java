@@ -87,7 +87,11 @@ import java.io.Reader;
 public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
 
   protected OpenRtbJsonReader(OpenRtbJsonFactory factory) {
-    super(factory);
+    this(factory, false);
+  }
+
+  protected OpenRtbJsonReader(OpenRtbJsonFactory factory, final boolean isNativeAsObject) {
+    super(factory, isNativeAsObject);
   }
 
   /**
