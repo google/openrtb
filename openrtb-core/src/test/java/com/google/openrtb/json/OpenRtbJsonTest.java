@@ -402,6 +402,10 @@ public class OpenRtbJsonTest {
   }
 
   static void testRequest(OpenRtbJsonFactory jsonFactory, BidRequest req) throws IOException {
+
+    String compareReq1 = "";
+    String compareReq2 = "";
+
     String jsonReq = jsonFactory.newWriter().writeBidRequest(req);
     logger.info("HIER:::::::: " + jsonReq);
     jsonFactory.setStrict(false).newWriter().writeBidRequest(req);

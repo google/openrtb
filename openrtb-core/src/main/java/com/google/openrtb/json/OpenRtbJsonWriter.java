@@ -374,42 +374,13 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
   {
     if(useNativeAsObject()) {
       aGen.writeFieldName("request");
-//      aGen.writeStartObject();
       final OpenRtbNativeJsonWriter nativeWriterRef = new OpenRtbNativeJsonWriter(factory());
       nativeWriterRef.writeNativeRequest(aNativ.getRequestNative(), aGen);
-      //aGen.writeObject(aNativ.getRequestNative());
-//      aGen.writeEndObject();
     }
     else {
       aGen.writeStringField("request", nativeWriter().writeNativeRequest(aNativ.getRequestNative()));
     }
   }
-
-//  private void writeNativeRequestFields(final OpenRtb.NativeRequest req, final JsonGenerator gen) throws IOException
-//  {
-//    if (req.hasVer()) {
-//      gen.writeStringField("ver", req.getVer());
-//    }
-//    if (req.hasLayout()) {
-//      gen.writeNumberField("layout", req.getLayout().getNumber());
-//    }
-//    if (req.hasAdunit()) {
-//      gen.writeNumberField("adunit", req.getAdunit().getNumber());
-//    }
-//    if (req.hasPlcmtcnt()) {
-//      gen.writeNumberField("plcmtcnt", req.getPlcmtcnt());
-//    }
-//    if (req.hasSeq()) {
-//      gen.writeNumberField("seq", req.getSeq());
-//    }
-//    if (checkRequired(req.getAssetsCount())) {
-//      gen.writeArrayFieldStart("assets");
-//      for (OpenRtb.NativeRequest.Asset asset : req.getAssetsList()) {
-//        //writeReqAsset(asset, gen);
-//      }
-//      gen.writeEndArray();
-//    }
-//  }
 
   public final void writePmp(Pmp pmp, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
@@ -1027,7 +998,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
 
   protected final OpenRtbNativeJsonWriter nativeWriter() {
     if (nativeWriter == null) {
-      nativeWriter = factory().newNativeWriter(useNativeAsObject());
+      nativeWriter = factory().newNativeWriter();
     }
     return nativeWriter;
   }
