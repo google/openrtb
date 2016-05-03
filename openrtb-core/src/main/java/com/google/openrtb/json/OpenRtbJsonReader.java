@@ -344,15 +344,14 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
   }
 
   private void readNativeAsString(Native.Builder aNative, JsonParser aPar) throws IOException {
-    OpenRtbNativeJsonReader nativeReader = factory().newNativeReader();
-    aNative.setRequestNative(nativeReader.readNativeRequest(new CharArrayReader(
+    OpenRtbNativeJsonReader nativeStringReader = factory().newNativeReader();
+    aNative.setRequestNative(nativeStringReader.readNativeRequest(new CharArrayReader(
             aPar.getTextCharacters(), aPar.getTextOffset(), aPar.getTextLength())));
   }
 
   private void readNativeAsObject(Native.Builder aNative, JsonParser aPar) throws IOException {
-    OpenRtbNativeJsonReader nativeReader = factory().newNativeReader();
-    aNative.setRequestNative(nativeReader.readNativeRequest(new CharArrayReader(aPar.getTextCharacters(),
-            aPar.getTextOffset(), aPar.getTextLength())));
+    OpenRtbNativeJsonReader nativeObjectReader = factory().newNativeReader(true);
+    aNative.setRequestNative(nativeObjectReader.readNativeRequest(aPar));
   }
 
   public final Pmp.Builder readPmp(JsonParser par) throws IOException {

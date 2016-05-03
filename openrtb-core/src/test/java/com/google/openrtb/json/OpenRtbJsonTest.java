@@ -400,16 +400,18 @@ public class OpenRtbJsonTest {
             "{\"id\":4,\"required\":0,\"data\":{\"type\":12,\"len\":25}}," +
             "{\"id\":5}]}}}],\"app\":{},\"device\":{},\"user\":{},\"regs\":{}}";
 
-    String jsonReq = jsonFactory.newWriter().writeBidRequest(req);
+    String jsonReq = jsonFactory.newWriter(false).writeBidRequest(req);
     assertThat(jsonReq).isEqualTo(compareReqNativeAsStr);
-    jsonFactory.setStrict(false).newWriter().writeBidRequest(req);
+    jsonFactory.setStrict(false).newWriter(false).writeBidRequest(req);
 
-    BidRequest req2 = jsonFactory.newReader().readBidRequest(jsonReq);
+    BidRequest req2 = jsonFactory.newReader(false).readBidRequest(jsonReq);
     String jsonReq2 = jsonFactory.newWriter(true).writeBidRequest(req2);
     assertThat(jsonReq2).isEqualTo(compareReqNativeAsObj);
     assertThat(req2).isEqualTo(req);
 
     BidRequest req3 = jsonFactory.setStrict(false).newReader(true).readBidRequest(jsonReq2);
+    String jsonReq3 = jsonFactory.newWriter(true).writeBidRequest(req3);
+    assertThat(jsonReq3).isEqualTo(compareReqNativeAsObj);
     assertThat(req3).isEqualTo(req);
   }
 
@@ -424,9 +426,9 @@ public class OpenRtbJsonTest {
   }
 
   static String testResponseWithNative(OpenRtbJsonFactory jsonFactory, BidResponse resp) throws IOException {
-    String jsonResp = jsonFactory.newWriter().writeBidResponse(resp);
+    String jsonResp = jsonFactory.newWriter(false).writeBidResponse(resp);
     logger.info(jsonResp);
-    jsonFactory.setStrict(false).newWriter().writeBidResponse(resp);
+    jsonFactory.setStrict(false).newWriter(true).writeBidResponse(resp);
     OpenRtb.BidResponse resp2 = jsonFactory.newReader().readBidResponse(jsonResp);
     assertThat(resp2).isEqualTo(resp);
     jsonFactory.setStrict(false).newReader().readBidResponse(jsonResp);
