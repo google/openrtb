@@ -312,9 +312,11 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       throws IOException {
     switch (fieldName) {
       case "request": {
-          OpenRtbNativeJsonReader nativeReader = factory().newNativeReader();
-          nativ.setRequestNative(nativeReader.readNativeRequest(new CharArrayReader(
-              par.getTextCharacters(), par.getTextOffset(), par.getTextLength())));
+          if (useNativeAsObject()) {
+            readNativeAsObject(nativ, par);
+          } else {
+            readNativeAsString(nativ, par);
+          }
         }
         break;
       case "ver":
@@ -339,6 +341,18 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       default:
         readOther(nativ, par, fieldName);
     }
+  }
+
+  private void readNativeAsString(Native.Builder aNative, JsonParser aPar) throws IOException {
+    OpenRtbNativeJsonReader nativeReader = factory().newNativeReader();
+    aNative.setRequestNative(nativeReader.readNativeRequest(new CharArrayReader(
+            aPar.getTextCharacters(), aPar.getTextOffset(), aPar.getTextLength())));
+  }
+
+  private void readNativeAsObject(Native.Builder aNative, JsonParser aPar) throws IOException {
+    OpenRtbNativeJsonReader nativeReader = factory().newNativeReader();
+    aNative.setRequestNative(nativeReader.readNativeRequest(new CharArrayReader(aPar.getTextCharacters(),
+            aPar.getTextOffset(), aPar.getTextLength())));
   }
 
   public final Pmp.Builder readPmp(JsonParser par) throws IOException {

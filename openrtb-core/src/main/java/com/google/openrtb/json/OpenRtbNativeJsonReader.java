@@ -105,7 +105,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       if (par.nextToken() != JsonToken.VALUE_NULL) {
         if (firstField) {
           firstField = false;
-          if ((rootNativeField = "native".equals(fieldName)) == true) {
+          if ((rootNativeField = "native".equals(fieldName))) {
             startObject(par);
             fieldName = getCurrentName(par);
             par.nextToken();

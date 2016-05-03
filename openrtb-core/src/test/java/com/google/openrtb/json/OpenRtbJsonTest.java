@@ -16,66 +16,39 @@
 
 package com.google.openrtb.json;
 
-import static com.google.common.truth.Truth.assertThat;
-import static java.util.Arrays.asList;
-
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.google.openrtb.OpenRtb;
-import com.google.openrtb.OpenRtb.BidRequest;
-import com.google.openrtb.OpenRtb.BidRequest.App;
-import com.google.openrtb.OpenRtb.BidRequest.AuctionType;
-import com.google.openrtb.OpenRtb.BidRequest.Content;
+import com.google.openrtb.OpenRtb.*;
+import com.google.openrtb.OpenRtb.BidRequest.*;
 import com.google.openrtb.OpenRtb.BidRequest.Content.ContentContext;
 import com.google.openrtb.OpenRtb.BidRequest.Content.QAGMediaRating;
 import com.google.openrtb.OpenRtb.BidRequest.Content.VideoQuality;
-import com.google.openrtb.OpenRtb.BidRequest.Data;
 import com.google.openrtb.OpenRtb.BidRequest.Data.Segment;
-import com.google.openrtb.OpenRtb.BidRequest.Device;
 import com.google.openrtb.OpenRtb.BidRequest.Device.ConnectionType;
 import com.google.openrtb.OpenRtb.BidRequest.Device.DeviceType;
-import com.google.openrtb.OpenRtb.BidRequest.Geo;
 import com.google.openrtb.OpenRtb.BidRequest.Geo.LocationType;
-import com.google.openrtb.OpenRtb.BidRequest.Imp;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.APIFramework;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.AdPosition;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.*;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner.BannerAdType;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner.ExpandableDirection;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Native;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Pmp;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Pmp.Deal;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Video;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.CompanionAd;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.ContentDeliveryMethod;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VASTCompanionType;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VideoBidResponseProtocol;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VideoLinearity;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VideoPlaybackMethod;
-import com.google.openrtb.OpenRtb.BidRequest.Producer;
-import com.google.openrtb.OpenRtb.BidRequest.Publisher;
-import com.google.openrtb.OpenRtb.BidRequest.Regs;
-import com.google.openrtb.OpenRtb.BidRequest.Site;
-import com.google.openrtb.OpenRtb.BidRequest.User;
-import com.google.openrtb.OpenRtb.BidResponse;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.*;
 import com.google.openrtb.OpenRtb.BidResponse.NoBidReason;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
-import com.google.openrtb.OpenRtb.CreativeAttribute;
-import com.google.openrtb.OpenRtb.NativeRequest;
-import com.google.openrtb.OpenRtb.NativeResponse;
 import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
 import com.google.openrtb.TestExt;
 import com.google.openrtb.TestUtil;
-
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParseException;
-
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+
+import static com.google.common.truth.Truth.assertThat;
+import static java.util.Arrays.asList;
 
 /**
  * Tests for {@link OpenRtbJsonFactory}, {@link OpenRtbJsonReader}, {@link OpenRtbJsonWriter}.
@@ -199,14 +172,14 @@ public class OpenRtbJsonTest {
     impression.setNative(Native.newBuilder().setRequestNative(
        fullNativeRequest.build())).build();
 
-    testRequest(jsonFactory, BidRequest.newBuilder().setId("4711")
+    testRequestWithNative(jsonFactory, BidRequest.newBuilder().setId("1")
                                        .addImp(impression)
                                        .setDevice(Device.newBuilder())
                                        .setApp(App.newBuilder())
                                        .setUser(User.newBuilder())
                                        .setRegs(Regs.newBuilder())
                                        .build());
-    testRequest(jsonFactory, BidRequest.newBuilder().setId("0")
+    testRequest(jsonFactory, BidRequest.newBuilder().setId("2")
                                        .addImp(Imp.newBuilder().setId("0")
                                                   .setBanner(Banner.newBuilder())
                                                   .setPmp(Pmp.newBuilder()))
@@ -214,7 +187,7 @@ public class OpenRtbJsonTest {
                                        .setSite(Site.newBuilder())
                                        .setUser(User.newBuilder().addData(Data.newBuilder()))
                                        .build());
-    testRequest(jsonFactory, BidRequest.newBuilder().setId("0")
+    testRequest(jsonFactory, BidRequest.newBuilder().setId("3")
                                        .addImp(Imp.newBuilder().setId("0")
                                                   .setVideo(Video.newBuilder())
                                                   .setPmp(Pmp.newBuilder().addDeals(Deal.newBuilder().setId("0"))))
@@ -223,7 +196,7 @@ public class OpenRtbJsonTest {
                                                     .setPublisher(Publisher.newBuilder()))
                                        .setUser(User.newBuilder().addData(Data.newBuilder().addSegment(Segment.newBuilder())))
                                        .build());
-    testRequest(jsonFactory, BidRequest.newBuilder().setId("0")
+    testRequest(jsonFactory, BidRequest.newBuilder().setId("4")
                                        .setSite(Site.newBuilder()
                                                     .setContent(Content.newBuilder().setProducer(Producer.newBuilder())))
                                        .build());
@@ -402,21 +375,55 @@ public class OpenRtbJsonTest {
   }
 
   static void testRequest(OpenRtbJsonFactory jsonFactory, BidRequest req) throws IOException {
-
-    String compareReq1 = "";
-    String compareReq2 = "";
-
     String jsonReq = jsonFactory.newWriter().writeBidRequest(req);
-    logger.info("HIER:::::::: " + jsonReq);
+    logger.info(jsonReq);
     jsonFactory.setStrict(false).newWriter().writeBidRequest(req);
     BidRequest req2 = jsonFactory.newReader().readBidRequest(jsonReq);
-    String jsonReq2 = jsonFactory.newWriter(true).writeBidRequest(req2);
-    logger.info("REIH:::::::: " + jsonReq2);
     assertThat(req2).isEqualTo(req);
     jsonFactory.setStrict(false).newReader().readBidRequest(jsonReq);
   }
 
+  static void testRequestWithNative(OpenRtbJsonFactory jsonFactory, BidRequest req) throws IOException {
+
+    String compareReqNativeAsStr = "{\"id\":\"1\",\"imp\":[{\"id\":\"0\",\"native\":{\"request\":\"" +
+            "{\\\"ver\\\":\\\"1\\\",\\\"layout\\\":2,\\\"adunit\\\":5,\\\"plcmtcnt\\\":3," +
+            "\\\"assets\\\":[{\\\"id\\\":1,\\\"required\\\":1,\\\"title\\\":{\\\"len\\\":100}}," +
+            "{\\\"id\\\":2,\\\"required\\\":1,\\\"img\\\":{\\\"type\\\":3,\\\"wmin\\\":350,\\\"hmin\\\":350}}," +
+            "{\\\"id\\\":3,\\\"required\\\":1,\\\"data\\\":{\\\"type\\\":2,\\\"len\\\":90}}," +
+            "{\\\"id\\\":4,\\\"required\\\":0,\\\"data\\\":{\\\"type\\\":12,\\\"len\\\":25}}," +
+            "{\\\"id\\\":5}]}\"}}],\"app\":{},\"device\":{},\"user\":{},\"regs\":{}}";
+    String compareReqNativeAsObj = "{\"id\":\"1\",\"imp\":[{\"id\":\"0\",\"native\":{\"request\":" +
+            "{\"ver\":\"1\",\"layout\":2,\"adunit\":5,\"plcmtcnt\":3," +
+            "\"assets\":[{\"id\":1,\"required\":1,\"title\":{\"len\":100}}," +
+            "{\"id\":2,\"required\":1,\"img\":{\"type\":3,\"wmin\":350,\"hmin\":350}}," +
+            "{\"id\":3,\"required\":1,\"data\":{\"type\":2,\"len\":90}}," +
+            "{\"id\":4,\"required\":0,\"data\":{\"type\":12,\"len\":25}}," +
+            "{\"id\":5}]}}}],\"app\":{},\"device\":{},\"user\":{},\"regs\":{}}";
+
+    String jsonReq = jsonFactory.newWriter().writeBidRequest(req);
+    assertThat(jsonReq).isEqualTo(compareReqNativeAsStr);
+    jsonFactory.setStrict(false).newWriter().writeBidRequest(req);
+
+    BidRequest req2 = jsonFactory.newReader().readBidRequest(jsonReq);
+    String jsonReq2 = jsonFactory.newWriter(true).writeBidRequest(req2);
+    assertThat(jsonReq2).isEqualTo(compareReqNativeAsObj);
+    assertThat(req2).isEqualTo(req);
+
+    BidRequest req3 = jsonFactory.setStrict(false).newReader(true).readBidRequest(jsonReq2);
+    assertThat(req3).isEqualTo(req);
+  }
+
   static String testResponse(OpenRtbJsonFactory jsonFactory, BidResponse resp) throws IOException {
+    String jsonResp = jsonFactory.newWriter().writeBidResponse(resp);
+    logger.info(jsonResp);
+    jsonFactory.setStrict(false).newWriter().writeBidResponse(resp);
+    OpenRtb.BidResponse resp2 = jsonFactory.newReader().readBidResponse(jsonResp);
+    assertThat(resp2).isEqualTo(resp);
+    jsonFactory.setStrict(false).newReader().readBidResponse(jsonResp);
+    return jsonResp;
+  }
+
+  static String testResponseWithNative(OpenRtbJsonFactory jsonFactory, BidResponse resp) throws IOException {
     String jsonResp = jsonFactory.newWriter().writeBidResponse(resp);
     logger.info(jsonResp);
     jsonFactory.setStrict(false).newWriter().writeBidResponse(resp);
