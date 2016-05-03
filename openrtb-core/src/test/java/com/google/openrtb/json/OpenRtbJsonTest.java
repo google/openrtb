@@ -153,83 +153,6 @@ public class OpenRtbJsonTest {
   }
 
   @Test
-  public void testFullRequest_emptyMessages() throws IOException {
-
-    OpenRtbJsonFactory jsonFactory = newJsonFactory();
-    testRequest(jsonFactory, BidRequest.newBuilder().setId("0").build());
-
-    final Imp.Builder impression = Imp.newBuilder();
-    impression.setId("0");
-
-    final NativeRequest.Builder fullNativeRequest = NativeRequest.newBuilder()
-     .setVer("1")
-     .setLayout(NativeRequest.LayoutId.APP_WALL)
-     .setAdunit(NativeRequest.AdUnitId.CUSTOM)
-     .setPlcmtcnt(3)
-     .addAssets(NativeRequest.Asset.newBuilder()
-       .setId(1)
-       .setRequired(true)
-       .setTitle(
-         NativeRequest.Asset.Title.newBuilder()
-           .setLen(100)))
-     .addAssets(NativeRequest.Asset.newBuilder()
-       .setId(2)
-       .setRequired(true)
-       .setImg(
-         NativeRequest.Asset.Image.newBuilder()
-         .setType(NativeRequest.Asset.Image.ImageAssetType.MAIN)
-         .setWmin(350)
-         .setHmin(350)))
-     .addAssets(NativeRequest.Asset.newBuilder()
-       .setId(3)
-       .setRequired(true)
-       .setData(
-         NativeRequest.Asset.Data.newBuilder()
-           .setType(NativeRequest.Asset.Data.DataAssetType.DESC)
-           .setLen(90)))
-     .addAssets(NativeRequest.Asset.newBuilder()
-       .setId(4)
-       .setRequired(false)
-       .setData(
-         NativeRequest.Asset.Data.newBuilder()
-           .setType(NativeRequest.Asset.Data.DataAssetType.CTATEXT)
-           .setLen(25)))
-     .addAssets(NativeRequest.Asset.newBuilder().setId(5));
-
-    impression.setNative(Native.newBuilder().setRequestNative(
-       fullNativeRequest.build())).build();
-
-    testRequest(jsonFactory, BidRequest.newBuilder().setId("4711")
-                                       .addImp(impression)
-                                       .setDevice(Device.newBuilder())
-                                       .setApp(App.newBuilder())
-                                       .setUser(User.newBuilder())
-                                       .setRegs(Regs.newBuilder())
-                                       .build());
-    testRequest(jsonFactory, BidRequest.newBuilder().setId("0")
-                                       .addImp(Imp.newBuilder().setId("0")
-                                                  .setBanner(Banner.newBuilder())
-                                                  .setPmp(Pmp.newBuilder()))
-                                       .setDevice(Device.newBuilder().setGeo(Geo.newBuilder()))
-                                       .setSite(Site.newBuilder())
-                                       .setUser(User.newBuilder().addData(Data.newBuilder()))
-                                       .build());
-    testRequest(jsonFactory, BidRequest.newBuilder().setId("0")
-                                       .addImp(Imp.newBuilder().setId("0")
-                                                  .setVideo(Video.newBuilder())
-                                                  .setPmp(Pmp.newBuilder().addDeals(Deal.newBuilder().setId("0"))))
-                                       .setSite(Site.newBuilder()
-                                                    .setContent(Content.newBuilder())
-                                                    .setPublisher(Publisher.newBuilder()))
-                                       .setUser(User.newBuilder().addData(Data.newBuilder().addSegment(Segment.newBuilder())))
-                                       .build());
-    testRequest(jsonFactory, BidRequest.newBuilder().setId("0")
-                                       .setSite(Site.newBuilder()
-                                                    .setContent(Content.newBuilder().setProducer(Producer.newBuilder())))
-                                       .build());
-  }
-
-  @Test
   public void testRequest_emptyToNull() throws IOException {
     OpenRtbJsonReader reader = OpenRtbJsonFactory.create().setStrict(false).newReader();
     assertThat(reader.readBidRequest("")).isNull();
@@ -403,11 +326,9 @@ public class OpenRtbJsonTest {
 
   static void testRequest(OpenRtbJsonFactory jsonFactory, BidRequest req) throws IOException {
     String jsonReq = jsonFactory.newWriter().writeBidRequest(req);
-    logger.info("HIER:::::::: " + jsonReq);
+    logger.info(jsonReq);
     jsonFactory.setStrict(false).newWriter().writeBidRequest(req);
     BidRequest req2 = jsonFactory.newReader().readBidRequest(jsonReq);
-    String jsonReq2 = jsonFactory.newWriter(true).writeBidRequest(req2);
-    logger.info("REIH:::::::: " + jsonReq2);
     assertThat(req2).isEqualTo(req);
     jsonFactory.setStrict(false).newReader().readBidRequest(jsonReq);
   }
