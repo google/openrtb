@@ -31,23 +31,13 @@ import java.util.Map;
  */
 public class AbstractOpenRtbJsonWriter {
   private final OpenRtbJsonFactory factory;
-  private final boolean useNativeAsObject;
 
   protected AbstractOpenRtbJsonWriter(OpenRtbJsonFactory factory) {
-    this(factory, false);
-  }
-
-  protected AbstractOpenRtbJsonWriter(OpenRtbJsonFactory factory, boolean isNativeAsObject) {
     this.factory = factory;
-    this.useNativeAsObject = isNativeAsObject;
   }
 
   public final OpenRtbJsonFactory factory() {
     return factory;
-  }
-
-  public final boolean useNativeAsObject() {
-    return useNativeAsObject;
   }
 
   /**
