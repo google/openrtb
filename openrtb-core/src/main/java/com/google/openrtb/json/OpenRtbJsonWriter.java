@@ -961,10 +961,10 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     }
     switch (bid.getAdmOneofCase()) {
       case ADM:
-        gen.writeStringField("adm", bid.getAdm());
+        writeAdmObj(bid, gen);
         break;
       case ADM_NATIVE:
-        gen.writeStringField("adm", nativeWriter().writeNativeResponse(bid.getAdmNative()));
+        writeAdmNative(bid, gen);
         break;
       case ADMONEOF_NOT_SET:
         checkRequired(false);
@@ -992,6 +992,27 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     }
     if (bid.hasH()) {
       gen.writeNumberField("h", bid.getH());
+    }
+  }
+
+  private void writeAdmNative(final Bid aBid, final JsonGenerator aGen) throws IOException
+  {
+    if(useNativeAsObject()) {
+      new OpenRtbNativeJsonWriter(factory(), true).writeNativeResponse(aBid.getAdmNative(), aGen);
+    }
+    else {
+      aGen.writeStringField("adm", nativeWriter().writeNativeResponse(aBid.getAdmNative()));
+    }
+  }
+
+  private void writeAdmObj(final Bid aBid, final JsonGenerator aGen) throws IOException
+  {
+    aGen.writeFieldName("adm");
+    if(useNativeAsObject()) {
+      new OpenRtbJsonWriter(factory(), true).writeAdmNative(aBid, aGen);
+    }
+    else {
+      aGen.writeString(aBid.getAdm());
     }
   }
 

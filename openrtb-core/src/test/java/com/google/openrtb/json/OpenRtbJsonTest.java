@@ -254,6 +254,15 @@ public class OpenRtbJsonTest {
   }
 
   @Test
+  public void testResponseWithNative() throws IOException {
+    OpenRtbJsonFactory jsonFactory = newJsonFactory();
+    BidResponse resp = newBidResponse(true).build();
+    String jsonResp = testResponseWithNative(jsonFactory, resp);
+    assertThat(jsonFactory.newWriter(false).writeBidResponse(newBidResponse(true).build()))
+        .isEqualTo(jsonResp);
+  }
+
+  @Test
   public void testExt1() throws IOException {
     OpenRtbJsonFactory jsonFactory = newJsonFactory();
     testResponse(jsonFactory, BidResponse.newBuilder()
@@ -426,13 +435,48 @@ public class OpenRtbJsonTest {
   }
 
   static String testResponseWithNative(OpenRtbJsonFactory jsonFactory, BidResponse resp) throws IOException {
-    String jsonResp = jsonFactory.newWriter(false).writeBidResponse(resp);
-    logger.info(jsonResp);
-    jsonFactory.setStrict(false).newWriter(true).writeBidResponse(resp);
-    OpenRtb.BidResponse resp2 = jsonFactory.newReader().readBidResponse(jsonResp);
+    String compareRespNativeAsStr = "{\"id\":\"resp1\",\"seatbid\":[{\"bid\":[" +
+                                    "{\"id\":\"bid1\",\"impid\":\"imp1\",\"price\":19.95," +
+                                    "\"adid\":\"adid1\",\"nurl\":\"http://iwon.com\",\"adm\":\"" +
+                                    "{\\\"ver\\\":\\\"1.0\\\",\\\"link\\\":{}}\",\"adomain\":" +
+                                    "[\"http://myads.com\"],\"bundle\":\"com.google.testapp\"," +
+                                    "\"iurl\":\"http://mycdn.com/ad.gif\",\"cid\":\"cid1\"," +
+                                    "\"crid\":\"crid1\",\"cat\":[\"IAB10-2\"],\"attr\":[12]," +
+                                    "\"dealid\":\"deal1\",\"w\":100,\"h\":80,\"ext\":{\"test1\":\"data1\"}}]," +
+                                    "\"seat\":\"seat1\",\"group\":0,\"ext\":{\"test1\":\"data1\"}}]," +
+                                    "\"bidid\":\"bid1\",\"cur\":\"USD\",\"customdata\":\"mydata\",\"nbr\":1,\"ext\":" +
+                                    "{\"test1\":\"data1\",\"test2arr\":[{\"test2\":\"data2\"}," +
+                                    "{\"test2\":\"data2\"}],\"test2a\":{\"test2\":\"data2\"},\"test2b\":" +
+                                    "{\"test2\":\"data2\"},\"test3\":99,\"test4arr\":[10,20]}}";
+    String compareRespNativeAsObj = "{\"id\":\"resp1\",\"seatbid\":[{\"bid\":[" +
+                                    "{\"id\":\"bid1\",\"impid\":\"imp1\",\"price\":19.95," +
+                                    "\"adid\":\"adid1\",\"nurl\":\"http://iwon.com\",\"adm\":" +
+                                    "{\"ver\":\"1.0\",\"link\":{}},\"adomain\":" +
+                                    "[\"http://myads.com\"],\"bundle\":\"com.google.testapp\"," +
+                                    "\"iurl\":\"http://mycdn.com/ad.gif\",\"cid\":\"cid1\"," +
+                                    "\"crid\":\"crid1\",\"cat\":[\"IAB10-2\"],\"attr\":[12]," +
+                                    "\"dealid\":\"deal1\",\"w\":100,\"h\":80,\"ext\":{\"test1\":\"data1\"}}]," +
+                                    "\"seat\":\"seat1\",\"group\":0,\"ext\":{\"test1\":\"data1\"}}]," +
+                                    "\"bidid\":\"bid1\",\"cur\":\"USD\",\"customdata\":\"mydata\",\"nbr\":1,\"ext\":" +
+                                    "{\"test1\":\"data1\",\"test2arr\":[{\"test2\":\"data2\"}," +
+                                    "{\"test2\":\"data2\"}],\"test2a\":{\"test2\":\"data2\"},\"test2b\":" +
+                                    "{\"test2\":\"data2\"},\"test3\":99,\"test4arr\":[10,20]}}";
+
+    String jsonRespNativeStr = jsonFactory.newWriter().writeBidResponse(resp);
+    assertThat(jsonRespNativeStr).isEqualTo(compareRespNativeAsStr);
+
+    OpenRtb.BidResponse resp2 = jsonFactory.newReader().readBidResponse(compareRespNativeAsStr);
+    String jsonRespNativeObj = jsonFactory.newWriter(true).writeBidResponse(resp2);
+    assertThat(jsonRespNativeObj).isEqualTo(compareRespNativeAsObj);
     assertThat(resp2).isEqualTo(resp);
-    jsonFactory.setStrict(false).newReader().readBidResponse(jsonResp);
-    return jsonResp;
+
+    OpenRtb.BidResponse resp3 = jsonFactory.newReader(true).readBidResponse(jsonRespNativeObj);
+    jsonRespNativeObj = jsonFactory.newWriter(true).writeBidResponse(resp3);
+    assertThat(jsonRespNativeObj).isEqualTo(compareRespNativeAsObj);
+    assertThat(resp2).isEqualTo(resp);
+
+    jsonFactory.setStrict(false).newReader().readBidResponse(jsonRespNativeObj);
+    return jsonRespNativeObj;
   }
 
   static OpenRtbJsonFactory newJsonFactory() {
