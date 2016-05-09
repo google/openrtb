@@ -407,17 +407,17 @@ public class OpenRtbJsonTest {
             "{\"id\":4,\"required\":0,\"data\":{\"type\":12,\"len\":25}}," +
             "{\"id\":5}]}}}],\"app\":{},\"device\":{},\"user\":{},\"regs\":{}}";
 
-    String jsonReq = jsonFactory.newWriter(false).writeBidRequest(req);
+    String jsonReq = jsonFactory.setUseNativeAsObject(false).newWriter().writeBidRequest(req);
     assertThat(jsonReq).isEqualTo(compareReqNativeAsStr);
-    jsonFactory.setStrict(false).newWriter(false).writeBidRequest(req);
+    jsonFactory.setStrict(false).setUseNativeAsObject(false).newWriter().writeBidRequest(req);
 
-    BidRequest req2 = jsonFactory.newReader(false).readBidRequest(jsonReq);
-    String jsonReq2 = jsonFactory.newWriter(true).writeBidRequest(req2);
+    BidRequest req2 = jsonFactory.setUseNativeAsObject(false).newReader().readBidRequest(jsonReq);
+    String jsonReq2 = jsonFactory.setUseNativeAsObject(true).newWriter().writeBidRequest(req2);
     assertThat(jsonReq2).isEqualTo(compareReqNativeAsObj);
     assertThat(req2).isEqualTo(req);
 
-    BidRequest req3 = jsonFactory.setStrict(false).newReader(true).readBidRequest(jsonReq2);
-    String jsonReq3 = jsonFactory.newWriter(true).writeBidRequest(req3);
+    BidRequest req3 = jsonFactory.setStrict(false).setUseNativeAsObject(true).newReader().readBidRequest(jsonReq2);
+    String jsonReq3 = jsonFactory.setUseNativeAsObject(true).newWriter().writeBidRequest(req3);
     assertThat(jsonReq3).isEqualTo(compareReqNativeAsObj);
     assertThat(req3).isEqualTo(req);
   }
@@ -464,7 +464,7 @@ public class OpenRtbJsonTest {
     assertThat(jsonRespNativeStr).isEqualTo(compareRespNativeAsStr);
 
     OpenRtb.BidResponse resp2 = jsonFactory.newReader().readBidResponse(jsonRespNativeStr);
-    String jsonRespNativeObj = jsonFactory.newWriter(true).writeBidResponse(resp2);
+    String jsonRespNativeObj = jsonFactory.setUseNativeAsObject(true).newWriter().writeBidResponse(resp2);
 
 //    OpenRtb.BidResponse resp3 = jsonFactory.newReader(true).readBidResponse(jsonRespNativeObj);
 //    jsonRespNativeObj = jsonFactory.newWriter(true).writeBidResponse(resp3);

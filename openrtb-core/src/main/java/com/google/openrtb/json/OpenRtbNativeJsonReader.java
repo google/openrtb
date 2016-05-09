@@ -50,11 +50,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
   private OpenRtbJsonReader coreReader;
 
   protected OpenRtbNativeJsonReader(OpenRtbJsonFactory factory) {
-    this(factory, false);
-  }
-
-  protected OpenRtbNativeJsonReader(OpenRtbJsonFactory factory, boolean isNativeAsObject) {
-    super(factory, isNativeAsObject);
+    super(factory);
   }
 
   /**
