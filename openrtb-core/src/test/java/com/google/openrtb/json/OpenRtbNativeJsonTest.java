@@ -138,21 +138,21 @@ public class OpenRtbNativeJsonTest {
   }
 
   static void testRequestWithNativeAsObject(OpenRtbJsonFactory jsonFactory, NativeRequest req) throws IOException {
-    String jsonReq = jsonFactory.newNativeWriter(true).writeNativeRequest(req);
+    String jsonReq = jsonFactory.setUseNativeAsObject(true).newNativeWriter().writeNativeRequest(req);
     logger.error(jsonReq);
     NativeRequest req2 = jsonFactory.newNativeReader().readNativeRequest(jsonReq);
     assertThat(req2).isEqualTo(req);
   }
 
   static void testResponseWithNativeAsString(OpenRtbJsonFactory jsonFactory, NativeResponse resp) throws IOException {
-    String jsonResp = jsonFactory.newNativeWriter(false).writeNativeResponse(resp);
+    String jsonResp = jsonFactory.setUseNativeAsObject(false).newNativeWriter().writeNativeResponse(resp);
     logger.error(jsonResp);
     NativeResponse resp2 = jsonFactory.newNativeReader().readNativeResponse(jsonResp);
     assertThat(resp2).isEqualTo(resp);
   }
 
   static void testResponseWithNativeAsObject(OpenRtbJsonFactory jsonFactory, NativeResponse resp) throws IOException {
-    String jsonResp = jsonFactory.newNativeWriter(true).writeNativeResponse(resp);
+    String jsonResp = jsonFactory.setUseNativeAsObject(true).newNativeWriter().writeNativeResponse(resp);
     logger.error(jsonResp);
     NativeResponse resp2 = jsonFactory.newNativeReader().readNativeResponse(jsonResp);
     assertThat(resp2).isEqualTo(resp);

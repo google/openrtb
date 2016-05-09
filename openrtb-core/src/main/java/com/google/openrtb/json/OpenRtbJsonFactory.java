@@ -18,6 +18,7 @@ package com.google.openrtb.json;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.LinkedHashMultimap;
@@ -26,13 +27,10 @@ import com.google.common.collect.SetMultimap;
 import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
 import com.google.protobuf.Message;
 
-import com.fasterxml.jackson.core.JsonFactory;
-
+import javax.annotation.Nullable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-
-import javax.annotation.Nullable;
 
 /**
  * Factory that will create JSON serializer objects:
@@ -50,6 +48,7 @@ public class OpenRtbJsonFactory {
   private JsonFactory jsonFactory;
   private boolean strict;
   private boolean rootNativeField;
+  private boolean useNativeAsObject;
   private final SetMultimap<String, OpenRtbJsonExtReader<?>> extReaders;
   private final Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters;
 
@@ -57,11 +56,13 @@ public class OpenRtbJsonFactory {
       @Nullable JsonFactory jsonFactory,
       boolean strict,
       boolean rootNativeField,
+      boolean useNativeAsObject,
       @Nullable SetMultimap<String, OpenRtbJsonExtReader<?>> extReaders,
       @Nullable Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters) {
     this.jsonFactory = jsonFactory;
     this.strict = strict;
     this.rootNativeField = rootNativeField;
+    this.useNativeAsObject = useNativeAsObject;
     this.extReaders = extReaders == null ? LinkedHashMultimap.create() : extReaders;
     this.extWriters = extWriters == null ? new LinkedHashMap<>() : extWriters;
   }
@@ -76,6 +77,7 @@ public class OpenRtbJsonFactory {
     this.jsonFactory = config.getJsonFactory();
     this.strict = config.strict;
     this.rootNativeField = config.rootNativeField;
+    this.useNativeAsObject = config.useNativeAsObject;
     this.extReaders = ImmutableSetMultimap.copyOf(config.extReaders);
     this.extWriters = ImmutableMap.copyOf(Maps.transformValues(config.extWriters,
         (Map<String, Map<String, OpenRtbJsonExtWriter<?>>> map) ->
@@ -86,7 +88,7 @@ public class OpenRtbJsonFactory {
    * Creates a new factory with default configuration.
    */
   public static OpenRtbJsonFactory create() {
-    return new OpenRtbJsonFactory(null, false, false, null, null);
+    return new OpenRtbJsonFactory(null, false, false, false, null, null);
   }
 
   /**
@@ -102,6 +104,15 @@ public class OpenRtbJsonFactory {
    */
   public final OpenRtbJsonFactory setStrict(boolean strict) {
     this.strict = strict;
+    return this;
+  }
+
+  /**
+   * Sets use native as object mode.
+   */
+  public final OpenRtbJsonFactory setUseNativeAsObject(final boolean useNativeAsObject)
+  {
+    this.useNativeAsObject = useNativeAsObject;
     return this;
   }
 
@@ -125,6 +136,14 @@ public class OpenRtbJsonFactory {
    */
   public final boolean isRootNativeField() {
     return rootNativeField;
+  }
+
+  /**
+   * Returns {@code true} for use native as object mode, {@code false} if not.
+   */
+  public boolean useNativeAsObject()
+  {
+    return useNativeAsObject;
   }
 
   /**
@@ -183,58 +202,28 @@ public class OpenRtbJsonFactory {
    * Creates an {@link OpenRtbJsonWriter}, configured to the current state of this factory.
    */
   public OpenRtbJsonWriter newWriter() {
-    return newWriter(false);
+    return new OpenRtbJsonWriter(new OpenRtbJsonFactory(this));
   }
 
   /**
    * Creates an {@link OpenRtbJsonReader}, configured to the current state of this factory.
    */
   public OpenRtbJsonReader newReader() {
-    return newReader(false);
-  }
-
-  /**
-   * Creates an {@link OpenRtbJsonWriter}, configured to the current state of this factory.
-   */
-  public OpenRtbJsonWriter newWriter(final boolean isNativeAsObject) {
-    return new OpenRtbJsonWriter(new OpenRtbJsonFactory(this), isNativeAsObject);
-  }
-
-  /**
-   * Creates an {@link OpenRtbJsonReader}, configured to the current state of this factory.
-   */
-  public OpenRtbJsonReader newReader(final boolean isNativeAsObject) {
-    return new OpenRtbJsonReader(new OpenRtbJsonFactory(this), isNativeAsObject);
+    return new OpenRtbJsonReader(new OpenRtbJsonFactory(this));
   }
 
   /**
    * Creates an {@link OpenRtbNativeJsonWriter}, configured to the current state of this factory.
    */
   public OpenRtbNativeJsonWriter newNativeWriter() {
-    return newNativeWriter(false);
+    return new OpenRtbNativeJsonWriter(new OpenRtbJsonFactory(this));
   }
 
   /**
    * Creates an {@link OpenRtbNativeJsonReader}, configured to the current state of this factory.
    */
   public OpenRtbNativeJsonReader newNativeReader() {
-    return newNativeReader(false);
-  }
-
-  /**
-   * Creates an {@link OpenRtbNativeJsonWriter}, configured to the current state of this factory.
-   * @param isNativeAsObject
-   */
-  public OpenRtbNativeJsonWriter newNativeWriter(final boolean isNativeAsObject) {
-    return new OpenRtbNativeJsonWriter(new OpenRtbJsonFactory(this), isNativeAsObject);
-  }
-
-  /**
-   * Creates an {@link OpenRtbNativeJsonReader}, configured to the current state of this factory.
-   * @param isNativeAsObject
-   */
-  public OpenRtbNativeJsonReader newNativeReader(final boolean isNativeAsObject) {
-    return new OpenRtbNativeJsonReader(new OpenRtbJsonFactory(this), isNativeAsObject);
+    return new OpenRtbNativeJsonReader(new OpenRtbJsonFactory(this));
   }
 
   @SuppressWarnings("unchecked")

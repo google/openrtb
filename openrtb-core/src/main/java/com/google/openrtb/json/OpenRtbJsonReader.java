@@ -87,11 +87,7 @@ import java.io.Reader;
 public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
 
   protected OpenRtbJsonReader(OpenRtbJsonFactory factory) {
-    this(factory, false);
-  }
-
-  protected OpenRtbJsonReader(OpenRtbJsonFactory factory, final boolean isNativeAsObject) {
-    super(factory, isNativeAsObject);
+    super(factory);
   }
 
   /**
@@ -312,7 +308,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       throws IOException {
     switch (fieldName) {
       case "request": {
-          if (useNativeAsObject()) {
+          if (factory().useNativeAsObject()) {
             readNativeAsObject(nativ, par);
           } else {
             readNativeAsString(nativ, par);
@@ -350,7 +346,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
   }
 
   private void readNativeAsObject(Native.Builder aNative, JsonParser aPar) throws IOException {
-    OpenRtbNativeJsonReader nativeObjectReader = factory().newNativeReader(true);
+    OpenRtbNativeJsonReader nativeObjectReader = factory().newNativeReader();
     aNative.setRequestNative(nativeObjectReader.readNativeRequest(aPar));
   }
 

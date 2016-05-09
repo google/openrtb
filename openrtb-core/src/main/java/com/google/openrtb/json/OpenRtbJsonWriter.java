@@ -16,8 +16,10 @@
 
 package com.google.openrtb.json;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
+import static com.google.openrtb.json.OpenRtbJsonUtils.writeEnums;
+import static com.google.openrtb.json.OpenRtbJsonUtils.writeIntBoolField;
+import static com.google.openrtb.json.OpenRtbJsonUtils.writeStrings;
+
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.App;
 import com.google.openrtb.OpenRtb.BidRequest.Content;
@@ -42,12 +44,13 @@ import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.util.OpenRtbUtils;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
-
-import static com.google.openrtb.json.OpenRtbJsonUtils.*;
 
 /**
  * Serializes OpenRTB {@link BidRequest}/{@link BidResponse} messages to JSON.
@@ -61,11 +64,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
   private OpenRtbNativeJsonWriter nativeWriter;
 
   protected OpenRtbJsonWriter(OpenRtbJsonFactory factory) {
-    this(factory, false);
-  }
-
-  protected OpenRtbJsonWriter(OpenRtbJsonFactory factory, final boolean isNativeAsObject) {
-    super(factory, isNativeAsObject);
+    super(factory);
   }
 
   /**
@@ -372,9 +371,9 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
 
   private void writeNativeObject(final Native aNativ, final JsonGenerator aGen) throws IOException
   {
-    if(useNativeAsObject()) {
+    if(factory().useNativeAsObject()) {
       aGen.writeFieldName("request");
-      new OpenRtbNativeJsonWriter(factory(), true).writeNativeRequest(aNativ.getRequestNative(), aGen);
+      nativeWriter().writeNativeRequest(aNativ.getRequestNative(), aGen);
     }
     else {
       aGen.writeStringField("request", nativeWriter().writeNativeRequest(aNativ.getRequestNative()));
@@ -997,8 +996,8 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
 
   private void writeAdmNative(final Bid aBid, final JsonGenerator aGen) throws IOException
   {
-    if(useNativeAsObject()) {
-      new OpenRtbNativeJsonWriter(factory(), true).writeNativeResponse(aBid.getAdmNative(), aGen);
+    if(factory().useNativeAsObject()) {
+      nativeWriter().writeNativeResponse(aBid.getAdmNative(), aGen);
     }
     else {
       aGen.writeStringField("adm", nativeWriter().writeNativeResponse(aBid.getAdmNative()));
@@ -1008,8 +1007,8 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
   private void writeAdmObj(final Bid aBid, final JsonGenerator aGen) throws IOException
   {
     aGen.writeFieldName("adm");
-    if(useNativeAsObject()) {
-      new OpenRtbJsonWriter(factory(), true).writeAdmNative(aBid, aGen);
+    if(factory().useNativeAsObject()) {
+      new OpenRtbJsonWriter(factory()).writeAdmNative(aBid, aGen);
     }
     else {
       aGen.writeString(aBid.getAdm());
