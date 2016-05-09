@@ -372,7 +372,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
   private void writeNativeObject(final Native aNativ, final JsonGenerator aGen) throws IOException
   {
     if(factory().useNativeAsObject()) {
-      aGen.writeFieldName("request");
+      aGen.writeFieldName("request_native");
       nativeWriter().writeNativeRequest(aNativ.getRequestNative(), aGen);
     }
     else {

@@ -307,13 +307,11 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
   protected void readNativeField(JsonParser par, Native.Builder nativ, String fieldName)
       throws IOException {
     switch (fieldName) {
-      case "request": {
-          if (factory().useNativeAsObject()) {
-            readNativeAsObject(nativ, par);
-          } else {
-            readNativeAsString(nativ, par);
-          }
-        }
+      case "request":
+        readNativeAsString(nativ, par);
+        break;
+      case "request_native":
+        readNativeAsObject(nativ, par);
         break;
       case "ver":
         nativ.setVer(par.getText());

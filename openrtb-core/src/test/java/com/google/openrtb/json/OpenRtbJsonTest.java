@@ -399,7 +399,7 @@ public class OpenRtbJsonTest {
             "{\\\"id\\\":3,\\\"required\\\":1,\\\"data\\\":{\\\"type\\\":2,\\\"len\\\":90}}," +
             "{\\\"id\\\":4,\\\"required\\\":0,\\\"data\\\":{\\\"type\\\":12,\\\"len\\\":25}}," +
             "{\\\"id\\\":5}]}\"}}],\"app\":{},\"device\":{},\"user\":{},\"regs\":{}}";
-    String compareReqNativeAsObj = "{\"id\":\"1\",\"imp\":[{\"id\":\"0\",\"native\":{\"request\":" +
+    String compareReqNativeAsObj = "{\"id\":\"1\",\"imp\":[{\"id\":\"0\",\"native\":{\"request_native\":" +
             "{\"ver\":\"1\",\"layout\":2,\"adunit\":5,\"plcmtcnt\":3," +
             "\"assets\":[{\"id\":1,\"required\":1,\"title\":{\"len\":100}}," +
             "{\"id\":2,\"required\":1,\"img\":{\"type\":3,\"wmin\":350,\"hmin\":350}}," +
@@ -448,7 +448,7 @@ public class OpenRtbJsonTest {
                                     "{\"test2\":\"data2\"},\"test3\":99,\"test4arr\":[10,20]}}";
     String compareRespNativeAsObj = "{\"id\":\"resp1\",\"seatbid\":[{\"bid\":[" +
                                     "{\"id\":\"bid1\",\"impid\":\"imp1\",\"price\":19.95," +
-                                    "\"adid\":\"adid1\",\"nurl\":\"http://iwon.com\",\"adm\":" +
+                                    "\"adid\":\"adid1\",\"nurl\":\"http://iwon.com\",\"adm_native\":" +
                                     "{\"link\":{}},\"adomain\":" +
                                     "[\"http://myads.com\"],\"bundle\":\"com.google.testapp\"," +
                                     "\"iurl\":\"http://mycdn.com/ad.gif\",\"cid\":\"cid1\"," +
