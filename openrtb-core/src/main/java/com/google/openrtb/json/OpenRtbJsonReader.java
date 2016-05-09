@@ -26,6 +26,7 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
 import com.google.common.io.CharSource;
 import com.google.common.io.Closeables;
+import com.google.openrtb.OpenRtb;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.App;
 import com.google.openrtb.OpenRtb.BidRequest.AuctionType;
@@ -1370,6 +1371,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
 
   public final Bid.Builder readBid(JsonParser par) throws IOException {
     Bid.Builder bid = Bid.newBuilder();
+
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
       if (par.nextToken() != JsonToken.VALUE_NULL) {
@@ -1399,6 +1401,9 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "adm":
         bid.setAdm(par.getText());
+        break;
+      case "adm_native":
+        bid.setAdmNative(factory().newNativeReader().readNativeResponse(par));
         break;
       case "adomain":
         for (startArray(par); endArray(par); par.nextToken()) {

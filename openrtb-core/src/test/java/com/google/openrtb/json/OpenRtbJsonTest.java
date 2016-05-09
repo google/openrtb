@@ -249,7 +249,7 @@ public class OpenRtbJsonTest {
     OpenRtbJsonFactory jsonFactory = newJsonFactory();
     BidResponse resp = newBidResponse(false).build();
     String jsonResp = testResponse(jsonFactory, resp);
-    assertThat(jsonFactory.newWriter().writeBidResponse(newBidResponse(true).build()))
+    assertThat(jsonFactory.newWriter().writeBidResponse(newBidResponse(false).build()))
         .isEqualTo(jsonResp);
   }
 
@@ -449,7 +449,7 @@ public class OpenRtbJsonTest {
     String compareRespNativeAsObj = "{\"id\":\"resp1\",\"seatbid\":[{\"bid\":[" +
                                     "{\"id\":\"bid1\",\"impid\":\"imp1\",\"price\":19.95," +
                                     "\"adid\":\"adid1\",\"nurl\":\"http://iwon.com\",\"adm_native\":" +
-                                    "{\"link\":{}},\"adomain\":" +
+                                    "{\"ver\":\"1.0\",\"link\":{}},\"adomain\":" +
                                     "[\"http://myads.com\"],\"bundle\":\"com.google.testapp\"," +
                                     "\"iurl\":\"http://mycdn.com/ad.gif\",\"cid\":\"cid1\"," +
                                     "\"crid\":\"crid1\",\"cat\":[\"IAB10-2\"],\"attr\":[12]," +
@@ -460,15 +460,15 @@ public class OpenRtbJsonTest {
                                     "{\"test2\":\"data2\"}],\"test2a\":{\"test2\":\"data2\"},\"test2b\":" +
                                     "{\"test2\":\"data2\"},\"test3\":99,\"test4arr\":[10,20]}}";
 
-    String jsonRespNativeStr = jsonFactory.newWriter().writeBidResponse(resp);
-    assertThat(jsonRespNativeStr).isEqualTo(compareRespNativeAsStr);
+    String jsonRespNativeObj = jsonFactory.newWriter().writeBidResponse(resp);
+    assertThat(jsonRespNativeObj).isEqualTo(compareRespNativeAsObj);
 
-    OpenRtb.BidResponse resp2 = jsonFactory.newReader().readBidResponse(jsonRespNativeStr);
-    String jsonRespNativeObj = jsonFactory.setUseNativeAsObject(true).newWriter().writeBidResponse(resp2);
+    OpenRtb.BidResponse resp2 = jsonFactory.newReader().readBidResponse(jsonRespNativeObj);
+    String jsonRespNativeStr = jsonFactory.setUseNativeAsObject(false).newWriter().writeBidResponse(resp2);
+    assertThat(jsonRespNativeStr).isEqualTo(compareRespNativeAsStr);
 
 //    OpenRtb.BidResponse resp3 = jsonFactory.newReader(true).readBidResponse(jsonRespNativeObj);
 //    jsonRespNativeObj = jsonFactory.newWriter(true).writeBidResponse(resp3);
-//    assertThat(jsonRespNativeObj).isEqualTo(compareRespNativeAsObj);
 //    assertThat(resp2).isEqualTo(resp);
 
 //    jsonFactory.setStrict(false).newReader().readBidResponse(jsonRespNativeObj);
