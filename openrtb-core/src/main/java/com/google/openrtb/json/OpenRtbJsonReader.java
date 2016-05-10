@@ -26,7 +26,6 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
 import com.google.common.io.CharSource;
 import com.google.common.io.Closeables;
-import com.google.openrtb.OpenRtb;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.App;
 import com.google.openrtb.OpenRtb.BidRequest.AuctionType;
@@ -309,7 +308,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       throws IOException {
     switch (fieldName) {
       case "request":
-        readNativeAsString(nativ, par);
+        nativ.setRequest(par.getText());
         break;
       case "request_native":
         readNativeAsObject(nativ, par);
@@ -336,12 +335,6 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       default:
         readOther(nativ, par, fieldName);
     }
-  }
-
-  private void readNativeAsString(Native.Builder nativ, JsonParser par) throws IOException {
-    OpenRtbNativeJsonReader nativeReader = factory().newNativeReader();
-    nativ.setRequestNative(nativeReader.readNativeRequest(new CharArrayReader(
-       par.getTextCharacters(), par.getTextOffset(), par.getTextLength())));
   }
 
   private void readNativeAsObject(Native.Builder aNative, JsonParser aPar) throws IOException {
@@ -1371,7 +1364,6 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
 
   public final Bid.Builder readBid(JsonParser par) throws IOException {
     Bid.Builder bid = Bid.newBuilder();
-
     for (startObject(par); endObject(par); par.nextToken()) {
       String fieldName = getCurrentName(par);
       if (par.nextToken() != JsonToken.VALUE_NULL) {

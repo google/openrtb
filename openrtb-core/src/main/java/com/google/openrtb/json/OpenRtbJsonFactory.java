@@ -18,7 +18,6 @@ package com.google.openrtb.json;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.fasterxml.jackson.core.JsonFactory;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.LinkedHashMultimap;
@@ -27,10 +26,13 @@ import com.google.common.collect.SetMultimap;
 import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
 import com.google.protobuf.Message;
 
-import javax.annotation.Nullable;
+import com.fasterxml.jackson.core.JsonFactory;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+
+import javax.annotation.Nullable;
 
 /**
  * Factory that will create JSON serializer objects:
