@@ -338,10 +338,10 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  private void readNativeAsString(Native.Builder aNative, JsonParser aPar) throws IOException {
-    OpenRtbNativeJsonReader nativeStringReader = factory().newNativeReader();
-    aNative.setRequestNative(nativeStringReader.readNativeRequest(new CharArrayReader(
-            aPar.getTextCharacters(), aPar.getTextOffset(), aPar.getTextLength())));
+  private void readNativeAsString(Native.Builder nativ, JsonParser par) throws IOException {
+    OpenRtbNativeJsonReader nativeReader = factory().newNativeReader();
+    nativ.setRequestNative(nativeReader.readNativeRequest(new CharArrayReader(
+       par.getTextCharacters(), par.getTextOffset(), par.getTextLength())));
   }
 
   private void readNativeAsObject(Native.Builder aNative, JsonParser aPar) throws IOException {

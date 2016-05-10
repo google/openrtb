@@ -257,7 +257,7 @@ public class OpenRtbJsonTest {
   public void testResponseWithNative() throws IOException {
     OpenRtbJsonFactory jsonFactory = newJsonFactory();
     BidResponse resp = newBidResponse(true).build();
-    String jsonResp = testResponseWithNative(jsonFactory, resp);
+    testResponseWithNative(jsonFactory, resp);
   }
 
   @Test
@@ -407,19 +407,14 @@ public class OpenRtbJsonTest {
             "{\"id\":4,\"required\":0,\"data\":{\"type\":12,\"len\":25}}," +
             "{\"id\":5}]}}}],\"app\":{},\"device\":{},\"user\":{},\"regs\":{}}";
 
-    String jsonReq = jsonFactory.setUseNativeAsObject(false).newWriter().writeBidRequest(req);
-    assertThat(jsonReq).isEqualTo(compareReqNativeAsStr);
-    jsonFactory.setStrict(false).setUseNativeAsObject(false).newWriter().writeBidRequest(req);
+    BidRequest req1 = jsonFactory.newReader().readBidRequest(compareReqNativeAsStr);
 
-    BidRequest req2 = jsonFactory.setUseNativeAsObject(false).newReader().readBidRequest(jsonReq);
-    String jsonReq2 = jsonFactory.setUseNativeAsObject(true).newWriter().writeBidRequest(req2);
+    String jsonReq1 = jsonFactory.newWriter().writeBidRequest(req1);
+    assertThat(jsonReq1).isEqualTo(compareReqNativeAsStr);
+
+    BidRequest req2 = jsonFactory.newReader().readBidRequest(compareReqNativeAsObj);
+    String jsonReq2 = jsonFactory.newWriter().writeBidRequest(req2);
     assertThat(jsonReq2).isEqualTo(compareReqNativeAsObj);
-    assertThat(req2).isEqualTo(req);
-
-    BidRequest req3 = jsonFactory.setStrict(false).setUseNativeAsObject(true).newReader().readBidRequest(jsonReq2);
-    String jsonReq3 = jsonFactory.setUseNativeAsObject(true).newWriter().writeBidRequest(req3);
-    assertThat(jsonReq3).isEqualTo(compareReqNativeAsObj);
-    assertThat(req3).isEqualTo(req);
   }
 
   static String testResponse(OpenRtbJsonFactory jsonFactory, BidResponse resp) throws IOException {
@@ -432,7 +427,7 @@ public class OpenRtbJsonTest {
     return jsonResp;
   }
 
-  static String testResponseWithNative(OpenRtbJsonFactory jsonFactory, BidResponse resp) throws IOException {
+  static void testResponseWithNative(OpenRtbJsonFactory jsonFactory, BidResponse resp) throws IOException {
     String compareRespNativeAsStr = "{\"id\":\"resp1\",\"seatbid\":[{\"bid\":[" +
                                     "{\"id\":\"bid1\",\"impid\":\"imp1\",\"price\":19.95," +
                                     "\"adid\":\"adid1\",\"nurl\":\"http://iwon.com\",\"adm\":\"" +
@@ -460,19 +455,14 @@ public class OpenRtbJsonTest {
                                     "{\"test2\":\"data2\"}],\"test2a\":{\"test2\":\"data2\"},\"test2b\":" +
                                     "{\"test2\":\"data2\"},\"test3\":99,\"test4arr\":[10,20]}}";
 
-    String jsonRespNativeObj = jsonFactory.newWriter().writeBidResponse(resp);
-    assertThat(jsonRespNativeObj).isEqualTo(compareRespNativeAsObj);
-
-    OpenRtb.BidResponse resp2 = jsonFactory.newReader().readBidResponse(jsonRespNativeObj);
-    String jsonRespNativeStr = jsonFactory.setUseNativeAsObject(false).newWriter().writeBidResponse(resp2);
+    OpenRtb.BidResponse resp1 = jsonFactory.newReader().readBidResponse(compareRespNativeAsStr);
+    String jsonRespNativeStr = jsonFactory.newWriter().writeBidResponse(resp1);
     assertThat(jsonRespNativeStr).isEqualTo(compareRespNativeAsStr);
 
-//    OpenRtb.BidResponse resp3 = jsonFactory.newReader(true).readBidResponse(jsonRespNativeObj);
-//    jsonRespNativeObj = jsonFactory.newWriter(true).writeBidResponse(resp3);
-//    assertThat(resp2).isEqualTo(resp);
 
-//    jsonFactory.setStrict(false).newReader().readBidResponse(jsonRespNativeObj);
-    return jsonRespNativeObj;
+    OpenRtb.BidResponse resp2 = jsonFactory.newReader().readBidResponse(compareRespNativeAsObj);
+    String jsonRespNativeObj = jsonFactory.newWriter().writeBidResponse(resp2);
+    assertThat(jsonRespNativeObj).isEqualTo(compareRespNativeAsObj);
   }
 
   static OpenRtbJsonFactory newJsonFactory() {

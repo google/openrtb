@@ -48,7 +48,6 @@ public class OpenRtbJsonFactory {
   private JsonFactory jsonFactory;
   private boolean strict;
   private boolean rootNativeField;
-  private boolean useNativeAsObject;
   private final SetMultimap<String, OpenRtbJsonExtReader<?>> extReaders;
   private final Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters;
 
@@ -56,13 +55,11 @@ public class OpenRtbJsonFactory {
       @Nullable JsonFactory jsonFactory,
       boolean strict,
       boolean rootNativeField,
-      boolean useNativeAsObject,
       @Nullable SetMultimap<String, OpenRtbJsonExtReader<?>> extReaders,
       @Nullable Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters) {
     this.jsonFactory = jsonFactory;
     this.strict = strict;
     this.rootNativeField = rootNativeField;
-    this.useNativeAsObject = useNativeAsObject;
     this.extReaders = extReaders == null ? LinkedHashMultimap.create() : extReaders;
     this.extWriters = extWriters == null ? new LinkedHashMap<>() : extWriters;
   }
@@ -77,7 +74,6 @@ public class OpenRtbJsonFactory {
     this.jsonFactory = config.getJsonFactory();
     this.strict = config.strict;
     this.rootNativeField = config.rootNativeField;
-    this.useNativeAsObject = config.useNativeAsObject;
     this.extReaders = ImmutableSetMultimap.copyOf(config.extReaders);
     this.extWriters = ImmutableMap.copyOf(Maps.transformValues(config.extWriters,
         (Map<String, Map<String, OpenRtbJsonExtWriter<?>>> map) ->
@@ -88,7 +84,7 @@ public class OpenRtbJsonFactory {
    * Creates a new factory with default configuration.
    */
   public static OpenRtbJsonFactory create() {
-    return new OpenRtbJsonFactory(null, false, false, false, null, null);
+    return new OpenRtbJsonFactory(null, false, false, null, null);
   }
 
   /**
@@ -104,15 +100,6 @@ public class OpenRtbJsonFactory {
    */
   public final OpenRtbJsonFactory setStrict(boolean strict) {
     this.strict = strict;
-    return this;
-  }
-
-  /**
-   * Sets use native as object mode.
-   */
-  public final OpenRtbJsonFactory setUseNativeAsObject(final boolean useNativeAsObject)
-  {
-    this.useNativeAsObject = useNativeAsObject;
     return this;
   }
 
@@ -136,14 +123,6 @@ public class OpenRtbJsonFactory {
    */
   public final boolean isRootNativeField() {
     return rootNativeField;
-  }
-
-  /**
-   * Returns {@code true} for use native as object mode, {@code false} if not.
-   */
-  public boolean useNativeAsObject()
-  {
-    return useNativeAsObject;
   }
 
   /**
