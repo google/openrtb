@@ -62,6 +62,7 @@ public class OpenRtbJsonFactory {
       @Nullable Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters) {
     this.jsonFactory = jsonFactory;
     this.strict = strict;
+    this.rootNativeField = rootNativeField;
     this.extReaders = extReaders == null
         ? LinkedHashMultimap.<String, OpenRtbJsonExtReader<?>>create()
         : extReaders;
