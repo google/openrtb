@@ -32,22 +32,33 @@ import javax.inject.Singleton;
  */
 @Singleton
 public class OpenRtbSnippetProcessor extends SnippetProcessor {
-  public static final OpenRtbSnippetProcessor ORTB_NULL = new OpenRtbSnippetProcessor() {
+  public static final OpenRtbSnippetProcessor ORTB_NULL = new OpenRtbSnippetProcessor(false) {
     @Override public String process(SnippetProcessorContext ctx, String snippet) {
       return SnippetProcessor.NULL.process(ctx, snippet);
     }};
 
+  private final boolean extendedFields;
+
   /**
    * Creates a processor.
+   *
+   * @param extendedFields {@code true} will support macro substitution in all {@link Bid}
+   *     fields of string type, not only the {@code adm} field mandated by the spec
    */
+  public OpenRtbSnippetProcessor(boolean extendedFields) {
+    this.extendedFields = extendedFields;
+  }
+
+  @Deprecated
   public OpenRtbSnippetProcessor() {
+    this(false);
   }
 
   @Override protected List<SnippetMacroType> registerMacros() {
     return ImmutableList.<SnippetMacroType>copyOf(OpenRtbMacros.values());
   }
 
-  @Override protected void processMacroAt(
+  @Override protected boolean processMacroAt(
       SnippetProcessorContext ctx, SnippetMacroType macroDef) {
     if (macroDef instanceof OpenRtbMacros) {
       switch ((OpenRtbMacros) macroDef) {
@@ -57,29 +68,29 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
           if (ctx.getBid().hasAdid()) {
             ctx.builder().append(ctx.getBid().getAdid());
           }
-          break;
+          return true;
         }
 
         case AUCTION_BID_ID: {
           ctx.builder().append(ctx.response().getBidid());
-          break;
+          return true;
         }
 
         case AUCTION_CURRENCY: {
           if (ctx.request().getCurCount() == 1) {
             ctx.builder().append(ctx.request().getCur(0));
           }
-          break;
+          return true;
         }
 
         case AUCTION_ID: {
           ctx.builder().append(ctx.request().getId());
-          break;
+          return true;
         }
 
         case AUCTION_IMP_ID: {
           ctx.builder().append(findImp(ctx, macroDef).getId());
-          break;
+          return true;
         }
 
         case AUCTION_SEAT_ID: {
@@ -87,16 +98,19 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
           if (seatBid.hasSeat()) {
             ctx.builder().append(seatBid.getSeat());
           }
-          break;
+          return true;
         }
 
         // "Server-side" macros: keep the macro untouched, so it will be
         // expanded by the exchange or other system that receives the message.
         case AUCTION_PRICE: {
           ctx.builder().append(((OpenRtbMacros) macroDef).key());
+          return true;
         }
       }
     }
+
+    return false;
   }
 
   /**
@@ -115,8 +129,40 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
    * Processes all fields of a bid that should support macro expansion.
    */
   protected void processFields(SnippetProcessorContext bidCtx) {
-    if (bidCtx.getBid().hasAdm()) {
-      bidCtx.getBid().setAdm(process(bidCtx, bidCtx.getBid().getAdm()));
+    Bid.Builder bid = bidCtx.getBid();
+
+    // Properties that can also be in the RHS of macros used by other properties.
+
+    if (extendedFields) {
+      if (bid.hasAdid()) {
+        bid.setAdid(process(bidCtx, bid.getAdid()));
+      }
+      bid.setId(process(bidCtx, bid.getId()));
+    }
+
+    // Properties that are NOT the RHS of any macro.
+
+    if (bid.hasAdm()) {
+      bid.setAdm(process(bidCtx, bid.getAdm()));
+    }
+
+    if (extendedFields) {
+      if (bid.hasCid()) {
+        bid.setCid(process(bidCtx, bid.getCid()));
+      }
+      if (bid.hasCrid()) {
+        bid.setCrid(process(bidCtx, bid.getCrid()));
+      }
+      if (bid.hasDealid()) {
+        bid.setDealid(process(bidCtx, bid.getDealid()));
+      }
+      bid.setImpid(process(bidCtx, bid.getImpid()));
+      if (bid.hasIurl()) {
+        bid.setIurl(process(bidCtx, bid.getIurl()));
+      }
+      if (bid.hasNurl()) {
+        bid.setNurl(process(bidCtx, bid.getNurl()));
+      }
     }
   }
 
