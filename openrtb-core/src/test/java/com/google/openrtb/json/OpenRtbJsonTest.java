@@ -54,6 +54,7 @@ import static java.util.Arrays.asList;
  * Tests for {@link OpenRtbJsonFactory}, {@link OpenRtbJsonReader}, {@link OpenRtbJsonWriter}.
  */
 public class OpenRtbJsonTest {
+
   private static final Logger logger = LoggerFactory.getLogger(OpenRtbJsonTest.class);
   private static final Test1 test1 = Test1.newBuilder().setTest1("data1").build();
   private static final Test2 test2 = Test2.newBuilder().setTest2("data2").build();
@@ -254,10 +255,29 @@ public class OpenRtbJsonTest {
   }
 
   @Test
+  public void testRequestWithNative() throws IOException {
+    testResponseWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_NOROOT_STRING);
+    testResponseWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_NOROOT_OBJECT);
+    testResponseWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_ROOT___STRING);
+    testResponseWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_ROOT___OBJECT);
+
+    testResponseWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__NOROOT_STRING);
+    testResponseWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__NOROOT_OBJECT);
+    testResponseWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__ROOT___STRING);
+    testResponseWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__ROOT___OBJECT);
+  }
+
+  @Test
   public void testResponseWithNative() throws IOException {
-    OpenRtbJsonFactory jsonFactory = newJsonFactory();
-    BidResponse resp = newBidResponse(true).build();
-    testResponseWithNative(jsonFactory, resp);
+    //    testResponseWithNative(OpenRtbJsonResponseHelper.REQUEST__SHORT_NOROOT_STRING);
+    //    testResponseWithNative(OpenRtbJsonResponseHelper.REQUEST__SHORT_NOROOT_OBJECT);
+    //    testResponseWithNative(OpenRtbJsonResponseHelper.REQUEST__SHORT_ROOT___STRING);
+    //    testResponseWithNative(OpenRtbJsonResponseHelper.REQUEST__SHORT_ROOT___OBJECT);
+
+    //    testResponseWithNative(OpenRtbJsonResponseHelper.REQUEST__FULL__NOROOT_STRING);
+    //    testResponseWithNative(OpenRtbJsonResponseHelper.REQUEST__FULL__NOROOT_OBJECT);
+    //    testResponseWithNative(OpenRtbJsonResponseHelper.REQUEST__FULL__ROOT___STRING);
+    //    testResponseWithNative(OpenRtbJsonResponseHelper.REQUEST__FULL__ROOT___OBJECT);
   }
 
   @Test
@@ -427,42 +447,12 @@ public class OpenRtbJsonTest {
     return jsonResp;
   }
 
-  static void testResponseWithNative(OpenRtbJsonFactory jsonFactory, BidResponse resp) throws IOException {
-    String compareRespNativeAsStr = "{\"id\":\"resp1\",\"seatbid\":[{\"bid\":[" +
-                                    "{\"id\":\"bid1\",\"impid\":\"imp1\",\"price\":19.95," +
-                                    "\"adid\":\"adid1\",\"nurl\":\"http://iwon.com\",\"adm\":\"" +
-                                    "{\\\"ver\\\":\\\"1.0\\\",\\\"link\\\":{}}\",\"adomain\":" +
-                                    "[\"http://myads.com\"],\"bundle\":\"com.google.testapp\"," +
-                                    "\"iurl\":\"http://mycdn.com/ad.gif\",\"cid\":\"cid1\"," +
-                                    "\"crid\":\"crid1\",\"cat\":[\"IAB10-2\"],\"attr\":[12]," +
-                                    "\"dealid\":\"deal1\",\"w\":100,\"h\":80,\"ext\":{\"test1\":\"data1\"}}]," +
-                                    "\"seat\":\"seat1\",\"group\":0,\"ext\":{\"test1\":\"data1\"}}]," +
-                                    "\"bidid\":\"bid1\",\"cur\":\"USD\",\"customdata\":\"mydata\",\"nbr\":1,\"ext\":" +
-                                    "{\"test1\":\"data1\",\"test2arr\":[{\"test2\":\"data2\"}," +
-                                    "{\"test2\":\"data2\"}],\"test2a\":{\"test2\":\"data2\"},\"test2b\":" +
-                                    "{\"test2\":\"data2\"},\"test3\":99,\"test4arr\":[10,20]}}";
-    String compareRespNativeAsObj = "{\"id\":\"resp1\",\"seatbid\":[{\"bid\":[" +
-                                    "{\"id\":\"bid1\",\"impid\":\"imp1\",\"price\":19.95," +
-                                    "\"adid\":\"adid1\",\"nurl\":\"http://iwon.com\",\"adm_native\":" +
-                                    "{\"ver\":\"1.0\",\"link\":{}},\"adomain\":" +
-                                    "[\"http://myads.com\"],\"bundle\":\"com.google.testapp\"," +
-                                    "\"iurl\":\"http://mycdn.com/ad.gif\",\"cid\":\"cid1\"," +
-                                    "\"crid\":\"crid1\",\"cat\":[\"IAB10-2\"],\"attr\":[12]," +
-                                    "\"dealid\":\"deal1\",\"w\":100,\"h\":80,\"ext\":{\"test1\":\"data1\"}}]," +
-                                    "\"seat\":\"seat1\",\"group\":0,\"ext\":{\"test1\":\"data1\"}}]," +
-                                    "\"bidid\":\"bid1\",\"cur\":\"USD\",\"customdata\":\"mydata\",\"nbr\":1,\"ext\":" +
-                                    "{\"test1\":\"data1\",\"test2arr\":[{\"test2\":\"data2\"}," +
-                                    "{\"test2\":\"data2\"}],\"test2a\":{\"test2\":\"data2\"},\"test2b\":" +
-                                    "{\"test2\":\"data2\"},\"test3\":99,\"test4arr\":[10,20]}}";
-
-    OpenRtb.BidResponse resp1 = jsonFactory.newReader().readBidResponse(compareRespNativeAsStr);
-    String jsonRespNativeStr = jsonFactory.newWriter().writeBidResponse(resp1);
-    assertThat(jsonRespNativeStr).isEqualTo(compareRespNativeAsStr);
-
-
-    OpenRtb.BidResponse resp2 = jsonFactory.newReader().readBidResponse(compareRespNativeAsObj);
-    String jsonRespNativeObj = jsonFactory.newWriter().writeBidResponse(resp2);
-    assertThat(jsonRespNativeObj).isEqualTo(compareRespNativeAsObj);
+  static void testResponseWithNative(final String responseString) throws IOException {
+    OpenRtbJsonFactory jsonFactory = newJsonFactory();
+    OpenRtb.BidResponse bidResponse1 = jsonFactory.newReader().readBidResponse(responseString);
+    String jsonRespNativeStr = jsonFactory.newWriter().writeBidResponse(bidResponse1);
+    OpenRtb.BidResponse bidResponse2 = jsonFactory.newReader().readBidResponse(jsonRespNativeStr);
+    assertThat(bidResponse1).isEqualTo(bidResponse2);
   }
 
   static OpenRtbJsonFactory newJsonFactory() {
