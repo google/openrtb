@@ -15,6 +15,7 @@ import java.io.IOException;
  */
 class OpenRtbJsonResponseHelper
 {
+
    /**
     * Response Json string containing
     * <p>
