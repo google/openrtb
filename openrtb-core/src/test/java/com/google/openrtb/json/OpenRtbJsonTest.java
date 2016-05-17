@@ -482,11 +482,10 @@ public class OpenRtbJsonTest
    static void testRequestWithNative(final String requestString) throws IOException
    {
       OpenRtbJsonFactory jsonFactory = newJsonFactory();
-      OpenRtb.BidRequest bidRequest1 = jsonFactory.newReader().readBidRequest(requestString);
-      String jsonRequNativeStr = jsonFactory.newWriter().writeBidRequest(bidRequest1);
+      OpenRtb.BidRequest bidRequest = jsonFactory.newReader().readBidRequest(requestString);
+      String jsonRequNativeStr = jsonFactory.newWriter().writeBidRequest(bidRequest);
+
       assertThat(jsonRequNativeStr).isEqualTo(requestString);
-      OpenRtb.BidRequest bidRequest2 = jsonFactory.newReader().readBidRequest(jsonRequNativeStr);
-      assertThat(bidRequest1).isEqualTo(bidRequest2);
    }
 
    static String testResponse(OpenRtbJsonFactory jsonFactory, BidResponse resp) throws IOException
