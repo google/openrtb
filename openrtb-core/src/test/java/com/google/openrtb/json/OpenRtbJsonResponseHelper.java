@@ -1,12 +1,12 @@
 package com.google.openrtb.json;
 
-import com.fasterxml.jackson.core.JsonFactory;
 import com.google.openrtb.OpenRtb;
-import com.google.openrtb.Test;
 import com.google.openrtb.TestExt;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Test helper class, to be used for generating and comparing Json test data
@@ -21,14 +21,26 @@ class OpenRtbJsonResponseHelper
     * <p>
     * - native part as adm string field
     */
-   static final String RESPONSE_SHORT_NOROOT_STRING = "";
+   static final String RESPONSE_SHORT_NOROOT_STRING =
+      "{\"id\":\"resp\",\"seatbid\":[{\"bid\":[{\"id\":\"bid\",\"impid\":\"imp\",\"price\":19.95,\"adid\":\"adid\"," +
+      "\"nurl\":\"http://iwon.com\",\"adm\":\"{\\\"ver\\\":\\\"1.0\\\",\\\"link\\\":{},\\\"imptrackers\\\":[" +
+      "\\\"http://my.imp.tracker\\\"]}\",\"adomain\":[\"http://myads.com\"],\"bundle\":\"com.google.testapp\"," +
+      "\"iurl\":\"http://mycdn.com/ad.gif\",\"cid\":\"cid\",\"crid\":\"crid\",\"cat\":[\"IAB10-2\"],\"attr\":[12]," +
+      "\"dealid\":\"deal\",\"w\":100,\"h\":80,\"ext\":{\"test1\":\"data1\"}}],\"seat\":\"seat\"}],\"bidid\":\"bid\"," +
+      "\"cur\":\"USD\",\"customdata\":\"mydata\",\"nbr\":1}";
 
    /**
     * Response Json string containing
     * <p>
     * - native part as adm_native object
     */
-   static final String RESPONSE_SHORT_NOROOT_OBJECT = "";
+   static final String RESPONSE_SHORT_NOROOT_OBJECT =
+      "{\"id\":\"resp\",\"seatbid\":[{\"bid\":[{\"id\":\"bid\",\"impid\":\"imp\",\"price\":19.95,\"adid\":\"adid\"," +
+      "\"nurl\":\"http://iwon.com\",\"adm_native\":{\"ver\":\"1.0\",\"link\":{},\"imptrackers\":[" +
+      "\"http://my.imp.tracker\"]},\"adomain\":[\"http://myads.com\"],\"bundle\":\"com.google.testapp\"," +
+      "\"iurl\":\"http://mycdn.com/ad.gif\",\"cid\":\"cid\",\"crid\":\"crid\",\"cat\":[\"IAB10-2\"],\"attr\":[12]," +
+      "\"dealid\":\"deal\",\"w\":100,\"h\":80,\"ext\":{\"test1\":\"data1\"}}],\"seat\":\"seat\"}],\"bidid\":\"bid\"," +
+      "\"cur\":\"USD\",\"customdata\":\"mydata\",\"nbr\":1}";
 
    /**
     * Response Json string containing
@@ -37,7 +49,13 @@ class OpenRtbJsonResponseHelper
     * <p>
     * - root native enabled
     */
-   static final String RESPONSE_SHORT_ROOT___STRING = "";
+   static final String RESPONSE_SHORT_ROOT___STRING =
+      "{\"id\":\"resp\",\"seatbid\":[{\"bid\":[{\"id\":\"bid\",\"impid\":\"imp\",\"price\":19.95,\"adid\":\"adid\"," +
+      "\"nurl\":\"http://iwon.com\",\"adm\":\"{\\\"native\\\":{\\\"ver\\\":\\\"1.0\\\",\\\"link\\\":{}," +
+      "\\\"imptrackers\\\":[\\\"http://my.imp.tracker\\\"]}}\",\"adomain\":[\"http://myads.com\"]," +
+      "\"bundle\":\"com.google.testapp\",\"iurl\":\"http://mycdn.com/ad.gif\",\"cid\":\"cid\",\"crid\":\"crid\"," +
+      "\"cat\":[\"IAB10-2\"],\"attr\":[12],\"dealid\":\"deal\",\"w\":100,\"h\":80,\"ext\":{\"test1\":\"data1\"}}]," +
+      "\"seat\":\"seat\"}],\"bidid\":\"bid\",\"cur\":\"USD\",\"customdata\":\"mydata\",\"nbr\":1}";
 
    /**
     * Response Json string containing
@@ -46,7 +64,13 @@ class OpenRtbJsonResponseHelper
     * <p>
     * - root native enabled
     */
-   static final String RESPONSE_SHORT_ROOT___OBJECT = "";
+   static final String RESPONSE_SHORT_ROOT___OBJECT =
+      "{\"id\":\"resp\",\"seatbid\":[{\"bid\":[{\"id\":\"bid\",\"impid\":\"imp\",\"price\":19.95,\"adid\":\"adid\"," +
+      "\"nurl\":\"http://iwon.com\",\"adm_native\":{\"native\":{\"ver\":\"1.0\",\"link\":{},\"imptrackers\":[" +
+      "\"http://my.imp.tracker\"]}},\"adomain\":[\"http://myads.com\"],\"bundle\":\"com.google.testapp\"," +
+      "\"iurl\":\"http://mycdn.com/ad.gif\",\"cid\":\"cid\",\"crid\":\"crid\",\"cat\":[\"IAB10-2\"],\"attr\":[12]," +
+      "\"dealid\":\"deal\",\"w\":100,\"h\":80,\"ext\":{\"test1\":\"data1\"}}],\"seat\":\"seat\"}],\"bidid\":\"bid\"," +
+      "\"cur\":\"USD\",\"customdata\":\"mydata\",\"nbr\":1}";
 
    /**
     * Response Json string containing
@@ -55,7 +79,24 @@ class OpenRtbJsonResponseHelper
     * <p>
     * - nearly all possible fields filled
     */
-   static final String RESPONSE_FULL__NOROOT_STRING = "";
+   static final String RESPONSE_FULL__NOROOT_STRING =
+      "{\"id\":\"resp1\",\"seatbid\":[{\"bid\":[{\"id\":\"bid1\",\"impid\":\"imp1\",\"price\":19.95,\"adid\":\"adid1\"," +
+      "\"nurl\":\"http://iwon.com\",\"adm\":\"{\\\"ver\\\":\\\"1.0\\\",\\\"link\\\":{},\\\"imptrackers\\\":[" +
+      "\\\"http://my.first.imp.tracker\\\"]}\",\"adomain\":[\"http://myads.com\"],\"bundle\":\"com.google.testapp\"," +
+      "\"iurl\":\"http://mycdn.com/ad.gif\",\"cid\":\"cid1\",\"crid\":\"crid1\",\"cat\":[\"IAB10-2\"],\"attr\":[12]," +
+      "\"dealid\":\"deal1\",\"w\":100,\"h\":80,\"ext\":{\"test1\":\"data1\"}}],\"seat\":\"seat1\",\"group\":0,\"ext\":{" +
+      "\"test1\":\"data1\"}},{\"bid\":[{\"id\":\"bid2\",\"impid\":\"imp2\",\"price\":19.95,\"adid\":\"adid2\"," +
+      "\"nurl\":\"http://iwon.com\",\"adm\":\"{\\\"ver\\\":\\\"2.0\\\",\\\"link\\\":{},\\\"imptrackers\\\":[" +
+      "\\\"http://my.first.imp.tracker\\\"]}\",\"adomain\":[\"http://myads.com\"],\"bundle\":\"com.google.testapp\"," +
+      "\"iurl\":\"http://mycdn.com/ad.gif\",\"cid\":\"cid2\",\"crid\":\"crid2\",\"cat\":[\"IAB10-2\"],\"attr\":[12]," +
+      "\"dealid\":\"deal2\",\"w\":100,\"h\":80,\"ext\":{\"test1\":\"data1\"}},{\"id\":\"bid2\",\"impid\":\"imp3\"," +
+      "\"price\":19.95,\"adid\":\"adid3\",\"nurl\":\"http://iwon.com\",\"adomain\":[\"http://myads.com\"]," +
+      "\"bundle\":\"com.google.testapp\",\"iurl\":\"http://mycdn.com/ad.gif\",\"cid\":\"cid3\",\"crid\":\"crid3\"," +
+      "\"cat\":[\"IAB10-2\"],\"attr\":[12],\"dealid\":\"deal3\",\"w\":100,\"h\":80,\"ext\":{\"test1\":\"data1\"}}]," +
+      "\"seat\":\"seat2\",\"group\":1,\"ext\":{\"test1\":\"data1\"}}],\"bidid\":\"bid1\",\"cur\":\"USD\"," +
+      "\"customdata\":\"mydata\",\"nbr\":1,\"ext\":{\"test1\":\"data1\",\"test2arr\":[{\"test2\":\"data2\"},{" +
+      "\"test2\":\"data2\"}],\"test2a\":{\"test2\":\"data2\"},\"test2b\":{\"test2\":\"data2\"},\"test3\":99," +
+      "\"test4arr\":[10,20]}}";
 
    /**
     * Response Json string containing
@@ -64,7 +105,24 @@ class OpenRtbJsonResponseHelper
     * <p>
     * - nearly all possible fields filled
     */
-   static final String RESPONSE_FULL__NOROOT_OBJECT = "";
+   static final String RESPONSE_FULL__NOROOT_OBJECT =
+      "{\"id\":\"resp1\",\"seatbid\":[{\"bid\":[{\"id\":\"bid1\",\"impid\":\"imp1\",\"price\":19.95,\"adid\":\"adid1\"," +
+      "\"nurl\":\"http://iwon.com\",\"adm_native\":{\"ver\":\"1.0\",\"link\":{},\"imptrackers\":[" +
+      "\"http://my.first.imp.tracker\"]},\"adomain\":[\"http://myads.com\"],\"bundle\":\"com.google.testapp\"," +
+      "\"iurl\":\"http://mycdn.com/ad.gif\",\"cid\":\"cid1\",\"crid\":\"crid1\",\"cat\":[\"IAB10-2\"],\"attr\":[12]," +
+      "\"dealid\":\"deal1\",\"w\":100,\"h\":80,\"ext\":{\"test1\":\"data1\"}}],\"seat\":\"seat1\",\"group\":0," +
+      "\"ext\":{\"test1\":\"data1\"}},{\"bid\":[{\"id\":\"bid2\",\"impid\":\"imp2\",\"price\":19.95,\"adid\":\"adid2\"," +
+      "\"nurl\":\"http://iwon.com\",\"adm_native\":{\"ver\":\"2.0\",\"link\":{}," +
+      "\"imptrackers\":[\"http://my.first.imp.tracker\"]},\"adomain\":[\"http://myads.com\"]," +
+      "\"bundle\":\"com.google.testapp\",\"iurl\":\"http://mycdn.com/ad.gif\",\"cid\":\"cid2\",\"crid\":\"crid2\"," +
+      "\"cat\":[\"IAB10-2\"],\"attr\":[12],\"dealid\":\"deal2\",\"w\":100,\"h\":80,\"ext\":{\"test1\":\"data1\"}},{" +
+      "\"id\":\"bid2\",\"impid\":\"imp3\",\"price\":19.95,\"adid\":\"adid3\",\"nurl\":\"http://iwon.com\"," +
+      "\"adomain\":[\"http://myads.com\"],\"bundle\":\"com.google.testapp\",\"iurl\":\"http://mycdn.com/ad.gif\"," +
+      "\"cid\":\"cid3\",\"crid\":\"crid3\",\"cat\":[\"IAB10-2\"],\"attr\":[12],\"dealid\":\"deal3\",\"w\":100,\"h\":80," +
+      "\"ext\":{\"test1\":\"data1\"}}],\"seat\":\"seat2\",\"group\":1,\"ext\":{\"test1\":\"data1\"}}]," +
+      "\"bidid\":\"bid1\",\"cur\":\"USD\",\"customdata\":\"mydata\",\"nbr\":1,\"ext\":{\"test1\":\"data1\"," +
+      "\"test2arr\":[{\"test2\":\"data2\"},{\"test2\":\"data2\"}],\"test2a\":{\"test2\":\"data2\"},\"test2b\":{" +
+      "\"test2\":\"data2\"},\"test3\":99,\"test4arr\":[10,20]}}";
 
    /**
     * Response Json string
@@ -75,7 +133,24 @@ class OpenRtbJsonResponseHelper
     * <p>
     * - nearly all possible fields filled
     */
-   static final String RESPONSE_FULL__ROOT___STRING = "";
+   static final String RESPONSE_FULL__ROOT___STRING =
+      "{\"id\":\"resp1\",\"seatbid\":[{\"bid\":[{\"id\":\"bid1\",\"impid\":\"imp1\",\"price\":19.95,\"adid\":\"adid1\"," +
+      "\"nurl\":\"http://iwon.com\",\"adm\":\"{\\\"native\\\":{\\\"ver\\\":\\\"1.0\\\",\\\"link\\\":{}," +
+      "\\\"imptrackers\\\":[\\\"http://my.first.imp.tracker\\\"]}}\",\"adomain\":[\"http://myads.com\"]," +
+      "\"bundle\":\"com.google.testapp\",\"iurl\":\"http://mycdn.com/ad.gif\",\"cid\":\"cid1\",\"crid\":\"crid1\"," +
+      "\"cat\":[\"IAB10-2\"],\"attr\":[12],\"dealid\":\"deal1\",\"w\":100,\"h\":80,\"ext\":{\"test1\":\"data1\"}}]," +
+      "\"seat\":\"seat1\",\"group\":0,\"ext\":{\"test1\":\"data1\"}},{\"bid\":[{\"id\":\"bid2\",\"impid\":\"imp2\"," +
+      "\"price\":19.95,\"adid\":\"adid2\",\"nurl\":\"http://iwon.com\",\"adm\":\"{\\\"native\\\":{" +
+      "\\\"ver\\\":\\\"2.0\\\",\\\"link\\\":{},\\\"imptrackers\\\":[\\\"http://my.first.imp.tracker\\\"]}}\"," +
+      "\"adomain\":[\"http://myads.com\"],\"bundle\":\"com.google.testapp\",\"iurl\":\"http://mycdn.com/ad.gif\"," +
+      "\"cid\":\"cid2\",\"crid\":\"crid2\",\"cat\":[\"IAB10-2\"],\"attr\":[12],\"dealid\":\"deal2\",\"w\":100," +
+      "\"h\":80,\"ext\":{\"test1\":\"data1\"}},{\"id\":\"bid2\",\"impid\":\"imp3\",\"price\":19.95,\"adid\":\"adid3\"," +
+      "\"nurl\":\"http://iwon.com\",\"adomain\":[\"http://myads.com\"],\"bundle\":\"com.google.testapp\"," +
+      "\"iurl\":\"http://mycdn.com/ad.gif\",\"cid\":\"cid3\",\"crid\":\"crid3\",\"cat\":[\"IAB10-2\"],\"attr\":[12]," +
+      "\"dealid\":\"deal3\",\"w\":100,\"h\":80,\"ext\":{\"test1\":\"data1\"}}],\"seat\":\"seat2\",\"group\":1," +
+      "\"ext\":{\"test1\":\"data1\"}}],\"bidid\":\"bid1\",\"cur\":\"USD\",\"customdata\":\"mydata\",\"nbr\":1," +
+      "\"ext\":{\"test1\":\"data1\",\"test2arr\":[{\"test2\":\"data2\"},{\"test2\":\"data2\"}],\"test2a\":{" +
+      "\"test2\":\"data2\"},\"test2b\":{\"test2\":\"data2\"},\"test3\":99,\"test4arr\":[10,20]}}";
 
    /**
     * Response Json string containing
@@ -86,7 +161,24 @@ class OpenRtbJsonResponseHelper
     * <p>
     * - nearly all possible fields filled
     */
-   static final String RESPONSE_FULL__ROOT___OBJECT = "";
+   static final String RESPONSE_FULL__ROOT___OBJECT =
+      "{\"id\":\"resp1\",\"seatbid\":[{\"bid\":[{\"id\":\"bid1\",\"impid\":\"imp1\",\"price\":19.95,\"adid\":\"adid1\"," +
+      "\"nurl\":\"http://iwon.com\",\"adm_native\":{\"native\":{\"ver\":\"1.0\",\"link\":{},\"imptrackers\":[" +
+      "\"http://my.first.imp.tracker\"]}},\"adomain\":[\"http://myads.com\"],\"bundle\":\"com.google.testapp\"," +
+      "\"iurl\":\"http://mycdn.com/ad.gif\",\"cid\":\"cid1\",\"crid\":\"crid1\",\"cat\":[\"IAB10-2\"],\"attr\":[12]," +
+      "\"dealid\":\"deal1\",\"w\":100,\"h\":80,\"ext\":{\"test1\":\"data1\"}}],\"seat\":\"seat1\",\"group\":0," +
+      "\"ext\":{\"test1\":\"data1\"}},{\"bid\":[{\"id\":\"bid2\",\"impid\":\"imp2\",\"price\":19.95,\"adid\":\"adid2\"," +
+      "\"nurl\":\"http://iwon.com\",\"adm_native\":{\"native\":{\"ver\":\"2.0\",\"link\":{},\"imptrackers\":[" +
+      "\"http://my.first.imp.tracker\"]}},\"adomain\":[\"http://myads.com\"],\"bundle\":\"com.google.testapp\"," +
+      "\"iurl\":\"http://mycdn.com/ad.gif\",\"cid\":\"cid2\",\"crid\":\"crid2\",\"cat\":[\"IAB10-2\"],\"attr\":[12]," +
+      "\"dealid\":\"deal2\",\"w\":100,\"h\":80,\"ext\":{\"test1\":\"data1\"}},{\"id\":\"bid2\",\"impid\":\"imp3\"," +
+      "\"price\":19.95,\"adid\":\"adid3\",\"nurl\":\"http://iwon.com\",\"adomain\":[\"http://myads.com\"]," +
+      "\"bundle\":\"com.google.testapp\",\"iurl\":\"http://mycdn.com/ad.gif\",\"cid\":\"cid3\",\"crid\":\"crid3\"," +
+      "\"cat\":[\"IAB10-2\"],\"attr\":[12],\"dealid\":\"deal3\",\"w\":100,\"h\":80,\"ext\":{\"test1\":\"data1\"}}]," +
+      "\"seat\":\"seat2\",\"group\":1,\"ext\":{\"test1\":\"data1\"}}],\"bidid\":\"bid1\",\"cur\":\"USD\"," +
+      "\"customdata\":\"mydata\",\"nbr\":1,\"ext\":{\"test1\":\"data1\",\"test2arr\":[{\"test2\":\"data2\"},{" +
+      "\"test2\":\"data2\"}],\"test2a\":{\"test2\":\"data2\"},\"test2b\":{\"test2\":\"data2\"},\"test3\":99," +
+      "\"test4arr\":[10,20]}}";
 
    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(OpenRtbJsonResponseHelper.class);
 
@@ -116,103 +208,198 @@ class OpenRtbJsonResponseHelper
    }
 
    private static String generateResponse(final boolean isFull, final boolean isRootNative,
-                                          final boolean isNativeObject)
+                                          final boolean isNativeObject) throws IOException
    {
       return isFull ? generateFullResponse(isRootNative, isNativeObject) :
              generateShortResponse(isRootNative, isNativeObject);
    }
 
    private static String generateShortResponse(final boolean isRootNative, final boolean isNativeObject)
+      throws IOException
    {
+      final OpenRtb.BidResponse.SeatBid.Bid.Builder seatBidBuilder = OpenRtb.BidResponse.SeatBid.Bid.newBuilder();
+      final OpenRtb.BidResponse.SeatBid.Builder seatBuilder = OpenRtb.BidResponse.SeatBid.newBuilder();
+      final OpenRtb.NativeResponse.Builder nativeResponseBuilder = OpenRtb.NativeResponse.newBuilder();
 
-      return null;
+      final OpenRtb.BidResponse.Builder bidResponseBuilder = OpenRtb.BidResponse.newBuilder();
+
+      seatBidBuilder.setId("bid")
+                    .setImpid("imp")
+                    .setPrice(19.95)
+                    .setAdid("adid")
+                    .setNurl("http://iwon.com")
+                    .addAdomain("http://myads.com")
+                    .setIurl("http://mycdn.com/ad.gif")
+                    .setCid("cid")
+                    .setCrid("crid")
+                    .addAttr(OpenRtb.CreativeAttribute.TEXT_ONLY)
+                    .setDealid("deal")
+                    .setW(100)
+                    .setH(80)
+                    .setBundle("com.google.testapp")
+                    .addCat("IAB10-2")
+                    .setExtension(TestExt.testBid, OpenRtbJsonFactoryHelper.test1);
+
+      nativeResponseBuilder.setVer("1.0")
+                           .setLink(OpenRtb.NativeResponse.Link.newBuilder())
+                           .addImptrackers("http://my.imp.tracker");
+
+      if(isNativeObject)
+      {
+         seatBidBuilder.setAdmNative(nativeResponseBuilder);
+      }
+      else
+      {
+         seatBidBuilder.setAdm(OpenRtbJsonFactoryHelper.newJsonFactory(isRootNative)
+                                                       .newNativeWriter()
+                                                       .writeNativeResponse(nativeResponseBuilder.build()));
+      }
+
+      seatBuilder.addBid(seatBidBuilder).setSeat("seat");
+
+      bidResponseBuilder.setId("resp")
+                        .addSeatbid(seatBuilder)
+                        .setBidid("bid")
+                        .setCur("USD")
+                        .setCustomdata("mydata")
+                        .setNbr(OpenRtb.BidResponse.NoBidReason.TECHNICAL_ERROR);
+
+      return OpenRtbJsonFactoryHelper.newJsonFactory(isRootNative)
+                                     .newWriter()
+                                     .writeBidResponse(bidResponseBuilder.build());
+
    }
 
    private static String generateFullResponse(final boolean isRootNative, final boolean isNativeObject)
+      throws IOException
    {
-      return null;
-   }
+      final OpenRtb.BidResponse.SeatBid.Bid.Builder firstSeatBidBuilder = OpenRtb.BidResponse.SeatBid.Bid.newBuilder();
+      final OpenRtb.BidResponse.SeatBid.Builder firstSeatBuilder = OpenRtb.BidResponse.SeatBid.newBuilder();
+      final OpenRtb.NativeResponse.Builder firstNativeResponseBuilder = OpenRtb.NativeResponse.newBuilder();
 
-   static OpenRtbJsonFactory newJsonFactory(final boolean isRootNative)
-   {
-      return OpenRtbJsonFactory.create()
-                               .setRootNativeField(isRootNative)
-                               .setJsonFactory(new JsonFactory())
-                               // BidRequest Readers
-                               .register(new Test1Reader<>(TestExt.testRequest1), OpenRtb.BidRequest.Builder.class)
-                               .register(new Test2Reader<>(TestExt.testRequest2, "test2ext"),
-                                         OpenRtb.BidRequest.Builder.class)
-                               .register(new Test1Reader<>(TestExt.testApp), OpenRtb.BidRequest.App.Builder.class)
-                               .register(new Test1Reader<>(TestExt.testContent),
-                                         OpenRtb.BidRequest.Content.Builder.class)
-                               .register(new Test1Reader<>(TestExt.testProducer),
-                                         OpenRtb.BidRequest.Producer.Builder.class)
-                               .register(new Test1Reader<>(TestExt.testPublisher),
-                                         OpenRtb.BidRequest.Publisher.Builder.class)
-                               .register(new Test1Reader<>(TestExt.testDevice), OpenRtb.BidRequest.Device.Builder.class)
-                               .register(new Test1Reader<>(TestExt.testGeo), OpenRtb.BidRequest.Geo.Builder.class)
-                               .register(new Test1Reader<>(TestExt.testImp), OpenRtb.BidRequest.Imp.Builder.class)
-                               .register(new Test1Reader<>(TestExt.testBanner),
-                                         OpenRtb.BidRequest.Imp.Banner.Builder.class)
-                               .register(new Test1Reader<>(TestExt.testNative),
-                                         OpenRtb.BidRequest.Imp.Native.Builder.class)
-                               .register(new Test1Reader<>(TestExt.testPmp), OpenRtb.BidRequest.Imp.Pmp.Builder.class)
-                               .register(new Test1Reader<>(TestExt.testDeal),
-                                         OpenRtb.BidRequest.Imp.Pmp.Deal.Builder.class)
-                               .register(new Test1Reader<>(TestExt.testVideo),
-                                         OpenRtb.BidRequest.Imp.Video.Builder.class)
-                               .register(new Test1Reader<>(TestExt.testRegs), OpenRtb.BidRequest.Regs.Builder.class)
-                               .register(new Test1Reader<>(TestExt.testSite), OpenRtb.BidRequest.Site.Builder.class)
-                               .register(new Test1Reader<>(TestExt.testUser), OpenRtb.BidRequest.User.Builder.class)
-                               .register(new Test1Reader<>(TestExt.testData), OpenRtb.BidRequest.Data.Builder.class)
-                               .register(new Test1Reader<>(TestExt.testSegment),
-                                         OpenRtb.BidRequest.Data.Segment.Builder.class)
-                               // BidResponse Readers
-                               .register(new Test1Reader<>(TestExt.testResponse1), OpenRtb.BidResponse.Builder.class)
-                               .register(new Test2Reader<>(TestExt.testResponse2, "test2arr"),
-                                         OpenRtb.BidResponse.Builder.class)
-                               .register(new Test2Reader<>(TestExt.testResponse2A, "test2a"),
-                                         OpenRtb.BidResponse.Builder.class)
-                               .register(new Test2Reader<>(TestExt.testResponse2B, "test2b"),
-                                         OpenRtb.BidResponse.Builder.class)
-                               .register(new Test3Reader(), OpenRtb.BidResponse.Builder.class)
-                               .register(new Test4Reader(), OpenRtb.BidResponse.Builder.class)
-                               .register(new Test1Reader<>(TestExt.testSeat), OpenRtb.BidResponse.SeatBid.Builder.class)
-                               .register(new Test1Reader<>(TestExt.testBid),
-                                         OpenRtb.BidResponse.SeatBid.Bid.Builder.class)
-                               // BidRequest Writers
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.class)
-                               .register(new Test2Writer("test2ext"), Test.Test2.class, OpenRtb.BidRequest.class)
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.App.class)
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Device.class)
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Site.class)
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.User.class)
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Geo.class)
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Data.class)
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Data.Segment.class)
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Publisher.class)
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Content.class)
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Producer.class)
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Imp.class)
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Imp.Banner.class)
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Imp.Video.class)
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Imp.Native.class)
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Imp.Pmp.class)
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Imp.Pmp.Deal.class)
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Regs.class)
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidResponse.SeatBid.class)
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidResponse.SeatBid.Bid.class)
-                               // BidResponse Writers
-                               .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidResponse.class,
-                                         "testResponse1")
-                               .register(new Test2Writer("test2arr"), Test.Test2.class, OpenRtb.BidResponse.class,
-                                         "testResponse2")
-                               .register(new Test2Writer("test2a"), Test.Test2.class, OpenRtb.BidResponse.class,
-                                         "testResponse2a")
-                               .register(new Test2Writer("test2b"), Test.Test2.class, OpenRtb.BidResponse.class,
-                                         "testResponse2b")
-                               .register(new Test3Writer(), Integer.class, OpenRtb.BidResponse.class, "testResponse3")
-                               .register(new Test4Writer(), Integer.class, OpenRtb.BidResponse.class, "testResponse4");
+      final OpenRtb.BidResponse.SeatBid.Bid.Builder secondSeatBidBuilder = OpenRtb.BidResponse.SeatBid.Bid.newBuilder();
+      final OpenRtb.BidResponse.SeatBid.Builder secondSeatBuilder = OpenRtb.BidResponse.SeatBid.newBuilder();
+      final OpenRtb.NativeResponse.Builder secondNativeResponseBuilder = OpenRtb.NativeResponse.newBuilder();
+
+      final OpenRtb.BidResponse.SeatBid.Bid.Builder thirdSeatBidBuilder = OpenRtb.BidResponse.SeatBid.Bid.newBuilder();
+      final OpenRtb.NativeResponse.Builder thirdNativeResponseBuilder = OpenRtb.NativeResponse.newBuilder();
+
+      final List<OpenRtb.BidResponse.SeatBid> seatArrayList = new ArrayList<>();
+      final List<OpenRtb.BidResponse.SeatBid.Bid> seatBidArrayList = new ArrayList<>();
+      final OpenRtb.BidResponse.Builder bidResponseBuilder = OpenRtb.BidResponse.newBuilder();
+
+      firstSeatBidBuilder.setId("bid1")
+                         .setImpid("imp1")
+                         .setPrice(19.95)
+                         .setAdid("adid1")
+                         .setNurl("http://iwon.com")
+                         .addAdomain("http://myads.com")
+                         .setIurl("http://mycdn.com/ad.gif")
+                         .setCid("cid1")
+                         .setCrid("crid1")
+                         .addAttr(OpenRtb.CreativeAttribute.TEXT_ONLY)
+                         .setDealid("deal1")
+                         .setW(100)
+                         .setH(80)
+                         .setBundle("com.google.testapp")
+                         .addCat("IAB10-2")
+                         .setExtension(TestExt.testBid, OpenRtbJsonFactoryHelper.test1);
+
+      firstNativeResponseBuilder.setVer("1.0")
+                                .setLink(OpenRtb.NativeResponse.Link.newBuilder())
+                                .addImptrackers("http://my.first.imp.tracker");
+
+      secondSeatBidBuilder.setId("bid2")
+                          .setImpid("imp2")
+                          .setPrice(19.95)
+                          .setAdid("adid2")
+                          .setNurl("http://iwon.com")
+                          .addAdomain("http://myads.com")
+                          .setIurl("http://mycdn.com/ad.gif")
+                          .setCid("cid2")
+                          .setCrid("crid2")
+                          .addAttr(OpenRtb.CreativeAttribute.TEXT_ONLY)
+                          .setDealid("deal2")
+                          .setW(100)
+                          .setH(80)
+                          .setBundle("com.google.testapp")
+                          .addCat("IAB10-2")
+                          .setExtension(TestExt.testBid, OpenRtbJsonFactoryHelper.test1);
+
+      secondNativeResponseBuilder.setVer("2.0")
+                                 .setLink(OpenRtb.NativeResponse.Link.newBuilder())
+                                 .addImptrackers("http://my.first.imp.tracker");
+
+      thirdSeatBidBuilder.setId("bid2")
+                         .setImpid("imp3")
+                         .setPrice(19.95)
+                         .setAdid("adid3")
+                         .setNurl("http://iwon.com")
+                         .addAdomain("http://myads.com")
+                         .setIurl("http://mycdn.com/ad.gif")
+                         .setCid("cid3")
+                         .setCrid("crid3")
+                         .addAttr(OpenRtb.CreativeAttribute.TEXT_ONLY)
+                         .setDealid("deal3")
+                         .setW(100)
+                         .setH(80)
+                         .setBundle("com.google.testapp")
+                         .addCat("IAB10-2")
+                         .setExtension(TestExt.testBid, OpenRtbJsonFactoryHelper.test1);
+
+      thirdNativeResponseBuilder.setVer("3.0")
+                                .setLink(OpenRtb.NativeResponse.Link.newBuilder())
+                                .addImptrackers("http://my.third.imp.tracker");
+
+      if(isNativeObject)
+      {
+         firstSeatBidBuilder.setAdmNative(firstNativeResponseBuilder);
+         secondSeatBidBuilder.setAdmNative(secondNativeResponseBuilder);
+      }
+      else
+      {
+         firstSeatBidBuilder.setAdm(OpenRtbJsonFactoryHelper.newJsonFactory(isRootNative)
+                                                            .newNativeWriter()
+                                                            .writeNativeResponse(firstNativeResponseBuilder.build()));
+         secondSeatBidBuilder.setAdm(OpenRtbJsonFactoryHelper.newJsonFactory(isRootNative)
+                                                             .newNativeWriter()
+                                                             .writeNativeResponse(secondNativeResponseBuilder.build()));
+      }
+
+      firstSeatBuilder.addBid(firstSeatBidBuilder)
+                      .setSeat("seat1")
+                      .setGroup(false)
+                      .setExtension(TestExt.testSeat, OpenRtbJsonFactoryHelper.test1);
+
+      seatBidArrayList.add(secondSeatBidBuilder.build());
+      seatBidArrayList.add(thirdSeatBidBuilder.build());
+
+      secondSeatBuilder.addAllBid(seatBidArrayList)
+                       .setSeat("seat2")
+                       .setGroup(true)
+                       .setExtension(TestExt.testSeat, OpenRtbJsonFactoryHelper.test1);
+
+      seatArrayList.add(firstSeatBuilder.build());
+      seatArrayList.add(secondSeatBuilder.build());
+
+      bidResponseBuilder.setId("resp1")
+                        .addAllSeatbid(seatArrayList)
+                        .setBidid("bid1")
+                        .setCur("USD")
+                        .setCustomdata("mydata")
+                        .setNbr(OpenRtb.BidResponse.NoBidReason.TECHNICAL_ERROR)
+                        .setExtension(TestExt.testResponse1, OpenRtbJsonFactoryHelper.test1)
+                        .addExtension(TestExt.testResponse2, OpenRtbJsonFactoryHelper.test2)
+                        .addExtension(TestExt.testResponse2, OpenRtbJsonFactoryHelper.test2)
+                        .setExtension(TestExt.testResponse2A, OpenRtbJsonFactoryHelper.test2)
+                        .setExtension(TestExt.testResponse2B, OpenRtbJsonFactoryHelper.test2)
+                        .setExtension(TestExt.testResponse3, 99)
+                        .addExtension(TestExt.testResponse4, 10)
+                        .addExtension(TestExt.testResponse4, 20);
+
+      return OpenRtbJsonFactoryHelper.newJsonFactory(isRootNative)
+                                     .newWriter()
+                                     .writeBidResponse(bidResponseBuilder.build());
    }
 
 }

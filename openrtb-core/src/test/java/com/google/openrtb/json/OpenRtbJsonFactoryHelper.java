@@ -18,6 +18,9 @@ class OpenRtbJsonFactoryHelper
 
    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(OpenRtbJsonFactoryHelper.class);
 
+   static final Test.Test1 test1 = Test.Test1.newBuilder().setTest1("data1").build();
+   static final Test.Test2 test2 = Test.Test2.newBuilder().setTest2("data2").build();
+
    static OpenRtbJsonFactory newJsonFactory(final boolean isRootNative)
    {
       return OpenRtbJsonFactory.create()

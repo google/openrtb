@@ -1,7 +1,6 @@
 package com.google.openrtb.json;
 
 import com.google.openrtb.OpenRtb;
-import com.google.openrtb.Test;
 import com.google.openrtb.TestExt;
 import org.slf4j.LoggerFactory;
 
@@ -235,10 +234,6 @@ class OpenRtbJsonRequestHelper
       "\"badv\":[\"badguy\"],\"regs\":{\"coppa\":1,\"ext\":{\"test1\":\"data1\"}},\"ext\":{\"test1\":\"data1\"," +
       "\"test2ext\":{\"test2\":\"data2\"}}}";
 
-   private static final Test.Test1 test1 = Test.Test1.newBuilder().setTest1("data1").build();
-
-   private static final Test.Test2 test2 = Test.Test2.newBuilder().setTest2("data2").build();
-
    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(OpenRtbJsonRequestHelper.class);
 
    public static void main(String[] args) throws IOException
@@ -368,7 +363,7 @@ class OpenRtbJsonRequestHelper
                                                              .addExpdir(
                                                                 OpenRtb.BidRequest.Imp.Banner.ExpandableDirection.RIGHT)
                                                              .addApi(OpenRtb.BidRequest.Imp.APIFramework.MRAID_1)
-                                                             .setExtension(TestExt.testBanner, test1))
+                                                             .setExtension(TestExt.testBanner, OpenRtbJsonFactoryHelper.test1))
                      .setDisplaymanager("dm1")
                      .setDisplaymanagerver("1.0")
                      .setInstl(false)
@@ -389,9 +384,9 @@ class OpenRtbJsonRequestHelper
                                                                                                    OpenRtb.BidRequest.AuctionType.SECOND_PRICE)
                                                                                                 .setExtension(
                                                                                                    TestExt.testDeal,
-                                                                                                   test1))
-                                                       .setExtension(TestExt.testPmp, test1))
-                     .setExtension(TestExt.testImp, test1);
+                                                                                                   OpenRtbJsonFactoryHelper.test1))
+                                                       .setExtension(TestExt.testPmp, OpenRtbJsonFactoryHelper.test1))
+                     .setExtension(TestExt.testImp, OpenRtbJsonFactoryHelper.test1);
 
       secondImpressionBuilder.setId("imp2")
                       .setVideo(OpenRtb.BidRequest.Imp.Video.newBuilder()
@@ -435,7 +430,7 @@ class OpenRtbJsonRequestHelper
                                                             .addApi(OpenRtb.BidRequest.Imp.APIFramework.VPAID_2)
                                                             .addCompaniontype(
                                                                OpenRtb.BidRequest.Imp.Video.VASTCompanionType.HTML)
-                                                            .setExtension(TestExt.testVideo, test1));
+                                                            .setExtension(TestExt.testVideo, OpenRtbJsonFactoryHelper.test1));
 
       if(isNativeObject)
       {
@@ -451,9 +446,9 @@ class OpenRtbJsonRequestHelper
       nativeBuilder.setVer("1.0")
                    .addApi(OpenRtb.BidRequest.Imp.APIFramework.MRAID_1)
                    .addBattr(OpenRtb.CreativeAttribute.TEXT_ONLY)
-                   .setExtension(TestExt.testNative, test1);
+                   .setExtension(TestExt.testNative, OpenRtbJsonFactoryHelper.test1);
 
-      thirdImpressionBuilder.setId("imp3").setNative(nativeBuilder).setExtension(TestExt.testImp, test1);
+      thirdImpressionBuilder.setId("imp3").setNative(nativeBuilder).setExtension(TestExt.testImp, OpenRtbJsonFactoryHelper.test1);
 
       deviceBuilder.setUa("Chrome")
             .setGeo(OpenRtb.BidRequest.Geo.newBuilder()
@@ -467,7 +462,7 @@ class OpenRtbJsonRequestHelper
                                           .setCity("New York City")
                                           .setZip("10000")
                                           .setUtcoffset(3600)
-                                          .setExtension(TestExt.testGeo, test1))
+                                          .setExtension(TestExt.testGeo, OpenRtbJsonFactoryHelper.test1))
             .setDnt(false)
             .setLmt(false)
             .setIp("192.168.1.0")
@@ -494,7 +489,7 @@ class OpenRtbJsonRequestHelper
             .setDpidmd5("8765")
             .setMacsha1("abc")
             .setMacmd5("xyz")
-            .setExtension(TestExt.testDevice, test1);
+            .setExtension(TestExt.testDevice, OpenRtbJsonFactoryHelper.test1);
 
       userBuilder.setId("user1")
           .setBuyeruid("Picard")
@@ -511,11 +506,11 @@ class OpenRtbJsonRequestHelper
                                                                                      .setName("segname1")
                                                                                      .setValue("segval1")
                                                                                      .setExtension(TestExt.testSegment,
-                                                                                                   test1))
-                                          .setExtension(TestExt.testData, test1))
-          .setExtension(TestExt.testUser, test1);
+                                                                                                   OpenRtbJsonFactoryHelper.test1))
+                                          .setExtension(TestExt.testData, OpenRtbJsonFactoryHelper.test1))
+          .setExtension(TestExt.testUser, OpenRtbJsonFactoryHelper.test1);
 
-      regsBuilder.setCoppa(true).setExtension(TestExt.testRegs, test1);
+      regsBuilder.setCoppa(true).setExtension(TestExt.testRegs, OpenRtbJsonFactoryHelper.test1);
 
       bidRequestBuilder.setId("9zj61whbdl319sjgz098lpys5cngmtro_full_" + isRootNative + "_" + isNativeObject)
                 .addImp(firstImpressionBuilder)
@@ -532,8 +527,8 @@ class OpenRtbJsonRequestHelper
                 .addBadv("badguy")
                 .setRegs(regsBuilder)
                 .setTest(false)
-                .setExtension(TestExt.testRequest2, test2)
-                .setExtension(TestExt.testRequest1, test1);
+                .setExtension(TestExt.testRequest2, OpenRtbJsonFactoryHelper.test2)
+                .setExtension(TestExt.testRequest1, OpenRtbJsonFactoryHelper.test1);
 
       return OpenRtbJsonFactoryHelper.newJsonFactory(isRootNative).newWriter().writeBidRequest(bidRequestBuilder.build());
    }
