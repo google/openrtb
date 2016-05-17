@@ -4,15 +4,7 @@
     {
       "id": "imp1",
       "native": {
-        "request_native": {
-          "native": {
-            "ver": "1",
-            "layout": 2,
-            "adunit": 4,
-            "plcmtcnt": 1,
-            "seq": 1
-          }
-        }
+        "request": "{\"native\":{\"ver\":\"1\",\"layout\":2,\"adunit\":4,\"plcmtcnt\":1,\"seq\":1}}"
       },
       "bidfloor": 100.0,
       "bidfloorcur": "USD"

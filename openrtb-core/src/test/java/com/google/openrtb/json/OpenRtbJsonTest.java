@@ -223,7 +223,7 @@ public class OpenRtbJsonTest
 
       impression.setNative(Native.newBuilder().setRequestNative(fullNativeRequest.build())).build();
 
-      testRequestWithNative(jsonFactory, BidRequest.newBuilder()
+      testRequest(jsonFactory, BidRequest.newBuilder()
                                                    .setId("1")
                                                    .addImp(impression)
                                                    .setDevice(Device.newBuilder())
@@ -320,15 +320,15 @@ public class OpenRtbJsonTest
    @Test
    public void testRequestWithNative() throws IOException
    {
-      testResponseWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_NOROOT_STRING);
-      testResponseWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_NOROOT_OBJECT);
-      testResponseWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_ROOT___STRING);
-      testResponseWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_ROOT___OBJECT);
+      testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_NOROOT_STRING);
+      testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_NOROOT_OBJECT);
+      testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_ROOT___STRING);
+      testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_ROOT___OBJECT);
 
-      testResponseWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__NOROOT_STRING);
-      testResponseWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__NOROOT_OBJECT);
-      testResponseWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__ROOT___STRING);
-      testResponseWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__ROOT___OBJECT);
+      testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__NOROOT_STRING);
+      testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__NOROOT_OBJECT);
+      testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__ROOT___STRING);
+      testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__ROOT___OBJECT);
    }
 
    @Test
@@ -479,32 +479,14 @@ public class OpenRtbJsonTest
       jsonFactory.setStrict(false).newReader().readBidRequest(jsonReq);
    }
 
-   static void testRequestWithNative(OpenRtbJsonFactory jsonFactory, BidRequest req) throws IOException
+   static void testRequestWithNative(final String requestString) throws IOException
    {
-
-      String compareReqNativeAsStr = "{\"id\":\"1\",\"imp\":[{\"id\":\"0\",\"native\":{\"request\":\"" +
-                                     "{\\\"ver\\\":\\\"1\\\",\\\"layout\\\":2,\\\"adunit\\\":5,\\\"plcmtcnt\\\":3," +
-                                     "\\\"assets\\\":[{\\\"id\\\":1,\\\"required\\\":1,\\\"title\\\":{\\\"len\\\":100}}," +
-                                     "{\\\"id\\\":2,\\\"required\\\":1,\\\"img\\\":{\\\"type\\\":3,\\\"wmin\\\":350,\\\"hmin\\\":350}}," +
-                                     "{\\\"id\\\":3,\\\"required\\\":1,\\\"data\\\":{\\\"type\\\":2,\\\"len\\\":90}}," +
-                                     "{\\\"id\\\":4,\\\"required\\\":0,\\\"data\\\":{\\\"type\\\":12,\\\"len\\\":25}}," +
-                                     "{\\\"id\\\":5}]}\"}}],\"app\":{},\"device\":{},\"user\":{},\"regs\":{}}";
-      String compareReqNativeAsObj = "{\"id\":\"1\",\"imp\":[{\"id\":\"0\",\"native\":{\"request_native\":" +
-                                     "{\"ver\":\"1\",\"layout\":2,\"adunit\":5,\"plcmtcnt\":3," +
-                                     "\"assets\":[{\"id\":1,\"required\":1,\"title\":{\"len\":100}}," +
-                                     "{\"id\":2,\"required\":1,\"img\":{\"type\":3,\"wmin\":350,\"hmin\":350}}," +
-                                     "{\"id\":3,\"required\":1,\"data\":{\"type\":2,\"len\":90}}," +
-                                     "{\"id\":4,\"required\":0,\"data\":{\"type\":12,\"len\":25}}," +
-                                     "{\"id\":5}]}}}],\"app\":{},\"device\":{},\"user\":{},\"regs\":{}}";
-
-      BidRequest req1 = jsonFactory.newReader().readBidRequest(compareReqNativeAsStr);
-
-      String jsonReq1 = jsonFactory.newWriter().writeBidRequest(req1);
-      assertThat(jsonReq1).isEqualTo(compareReqNativeAsStr);
-
-      BidRequest req2 = jsonFactory.newReader().readBidRequest(compareReqNativeAsObj);
-      String jsonReq2 = jsonFactory.newWriter().writeBidRequest(req2);
-      assertThat(jsonReq2).isEqualTo(compareReqNativeAsObj);
+      OpenRtbJsonFactory jsonFactory = newJsonFactory();
+      OpenRtb.BidRequest bidRequest1 = jsonFactory.newReader().readBidRequest(requestString);
+      String jsonRequNativeStr = jsonFactory.newWriter().writeBidRequest(bidRequest1);
+      assertThat(jsonRequNativeStr).isEqualTo(requestString);
+      OpenRtb.BidRequest bidRequest2 = jsonFactory.newReader().readBidRequest(jsonRequNativeStr);
+      assertThat(bidRequest1).isEqualTo(bidRequest2);
    }
 
    static String testResponse(OpenRtbJsonFactory jsonFactory, BidResponse resp) throws IOException

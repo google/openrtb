@@ -128,13 +128,7 @@
     {
       "id": "imp3",
       "native": {
-        "request_native": {
-          "ver": "1",
-          "layout": 2,
-          "adunit": 4,
-          "plcmtcnt": 1,
-          "seq": 1
-        },
+        "request": "{\"ver\":\"1\",\"layout\":2,\"adunit\":4,\"plcmtcnt\":1,\"seq\":1}",
         "ver": "1.0",
         "api": [
           3
