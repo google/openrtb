@@ -369,10 +369,10 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     writeEnums("battr", nativ.getBattrList(), gen);
   }
 
-  private void writeNativeObject(final Native aNativ, final JsonGenerator aGen) throws IOException
+  private void writeNativeObject(final Native nativ, final JsonGenerator gen) throws IOException
   {
-    aGen.writeFieldName("request_native");
-    nativeWriter().writeNativeRequest(aNativ.getRequestNative(), aGen);
+    gen.writeFieldName("request_native");
+    nativeWriter().writeNativeRequest(nativ.getRequestNative(), gen);
   }
 
   public final void writePmp(Pmp pmp, JsonGenerator gen) throws IOException {
@@ -989,10 +989,10 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     }
   }
 
-  private void writeAdmNative(final Bid aBid, final JsonGenerator aGen) throws IOException
+  private void writeAdmNative(final Bid bid, final JsonGenerator gen) throws IOException
   {
-    aGen.writeFieldName("adm_native");
-    nativeWriter().writeNativeResponse(aBid.getAdmNative(), aGen);
+    gen.writeFieldName("adm_native");
+    nativeWriter().writeNativeResponse(bid.getAdmNative(), gen);
   }
 
   private void writeAdmString(final Bid aBid, final JsonGenerator aGen) throws IOException

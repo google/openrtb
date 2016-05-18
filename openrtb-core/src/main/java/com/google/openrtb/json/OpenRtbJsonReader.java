@@ -337,9 +337,9 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
     }
   }
 
-  private void readNativeAsObject(Native.Builder aNative, JsonParser aPar) throws IOException {
+  private void readNativeAsObject(Native.Builder nativ, JsonParser par) throws IOException {
     OpenRtbNativeJsonReader nativeObjectReader = factory().newNativeReader();
-    aNative.setRequestNative(nativeObjectReader.readNativeRequest(aPar));
+    nativ.setRequestNative(nativeObjectReader.readNativeRequest(par));
   }
 
   public final Pmp.Builder readPmp(JsonParser par) throws IOException {
