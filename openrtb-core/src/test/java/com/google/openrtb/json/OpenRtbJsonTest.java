@@ -199,8 +199,34 @@ public class OpenRtbJsonTest {
     OpenRtbJsonFactory jsonFactory = newJsonFactory();
     BidResponse resp = newBidResponse(false).build();
     String jsonResp = testResponse(jsonFactory, resp);
-    assertThat(jsonFactory.newWriter().writeBidResponse(newBidResponse(true).build()))
+    assertThat(jsonFactory.newWriter().writeBidResponse(newBidResponse(false).build()))
         .isEqualTo(jsonResp);
+  }
+
+  @Test
+  public void testRequestWithNative() throws IOException {
+    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_NOROOT_STRING, false);
+    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_NOROOT_OBJECT, false);
+    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_ROOT___STRING, true);
+    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_ROOT___OBJECT, true);
+
+    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__NOROOT_STRING, false);
+    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__NOROOT_OBJECT, false);
+    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__ROOT___STRING, true);
+    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__ROOT___OBJECT, true);
+  }
+
+  @Test
+  public void testResponseWithNative() throws IOException {
+    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_SHORT_NOROOT_STRING, false);
+    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_SHORT_NOROOT_OBJECT, false);
+    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_SHORT_ROOT___STRING, true);
+    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_SHORT_ROOT___OBJECT, true);
+
+    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_FULL__NOROOT_STRING, false);
+    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_FULL__NOROOT_OBJECT, false);
+    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_FULL__ROOT___STRING, true);
+    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_FULL__ROOT___OBJECT, true);
   }
 
   @Test
@@ -333,6 +359,13 @@ public class OpenRtbJsonTest {
     jsonFactory.setStrict(false).newReader().readBidRequest(jsonReq);
   }
 
+  static void testRequestWithNative(final String requestString, final boolean rootNative) throws IOException {
+    OpenRtbJsonFactory jsonFactory = newJsonFactory();
+    OpenRtb.BidRequest bidRequest = jsonFactory.newReader().readBidRequest(requestString);
+    String jsonRequNativeStr = jsonFactory.setRootNativeField(rootNative).newWriter().writeBidRequest(bidRequest);
+    assertThat(jsonRequNativeStr).isEqualTo(requestString);
+  }
+
   static String testResponse(OpenRtbJsonFactory jsonFactory, BidResponse resp) throws IOException {
     String jsonResp = jsonFactory.newWriter().writeBidResponse(resp);
     logger.info(jsonResp);
@@ -341,6 +374,13 @@ public class OpenRtbJsonTest {
     assertThat(resp2).isEqualTo(resp);
     jsonFactory.setStrict(false).newReader().readBidResponse(jsonResp);
     return jsonResp;
+  }
+
+  static void testResponseWithNative(final String responseString, final boolean rootNative) throws IOException {
+    OpenRtbJsonFactory jsonFactory = newJsonFactory();
+    OpenRtb.BidResponse bidResponse1 = jsonFactory.newReader().readBidResponse(responseString);
+    String jsonRespNativeStr = jsonFactory.setRootNativeField(rootNative).newWriter().writeBidResponse(bidResponse1);
+    assertThat(jsonRespNativeStr).isEqualTo(responseString);
   }
 
   static OpenRtbJsonFactory newJsonFactory() {
