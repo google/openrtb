@@ -354,8 +354,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
   protected void writeNativeFields(Native nativ, JsonGenerator gen) throws IOException {
     switch (nativ.getRequestOneofCase()) {
       case REQUEST_NATIVE:
-        gen.writeStringField(
-            "request", nativeWriter().writeNativeRequest(nativ.getRequestNative()));
+        writeNativeObject(nativ, gen);
         break;
       case REQUEST:
         gen.writeStringField("request", nativ.getRequest());
@@ -368,6 +367,12 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     }
     writeEnums("api", nativ.getApiList(), gen);
     writeEnums("battr", nativ.getBattrList(), gen);
+  }
+
+  private void writeNativeObject(final Native nativ, final JsonGenerator gen) throws IOException
+  {
+    gen.writeFieldName("request_native");
+    nativeWriter().writeNativeRequest(nativ.getRequestNative(), gen);
   }
 
   public final void writePmp(Pmp pmp, JsonGenerator gen) throws IOException {
@@ -950,10 +955,10 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     }
     switch (bid.getAdmOneofCase()) {
       case ADM:
-        gen.writeStringField("adm", bid.getAdm());
+        writeAdmString(bid, gen);
         break;
       case ADM_NATIVE:
-        gen.writeStringField("adm", nativeWriter().writeNativeResponse(bid.getAdmNative()));
+        writeAdmNative(bid, gen);
         break;
       case ADMONEOF_NOT_SET:
         checkRequired(false);
@@ -982,6 +987,17 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     if (bid.hasH()) {
       gen.writeNumberField("h", bid.getH());
     }
+  }
+
+  private void writeAdmNative(final Bid bid, final JsonGenerator gen) throws IOException
+  {
+    gen.writeFieldName("adm_native");
+    nativeWriter().writeNativeResponse(bid.getAdmNative(), gen);
+  }
+
+  private void writeAdmString(final Bid aBid, final JsonGenerator aGen) throws IOException
+  {
+    aGen.writeStringField("adm", aBid.getAdm());
   }
 
   protected final OpenRtbNativeJsonWriter nativeWriter() {

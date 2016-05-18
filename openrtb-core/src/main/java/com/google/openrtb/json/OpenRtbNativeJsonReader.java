@@ -112,8 +112,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         }
       }
     }
-    if (rootNativeField) {
-      endObject(par);
+    if (rootNativeField && par.getCurrentToken() == JsonToken.END_OBJECT) {
+      par.nextToken();
     }
     return req;
   }
@@ -348,8 +348,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         }
       }
     }
-    if (rootNativeField) {
-      endObject(par);
+    if (rootNativeField && par.getCurrentToken() == JsonToken.END_OBJECT) {
+      par.nextToken();
     }
     return resp;
   }
