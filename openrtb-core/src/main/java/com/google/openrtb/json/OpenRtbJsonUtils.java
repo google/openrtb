@@ -138,7 +138,7 @@ public class OpenRtbJsonUtils {
   }
 
   /**
-   * Writes a boolean as int, where false => 0 and true => 1.
+   * Writes a boolean as int, where false = 0 and true = 1.
    */
   public static void writeIntBoolField(String fieldName, boolean data, JsonGenerator gen)
       throws IOException {
@@ -174,7 +174,7 @@ public class OpenRtbJsonUtils {
   }
 
   /**
-   * Writes a long, using quotes only if it's too big (>53-bit mantissa).
+   * Writes a long, using quotes only if it's too big (over 53-bit mantissa).
    */
   protected static void writeLong(long data, JsonGenerator gen) throws IOException {
     if (data > MAX_JSON_INT || data < -MAX_JSON_INT) {
