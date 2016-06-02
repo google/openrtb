@@ -70,6 +70,7 @@ import com.google.openrtb.TestUtil;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -84,6 +85,12 @@ public class OpenRtbJsonTest {
   private static final Logger logger = LoggerFactory.getLogger(OpenRtbJsonTest.class);
   private static final Test1 test1 = Test1.newBuilder().setTest1("data1").build();
   private static final Test2 test2 = Test2.newBuilder().setTest2("data2").build();
+
+  @Test
+  public void testJsonGeneratedFiles() throws IOException {
+    OpenRtbJsonRequestHelper.testJsonGeneratedFiles();
+    OpenRtbJsonResponseHelper.testJsonGeneratedFiles();
+  }
 
   @Test
   public void testJsonFactory() {
@@ -205,28 +212,28 @@ public class OpenRtbJsonTest {
 
   @Test
   public void testRequestWithNative() throws IOException {
-    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_NOROOT_STRING, false);
-    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_NOROOT_OBJECT, false);
-    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_ROOT___STRING, true);
-    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_ROOT___OBJECT, true);
+    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_NOROOT_STRING, false, false);
+    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_NOROOT_OBJECT, false, true);
+    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_ROOT___STRING, true, false);
+    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__SHORT_ROOT___OBJECT, true, true);
 
-    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__NOROOT_STRING, false);
-    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__NOROOT_OBJECT, false);
-    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__ROOT___STRING, true);
-    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__ROOT___OBJECT, true);
+    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__NOROOT_STRING, false, false);
+    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__NOROOT_OBJECT, false, true);
+    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__ROOT___STRING, true, false);
+    testRequestWithNative(OpenRtbJsonRequestHelper.REQUEST__FULL__ROOT___OBJECT, true, true);
   }
 
   @Test
   public void testResponseWithNative() throws IOException {
-    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_SHORT_NOROOT_STRING, false);
-    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_SHORT_NOROOT_OBJECT, false);
-    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_SHORT_ROOT___STRING, true);
-    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_SHORT_ROOT___OBJECT, true);
+    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_SHORT_NOROOT_STRING, false, false);
+    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_SHORT_NOROOT_OBJECT, false, true);
+    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_SHORT_ROOT___STRING, true, false);
+    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_SHORT_ROOT___OBJECT, true, true);
 
-    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_FULL__NOROOT_STRING, false);
-    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_FULL__NOROOT_OBJECT, false);
-    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_FULL__ROOT___STRING, true);
-    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_FULL__ROOT___OBJECT, true);
+    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_FULL__NOROOT_STRING, false, false);
+    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_FULL__NOROOT_OBJECT, false, true);
+    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_FULL__ROOT___STRING, true, false);
+    testResponseWithNative(OpenRtbJsonResponseHelper.RESPONSE_FULL__ROOT___OBJECT, true, true);
   }
 
   @Test
@@ -359,10 +366,13 @@ public class OpenRtbJsonTest {
     jsonFactory.setStrict(false).newReader().readBidRequest(jsonReq);
   }
 
-  static void testRequestWithNative(final String requestString, final boolean rootNative) throws IOException {
-    OpenRtbJsonFactory jsonFactory = newJsonFactory();
+  static void testRequestWithNative(String requestString, boolean rootNative, boolean nativeAsObject) throws IOException {
+    OpenRtbJsonFactory jsonFactory = newJsonFactory().setForceNativeAsObject(nativeAsObject);
     OpenRtb.BidRequest bidRequest = jsonFactory.newReader().readBidRequest(requestString);
     String jsonRequNativeStr = jsonFactory.setRootNativeField(rootNative).newWriter().writeBidRequest(bidRequest);
+    ObjectMapper mapper = new ObjectMapper();
+    Object json = mapper.readValue(jsonRequNativeStr, Object.class);
+    jsonRequNativeStr = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
     assertThat(jsonRequNativeStr).isEqualTo(requestString);
   }
 
@@ -376,10 +386,13 @@ public class OpenRtbJsonTest {
     return jsonResp;
   }
 
-  static void testResponseWithNative(final String responseString, final boolean rootNative) throws IOException {
-    OpenRtbJsonFactory jsonFactory = newJsonFactory();
+  static void testResponseWithNative(String responseString, boolean rootNative, boolean nativeAsObject) throws IOException {
+    OpenRtbJsonFactory jsonFactory = newJsonFactory().setForceNativeAsObject(nativeAsObject);
     OpenRtb.BidResponse bidResponse1 = jsonFactory.newReader().readBidResponse(responseString);
     String jsonRespNativeStr = jsonFactory.setRootNativeField(rootNative).newWriter().writeBidResponse(bidResponse1);
+    ObjectMapper mapper = new ObjectMapper();
+    Object json = mapper.readValue(jsonRespNativeStr, Object.class);
+    jsonRespNativeStr = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
     assertThat(jsonRespNativeStr).isEqualTo(responseString);
   }
 
@@ -700,7 +713,7 @@ public class OpenRtbJsonTest {
           .setVer("1.0")
           .setLink(NativeResponse.Link.newBuilder()));
     } else {
-      bid.setAdm("{\"ver\":\"1.0\",\"link\":{}}");
+      bid.setAdm("<test></test>");
     }
     return BidResponse.newBuilder()
         .setId("resp1")
