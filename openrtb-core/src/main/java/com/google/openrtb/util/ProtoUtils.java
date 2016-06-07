@@ -83,15 +83,6 @@ public final class ProtoUtils {
   }
 
   /**
-   * @deprecated Use {@link #filter(List, Predicate)}
-   */
-  @Deprecated
-  public static <M extends MessageLiteOrBuilder>
-    Iterable<M> filter(Iterable<M> objs, Predicate<M> filter) {
-    return filter(objs instanceof List<?> ? ((List<M>) objs) : ImmutableList.copyOf(objs), filter);
-  }
-
-  /**
    * Runs a filter through a sequence of objects.
    *
    * @param objs Message-or-builder objects

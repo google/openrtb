@@ -41,7 +41,7 @@
       "adm" : {
         "ver" : "2.0",
         "link" : { },
-        "imptrackers" : [ "http://my.first.imp.tracker" ]
+        "imptrackers" : [ "http://my.second.imp.tracker" ]
       },
       "adomain" : [ "http://myads.com" ],
       "bundle" : "com.google.testapp",
@@ -62,6 +62,11 @@
       "price" : 19.95,
       "adid" : "adid3",
       "nurl" : "http://iwon.com",
+      "adm" : {
+        "ver" : "3.0",
+        "link" : { },
+        "imptrackers" : [ "http://my.third.imp.tracker" ]
+      },
       "adomain" : [ "http://myads.com" ],
       "bundle" : "com.google.testapp",
       "iurl" : "http://mycdn.com/ad.gif",
