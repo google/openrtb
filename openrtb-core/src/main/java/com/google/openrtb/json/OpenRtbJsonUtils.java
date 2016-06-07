@@ -151,12 +151,21 @@ public class OpenRtbJsonUtils {
   /**
    * Writes a long, using quotes only if it's too big (over 53-bit mantissa).
    */
-  protected static void writeLong(long data, JsonGenerator gen) throws IOException {
+  public static void writeLong(long data, JsonGenerator gen) throws IOException {
     if (data > MAX_JSON_INT || data < -MAX_JSON_INT) {
       gen.writeString(Long.toString(data));
     } else {
       gen.writeNumber(data);
     }
+  }
+
+  /**
+   * Writes a long, using quotes only if it's too big (over 53-bit mantissa).
+   */
+  public static void writeLongField(String fieldName, long data, JsonGenerator gen)
+      throws IOException {
+    gen.writeFieldName(fieldName);
+    writeLong(data, gen);
   }
 
   /**
