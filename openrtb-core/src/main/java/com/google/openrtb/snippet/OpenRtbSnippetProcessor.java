@@ -49,11 +49,6 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
     this.extendedFields = extendedFields;
   }
 
-  @Deprecated
-  public OpenRtbSnippetProcessor() {
-    this(false);
-  }
-
   @Override protected List<SnippetMacroType> registerMacros() {
     return ImmutableList.<SnippetMacroType>copyOf(OpenRtbMacros.values());
   }
