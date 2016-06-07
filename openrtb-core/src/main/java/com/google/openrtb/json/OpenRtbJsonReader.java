@@ -307,14 +307,12 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
   protected void readNativeField(JsonParser par, Native.Builder nativ, String fieldName)
       throws IOException {
     switch (fieldName) {
-      case "request": {
-          OpenRtbNativeJsonReader nativeReader = factory().newNativeReader();
-          if(par.getCurrentToken() == JsonToken.VALUE_STRING) {
-            nativ.setRequestNative(nativeReader.readNativeRequest(new CharArrayReader(
-                par.getTextCharacters(), par.getTextOffset(), par.getTextLength())));
-          } else {
-            nativ.setRequestNative(nativeReader.readNativeRequest(par));
-          }
+      case "request":
+        if (par.getCurrentToken() == JsonToken.VALUE_STRING) {
+          nativ.setRequestNative(factory().newNativeReader().readNativeRequest(new CharArrayReader(
+              par.getTextCharacters(), par.getTextOffset(), par.getTextLength())));
+        } else { // Object
+          nativ.setRequestNative(factory().newNativeReader().readNativeRequest(par));
         }
         break;
       case "ver":
@@ -1390,17 +1388,16 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "nurl":
         bid.setNurl(par.getText());
         break;
-      case "adm": {
-          if(par.getCurrentToken() == JsonToken.START_OBJECT) {
-            bid.setAdmNative(factory().newNativeReader().readNativeResponse(par));
-          } else if (par.getCurrentToken() == JsonToken.VALUE_STRING) {
-            String valueString = par.getText();
-            if (valueString.startsWith("{")) {
-              bid.setAdmNative(factory().newNativeReader().readNativeResponse(valueString));
-            } else {
-              bid.setAdm(valueString);
-            }
+      case "adm":
+        if (par.getCurrentToken() == JsonToken.VALUE_STRING) {
+          String valueString = par.getText();
+          if (valueString.startsWith("{")) {
+            bid.setAdmNative(factory().newNativeReader().readNativeResponse(valueString));
+          } else {
+            bid.setAdm(valueString);
           }
+        } else { // Object
+          bid.setAdmNative(factory().newNativeReader().readNativeResponse(par));
         }
         break;
       case "adomain":

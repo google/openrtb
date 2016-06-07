@@ -6,21 +6,18 @@ import com.google.openrtb.TestExt;
 
 import com.fasterxml.jackson.core.JsonFactory;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 /**
- * Test helper class, to be used for generating and comparing Json test data <p> Created by
- * bundeskanzler4711 on 12/05/16.
+ * Test helper class, to be used for generating and comparing JSON test data.
  */
 class OpenRtbJsonFactoryHelper {
-
   static final Test.Test1 test1 = Test.Test1.newBuilder().setTest1("data1").build();
   static final Test.Test2 test2 = Test.Test2.newBuilder().setTest2("data2").build();
 
@@ -107,20 +104,20 @@ class OpenRtbJsonFactoryHelper {
   }
 
   static String readFile(String fileName) {
-    InputStream inputStream = OpenRtbJsonFactoryHelper.class.getClassLoader().getResourceAsStream(fileName);
-    Scanner scanner = new Scanner(inputStream, StandardCharsets.UTF_8.name()).useDelimiter("\\A");
-    return scanner.hasNext() ? scanner.next() : "";
+    try (InputStream is = OpenRtbJsonFactoryHelper.class.getResourceAsStream("/" + fileName);
+        Scanner scanner = new Scanner(is, StandardCharsets.UTF_8.name()).useDelimiter("\\A")) {
+      return scanner.hasNext() ? scanner.next() : "";
+    } catch (IOException e) {
+      throw new IllegalStateException(e);
+    }
   }
 
   static void writeFile(String fileName, String content) {
-    final OutputStream outputStream;
-    try {
-      outputStream = new FileOutputStream(fileName);
-      final PrintStream printStream = new PrintStream(outputStream, true, StandardCharsets.UTF_8.name());
-      printStream.print(content);
-      printStream.close();
-    } catch (FileNotFoundException | UnsupportedEncodingException ex) {
-      ex.printStackTrace();
+    try (OutputStream os = new FileOutputStream(fileName);
+      PrintStream ps = new PrintStream(os, true, StandardCharsets.UTF_8.name())) {
+      ps.print(content);
+    } catch (IOException e) {
+      throw new IllegalStateException(e);
     }
   }
 }

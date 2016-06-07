@@ -1,6 +1,16 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 1.0.5, ??-06-2016
+* Support for Native objects embedded as direct nodes inside the core
+  model, i.e. `"native": { "request": { "ver": "1", ... } }`, similar
+  for response's `adm` field.  This is an extension of the OpenRTB spec,
+  but it's now clearly allowed by the standard and increasingly popular.
+  Some exchanges may use alternate names for the `request` and `adm`
+  fields, and this core lib can't have this kind of exchange-specific
+  behavior, but now it should be easy to support on top of the library.
+  Thanks @bundeskanzler4711 for this contribution!
+
 ## Version 1.0.4, 16-05-2016
 * Fixed native response's `Video.vasttag` to scalar value.
 * Several documentation updates in the openrtb protobuf.

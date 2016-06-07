@@ -58,14 +58,15 @@ public class OpenRtbJsonFactory {
       @Nullable JsonFactory jsonFactory,
       boolean strict,
       boolean rootNativeField,
+      boolean forceNativeAsObject,
       @Nullable SetMultimap<String, OpenRtbJsonExtReader<?>> extReaders,
       @Nullable Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters) {
     this.jsonFactory = jsonFactory;
     this.strict = strict;
     this.rootNativeField = rootNativeField;
+    this.forceNativeAsObject = forceNativeAsObject;
     this.extReaders = extReaders == null ? LinkedHashMultimap.create() : extReaders;
     this.extWriters = extWriters == null ? new LinkedHashMap<>() : extWriters;
-    this.forceNativeAsObject = false;
   }
 
   /**
@@ -78,18 +79,18 @@ public class OpenRtbJsonFactory {
     this.jsonFactory = config.getJsonFactory();
     this.strict = config.strict;
     this.rootNativeField = config.rootNativeField;
+    this.forceNativeAsObject = config.forceNativeAsObject;
     this.extReaders = ImmutableSetMultimap.copyOf(config.extReaders);
     this.extWriters = ImmutableMap.copyOf(Maps.transformValues(config.extWriters,
         (Map<String, Map<String, OpenRtbJsonExtWriter<?>>> map) ->
             ImmutableMap.copyOf(Maps.transformValues(map, map2 -> ImmutableMap.copyOf(map2)))));
-    this.forceNativeAsObject = config.forceNativeAsObject;
   }
 
   /**
    * Creates a new factory with default configuration.
    */
   public static OpenRtbJsonFactory create() {
-    return new OpenRtbJsonFactory(null, false, false, null, null);
+    return new OpenRtbJsonFactory(null, false, false, false, null, null);
   }
 
   /**
