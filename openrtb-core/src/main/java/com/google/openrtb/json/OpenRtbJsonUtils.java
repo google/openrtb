@@ -16,7 +16,6 @@
 
 package com.google.openrtb.json;
 
-import com.google.openrtb.util.OpenRtbUtils;
 import com.google.protobuf.ProtocolMessageEnum;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -114,30 +113,6 @@ public class OpenRtbJsonUtils {
   }
 
   /**
-   * @deprecated Use {@link #peekStructStart(JsonParser)}
-   */
-  @Deprecated
-  public static JsonToken peekStruct(JsonParser par) throws IOException {
-    return peekStruct(par);
-  }
-
-  /**
-   * @deprecated Use {@link JsonParser#getValueAsDouble()}
-   */
-  @Deprecated
-  public static double getDoubleValue(JsonParser par) throws IOException {
-    return par.getValueAsDouble();
-  }
-
-  /**
-   * @deprecated Use {@link JsonParser#getValueAsBoolean()}
-   */
-  @Deprecated
-  public static boolean getIntBoolValue(JsonParser par) throws IOException {
-    return par.getValueAsBoolean();
-  }
-
-  /**
    * Writes a boolean as int, where false = 0 and true = 1.
    */
   public static void writeIntBoolField(String fieldName, boolean data, JsonGenerator gen)
@@ -176,12 +151,21 @@ public class OpenRtbJsonUtils {
   /**
    * Writes a long, using quotes only if it's too big (over 53-bit mantissa).
    */
-  protected static void writeLong(long data, JsonGenerator gen) throws IOException {
+  public static void writeLong(long data, JsonGenerator gen) throws IOException {
     if (data > MAX_JSON_INT || data < -MAX_JSON_INT) {
       gen.writeString(Long.toString(data));
     } else {
       gen.writeNumber(data);
     }
+  }
+
+  /**
+   * Writes a long, using quotes only if it's too big (over 53-bit mantissa).
+   */
+  public static void writeLongField(String fieldName, long data, JsonGenerator gen)
+      throws IOException {
+    gen.writeFieldName(fieldName);
+    writeLong(data, gen);
   }
 
   /**
@@ -219,24 +203,6 @@ public class OpenRtbJsonUtils {
       gen.writeArrayFieldStart(fieldName);
       for (ProtocolMessageEnum e : enums) {
         writeEnum(e, gen);
-      }
-      gen.writeEndArray();
-    }
-  }
-
-  /**
-   * @deprecated See {@link AbstractOpenRtbJsonWriter#writeContentCategories(String, List, JsonGenerator)}
-   */
-  @Deprecated
-  public static void writeContentCategories(
-      String fieldName, List<String> cats, JsonGenerator gen)
-      throws IOException {
-    if (!cats.isEmpty()) {
-      gen.writeArrayFieldStart(fieldName);
-      for (String cat : cats) {
-        if (OpenRtbUtils.categoryFromName(cat) != null) {
-          gen.writeString(cat);
-        }
       }
       gen.writeEndArray();
     }

@@ -354,8 +354,12 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
   protected void writeNativeFields(Native nativ, JsonGenerator gen) throws IOException {
     switch (nativ.getRequestOneofCase()) {
       case REQUEST_NATIVE:
-        gen.writeStringField(
-            "request", nativeWriter().writeNativeRequest(nativ.getRequestNative()));
+        gen.writeFieldName("request");
+        if (factory().isForceNativeAsObject()) {
+          nativeWriter().writeNativeRequest(nativ.getRequestNative(), gen);
+        } else {
+          gen.writeString(nativeWriter().writeNativeRequest(nativ.getRequestNative()));
+        }
         break;
       case REQUEST:
         gen.writeStringField("request", nativ.getRequest());
@@ -953,7 +957,12 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
         gen.writeStringField("adm", bid.getAdm());
         break;
       case ADM_NATIVE:
-        gen.writeStringField("adm", nativeWriter().writeNativeResponse(bid.getAdmNative()));
+        gen.writeFieldName("adm");
+        if (factory().isForceNativeAsObject()) {
+          nativeWriter().writeNativeResponse(bid.getAdmNative(), gen);
+        } else {
+          gen.writeString(nativeWriter().writeNativeResponse(bid.getAdmNative()));
+        }
         break;
       case ADMONEOF_NOT_SET:
         checkRequired(false);

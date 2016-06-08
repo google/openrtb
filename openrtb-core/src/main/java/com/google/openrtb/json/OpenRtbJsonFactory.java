@@ -51,6 +51,7 @@ public class OpenRtbJsonFactory {
   private JsonFactory jsonFactory;
   private boolean strict;
   private boolean rootNativeField;
+  private boolean forceNativeAsObject;
   private final SetMultimap<String, OpenRtbJsonExtReader<?>> extReaders;
   private final Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters;
 
@@ -58,11 +59,13 @@ public class OpenRtbJsonFactory {
       @Nullable JsonFactory jsonFactory,
       boolean strict,
       boolean rootNativeField,
+      boolean forceNativeAsObject,
       @Nullable SetMultimap<String, OpenRtbJsonExtReader<?>> extReaders,
       @Nullable Map<String, Map<String, Map<String, OpenRtbJsonExtWriter<?>>>> extWriters) {
     this.jsonFactory = jsonFactory;
     this.strict = strict;
     this.rootNativeField = rootNativeField;
+    this.forceNativeAsObject = forceNativeAsObject;
     this.extReaders = extReaders == null
         ? LinkedHashMultimap.<String, OpenRtbJsonExtReader<?>>create()
         : extReaders;
@@ -81,6 +84,7 @@ public class OpenRtbJsonFactory {
     this.jsonFactory = config.getJsonFactory();
     this.strict = config.strict;
     this.rootNativeField = config.rootNativeField;
+    this.forceNativeAsObject = config.forceNativeAsObject;
     this.extReaders = ImmutableSetMultimap.copyOf(config.extReaders);
     this.extWriters = ImmutableMap.copyOf(Maps.transformValues(config.extWriters, new Function<
         Map<String, Map<String, OpenRtbJsonExtWriter<?>>>,
@@ -100,7 +104,7 @@ public class OpenRtbJsonFactory {
    * Creates a new factory with default configuration.
    */
   public static OpenRtbJsonFactory create() {
-    return new OpenRtbJsonFactory(null, false, false, null, null);
+    return new OpenRtbJsonFactory(null, false, false, false, null, null);
   }
 
   /**
@@ -128,6 +132,14 @@ public class OpenRtbJsonFactory {
   }
 
   /**
+   * Sets object native field generation mode.
+   */
+  public final OpenRtbJsonFactory setForceNativeAsObject(boolean forceNativeAsObject) {
+    this.forceNativeAsObject = forceNativeAsObject;
+    return this;
+  }
+
+  /**
    * Returns {@code true} for strict mode, {@code false} lenient mode.
    */
   public final boolean isStrict() {
@@ -139,6 +151,13 @@ public class OpenRtbJsonFactory {
    */
   public final boolean isRootNativeField() {
     return rootNativeField;
+  }
+
+  /**
+   * Returns {@code true} for object native field mode, {@code false} if not.
+   */
+  public boolean isForceNativeAsObject() {
+    return forceNativeAsObject;
   }
 
   /**

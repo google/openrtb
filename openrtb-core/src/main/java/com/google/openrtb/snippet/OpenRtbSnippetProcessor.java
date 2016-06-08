@@ -49,7 +49,9 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
     this.extendedFields = extendedFields;
   }
 
-  @Deprecated
+  /**
+   * Creates a processor.
+   */
   public OpenRtbSnippetProcessor() {
     this(false);
   }

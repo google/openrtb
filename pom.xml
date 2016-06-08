@@ -54,7 +54,7 @@
     <gpg.skip>true</gpg.skip>
     <guavaVersion>19.0</guavaVersion>
     <!-- Stick to 2.6 for now; 2.7+ breaks SpringFramework and maybe other things. -->
-    <fasterxmlJacksonVersion>2.6.6</fasterxmlJacksonVersion>
+    <fasterxmlJacksonVersion>2.6.7</fasterxmlJacksonVersion>
     <injectVersion>1</injectVersion>
     <junitVersion>4.12</junitVersion>
     <metricsVersion>3.0.2</metricsVersion>
