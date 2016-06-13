@@ -1,7 +1,7 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
-## Version 1.0.5, ??-06-2016
+## Version 1.0.5, 13-06-2016
 * Support for Native objects embedded as direct nodes inside the core
   model, i.e. `"native": { "request": { "ver": "1", ... } }`, similar
   for response's `adm` field.  This is an extension of the OpenRTB spec,
