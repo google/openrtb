@@ -1,0 +1,36 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+defaultTasks 'jar'
+
+version = '1.0'
+
+sourceCompatibility = '1.8'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+repositories {
+  mavenCentral()
+}
+
+jar {
+  baseName = 'openrtb-core-protobuf-def'
+  from {
+    (configurations.runtime).collect {
+      it.isDirectory() ? it : zipTree(it)
+    }
+  }
+
+  manifest {
+    attributes 'Implementation-Title': 'openrtb-core-protobuf-def',
+               'Implementation-Version': version,
+    'Main-Class': 'com.google.openrtb.OpenRtb'
+  }
+}
+
+dependencies {
+  compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+  compile group: 'com.google.protobuf', name: 'protobuf-java', version: '3.0.0-beta-4'
+  compile group: 'com.google.api.grpc', name: 'grpc-core-proto', version: '0.0.5'
+
+  compile fileTree(dir: 'libs', include: ['*.jar'])
+}
