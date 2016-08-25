@@ -2015,11 +2015,13 @@ message NativeRequest {
   // The Layout ID of the native ad unit.
   // This field is not required, but it's highly recommended.
   // RECOMMENDED by the OpenRTB Native specification.
+  // @deprecated
   optional LayoutId layout = 2;
 
   // The Ad unit ID of the native ad unit. This corresponds to one of
   // IAB Core-6 native ad units.
   // RECOMMENDED by the OpenRTB Native specification.
+  // @deprecated
   optional AdUnitId adunit = 3;
 
   // The number of identical placements in this Layout.
@@ -2029,12 +2031,26 @@ message NativeRequest {
   // This is not the sequence number of the content in the stream.
   optional int32 seq = 5 [default = 0];
 
+  // The context in which the ad appears.
+  // See ContextTypeIDs for a list of supported context types
+  // RECOMMENDED by the OpenRTB Native specification.
+  optional ContextTypeId context = 6;
+
+  // A more detailed context in which the ad appears.
+  // See ContextSuType IDs for a list of supported context subtypes.
+  optional ContextSubTypeId contextsubtype = 7;
+
+  // The design/format/layout of the ad unit being offered.
+  // See PlacementTypeIDs for a list of supported placement types.
+  // RECOMMENDED by the OpenRTB Native specification.
+  optional PlacementTypeId plcmttype = 8;
+
   // Any bid must comply with the array of elements expressed by the Exchange.
   // REQUIRED by the OpenRTB Native specification: at least 1 element.
   // [AdX: BidRequest.AdSlot.native_ad_template[0]
   //     - AdX supports multiple templates, only the first will be mapped.
   //       Each field specified in the template is mapped to a separate Asset.]
-  repeated Asset assets = 6;
+  repeated Asset assets = 9;
 
   // Extensions.
   extensions 100 to 9999;
@@ -2064,6 +2080,51 @@ message NativeRequest {
     PROMOTED_LISTING = 3;
     IAB_IN_AD_NATIVE = 4;
     CUSTOM = 5;
+    // Exchange-specific values above 500.
+  }
+
+  // IAB: http://www.iab.com/wp-content/uploads/2016/03/OpenRTB-Native-Ads-Specification-1-1_2016.pdf
+  // The context in which the ad appears - what type of content is surrounding the ad on the
+  // page at a high level. This maps directly to the new Deep Dive on In-Feed Ad Units. This
+  // denotes the primary context, but does not imply other content may not exist on the
+  // page - for example it's expected that most content platforms have some social
+  // components, etc.
+  enum ContextTypeId {
+    CONTENT_CENTRIC = 1;
+    SOCIAL_CENTRIC = 2;
+    PRODUCT_LISTING = 3;
+    // Exchange-specific values above 500.
+  }
+
+  // IAB: http://www.iab.com/wp-content/uploads/2016/03/OpenRTB-Native-Ads-Specification-1-1_2016.pdf
+  // Next-level context in which the ad appears. Again this reflects the primary context, and
+  // does not imply no presence of other elements. For example, an article is likely to
+  // contain images but is still first and foremost an article. SubType should only be
+  // combined with the primary context type as indicated (ie for a context type of 1, only
+  // context subtypes that start with 1 are valid).
+  enum ContextSubTypeId {
+    MIXED = 10;
+    ARTICLE = 11;
+    VIDEO = 12;
+    AUDIO = 13;
+    IMAGE = 14;
+    USER_GENERATED = 15;
+    SOCIAL = 20;
+    EMAIL = 21;
+    CHAT = 22;
+    PRODUCT_SELLING = 30;
+    APP_STORE = 31;
+    PRODUCT_REVIEWS = 32;
+    // Exchange-specific values above 500.
+  }
+
+  // IAB: http://www.iab.com/wp-content/uploads/2016/03/OpenRTB-Native-Ads-Specification-1-1_2016.pdf
+  // The FORMAT of the ad you are purchasing, separate from the surrounding context
+  enum PlacementTypeId {
+    IN_FEED = 1;
+    ATOMIC_UNIT = 2;
+    OUTSIDE_OF_CONTENT = 3;
+    RECOMMENDATION = 4;
     // Exchange-specific values above 500.
   }
 
