@@ -20,48 +20,48 @@ import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
 
 import com.google.openrtb.OpenRtb;
+import com.google.openrtb.OpenRtb.APIFramework;
+import com.google.openrtb.OpenRtb.AdPosition;
+import com.google.openrtb.OpenRtb.AuctionType;
+import com.google.openrtb.OpenRtb.BannerAdType;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.App;
-import com.google.openrtb.OpenRtb.BidRequest.AuctionType;
 import com.google.openrtb.OpenRtb.BidRequest.Content;
-import com.google.openrtb.OpenRtb.BidRequest.Content.ContentContext;
-import com.google.openrtb.OpenRtb.BidRequest.Content.QAGMediaRating;
-import com.google.openrtb.OpenRtb.BidRequest.Content.VideoQuality;
 import com.google.openrtb.OpenRtb.BidRequest.Data;
 import com.google.openrtb.OpenRtb.BidRequest.Data.Segment;
 import com.google.openrtb.OpenRtb.BidRequest.Device;
-import com.google.openrtb.OpenRtb.BidRequest.Device.ConnectionType;
-import com.google.openrtb.OpenRtb.BidRequest.Device.DeviceType;
 import com.google.openrtb.OpenRtb.BidRequest.Geo;
-import com.google.openrtb.OpenRtb.BidRequest.Geo.LocationType;
 import com.google.openrtb.OpenRtb.BidRequest.Imp;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.APIFramework;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.AdPosition;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner.BannerAdType;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner.ExpandableDirection;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Native;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Pmp;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Pmp.Deal;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Video;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.CompanionAd;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.ContentDeliveryMethod;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VASTCompanionType;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VideoBidResponseProtocol;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VideoLinearity;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VideoPlaybackMethod;
 import com.google.openrtb.OpenRtb.BidRequest.Producer;
 import com.google.openrtb.OpenRtb.BidRequest.Publisher;
 import com.google.openrtb.OpenRtb.BidRequest.Regs;
 import com.google.openrtb.OpenRtb.BidRequest.Site;
 import com.google.openrtb.OpenRtb.BidRequest.User;
 import com.google.openrtb.OpenRtb.BidResponse;
-import com.google.openrtb.OpenRtb.BidResponse.NoBidReason;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
+import com.google.openrtb.OpenRtb.CompanionType;
+import com.google.openrtb.OpenRtb.ConnectionType;
+import com.google.openrtb.OpenRtb.ContentContext;
+import com.google.openrtb.OpenRtb.ContentDeliveryMethod;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
+import com.google.openrtb.OpenRtb.DeviceType;
+import com.google.openrtb.OpenRtb.ExpandableDirection;
+import com.google.openrtb.OpenRtb.LocationType;
 import com.google.openrtb.OpenRtb.NativeRequest;
 import com.google.openrtb.OpenRtb.NativeResponse;
+import com.google.openrtb.OpenRtb.NoBidReason;
+import com.google.openrtb.OpenRtb.PlaybackMethod;
+import com.google.openrtb.OpenRtb.ProductionQuality;
+import com.google.openrtb.OpenRtb.Protocol;
+import com.google.openrtb.OpenRtb.QAGMediaRating;
+import com.google.openrtb.OpenRtb.VideoLinearity;
 import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
 import com.google.openrtb.TestExt;
@@ -621,8 +621,8 @@ public class OpenRtbJsonTest {
                 .setLinearity(VideoLinearity.LINEAR)
                 .setMinduration(15)
                 .setMaxduration(60)
-                .setProtocol(VideoBidResponseProtocol.VAST_3_0)
-                .addProtocols(VideoBidResponseProtocol.VAST_2_0)
+                .setProtocol(Protocol.VAST_3_0)
+                .addProtocols(Protocol.VAST_2_0)
                 .setW(200)
                 .setH(50)
                 .setStartdelay(0)
@@ -632,7 +632,7 @@ public class OpenRtbJsonTest {
                 .setMinbitrate(1000)
                 .setMaxbitrate(2000)
                 .setBoxingallowed(false)
-                .addPlaybackmethod(VideoPlaybackMethod.CLICK_TO_PLAY)
+                .addPlaybackmethod(PlaybackMethod.CLICK_TO_PLAY)
                 .addDelivery(ContentDeliveryMethod.STREAMING)
                 .setPos(AdPosition.ABOVE_THE_FOLD)
                 .addCompanionad(Banner.newBuilder()
@@ -645,7 +645,7 @@ public class OpenRtbJsonTest {
                     .setW(110)
                     .setH(60)))
                 .addApi(APIFramework.VPAID_2)
-                .addCompaniontype(VASTCompanionType.HTML)
+                .addCompaniontype(CompanionType.HTML)
                 .setExtension(TestExt.testVideo, test1)))
         .addImp(Imp.newBuilder()
             .setId("imp3")
@@ -757,7 +757,7 @@ public class OpenRtbJsonTest {
             .setSeason("S4")
             .setUrl("http://who.com")
             .addCat("IAB10-2")
-            .setVideoquality(VideoQuality.PROFESSIONAL)
+            .setVideoquality(ProductionQuality.PROFESSIONAL)
             .setKeywords("sci-fi,aliens")
             .setContentrating("R")
             .setUserrating("Awesome!")

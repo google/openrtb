@@ -1,7 +1,20 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
-## Version 1.0.6, ??-08-2016
+## Version 1.1.0, ??-08-2016
+* Support for OpenRTB 2.4 & OpenRTB Native 1.1.
+  - This support needed source-breaking changes; several enums are now
+    used by new messages so their original scope was a problem, so now
+    ALL enums moved to the top-level scope. Existing source code will
+    only need changes in imports.
+  - Because of the previous change, a few enum names and enum value
+    names had to be renamed to avoid conflicts (protobuf requires unique
+    enum values for all enums of the same scope): `DeviceType.PHONE` ->
+    `HIGHEND_PHONE`; `AdUnitId.CUSTOM` -> `ADUNITID_CUSTOM`.
+  - The `Gender` enum was moved out of the proto, since the spec doesn't
+    use numeric values for this and the single-letter codes like `"M"`
+    are too terse for enumerated value names.  A new, regular Java enum
+    `Gender` was added as replacement, providing a better API.
 
 ## Version 1.0.5, 13-06-2016
 * Support for Native objects embedded as direct nodes inside the core

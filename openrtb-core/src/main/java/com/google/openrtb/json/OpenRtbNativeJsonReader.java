@@ -25,11 +25,11 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
 import com.google.common.io.CharSource;
 import com.google.common.io.Closeables;
+import com.google.openrtb.OpenRtb.AdUnitId;
+import com.google.openrtb.OpenRtb.DataAssetType;
+import com.google.openrtb.OpenRtb.ImageAssetType;
+import com.google.openrtb.OpenRtb.LayoutId;
 import com.google.openrtb.OpenRtb.NativeRequest;
-import com.google.openrtb.OpenRtb.NativeRequest.AdUnitId;
-import com.google.openrtb.OpenRtb.NativeRequest.Asset.Data.DataAssetType;
-import com.google.openrtb.OpenRtb.NativeRequest.Asset.Image.ImageAssetType;
-import com.google.openrtb.OpenRtb.NativeRequest.LayoutId;
 import com.google.openrtb.OpenRtb.NativeResponse;
 import com.google.openrtb.util.ProtoUtils;
 import com.google.protobuf.ByteString;
