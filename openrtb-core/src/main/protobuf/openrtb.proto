@@ -89,6 +89,7 @@ message BidRequest {
   // bid on this impression. IDs of seats and knowledge of the
   // buyer's customers to which they refer must be coordinated
   // between bidders and the exchange a priori.
+  // Omission implies no seat restrictions.
   repeated string wseat = 9;
 
   // Flag to indicate if Exchange can verify that the impressions offered
@@ -183,16 +184,16 @@ message BidRequest {
     //       1,000,000]
     optional double bidfloor = 8 [default = 0];
 
+    // Currency specified using ISO-4217 alpha codes. This may be different
+    // from bid currency returned by bidder if this is allowed by the exchange.
+    // [AdX: A single currency, obtained from the included billing_id]
+    optional string bidfloorcur = 9 [default = "USD"];
+
     // Indicates the type of browser opened upon clicking the
     // creative in an app, where 0 = embedded, 1 = native.
     // Note that the Safari View Controller in iOS 9.x devices is considered
     // a native browser for purposes of this attribute.
     optional int32 clickbrowser = 16;
-
-    // Currency specified using ISO-4217 alpha codes. This may be different
-    // from bid currency returned by bidder if this is allowed by the exchange.
-    // [AdX: A single currency, obtained from the included billing_id]
-    optional string bidfloorcur = 9 [default = "USD"];
 
     // Flag to indicate if the impression requires secure HTTPS URL creative
     // assets and markup, where 0 = non-secure, 1 = secure.  If omitted,
@@ -395,7 +396,7 @@ message BidRequest {
       //       0: PRE_ROLL
       //       1: GENERIC_MID_ROLL
       //       -1: GENERIC_POST_ROLL
-      //       Other values: videoad_start_delay / 1,000
+      //       Other values: videoad_start_delay / 1,000]
       optional int32 startdelay = 8;
 
       // Indicates if the player will allow the video to be skipped,
@@ -574,7 +575,7 @@ message BidRequest {
       // Place exchange extensions here.
     }
 
-    // OpenRTB 2.0: This object represents a native type impression.
+    // OpenRTB 2.3: This object represents a native type impression.
     // Native ad units are intended to blend seamlessly into the surrounding
     // content (e.g., a sponsored Twitter or Facebook post). As such, the
     // response must be well-structured to afford the publisher fine-grained
@@ -645,7 +646,7 @@ message BidRequest {
       // Extensions.
       extensions 100 to 9999;
 
-      // OpenRTB 2.0: This object constitutes a specific deal that was struck
+      // OpenRTB 2.2: This object constitutes a specific deal that was struck
       // a priori between a buyer and a seller. Its presence with the Pmp
       // collection indicates that this impression is available under the terms
       // of that deal. Refer to Section 7.2 for more details.
@@ -757,7 +758,7 @@ message BidRequest {
     extensions 100 to 9999;
   }
 
-  // OpenRTB 3.2.7: This object should be included if the ad supported content
+  // OpenRTB 2.0: This object should be included if the ad supported content
   // is a non-browser application (typically in mobile) as opposed to a website.
   // A bid request must not contain both an App and a Site object.
   // At a minimum, it is useful to provide an App ID or bundle,
@@ -985,19 +986,16 @@ message BidRequest {
   message Device {
     // Standard "Do Not Track" flag as set in the header by the browser,
     // where 0 = tracking is unrestricted, 1 = do not track.
-    // This field is not required, but it's highly recommended.
     // RECOMMENDED by the OpenRTB specification.
     // [AdX: Unsupported; See Cookie Guide, google_error=1:
     //       https://developers.google.com/ad-exchange/rtb/cookie-guide]
     optional bool dnt = 1;
 
     // Browser user agent string.
-    // This field is not required, but it's highly recommended.
     // RECOMMENDED by the OpenRTB specification.
     optional string ua = 2;
 
     // IPv4 address closest to device.
-    // This field is not required, but it's highly recommended.
     // RECOMMENDED by the OpenRTB specification.
     // [AdX: BidRequest.ip
     //     - AdX truncates to first 3 octets; OpenRTB is "X.X.X.0"]
@@ -1005,7 +1003,6 @@ message BidRequest {
 
     // Location of the device assumed to be the user's current location defined
     // by a Geo object (Section 3.2.12).
-    // This field is not required, but it's highly recommended.
     // RECOMMENDED by the OpenRTB specification.
     // [AdX: BidRequest]
     optional Geo geo = 4;
@@ -1213,8 +1210,8 @@ message BidRequest {
     optional string buyeruid = 2;
 
     // Year of birth as a 4-digit integer.
-    // [AdX: BidRequest.UserDemographic.age_high if present; if not,
-    //       BidRequest.UserDemographic.age_low]
+    // [AdX: BidRequest.UserDemographic.age_high if present, if not
+    //       BidRequest.UserDemographic.age_low; subtracted from current year]
     optional int32 yob = 3;
 
     // Gender as "M" male, "F" female, "O" Other. (Null indicates unknown)
@@ -1362,7 +1359,7 @@ message BidResponse {
 
     // 0 = impressions can be won individually; 1 = impressions must be won or
     // lost as a group.
-    optional bool group = 3;
+    optional bool group = 3 [default = false];
 
     // Extensions.
     extensions 100 to 9999;
@@ -1459,13 +1456,6 @@ message BidResponse {
       // Creative media rating per QAG guidelines.
       // see enum QAGMediaRating.
       optional int32 qagmediarating = 20;
-
-      // Note: Mopub OpenRTB non-compliant extension! This field can contain one
-      // of the following values depending on the type of creative: [{"VAST 2.0",
-      // "MRAID 1.0", "MRAID 2.0", "Image Ad", "HTML5", "JS"}].  Required for
-      // serving of Video or MRAID, preferred for all ad formats.
-      // TODO(momi): deprecate after mopub migration to 2.3 is over.
-      optional string crtype = 12;
 
       // Reference to the deal.id from the bid request if this bid pertains to a
       // private marketplace direct deal.
@@ -1673,7 +1663,7 @@ message NativeRequest {
 // which identifies an native response.
 message NativeResponse {
   // Version of the Native Markup version in use.
-  // // [AdX: "1.0" for OpenRTB 2.3; "1.1" for OpenRTB 2.4]
+  // [AdX: "1.0" for OpenRTB 2.3; "1.1" for OpenRTB 2.4]
   optional string ver = 1;
 
   // List of native ad's assets.
@@ -1852,7 +1842,7 @@ message NativeResponse {
 
 // ***** OpenRTB Core enums ****************************************************
 
-// OpenRTB 5.1: The following list represents the IAB's contextual taxonomy for
+// OpenRTB 2.0: The following list represents the IAB's contextual taxonomy for
 // categorization. Standard IDs have been adopted to easily support the
 // communication of primary and secondary categories for various objects.
 //
@@ -1860,6 +1850,7 @@ message NativeResponse {
 // Guidelines (QAG). Practitioners should keep in sync with updates to the
 // QAG values as published on IAB.net.
 enum ContentCategory {
+  UNDEFINED = 0;   // This value is not part of the specification.
   IAB1 = 1;        // Arts & Entertainment
   IAB1_1 = 2;      // Books & Literature
   IAB1_2 = 3;      // Celebrity Fan/Gossip
@@ -2082,7 +2073,7 @@ enum ContentCategory {
   IAB14_6 = 220;   // Teens
   IAB14_7 = 221;   // Weddings
   IAB14_8 = 222;   // Ethnic Specific
-  IAB15  =  223;   // Science
+  IAB15 = 223;     // Science
   IAB15_1 = 224;   // Astrology
   IAB15_2 = 225;   // Biology
   IAB15_3 = 226;   // Chemistry
@@ -2264,7 +2255,7 @@ enum AuctionType {
   FIXED_PRICE = 3;
 }
 
-// OpenRTB 5.2: types of ads that can be accepted by the exchange unless
+// OpenRTB 2.0: types of ads that can be accepted by the exchange unless
 // restricted by publisher site settings.
 enum BannerAdType {
   // "Usually mobile".
@@ -2277,7 +2268,7 @@ enum BannerAdType {
   IFRAME = 4;
 }
 
-// OpenRTB 5.3: The following table specifies a standard list of creative
+// OpenRTB 2.0: The following table specifies a standard list of creative
 // attributes that can describe an ad being served or serve as restrictions
 // of thereof.
 enum CreativeAttribute {
@@ -2308,9 +2299,11 @@ enum CreativeAttribute {
   WINDOWS_DIALOG_OR_ALERT_STYLE = 14;
   HAS_AUDIO_ON_OFF_BUTTON = 15;
   AD_CAN_BE_SKIPPED = 16;
+
+  FLASH = 17;
 }
 
-// OpenRTB 5.6: The following table is a list of API frameworks supported
+// OpenRTB 2.0: The following table is a list of API frameworks supported
 // by the publisher.  Note that MRAID-1 is a subset of MRAID-2.
 // In OpenRTB 2.1 and prior, value "3" was "MRAID".  However, not all
 // MRAID capable APIs understand MRAID-2 features and as such the only
@@ -2330,9 +2323,9 @@ enum APIFramework {
 
   // [AdX: attribute 32/MRAID (OpenRTB 2.3+)]
   MRAID_2 = 5;
-}
+};
 
-// OpenRTB 5.4: The following table specifies the position of the ad as a
+// OpenRTB 2.0: The following table specifies the position of the ad as a
 // relative measure of visibility or prominence.
 //
 // This OpenRTB table has values derived from the IAB Quality Assurance
@@ -2367,7 +2360,7 @@ enum AdPosition {
   AD_POSITION_FULLSCREEN = 7;
 }
 
-// OpenRTB 5.7: The following table indicates the options for video
+// OpenRTB 2.0: The following table indicates the options for video
 // linearity. "In-stream" or "linear" video refers to pre-roll, post-roll,
 // or mid-roll video ads where the user is forced to watch ad in order to
 // see the video content. "Overlay" or "non-linear" refer to ads that are
@@ -2403,8 +2396,7 @@ enum Protocol {
   DAAST_1_0_WRAPPER = 10;
 }
 
-// OpenRTB 2.0: The following table lists the various
-// video playback methods.
+// OpenRTB 2.0: The following table lists the various playback methods.
 enum PlaybackMethod {
   // [AdX: VideoPlaybackMethod.AUTO_PLAY_SOUND_ON]
   AUTO_PLAY_SOUND_ON = 1;
@@ -2418,7 +2410,7 @@ enum PlaybackMethod {
   MOUSE_OVER = 4;
 }
 
-// OpenRTB 5.10: The following table lists the various options for the
+// OpenRTB 2.0: The following table lists the various options for the
 // audio/video start delay.  If the start delay value is greater than 0,
 // then the position is mid-roll and the value indicates the start delay.
 enum StartDelay {
@@ -2427,7 +2419,7 @@ enum StartDelay {
   GENERIC_POST_ROLL = -2;
 }
 
-// OpenRTB 5.18: The following table lists the various options for the
+// OpenRTB 2.0: The following table lists the various options for the
 // type of device connectivity.
 enum ConnectionType {
   CONNECTION_UNKNOWN = 0;
@@ -2439,7 +2431,7 @@ enum ConnectionType {
   CELL_4G = 6;
 }
 
-// OpenRTB 5.5: The following table lists the directions in which an
+// OpenRTB 2.0: The following table lists the directions in which an
 // expandable ad may expand, given the positioning of the ad unit on the
 // page and constraints imposed by the content.
 enum ExpandableDirection {
@@ -2458,14 +2450,14 @@ enum ExpandableDirection {
   EXPANDABLE_FULLSCREEN = 5;
 }
 
-// OpenRTB 5.13: The following table lists the various options for the
+// OpenRTB 2.0: The following table lists the various options for the
 // delivery of video content.
 enum ContentDeliveryMethod {
   STREAMING = 1;
   PROGRESSIVE = 2;
 }
 
-// OpenRTB 5.14: The following table lists the various options for
+// OpenRTB 2.0: The following table lists the various options for
 // indicating the type of content in which the impression will appear.
 //
 // This OpenRTB table has values derived from the IAB Quality Assurance
@@ -2481,7 +2473,7 @@ enum ContentContext {
   CONTEXT_UNKNOWN = 7;
 }
 
-// OpenRTB 5.11: The following table lists the options for content quality.
+// OpenRTB 2.0: The following table lists the options for content quality.
 // These values are defined by the IAB -
 // http://www.iab.net/media/file/long-form-video-final.pdf.
 enum ProductionQuality {
@@ -2491,7 +2483,7 @@ enum ProductionQuality {
   USER_GENERATED = 3;
 }
 
-// OpenRTB 5.16: The following table lists the options to indicate how the
+// OpenRTB 2.0: The following table lists the options to indicate how the
 // geographic information was determined.
 enum LocationType {
   GPS_LOCATION = 1;
@@ -2499,7 +2491,7 @@ enum LocationType {
   USER_PROVIDED = 3;
 }
 
-// The following table lists the services and/or vendors used for
+// OpenRTB 2.4: The following table lists the services and/or vendors used for
 // resolving IP addresses to geolocations.
 enum LocationService {
   IP2LOCATION = 1;
@@ -2508,7 +2500,7 @@ enum LocationService {
   NETAQUITY = 4;
 }
 
-// OpenRTB 5.17: The following table lists the type of device from which the
+// OpenRTB 2.0: The following table lists the type of device from which the
 // impression originated.
 //
 // OpenRTB version 2.2 of the specification added distinct values for Mobile
@@ -2547,7 +2539,7 @@ enum DeviceType {
   SET_TOP_BOX = 7;
 }
 
-// OpenRTB 5.12: The following table lists the options for the
+// OpenRTB 2.1: The following table lists the options for the
 // video quality. These values are defined by the IAB -
 // http://www.iab.net/media/file/long-form-video-final.pdf.
 enum CompanionType {
@@ -2560,7 +2552,7 @@ enum CompanionType {
   COMPANION_IFRAME = 3;
 }
 
-// OpenRTB 5.15: The following table lists the media ratings used in
+// OpenRTB 2.1: The following table lists the media ratings used in
 // describing content based on the QAG categorization.
 // Refer to http://www.iab.net/ne_guidelines for more information.
 enum QAGMediaRating {
@@ -2569,7 +2561,7 @@ enum QAGMediaRating {
   MATURE = 3;
 }
 
-// OpenRTB 5.19: The following table lists the options for a bidder to signal
+// OpenRTB 2.2: The following table lists the options for a bidder to signal
 // the exchange as to why it did not offer a bid for the impression.
 enum NoBidReason {
   UNKNOWN_ERROR = 0;
@@ -2583,15 +2575,16 @@ enum NoBidReason {
   UNMATCHED_USER = 8;
 }
 
-// The following table lists the types of feeds, typically for audio.
+// OpenRTB 2.4: The following table lists the types of feeds,
+// typically for audio.
 enum FeedType {
   MUSIC_SERVICE = 1;
   BROADCAST = 2;
   PODCAST = 3;
 }
 
-// The following table lists the types of volume normalization modes,
-// typically for audio.
+// OpenRTB 2.4: The following table lists the types of volume normalization
+// modes, typically for audio.
 enum VolumeNormalizationMode {
   NONE = 0;
   AVERAGE_VOLUME = 1;
@@ -2602,8 +2595,8 @@ enum VolumeNormalizationMode {
 
 // ***** OpenRTB Native enums **************************************************
 
-// OpenRTB Native 1.0: Core layouts. An implementing exchange may not support
-// all asset variants or introduce new ones unique to that system.
+// OpenRTB Native 1.0: Core layouts. An implementing exchange may not
+// support all asset variants or introduce new ones unique to that system.
 // To be deprecated.
 enum LayoutId {
   CONTENT_WALL = 1;
@@ -2617,11 +2610,11 @@ enum LayoutId {
 }
 
 // OpenRTB Native 1.0: Below is a list of the core ad unit ids described by
-// IAB: http://www.iab.net/media/file/IABNativeAdvertisingPlaybook120413.pdf.
+// IAB: http://www.iab.net/media/file/IABNativeAdvertisingPlaybook120413.pdf
 // In feed unit is essentially a layout, it has been removed from the list.
-// The in feed units can be identified via the layout parameter on the
-// request. An implementing exchange may not support all asset variants or
-// introduce new ones unique to that system.
+// In feed units can be identified via the layout parameter on the request.
+// An implementing exchange may not support all asset variants or introduce
+// new ones unique to that system.
 // To be deprecated.
 enum AdUnitId {
   PAID_SEARCH_UNIT = 1;
@@ -2690,7 +2683,7 @@ enum PlacementType {
   RECOMMENDATION = 4;
 }
 
-// OpenRTB Native 7.3: Common asset element types of native advertising.
+// OpenRTB Native 1.0: Common asset element types of native advertising.
 // This list is non-exhaustive and intended to be extended by the buyers
 // and sellers as the format evolves. An implementing exchange may not
 // support all asset variants or introduce new ones unique to that system.
@@ -2717,6 +2710,7 @@ enum DataAssetType {
   LIKES = 4;
 
   // Number downloads/installs of this product.
+  // Format: Number formatted as string.
   DOWNLOADS = 5;
 
   // Price for product / app / in-app purchase.
@@ -2757,10 +2751,9 @@ enum DataAssetType {
   // Exchange-specific values above 500.
 }
 
-// OpenRTB Native 1.0: Common image asset element types of native
-// advertising at the time of writing this spec. This list is
-// non-exhaustive and intended to be extended by the buyers and sellers
-// as the format evolves.
+// OpenRTB Native 1.0: Common image asset element types of native advertising
+// at the time of writing this spec. This list is non-exhaustive and intended
+// to be extended by the buyers and sellers as the format evolves.
 enum ImageAssetType {
   // Icon image.
   // Max height: at least 50; Aspect ratio: 1:1.
