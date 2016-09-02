@@ -53,7 +53,7 @@
     <findBugsJsr305Version>3.0.1</findBugsJsr305Version>
     <gpg.skip>true</gpg.skip>
     <guavaVersion>19.0</guavaVersion>
-    <fasterxmlJacksonVersion>2.8.1</fasterxmlJacksonVersion>
+    <fasterxmlJacksonVersion>2.8.2</fasterxmlJacksonVersion>
     <injectVersion>1</injectVersion>
     <junitVersion>4.12</junitVersion>
     <metricsVersion>3.0.2</metricsVersion>

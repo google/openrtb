@@ -193,7 +193,7 @@ message BidRequest {
     // creative in an app, where 0 = embedded, 1 = native.
     // Note that the Safari View Controller in iOS 9.x devices is considered
     // a native browser for purposes of this attribute.
-    optional int32 clickbrowser = 16;
+    optional bool clickbrowser = 16;
 
     // Flag to indicate if the impression requires secure HTTPS URL creative
     // assets and markup, where 0 = non-secure, 1 = secure.  If omitted,
