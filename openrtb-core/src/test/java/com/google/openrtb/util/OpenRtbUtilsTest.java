@@ -24,7 +24,6 @@ import com.google.openrtb.OpenRtb.BidRequest.Imp;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Native;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Video;
-import com.google.openrtb.OpenRtb.BidRequest.User.Gender;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
@@ -49,13 +48,6 @@ public class OpenRtbUtilsTest {
     assertThat(OpenRtbUtils.categoryToJsonName("IAB10-1")).isEqualTo("IAB10-1");
     assertThat(OpenRtbUtils.categoryToJsonName("IAB10_1")).isEqualTo("IAB10-1");
     assertThat(OpenRtbUtils.categoryToJsonName(ContentCategory.IAB10_1)).isEqualTo("IAB10-1");
-  }
-
-  @Test
-  public void testGenderUtils() {
-    assertThat(OpenRtbUtils.genderFromName("M")).isSameAs(Gender.MALE);
-    assertThat(OpenRtbUtils.genderFromName("MALE")).isSameAs(Gender.MALE);
-    assertThat(OpenRtbUtils.genderToJsonName(Gender.MALE)).isEqualTo("M");
   }
 
   @Test

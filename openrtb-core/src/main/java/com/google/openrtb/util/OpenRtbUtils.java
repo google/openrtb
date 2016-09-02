@@ -22,10 +22,10 @@ import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.openrtb.Gender;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.Imp;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
-import com.google.openrtb.OpenRtb.BidRequest.User.Gender;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
@@ -64,19 +64,6 @@ public final class OpenRtbUtils {
 
   private static final ImmutableMap<Object, String> CAT_TO_JSON;
   private static final ImmutableMap<String, ContentCategory> NAME_TO_CAT;
-  private static final ImmutableMap<String, Gender> NAME_TO_GENDER =
-      ImmutableMap.<String, Gender>builder()
-          .put("M", Gender.MALE)
-          .put(Gender.MALE.name(), Gender.MALE)
-          .put("F", Gender.FEMALE)
-          .put(Gender.FEMALE.name(), Gender.FEMALE)
-          .put("O", Gender.OTHER)
-          .put(Gender.OTHER.name(), Gender.OTHER)
-          .build();
-  private static final ImmutableMap<Gender, String> GENDER_TO_JSON = ImmutableMap.of(
-      Gender.MALE, "M",
-      Gender.FEMALE, "F",
-      Gender.OTHER, "O");
 
   static {
     ImmutableMap.Builder<Object, String> catToJson = ImmutableMap.builder();
@@ -97,16 +84,20 @@ public final class OpenRtbUtils {
 
   /**
    * Get a {@link Gender} from its name (either Java or JSON name).
+   * @deprecated
    */
+  @Deprecated
   @Nullable public static Gender genderFromName(@Nullable String genderName) {
-    return NAME_TO_GENDER.get(genderName);
+    return Gender.forCode(genderName);
   }
 
   /**
    * Get a {@link Gender}'s JSON name, from its Java name.
+   * @deprecated
    */
+  @Deprecated
   @Nullable public static String genderToJsonName(@Nullable Gender gender) {
-    return GENDER_TO_JSON.get(gender);
+    return gender.code();
   }
 
   /**

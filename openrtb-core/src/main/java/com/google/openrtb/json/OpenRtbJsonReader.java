@@ -26,47 +26,47 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
 import com.google.common.io.CharSource;
 import com.google.common.io.Closeables;
+import com.google.openrtb.Gender;
+import com.google.openrtb.OpenRtb.APIFramework;
+import com.google.openrtb.OpenRtb.AdPosition;
+import com.google.openrtb.OpenRtb.AuctionType;
+import com.google.openrtb.OpenRtb.BannerAdType;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.App;
-import com.google.openrtb.OpenRtb.BidRequest.AuctionType;
 import com.google.openrtb.OpenRtb.BidRequest.Content;
-import com.google.openrtb.OpenRtb.BidRequest.Content.ContentContext;
-import com.google.openrtb.OpenRtb.BidRequest.Content.QAGMediaRating;
-import com.google.openrtb.OpenRtb.BidRequest.Content.VideoQuality;
 import com.google.openrtb.OpenRtb.BidRequest.Data;
 import com.google.openrtb.OpenRtb.BidRequest.Data.Segment;
 import com.google.openrtb.OpenRtb.BidRequest.Device;
-import com.google.openrtb.OpenRtb.BidRequest.Device.ConnectionType;
-import com.google.openrtb.OpenRtb.BidRequest.Device.DeviceType;
 import com.google.openrtb.OpenRtb.BidRequest.Geo;
-import com.google.openrtb.OpenRtb.BidRequest.Geo.LocationType;
 import com.google.openrtb.OpenRtb.BidRequest.Imp;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.APIFramework;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.AdPosition;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner.BannerAdType;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner.ExpandableDirection;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Native;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Pmp;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Pmp.Deal;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Video;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.CompanionAd;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.ContentDeliveryMethod;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VASTCompanionType;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VideoBidResponseProtocol;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VideoLinearity;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.VideoPlaybackMethod;
 import com.google.openrtb.OpenRtb.BidRequest.Producer;
 import com.google.openrtb.OpenRtb.BidRequest.Publisher;
 import com.google.openrtb.OpenRtb.BidRequest.Regs;
 import com.google.openrtb.OpenRtb.BidRequest.Site;
 import com.google.openrtb.OpenRtb.BidRequest.User;
 import com.google.openrtb.OpenRtb.BidResponse;
-import com.google.openrtb.OpenRtb.BidResponse.NoBidReason;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
+import com.google.openrtb.OpenRtb.CompanionType;
+import com.google.openrtb.OpenRtb.ConnectionType;
+import com.google.openrtb.OpenRtb.ContentContext;
+import com.google.openrtb.OpenRtb.ContentDeliveryMethod;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
-import com.google.openrtb.util.OpenRtbUtils;
+import com.google.openrtb.OpenRtb.DeviceType;
+import com.google.openrtb.OpenRtb.ExpandableDirection;
+import com.google.openrtb.OpenRtb.LocationType;
+import com.google.openrtb.OpenRtb.NoBidReason;
+import com.google.openrtb.OpenRtb.PlaybackMethod;
+import com.google.openrtb.OpenRtb.ProductionQuality;
+import com.google.openrtb.OpenRtb.Protocol;
+import com.google.openrtb.OpenRtb.QAGMediaRating;
+import com.google.openrtb.OpenRtb.VideoLinearity;
 import com.google.openrtb.util.ProtoUtils;
 import com.google.protobuf.ByteString;
 
@@ -438,7 +438,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         video.setMaxduration(par.getIntValue());
         break;
       case "protocol": {
-          VideoBidResponseProtocol value = VideoBidResponseProtocol.valueOf(par.getIntValue());
+          Protocol value = Protocol.valueOf(par.getIntValue());
           if (checkEnum(value)) {
             video.setProtocol(value);
           }
@@ -446,7 +446,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "protocols":
         for (startArray(par); endArray(par); par.nextToken()) {
-          VideoBidResponseProtocol value = VideoBidResponseProtocol.valueOf(par.getIntValue());
+          Protocol value = Protocol.valueOf(par.getIntValue());
           if (checkEnum(value)) {
             video.addProtocols(value);
           }
@@ -493,7 +493,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "playbackmethod":
         for (startArray(par); endArray(par); par.nextToken()) {
-          VideoPlaybackMethod value = VideoPlaybackMethod.valueOf(par.getIntValue());
+          PlaybackMethod value = PlaybackMethod.valueOf(par.getIntValue());
           if (checkEnum(value)) {
             video.addPlaybackmethod(value);
           }
@@ -533,7 +533,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "companiontype":
         for (startArray(par); endArray(par); par.nextToken()) {
-          VASTCompanionType value = VASTCompanionType.valueOf(par.getIntValue());
+          CompanionType value = CompanionType.valueOf(par.getIntValue());
           if (checkEnum(value)) {
             video.addCompaniontype(value);
           }
@@ -851,7 +851,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         }
         break;
       case "videoquality": {
-          VideoQuality value = VideoQuality.valueOf(par.getIntValue());
+          ProductionQuality value = ProductionQuality.valueOf(par.getIntValue());
           if (checkEnum(value)) {
             content.setVideoquality(value);
           }
@@ -1165,7 +1165,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "gender": {
         String gender = par.getText();
-        if (OpenRtbUtils.genderFromName(gender) != null) {
+        if (Gender.forCode(gender) != null) {
           user.setGender(gender);
         }
         break;

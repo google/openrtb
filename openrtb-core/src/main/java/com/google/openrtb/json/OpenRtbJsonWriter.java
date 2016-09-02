@@ -20,6 +20,7 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.writeEnums;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeIntBoolField;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeStrings;
 
+import com.google.openrtb.Gender;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.App;
 import com.google.openrtb.OpenRtb.BidRequest.Content;
@@ -42,7 +43,6 @@ import com.google.openrtb.OpenRtb.BidRequest.User;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
-import com.google.openrtb.util.OpenRtbUtils;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -770,7 +770,7 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     if (user.hasYob()) {
       gen.writeNumberField("yob", user.getYob());
     }
-    if (user.hasGender() && OpenRtbUtils.genderFromName(user.getGender()) != null) {
+    if (user.hasGender() && Gender.forCode(user.getGender()) != null) {
       gen.writeStringField("gender", user.getGender());
     }
     if (user.hasKeywords()) {
