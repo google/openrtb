@@ -22,9 +22,7 @@ import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.BidOrBuilder;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBidOrBuilder;
-
 import java.util.List;
-
 import javax.inject.Singleton;
 
 /**

@@ -22,14 +22,12 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.endObject;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
-import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
-import com.google.protobuf.GeneratedMessage.GeneratedExtension;
-import com.google.protobuf.Message;
-
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-
+import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
+import com.google.protobuf.GeneratedMessage.GeneratedExtension;
+import com.google.protobuf.Message;
 import java.io.IOException;
 import java.util.List;
 

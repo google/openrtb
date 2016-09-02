@@ -18,7 +18,6 @@ package com.google.openrtb.mapper;
 
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidResponse;
-
 import javax.annotation.Nullable;
 
 /**

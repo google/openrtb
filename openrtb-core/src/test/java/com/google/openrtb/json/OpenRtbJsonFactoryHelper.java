@@ -1,11 +1,9 @@
 package com.google.openrtb.json;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import com.google.openrtb.OpenRtb;
 import com.google.openrtb.Test;
 import com.google.openrtb.TestExt;
-
-import com.fasterxml.jackson.core.JsonFactory;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;

@@ -19,12 +19,10 @@ package com.google.openrtb.json;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeIntBoolField;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeStrings;
 
-import com.google.openrtb.OpenRtb.NativeRequest;
-import com.google.openrtb.OpenRtb.NativeResponse;
-
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
-
+import com.google.openrtb.OpenRtb.NativeRequest;
+import com.google.openrtb.OpenRtb.NativeResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;

@@ -19,6 +19,7 @@ package com.google.openrtb.json;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import com.google.openrtb.OpenRtb.AdUnitId;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.DataAssetType;
@@ -31,14 +32,10 @@ import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
 import com.google.openrtb.TestExt;
 import com.google.openrtb.TestNExt;
-
-import com.fasterxml.jackson.core.JsonFactory;
-
+import java.io.IOException;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
 
 /**
  * Tests for {@link OpenRtbJsonFactory},

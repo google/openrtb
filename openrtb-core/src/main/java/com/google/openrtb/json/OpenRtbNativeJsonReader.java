@@ -23,6 +23,8 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.peekToken;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.google.common.io.CharSource;
 import com.google.common.io.Closeables;
 import com.google.openrtb.OpenRtb.AdUnitId;
@@ -33,10 +35,6 @@ import com.google.openrtb.OpenRtb.NativeRequest;
 import com.google.openrtb.OpenRtb.NativeResponse;
 import com.google.openrtb.util.ProtoUtils;
 import com.google.protobuf.ByteString;
-
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
