@@ -19,6 +19,10 @@ class OpenRtbJsonFactoryHelper {
   static final Test.Test1 test1 = Test.Test1.newBuilder().setTest1("data1").build();
   static final Test.Test2 test2 = Test.Test2.newBuilder().setTest2("data2").build();
 
+  static OpenRtbJsonFactory newJsonFactory() {
+    return newJsonFactory(false, false);
+  }
+
   static OpenRtbJsonFactory newJsonFactory(boolean isRootNative, boolean isNativeObject) {
     return OpenRtbJsonFactory.create()
         .setRootNativeField(isRootNative)
@@ -47,6 +51,8 @@ class OpenRtbJsonFactoryHelper {
             OpenRtb.BidRequest.Imp.Pmp.Deal.Builder.class)
         .register(new Test1Reader<>(TestExt.testVideo),
             OpenRtb.BidRequest.Imp.Video.Builder.class)
+        .register(new Test1Reader<>(TestExt.testAudio),
+            OpenRtb.BidRequest.Imp.Audio.Builder.class)
         .register(new Test1Reader<>(TestExt.testRegs), OpenRtb.BidRequest.Regs.Builder.class)
         .register(new Test1Reader<>(TestExt.testSite), OpenRtb.BidRequest.Site.Builder.class)
         .register(new Test1Reader<>(TestExt.testUser), OpenRtb.BidRequest.User.Builder.class)
@@ -82,6 +88,7 @@ class OpenRtbJsonFactoryHelper {
         .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Imp.class)
         .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Imp.Banner.class)
         .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Imp.Video.class)
+        .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Imp.Audio.class)
         .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Imp.Native.class)
         .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Imp.Pmp.class)
         .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Imp.Pmp.Deal.class)

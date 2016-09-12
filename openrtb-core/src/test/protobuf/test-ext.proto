@@ -53,6 +53,9 @@ extend com.google.openrtb.BidRequest.Imp.Banner {
 extend com.google.openrtb.BidRequest.Imp.Video {
   optional Test1 testVideo = 110;
 }
+extend com.google.openrtb.BidRequest.Imp.Audio {
+  optional Test1 testAudio = 110;
+}
 extend com.google.openrtb.BidRequest.Imp.Native {
   optional Test1 testNative = 110;
 }
