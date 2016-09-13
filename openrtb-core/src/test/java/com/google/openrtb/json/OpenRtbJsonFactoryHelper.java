@@ -1,9 +1,31 @@
+/*
+ * Copyright 2016 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.google.openrtb.json;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.google.openrtb.OpenRtb;
+import com.google.openrtb.OpenRtb.BidRequest;
+import com.google.openrtb.OpenRtb.NativeRequest;
+import com.google.openrtb.OpenRtb.NativeResponse;
 import com.google.openrtb.Test;
+import com.google.openrtb.Test.Test1;
+import com.google.openrtb.Test.Test2;
 import com.google.openrtb.TestExt;
+import com.google.openrtb.TestNExt;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +35,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 /**
- * Test helper class, to be used for generating and comparing JSON test data.
+ * Utilities for JSON tests.
  */
 class OpenRtbJsonFactoryHelper {
   static final Test.Test1 test1 = Test.Test1.newBuilder().setTest1("data1").build();
@@ -24,11 +46,20 @@ class OpenRtbJsonFactoryHelper {
   }
 
   static OpenRtbJsonFactory newJsonFactory(boolean isRootNative, boolean isNativeObject) {
-    return OpenRtbJsonFactory.create()
+    OpenRtbJsonFactory factory = OpenRtbJsonFactory.create()
         .setRootNativeField(isRootNative)
         .setForceNativeAsObject(isNativeObject)
-        .setJsonFactory(new JsonFactory())
-        // BidRequest Readers
+        .setJsonFactory(new JsonFactory());
+    registerBidRequestExt(factory);
+    registerBidResponseExt(factory);
+    registerNativeRequestExt(factory);
+    registerNativeResponseExt(factory);
+    return factory;
+  }
+
+  static OpenRtbJsonFactory registerBidRequestExt(OpenRtbJsonFactory factory) {
+    return factory
+        // Readers
         .register(new Test1Reader<>(TestExt.testRequest1), OpenRtb.BidRequest.Builder.class)
         .register(new Test2Reader<>(TestExt.testRequest2, "test2ext"),
             OpenRtb.BidRequest.Builder.class)
@@ -59,20 +90,7 @@ class OpenRtbJsonFactoryHelper {
         .register(new Test1Reader<>(TestExt.testData), OpenRtb.BidRequest.Data.Builder.class)
         .register(new Test1Reader<>(TestExt.testSegment),
             OpenRtb.BidRequest.Data.Segment.Builder.class)
-        // BidResponse Readers
-        .register(new Test1Reader<>(TestExt.testResponse1), OpenRtb.BidResponse.Builder.class)
-        .register(new Test2Reader<>(TestExt.testResponse2, "test2arr"),
-            OpenRtb.BidResponse.Builder.class)
-        .register(new Test2Reader<>(TestExt.testResponse2A, "test2a"),
-            OpenRtb.BidResponse.Builder.class)
-        .register(new Test2Reader<>(TestExt.testResponse2B, "test2b"),
-            OpenRtb.BidResponse.Builder.class)
-        .register(new Test3Reader(), OpenRtb.BidResponse.Builder.class)
-        .register(new Test4Reader(), OpenRtb.BidResponse.Builder.class)
-        .register(new Test1Reader<>(TestExt.testSeat), OpenRtb.BidResponse.SeatBid.Builder.class)
-        .register(new Test1Reader<>(TestExt.testBid),
-            OpenRtb.BidResponse.SeatBid.Bid.Builder.class)
-        // BidRequest Writers
+        // Writers
         .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.class)
         .register(new Test2Writer("test2ext"), Test.Test2.class, OpenRtb.BidRequest.class)
         .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.App.class)
@@ -94,8 +112,25 @@ class OpenRtbJsonFactoryHelper {
         .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Imp.Pmp.Deal.class)
         .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidRequest.Regs.class)
         .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidResponse.SeatBid.class)
-        .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidResponse.SeatBid.Bid.class)
-        // BidResponse Writers
+        .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidResponse.SeatBid.Bid.class);
+  }
+
+  static OpenRtbJsonFactory registerBidResponseExt(OpenRtbJsonFactory factory) {
+    return factory
+        // Readers
+        .register(new Test1Reader<>(TestExt.testResponse1), OpenRtb.BidResponse.Builder.class)
+        .register(new Test2Reader<>(TestExt.testResponse2, "test2arr"),
+            OpenRtb.BidResponse.Builder.class)
+        .register(new Test2Reader<>(TestExt.testResponse2A, "test2a"),
+            OpenRtb.BidResponse.Builder.class)
+        .register(new Test2Reader<>(TestExt.testResponse2B, "test2b"),
+            OpenRtb.BidResponse.Builder.class)
+        .register(new Test3Reader(), OpenRtb.BidResponse.Builder.class)
+        .register(new Test4Reader(), OpenRtb.BidResponse.Builder.class)
+        .register(new Test1Reader<>(TestExt.testSeat), OpenRtb.BidResponse.SeatBid.Builder.class)
+        .register(new Test1Reader<>(TestExt.testBid),
+            OpenRtb.BidResponse.SeatBid.Bid.Builder.class)
+        // Writers
         .register(new Test1Writer(), Test.Test1.class, OpenRtb.BidResponse.class,
             "testResponse1")
         .register(new Test2Writer("test2arr"), Test.Test2.class, OpenRtb.BidResponse.class,
@@ -106,6 +141,64 @@ class OpenRtbJsonFactoryHelper {
             "testResponse2b")
         .register(new Test3Writer(), Integer.class, OpenRtb.BidResponse.class, "testResponse3")
         .register(new Test4Writer(), Integer.class, OpenRtb.BidResponse.class, "testResponse4");
+  }
+
+  static OpenRtbJsonFactory registerNativeRequestExt(OpenRtbJsonFactory factory) {
+    return factory
+        // Readers
+        .register(new Test1Reader<NativeRequest.Builder>(TestNExt.testNRequest1),
+            NativeRequest.Builder.class)
+        .register(new Test2Reader<NativeRequest.Builder>(TestNExt.testNRequest2, "test2ext"),
+            NativeRequest.Builder.class)
+        .register(new Test1Reader<NativeRequest.Asset.Builder>(TestNExt.testNReqAsset),
+            NativeRequest.Asset.Builder.class)
+        .register(new Test1Reader<NativeRequest.Asset.Title.Builder>(TestNExt.testNReqTitle),
+            NativeRequest.Asset.Title.Builder.class)
+        .register(new Test1Reader<NativeRequest.Asset.Image.Builder>(TestNExt.testNReqImage),
+            NativeRequest.Asset.Image.Builder.class)
+        .register(new Test1Reader<BidRequest.Imp.Video.Builder>(TestExt.testVideo),
+            BidRequest.Imp.Video.Builder.class)
+        .register(new Test1Reader<NativeRequest.Asset.Data.Builder>(TestNExt.testNReqData),
+            NativeRequest.Asset.Data.Builder.class)
+        .register(new Test2Writer("test2ext"), Test2.class, NativeRequest.class)
+        // Writers
+        .register(new Test1Writer(), Test1.class, NativeRequest.class)
+        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.class)
+        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Title.class)
+        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Image.class)
+        .register(new Test1Writer(), Test1.class, BidRequest.Imp.Video.class)
+        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Data.class);
+  }
+
+  static OpenRtbJsonFactory registerNativeResponseExt(OpenRtbJsonFactory factory) {
+    return factory
+        // Readers
+        .register(new Test1Reader<NativeResponse.Builder>(TestNExt.testNResponse1),
+            NativeResponse.Builder.class)
+        .register(new Test2Reader<NativeResponse.Builder>(TestNExt.testNResponse2, "test2ext"),
+            NativeResponse.Builder.class)
+        .register(new Test1Reader<NativeResponse.Link.Builder>(TestNExt.testNRespLink),
+            NativeResponse.Link.Builder.class)
+        .register(new Test1Reader<NativeResponse.Asset.Builder>(TestNExt.testNRespAsset),
+            NativeResponse.Asset.Builder.class)
+        .register(new Test1Reader<NativeResponse.Asset.Title.Builder>(TestNExt.testNRespTitle),
+            NativeResponse.Asset.Title.Builder.class)
+        .register(new Test1Reader<NativeResponse.Asset.Image.Builder>(TestNExt.testNRespImage),
+            NativeResponse.Asset.Image.Builder.class)
+        .register(new Test1Reader<NativeResponse.Asset.Video.Builder>(TestNExt.testNRespVideo),
+            NativeResponse.Asset.Video.Builder.class)
+        .register(new Test1Reader<NativeResponse.Asset.Data.Builder>(TestNExt.testNRespData),
+            NativeResponse.Asset.Data.Builder.class)
+        // Writers
+        .register(new Test1Writer(), Test1.class, NativeResponse.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Link.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Title.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Image.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Video.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Data.class)
+        .register(new Test2Writer("test2ext"), Test2.class, NativeResponse.class);
+
   }
 
   static String readFile(String fileName) {

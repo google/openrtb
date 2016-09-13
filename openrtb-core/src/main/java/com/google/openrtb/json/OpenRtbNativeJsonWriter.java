@@ -114,6 +114,15 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       }
       gen.writeEndArray();
     }
+    if (req.hasContext()) {
+      gen.writeNumberField("context", req.getContext().getNumber());
+    }
+    if (req.hasContextsubtype()) {
+      gen.writeNumberField("contextsubtype", req.getContextsubtype().getNumber());
+    }
+    if (req.hasPlcmttype()) {
+      gen.writeNumberField("plcmttype", req.getPlcmttype().getNumber());
+    }
   }
 
   public final void writeReqAsset(NativeRequest.Asset asset, JsonGenerator gen) throws IOException {
