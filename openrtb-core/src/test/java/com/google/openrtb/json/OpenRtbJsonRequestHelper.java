@@ -19,11 +19,9 @@ package com.google.openrtb.json;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.openrtb.OpenRtb;
 import com.google.openrtb.TestExt;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 
 /**
@@ -240,35 +238,37 @@ class OpenRtbJsonRequestHelper {
     OpenRtb.BidRequest.Imp.Builder imp2 = OpenRtb.BidRequest.Imp.newBuilder()
         .setId("imp2")
         .setVideo(OpenRtb.BidRequest.Imp.Video.newBuilder()
+            // Video/Audio common
             .addMimes("video/vp9")
-            .setLinearity(OpenRtb.VideoLinearity.LINEAR)
             .setMinduration(15)
             .setMaxduration(60)
-            .setProtocol(OpenRtb.Protocol.VAST_3_0)
             .addProtocols(OpenRtb.Protocol.VAST_2_0)
-            .setW(200)
-            .setH(50)
             .setStartdelay(0)
             .setSequence(1)
             .addBattr(OpenRtb.CreativeAttribute.TEXT_ONLY)
             .setMaxextended(120)
             .setMinbitrate(1000)
             .setMaxbitrate(2000)
-            .setBoxingallowed(false)
-            .addPlaybackmethod(OpenRtb.PlaybackMethod.CLICK_TO_PLAY)
             .addDelivery(OpenRtb.ContentDeliveryMethod.STREAMING)
-            .setPos(OpenRtb.AdPosition.ABOVE_THE_FOLD)
             .addCompanionad(OpenRtb.BidRequest.Imp.Banner.newBuilder()
                 .setId("compad1")
                 .setW(100)
                 .setH(50))
+            .addApi(OpenRtb.APIFramework.VPAID_2)
+            .addCompaniontype(OpenRtb.CompanionType.HTML)
+            // Video specific
+            .setLinearity(OpenRtb.VideoLinearity.LINEAR)
+            .setProtocol(OpenRtb.Protocol.VAST_3_0)
+            .setW(200)
+            .setH(50)
+            .setBoxingallowed(false)
+            .addPlaybackmethod(OpenRtb.PlaybackMethod.CLICK_TO_PLAY)
+            .setPos(OpenRtb.AdPosition.ABOVE_THE_FOLD)
             .setCompanionad21(OpenRtb.BidRequest.Imp.Video.CompanionAd.newBuilder()
                 .addBanner(OpenRtb.BidRequest.Imp.Banner.newBuilder()
                     .setId("compad2")
                     .setW(110)
                     .setH(60)))
-            .addApi(OpenRtb.APIFramework.VPAID_2)
-            .addCompaniontype(OpenRtb.CompanionType.HTML)
             .setExtension(TestExt.testVideo, OpenRtbJsonFactoryHelper.test1));
 
     OpenRtb.BidRequest.Imp.Native.Builder nativ = OpenRtb.BidRequest.Imp.Native.newBuilder()

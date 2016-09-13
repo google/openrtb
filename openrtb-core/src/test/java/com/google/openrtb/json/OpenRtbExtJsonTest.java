@@ -18,20 +18,16 @@ package com.google.openrtb.json;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.collect.SetMultimap;
-import com.google.openrtb.OpenRtb.BidRequest;
-import com.google.openrtb.TestExt;
-
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
-
-import org.junit.Test;
-
+import com.google.common.collect.SetMultimap;
+import com.google.openrtb.OpenRtb.BidRequest;
+import com.google.openrtb.TestExt;
 import java.io.IOException;
 import java.util.Map;
-
 import javax.annotation.Nullable;
+import org.junit.Test;
 
 /**
  * Tests for {@link OpenRtbJsonFactory}, {@link OpenRtbJsonReader}, {@link OpenRtbJsonWriter}.

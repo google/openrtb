@@ -17,28 +17,28 @@
 package com.google.openrtb.json;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.openrtb.json.OpenRtbJsonFactoryHelper.newJsonFactory;
 import static java.util.Arrays.asList;
 
 import com.google.openrtb.OpenRtb.AdUnitId;
 import com.google.openrtb.OpenRtb.BidRequest;
+import com.google.openrtb.OpenRtb.ContextSubtype;
+import com.google.openrtb.OpenRtb.ContextType;
 import com.google.openrtb.OpenRtb.DataAssetType;
 import com.google.openrtb.OpenRtb.ImageAssetType;
 import com.google.openrtb.OpenRtb.LayoutId;
 import com.google.openrtb.OpenRtb.NativeRequest;
 import com.google.openrtb.OpenRtb.NativeResponse;
+import com.google.openrtb.OpenRtb.PlacementType;
 import com.google.openrtb.OpenRtb.Protocol;
 import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
 import com.google.openrtb.TestExt;
 import com.google.openrtb.TestNExt;
-
-import com.fasterxml.jackson.core.JsonFactory;
-
+import java.io.IOException;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
 
 /**
  * Tests for {@link OpenRtbJsonFactory},
@@ -129,59 +129,6 @@ public class OpenRtbNativeJsonTest {
     assertThat(resp2).isEqualTo(resp);
   }
 
-  static OpenRtbJsonFactory newJsonFactory() {
-    return OpenRtbJsonFactory.create()
-        .setJsonFactory(new JsonFactory())
-        // NativeRequest Readers
-        .register(new Test1Reader<NativeRequest.Builder>(TestNExt.testNRequest1),
-            NativeRequest.Builder.class)
-        .register(new Test2Reader<NativeRequest.Builder>(TestNExt.testNRequest2, "test2ext"),
-            NativeRequest.Builder.class)
-        .register(new Test1Reader<NativeRequest.Asset.Builder>(TestNExt.testNReqAsset),
-            NativeRequest.Asset.Builder.class)
-        .register(new Test1Reader<NativeRequest.Asset.Title.Builder>(TestNExt.testNReqTitle),
-            NativeRequest.Asset.Title.Builder.class)
-        .register(new Test1Reader<NativeRequest.Asset.Image.Builder>(TestNExt.testNReqImage),
-            NativeRequest.Asset.Image.Builder.class)
-        .register(new Test1Reader<BidRequest.Imp.Video.Builder>(TestExt.testVideo),
-            BidRequest.Imp.Video.Builder.class)
-        .register(new Test1Reader<NativeRequest.Asset.Data.Builder>(TestNExt.testNReqData),
-            NativeRequest.Asset.Data.Builder.class)
-        // NativeResponse Readers
-        .register(new Test1Reader<NativeResponse.Builder>(TestNExt.testNResponse1),
-            NativeResponse.Builder.class)
-        .register(new Test2Reader<NativeResponse.Builder>(TestNExt.testNResponse2, "test2ext"),
-            NativeResponse.Builder.class)
-        .register(new Test1Reader<NativeResponse.Link.Builder>(TestNExt.testNRespLink),
-            NativeResponse.Link.Builder.class)
-        .register(new Test1Reader<NativeResponse.Asset.Builder>(TestNExt.testNRespAsset),
-            NativeResponse.Asset.Builder.class)
-        .register(new Test1Reader<NativeResponse.Asset.Title.Builder>(TestNExt.testNRespTitle),
-            NativeResponse.Asset.Title.Builder.class)
-        .register(new Test1Reader<NativeResponse.Asset.Image.Builder>(TestNExt.testNRespImage),
-            NativeResponse.Asset.Image.Builder.class)
-        .register(new Test1Reader<NativeResponse.Asset.Video.Builder>(TestNExt.testNRespVideo),
-            NativeResponse.Asset.Video.Builder.class)
-        .register(new Test1Reader<NativeResponse.Asset.Data.Builder>(TestNExt.testNRespData),
-            NativeResponse.Asset.Data.Builder.class)
-        // Writers
-        .register(new Test1Writer(), Test1.class, NativeRequest.class)
-        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.class)
-        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Title.class)
-        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Image.class)
-        .register(new Test1Writer(), Test1.class, BidRequest.Imp.Video.class)
-        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Data.class)
-        .register(new Test1Writer(), Test1.class, NativeResponse.class)
-        .register(new Test1Writer(), Test1.class, NativeResponse.Link.class)
-        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.class)
-        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Title.class)
-        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Image.class)
-        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Video.class)
-        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Data.class)
-        .register(new Test2Writer("test2ext"), Test2.class, NativeRequest.class)
-        .register(new Test2Writer("test2ext"), Test2.class, NativeResponse.class);
-  }
-
   static NativeRequest.Builder newNativeRequest() {
     return NativeRequest.newBuilder()
         .setVer("1")
@@ -189,6 +136,9 @@ public class OpenRtbNativeJsonTest {
         .setAdunit(AdUnitId.PROMOTED_LISTING)
         .setPlcmtcnt(4)
         .setSeq(5)
+        .setContext(ContextType.PRODUCT)
+        .setContextsubtype(ContextSubtype.CONTENT_AUDIO)
+        .setPlcmttype(PlacementType.IN_FEED)
         .addAssets(NativeRequest.Asset.newBuilder()
             .setId(1)
             .setRequired(true)

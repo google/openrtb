@@ -16,13 +16,11 @@
 
 package com.google.openrtb.json;
 
-import com.google.protobuf.ProtocolMessageEnum;
-
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-
+import com.google.protobuf.ProtocolMessageEnum;
 import java.io.IOException;
 import java.util.List;
 

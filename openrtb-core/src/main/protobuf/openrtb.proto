@@ -256,22 +256,22 @@ message BidRequest {
       // NOTE: Deprecated in favor of the format array.
       // Maximum width in device independent pixels (DIPS).
       // [AdX: max(BidRequest.AdSlot.width) if |width| > 1]
-      optional int32 wmax = 11;
+      optional int32 wmax = 11 [deprecated = true];
 
       // NOTE: Deprecated in favor of the format array.
       // Maximum height in device independent pixels (DIPS).
       // [AdX: max(BidRequest.AdSlot.height) if |height| > 1]
-      optional int32 hmax = 12;
+      optional int32 hmax = 12 [deprecated = true];
 
       // NOTE: Deprecated in favor of the format array.
       // Minimum width in device independent pixels (DIPS).
       // [AdX: min(BidRequest.AdSlot.width) if |width| > 1]
-      optional int32 wmin = 13;
+      optional int32 wmin = 13 [deprecated = true];
 
       // NOTE: Deprecated in favor of the format array.
       // Minimum height in device independent pixels (DIPS).
       // [AdX: min(BidRequest.AdSlot.height) if |height| > 1]
-      optional int32 hmin = 14;
+      optional int32 hmin = 14 [deprecated = true];
 
       // Unique identifier for this banner object. Recommended when Banner
       // objects are used with a Video object (Section 3.2.4) to represent
@@ -329,7 +329,8 @@ message BidRequest {
         // Height in device independent pixels (DIPS).
         optional int32 h = 2;
 
-        // Place exchange extensions here.
+        // Extensions.
+        extensions 100 to 9999;
       }
     }
 
@@ -572,7 +573,8 @@ message BidRequest {
       // Volume normalization mode.
       optional VolumeNormalizationMode nvol = 24;
 
-      // Place exchange extensions here.
+      // Extensions.
+      extensions 100 to 9999;
     }
 
     // OpenRTB 2.3: This object represents a native type impression.
@@ -903,7 +905,7 @@ message BidRequest {
 
     // NOTE: Deprecated in favor of prodq.
     // Video quality per IAB's classification.
-    optional ProductionQuality videoquality = 8;
+    optional ProductionQuality videoquality = 8 [deprecated = true];
 
     // Comma separated list of keywords describing the content.
     // Note: OpenRTB 2.2 allowed an array-of-strings as alternate implementation
@@ -1451,11 +1453,10 @@ message BidResponse {
       optional APIFramework api = 18;
 
       // Video response protocol of the markup if applicable.
-      optional Protocol protocol = 19 [deprecated = true];
+      optional Protocol protocol = 19;
 
       // Creative media rating per QAG guidelines.
-      // see enum QAGMediaRating.
-      optional int32 qagmediarating = 20;
+      optional QAGMediaRating qagmediarating = 20;
 
       // Reference to the deal.id from the bid request if this bid pertains to a
       // private marketplace direct deal.

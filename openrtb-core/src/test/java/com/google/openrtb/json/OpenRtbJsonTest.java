@@ -17,8 +17,14 @@
 package com.google.openrtb.json;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.openrtb.json.OpenRtbJsonFactoryHelper.newJsonFactory;
 import static java.util.Arrays.asList;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.openrtb.OpenRtb;
 import com.google.openrtb.OpenRtb.APIFramework;
 import com.google.openrtb.OpenRtb.AdPosition;
@@ -32,7 +38,9 @@ import com.google.openrtb.OpenRtb.BidRequest.Data.Segment;
 import com.google.openrtb.OpenRtb.BidRequest.Device;
 import com.google.openrtb.OpenRtb.BidRequest.Geo;
 import com.google.openrtb.OpenRtb.BidRequest.Imp;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Audio;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner.Format;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Native;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Pmp;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Pmp.Deal;
@@ -53,6 +61,7 @@ import com.google.openrtb.OpenRtb.ContentDeliveryMethod;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
 import com.google.openrtb.OpenRtb.DeviceType;
 import com.google.openrtb.OpenRtb.ExpandableDirection;
+import com.google.openrtb.OpenRtb.LocationService;
 import com.google.openrtb.OpenRtb.LocationType;
 import com.google.openrtb.OpenRtb.NativeRequest;
 import com.google.openrtb.OpenRtb.NativeResponse;
@@ -66,18 +75,10 @@ import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
 import com.google.openrtb.TestExt;
 import com.google.openrtb.TestUtil;
-
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
+import java.io.IOException;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
 
 /**
  * Tests for {@link OpenRtbJsonFactory}, {@link OpenRtbJsonReader}, {@link OpenRtbJsonWriter}.
@@ -504,76 +505,6 @@ public class OpenRtbJsonTest {
     }
   }
 
-  static OpenRtbJsonFactory newJsonFactory() {
-    return OpenRtbJsonFactory.create()
-        .setJsonFactory(new JsonFactory())
-        // BidRequest Readers
-        .register(new Test1Reader<BidRequest.Builder>(TestExt.testRequest1),
-            BidRequest.Builder.class)
-        .register(new Test2Reader<BidRequest.Builder>(TestExt.testRequest2, "test2ext"),
-            BidRequest.Builder.class)
-        .register(new Test1Reader<App.Builder>(TestExt.testApp), App.Builder.class)
-        .register(new Test1Reader<Content.Builder>(TestExt.testContent), Content.Builder.class)
-        .register(new Test1Reader<Producer.Builder>(TestExt.testProducer), Producer.Builder.class)
-        .register(new Test1Reader<Publisher.Builder>(TestExt.testPublisher),
-            Publisher.Builder.class)
-        .register(new Test1Reader<Device.Builder>(TestExt.testDevice), Device.Builder.class)
-        .register(new Test1Reader<Geo.Builder>(TestExt.testGeo), Geo.Builder.class)
-        .register(new Test1Reader<Imp.Builder>(TestExt.testImp), Imp.Builder.class)
-        .register(new Test1Reader<Banner.Builder>(TestExt.testBanner), Banner.Builder.class)
-        .register(new Test1Reader<Native.Builder>(TestExt.testNative), Native.Builder.class)
-        .register(new Test1Reader<Pmp.Builder>(TestExt.testPmp), Pmp.Builder.class)
-        .register(new Test1Reader<Deal.Builder>(TestExt.testDeal), Deal.Builder.class)
-        .register(new Test1Reader<Video.Builder>(TestExt.testVideo), Video.Builder.class)
-        .register(new Test1Reader<Regs.Builder>(TestExt.testRegs), Regs.Builder.class)
-        .register(new Test1Reader<Site.Builder>(TestExt.testSite), Site.Builder.class)
-        .register(new Test1Reader<User.Builder>(TestExt.testUser), User.Builder.class)
-        .register(new Test1Reader<Data.Builder>(TestExt.testData), Data.Builder.class)
-        .register(new Test1Reader<Segment.Builder>(TestExt.testSegment), Segment.Builder.class)
-        // BidResponse Readers
-        .register(new Test1Reader<BidResponse.Builder>(TestExt.testResponse1),
-            BidResponse.Builder.class)
-        .register(new Test2Reader<BidResponse.Builder>(TestExt.testResponse2, "test2arr"),
-            BidResponse.Builder.class)
-        .register(new Test2Reader<BidResponse.Builder>(TestExt.testResponse2A, "test2a"),
-            BidResponse.Builder.class)
-        .register(new Test2Reader<BidResponse.Builder>(TestExt.testResponse2B, "test2b"),
-            BidResponse.Builder.class)
-        .register(new Test3Reader(), BidResponse.Builder.class)
-        .register(new Test4Reader(), BidResponse.Builder.class)
-        .register(new Test1Reader<SeatBid.Builder>(TestExt.testSeat), SeatBid.Builder.class)
-        .register(new Test1Reader<Bid.Builder>(TestExt.testBid), Bid.Builder.class)
-        // BidRequest Writers
-        .register(new Test1Writer(), Test1.class, BidRequest.class)
-        .register(new Test2Writer("test2ext"), Test2.class, BidRequest.class)
-        .register(new Test1Writer(), Test1.class, App.class)
-        .register(new Test1Writer(), Test1.class, Device.class)
-        .register(new Test1Writer(), Test1.class, Site.class)
-        .register(new Test1Writer(), Test1.class, User.class)
-        .register(new Test1Writer(), Test1.class, Geo.class)
-        .register(new Test1Writer(), Test1.class, Data.class)
-        .register(new Test1Writer(), Test1.class, Segment.class)
-        .register(new Test1Writer(), Test1.class, Publisher.class)
-        .register(new Test1Writer(), Test1.class, Content.class)
-        .register(new Test1Writer(), Test1.class, Producer.class)
-        .register(new Test1Writer(), Test1.class, Imp.class)
-        .register(new Test1Writer(), Test1.class, Banner.class)
-        .register(new Test1Writer(), Test1.class, Video.class)
-        .register(new Test1Writer(), Test1.class, Native.class)
-        .register(new Test1Writer(), Test1.class, Pmp.class)
-        .register(new Test1Writer(), Test1.class, Deal.class)
-        .register(new Test1Writer(), Test1.class, Regs.class)
-        .register(new Test1Writer(), Test1.class, SeatBid.class)
-        .register(new Test1Writer(), Test1.class, Bid.class)
-        // BidResponse Writers
-        .register(new Test1Writer(), Test1.class, BidResponse.class, "testResponse1")
-        .register(new Test2Writer("test2arr"), Test2.class, BidResponse.class, "testResponse2")
-        .register(new Test2Writer("test2a"), Test2.class, BidResponse.class, "testResponse2a")
-        .register(new Test2Writer("test2b"), Test2.class, BidResponse.class, "testResponse2b")
-        .register(new Test3Writer(), Integer.class, BidResponse.class, "testResponse3")
-        .register(new Test4Writer(), Integer.class, BidResponse.class, "testResponse4");
-  }
-
   @SuppressWarnings("deprecation")
   static BidRequest.Builder newBidRequest() {
     return BidRequest.newBuilder()
@@ -593,6 +524,7 @@ public class OpenRtbJsonTest {
                 .setTopframe(true)
                 .addExpdir(ExpandableDirection.RIGHT)
                 .addApi(APIFramework.MRAID_1)
+                .addFormat(Format.newBuilder().setW(100).setH(80))
                 .setExtension(TestExt.testBanner, test1))
             .setDisplaymanager("dm1")
             .setDisplaymanagerver("1.0")
@@ -613,6 +545,8 @@ public class OpenRtbJsonTest {
                     .setAt(AuctionType.SECOND_PRICE)
                     .setExtension(TestExt.testDeal, test1))
                 .setExtension(TestExt.testPmp, test1))
+            .setClickbrowser(true)
+            .setExp(120)
             .setExtension(TestExt.testImp, test1))
         .addImp(Imp.newBuilder()
             .setId("imp2")
@@ -646,9 +580,34 @@ public class OpenRtbJsonTest {
                     .setH(60)))
                 .addApi(APIFramework.VPAID_2)
                 .addCompaniontype(CompanionType.HTML)
+                .setSkip(true)
+                .setSkipmin(45)
+                .setSkipafter(10)
                 .setExtension(TestExt.testVideo, test1)))
         .addImp(Imp.newBuilder()
             .setId("imp3")
+            .setAudio(Audio.newBuilder()
+                // Video/Audio common
+                .addMimes("video/vp9")
+                .setMinduration(15)
+                .setMaxduration(60)
+                .addProtocols(OpenRtb.Protocol.VAST_2_0)
+                .setStartdelay(0)
+                .setSequence(1)
+                .addBattr(OpenRtb.CreativeAttribute.TEXT_ONLY)
+                .setMaxextended(120)
+                .setMinbitrate(1000)
+                .setMaxbitrate(2000)
+                .addDelivery(OpenRtb.ContentDeliveryMethod.STREAMING)
+                .addCompanionad(OpenRtb.BidRequest.Imp.Banner.newBuilder()
+                    .setId("compad1")
+                    .setW(100)
+                    .setH(50))
+                .addApi(OpenRtb.APIFramework.VPAID_2)
+                .addCompaniontype(OpenRtb.CompanionType.HTML)
+                .setExtension(TestExt.testAudio, OpenRtbJsonFactoryHelper.test1)))
+        .addImp(Imp.newBuilder()
+            .setId("imp4")
             .setNative(Native.newBuilder()
                 .setRequestNative(NativeRequest.newBuilder().setVer("1"))
                 .setVer("1.0")
@@ -669,6 +628,9 @@ public class OpenRtbJsonTest {
                 .setCity("New York City")
                 .setZip("10000")
                 .setUtcoffset(3600)
+                .setAccuracy(10)
+                .setLastfix(15)
+                .setIpservice(LocationService.IP2LOCATION)
                 .setExtension(TestExt.testGeo, test1))
             .setDnt(false)
             .setLmt(false)
@@ -696,6 +658,7 @@ public class OpenRtbJsonTest {
             .setDpidmd5("8765")
             .setMacsha1("abc")
             .setMacmd5("xyz")
+            .setGeofetch(true)
             .setExtension(TestExt.testDevice, test1))
         .setUser(User.newBuilder()
             .setId("user1")
@@ -726,6 +689,7 @@ public class OpenRtbJsonTest {
             .setCoppa(true)
             .setExtension(TestExt.testRegs, test1))
         .setTest(false)
+        .addAllBapp(asList("app1", "app2"))
         .setExtension(TestExt.testRequest2, test2)
         .setExtension(TestExt.testRequest1, test1);
   }
@@ -774,6 +738,11 @@ public class OpenRtbJsonTest {
             .setQagmediarating(QAGMediaRating.MATURE)
             .setEmbeddable(false)
             .setLanguage("en")
+            .setArtist("Beethoven")
+            .setGenre("Classical")
+            .setAlbum("9th")
+            .setIsrc("1234")
+            .setProdq(ProductionQuality.PROFESSIONAL)
             .setExtension(TestExt.testContent, test1))
         .setKeywords("news,politics")
         .setExtension(TestExt.testSite, test1);
@@ -815,6 +784,10 @@ public class OpenRtbJsonTest {
         .setH(80)
         .setBundle("com.google.testapp")
         .addCat("IAB10-2")
+        .setApi(APIFramework.VPAID_1)
+        .setProtocol(Protocol.VAST_4_0)
+        .setQagmediarating(QAGMediaRating.EVERYONE_OVER_12)
+        .setExp(250)
         .setExtension(TestExt.testBid, test1);
     if (admNative) {
       bid.setAdmNative(NativeResponse.newBuilder()
@@ -844,3 +817,4 @@ public class OpenRtbJsonTest {
         .addExtension(TestExt.testResponse4, 20);
   }
 }
+

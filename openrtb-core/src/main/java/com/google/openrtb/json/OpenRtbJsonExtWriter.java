@@ -19,7 +19,6 @@ package com.google.openrtb.json;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-
 import java.io.IOException;
 import java.util.List;
 

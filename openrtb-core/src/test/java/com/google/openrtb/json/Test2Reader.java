@@ -20,12 +20,10 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.endArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.google.openrtb.Test.Test2;
 import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
 import com.google.protobuf.GeneratedMessage.GeneratedExtension;
-
-import com.fasterxml.jackson.core.JsonParser;
-
 import java.io.IOException;
 
 /**

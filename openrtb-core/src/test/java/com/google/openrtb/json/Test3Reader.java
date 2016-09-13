@@ -18,11 +18,9 @@ package com.google.openrtb.json;
 
 import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.TestExt;
-
-import com.fasterxml.jackson.core.JsonParser;
-
 import java.io.IOException;
 
 /**

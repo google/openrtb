@@ -24,13 +24,11 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.escape.Escaper;
 import com.google.common.net.PercentEscaper;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Supports preprocessing for "snippets" of textual information, in particular for

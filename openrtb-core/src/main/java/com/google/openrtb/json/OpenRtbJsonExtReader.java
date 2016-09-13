@@ -16,11 +16,9 @@
 
 package com.google.openrtb.json;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
-
-import com.fasterxml.jackson.core.JsonParser;
-
 import java.io.IOException;
 
 /**
