@@ -1,7 +1,7 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
-## Version 1.1.0, ??-09-2016
+## Version 1.1.0, 14-09-2016
 * Support for OpenRTB 2.4 & OpenRTB Native 1.1.
   - This support needed source-breaking changes; several enums are now
     used by new messages so their original scope was a problem, so now

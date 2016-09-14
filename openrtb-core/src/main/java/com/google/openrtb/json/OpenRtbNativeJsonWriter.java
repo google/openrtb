@@ -19,10 +19,12 @@ package com.google.openrtb.json;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeIntBoolField;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeStrings;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.google.openrtb.OpenRtb.NativeRequest;
 import com.google.openrtb.OpenRtb.NativeResponse;
+
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
@@ -350,9 +352,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
 
   protected void writeRespImageFields(NativeResponse.Asset.Image image, JsonGenerator gen)
       throws IOException {
-    if (image.hasUrl()) {
-      gen.writeStringField("url", image.getUrl());
-    }
+    gen.writeStringField("url", image.getUrl());
     if (image.hasW()) {
       gen.writeNumberField("w", image.getW());
     }
@@ -371,9 +371,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
 
   protected void writeRespVideoFields(NativeResponse.Asset.Video video, JsonGenerator gen)
       throws IOException {
-    if (video.hasVasttag()) {
-      gen.writeStringField("vasttag", video.getVasttag());
-    }
+    gen.writeStringField("vasttag", video.getVasttag());
   }
 
   public final void writeRespData(NativeResponse.Asset.Data data, JsonGenerator gen)

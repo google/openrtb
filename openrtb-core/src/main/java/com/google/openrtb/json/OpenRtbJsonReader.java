@@ -24,9 +24,6 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.readCsvString;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
 import com.google.common.io.CharSource;
 import com.google.common.io.Closeables;
 import com.google.openrtb.Gender;
@@ -77,6 +74,11 @@ import com.google.openrtb.OpenRtb.VideoLinearity;
 import com.google.openrtb.OpenRtb.VolumeNormalizationMode;
 import com.google.openrtb.util.ProtoUtils;
 import com.google.protobuf.ByteString;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+
 import java.io.CharArrayReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -1379,9 +1381,9 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         user.setYob(par.getIntValue());
         break;
       case "gender": {
-        String gender = par.getText();
-        if (Gender.forCode(gender) != null) {
-          user.setGender(gender);
+        Gender value = Gender.forCode(par.getText());
+        if (checkEnum(value)) {
+          user.setGender(value.code());
         }
         break;
       }
