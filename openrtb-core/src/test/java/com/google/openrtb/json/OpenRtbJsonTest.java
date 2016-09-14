@@ -20,11 +20,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.openrtb.json.OpenRtbJsonFactoryHelper.newJsonFactory;
 import static java.util.Arrays.asList;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.openrtb.OpenRtb;
 import com.google.openrtb.OpenRtb.APIFramework;
 import com.google.openrtb.OpenRtb.AdPosition;
@@ -61,6 +56,7 @@ import com.google.openrtb.OpenRtb.ContentDeliveryMethod;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
 import com.google.openrtb.OpenRtb.DeviceType;
 import com.google.openrtb.OpenRtb.ExpandableDirection;
+import com.google.openrtb.OpenRtb.FeedType;
 import com.google.openrtb.OpenRtb.LocationService;
 import com.google.openrtb.OpenRtb.LocationType;
 import com.google.openrtb.OpenRtb.NativeRequest;
@@ -71,14 +67,23 @@ import com.google.openrtb.OpenRtb.ProductionQuality;
 import com.google.openrtb.OpenRtb.Protocol;
 import com.google.openrtb.OpenRtb.QAGMediaRating;
 import com.google.openrtb.OpenRtb.VideoLinearity;
+import com.google.openrtb.OpenRtb.VolumeNormalizationMode;
 import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
 import com.google.openrtb.TestExt;
 import com.google.openrtb.TestUtil;
-import java.io.IOException;
+
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 /**
  * Tests for {@link OpenRtbJsonFactory}, {@link OpenRtbJsonReader}, {@link OpenRtbJsonWriter}.
@@ -142,6 +147,9 @@ public class OpenRtbJsonTest {
         .addImp(Imp.newBuilder().setId("0")
             .setBanner(Banner.newBuilder())
             .setPmp(Pmp.newBuilder()))
+        .addImp(Imp.newBuilder().setId("0")
+            .setBanner(Banner.newBuilder()
+                .addFormat(Format.newBuilder())))
         .setDevice(Device.newBuilder().setGeo(Geo.newBuilder()))
         .setSite(Site.newBuilder())
         .setUser(User.newBuilder().addData(Data.newBuilder()))
@@ -149,7 +157,10 @@ public class OpenRtbJsonTest {
     testRequest(jsonFactory, BidRequest.newBuilder().setId("0")
         .addImp(Imp.newBuilder().setId("0")
             .setVideo(Video.newBuilder())
+            .setAudio(Audio.newBuilder())
             .setPmp(Pmp.newBuilder().addDeals(Deal.newBuilder().setId("0"))))
+        .addImp(Imp.newBuilder().setId("0")
+            .setVideo(Video.newBuilder().setCompanionad21(CompanionAd.newBuilder())))
         .setSite(Site.newBuilder()
             .setContent(Content.newBuilder())
             .setPublisher(Publisher.newBuilder()))
@@ -524,7 +535,10 @@ public class OpenRtbJsonTest {
                 .setTopframe(true)
                 .addExpdir(ExpandableDirection.RIGHT)
                 .addApi(APIFramework.MRAID_1)
-                .addFormat(Format.newBuilder().setW(100).setH(80))
+                .addFormat(Format.newBuilder()
+                    .setW(100)
+                    .setH(80)
+                    .setExtension(TestExt.testFormat, test1))
                 .setExtension(TestExt.testBanner, test1))
             .setDisplaymanager("dm1")
             .setDisplaymanagerver("1.0")
@@ -577,7 +591,8 @@ public class OpenRtbJsonTest {
                     .addBanner(Banner.newBuilder()
                     .setId("compad2")
                     .setW(110)
-                    .setH(60)))
+                    .setH(60))
+                    .setExtension(TestExt.testCompanionAd, test1))
                 .addApi(APIFramework.VPAID_2)
                 .addCompaniontype(CompanionType.HTML)
                 .setSkip(true)
@@ -605,6 +620,10 @@ public class OpenRtbJsonTest {
                     .setH(50))
                 .addApi(OpenRtb.APIFramework.VPAID_2)
                 .addCompaniontype(OpenRtb.CompanionType.HTML)
+                .setMaxseq(4)
+                .setFeed(FeedType.PODCAST)
+                .setStitched(true)
+                .setNvol(VolumeNormalizationMode.LOUDNESS)
                 .setExtension(TestExt.testAudio, OpenRtbJsonFactoryHelper.test1)))
         .addImp(Imp.newBuilder()
             .setId("imp4")

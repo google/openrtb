@@ -25,6 +25,7 @@ import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.TestUtil;
+
 import org.junit.Test;
 
 /**
@@ -113,16 +114,20 @@ public class OpenRtbSnippetProcessorTest {
             .setBanner(Banner.newBuilder()))
         .build();
     Bid.Builder bid = Bid.newBuilder()
-        .setId("bid-" + OpenRtbMacros.AUCTION_CURRENCY.key())
-        .setImpid("imp-" + OpenRtbMacros.AUCTION_SEAT_ID.key())
+        .setId("bid1")
+        .setImpid("imp1")
+        .setAdm(
+              OpenRtbMacros.AUCTION_AD_ID.key()
+            + OpenRtbMacros.AUCTION_BID_ID.key()
+            + OpenRtbMacros.AUCTION_CURRENCY.key()
+            + OpenRtbMacros.AUCTION_SEAT_ID.key())
         .setPrice(10000);
     BidResponse.Builder resp = BidResponse.newBuilder()
         .addSeatbid(SeatBid.newBuilder().addBid(bid));
     OpenRtbSnippetProcessor processor = new OpenRtbSnippetProcessor(true);
     processor.process(new SnippetProcessorContext(request, resp));
     bid = resp.getSeatbidBuilder(0).getBidBuilder(0);
-    assertThat(bid.getId()).isEqualTo("bid-");
-    assertThat(bid.getImpid()).isEqualTo("imp-");
+    assertThat(bid.getAdm()).isEmpty();
   }
 
   @Test(expected = UndefinedMacroException.class)

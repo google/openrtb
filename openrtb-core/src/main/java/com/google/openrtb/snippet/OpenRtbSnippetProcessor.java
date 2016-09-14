@@ -22,7 +22,9 @@ import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.BidOrBuilder;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBidOrBuilder;
+
 import java.util.List;
+
 import javax.inject.Singleton;
 
 /**
@@ -72,7 +74,9 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
         }
 
         case AUCTION_BID_ID: {
-          ctx.builder().append(ctx.response().getBidid());
+          if (ctx.response().hasBidid()) {
+            ctx.builder().append(ctx.response().getBidid());
+          }
           return true;
         }
 
