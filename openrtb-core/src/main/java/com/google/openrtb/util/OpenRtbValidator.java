@@ -96,40 +96,48 @@ public class OpenRtbValidator {
     }
 
     if (imp.hasBanner()) {
-      List<CreativeAttribute> badCreats =
-          check(imp.getBanner().getBattrList(), bid.getAttrList());
-      if (!badCreats.isEmpty()) {
-        if (logger.isDebugEnabled()) {
-          logger.debug("{} rejected, blocked attr values: {}", logId(bid), badCreats);
-        }
-        invalidCreatAttr.inc();
-        goodBid = false;
-      }
-    } else if (imp.hasVideo()) {
-      List<CreativeAttribute> badCreats =
-          check(imp.getVideo().getBattrList(), bid.getAttrList());
-      if (!badCreats.isEmpty()) {
-        if (logger.isDebugEnabled()) {
-          logger.debug("{} rejected, blocked attr values: {}", logId(bid), badCreats);
-        }
-        invalidCreatAttr.inc();
-        goodBid = false;
-      }
+      goodBid &= validateCreats(bid, check(imp.getBanner().getBattrList(), bid.getAttrList()));
+    }
 
-      for (Banner companion : imp.getVideo().getCompanionadList()) {
-        List<CreativeAttribute> badCompCreats =
-            check(companion.getBattrList(), bid.getAttrList());
-        if (!badCompCreats.isEmpty()) {
-          if (logger.isDebugEnabled()) {
-            logger.debug("{} rejected, blocked attr values: {}", logId(bid), badCompCreats);
-          }
-          invalidCreatAttr.inc();
-          goodBid = false;
-        }
-      }
+    if (imp.hasVideo()) {
+      goodBid &= validateCreats(bid, check(imp.getVideo().getBattrList(), bid.getAttrList()));
+      goodBid &= validateCompanions(bid, imp.getVideo().getCompanionadList());
+    }
+
+    if (imp.hasAudio()) {
+      goodBid &= validateCreats(bid, check(imp.getAudio().getBattrList(), bid.getAttrList()));
+      goodBid &= validateCompanions(bid, imp.getAudio().getCompanionadList());
     }
 
     return goodBid;
+  }
+
+  protected boolean validateCreats(Bid.Builder bid, List<CreativeAttribute> badCreats) {
+    if (badCreats.isEmpty()) {
+      return true;
+    }
+
+    if (logger.isDebugEnabled()) {
+      logger.debug("{} rejected, blocked attr values: {}", logId(bid), badCreats);
+    }
+    invalidCreatAttr.inc();
+    return false;
+  }
+
+  protected boolean validateCompanions(Bid.Builder bid, List<Banner> companions) {
+    for (Banner companion : companions) {
+      List<CreativeAttribute> badCompCreats =
+          check(companion.getBattrList(), bid.getAttrList());
+      if (!badCompCreats.isEmpty()) {
+        if (logger.isDebugEnabled()) {
+          logger.debug("{} rejected, blocked attr values: {}", logId(bid), badCompCreats);
+        }
+        invalidCreatAttr.inc();
+        return false;
+      }
+    }
+
+    return true;
   }
 
   protected static String logId(Bid.Builder bid) {

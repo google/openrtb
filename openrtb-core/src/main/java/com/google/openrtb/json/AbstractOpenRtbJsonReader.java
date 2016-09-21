@@ -19,18 +19,15 @@ package com.google.openrtb.json;
 import static com.google.openrtb.json.OpenRtbJsonUtils.endObject;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
-import com.google.openrtb.util.OpenRtbUtils;
-import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
-
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.google.openrtb.util.OpenRtbUtils;
+import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
 import java.io.IOException;
 import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Desserializes OpenRTB messages from JSON.

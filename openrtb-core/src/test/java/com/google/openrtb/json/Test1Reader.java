@@ -18,12 +18,10 @@ package com.google.openrtb.json;
 
 import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.google.openrtb.Test.Test1;
 import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
 import com.google.protobuf.GeneratedMessage.GeneratedExtension;
-
-import com.fasterxml.jackson.core.JsonParser;
-
 import java.io.IOException;
 
 /**

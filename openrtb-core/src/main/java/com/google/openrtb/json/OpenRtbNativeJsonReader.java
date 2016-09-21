@@ -19,18 +19,20 @@ package com.google.openrtb.json;
 import static com.google.openrtb.json.OpenRtbJsonUtils.endArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.endObject;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
-import static com.google.openrtb.json.OpenRtbJsonUtils.peekToken;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
 import com.google.common.io.CharSource;
 import com.google.common.io.Closeables;
+import com.google.openrtb.OpenRtb.AdUnitId;
+import com.google.openrtb.OpenRtb.ContextSubtype;
+import com.google.openrtb.OpenRtb.ContextType;
+import com.google.openrtb.OpenRtb.DataAssetType;
+import com.google.openrtb.OpenRtb.ImageAssetType;
+import com.google.openrtb.OpenRtb.LayoutId;
 import com.google.openrtb.OpenRtb.NativeRequest;
-import com.google.openrtb.OpenRtb.NativeRequest.AdUnitId;
-import com.google.openrtb.OpenRtb.NativeRequest.Asset.Data.DataAssetType;
-import com.google.openrtb.OpenRtb.NativeRequest.Asset.Image.ImageAssetType;
-import com.google.openrtb.OpenRtb.NativeRequest.LayoutId;
 import com.google.openrtb.OpenRtb.NativeResponse;
+import com.google.openrtb.OpenRtb.PlacementType;
 import com.google.openrtb.util.ProtoUtils;
 import com.google.protobuf.ByteString;
 
@@ -147,6 +149,27 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       case "assets":
         for (startArray(par); endArray(par); par.nextToken()) {
           req.addAssets(readReqAsset(par));
+        }
+        break;
+      case "context": {
+          ContextType value = ContextType.valueOf(par.getIntValue());
+          if (checkEnum(value)) {
+            req.setContext(value);
+          }
+        }
+        break;
+      case "contextsubtype": {
+          ContextSubtype value = ContextSubtype.valueOf(par.getIntValue());
+          if (checkEnum(value)) {
+            req.setContextsubtype(value);
+          }
+        }
+        break;
+      case "plcmttype": {
+          PlacementType value = PlacementType.valueOf(par.getIntValue());
+          if (checkEnum(value)) {
+            req.setPlcmttype(value);
+          }
         }
         break;
       default:
@@ -492,14 +515,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       throws IOException {
     switch (fieldName) {
       case "vasttag":
-        if (peekToken(par) == JsonToken.START_ARRAY) {
-          // Compatibility with old buggy proto; remove some day.
-          for (startArray(par); endArray(par); par.nextToken()) {
-            video.setVasttag(par.getText());
-          }
-        } else {
-          video.setVasttag(par.getText());
-        }
+        video.setVasttag(par.getText());
         break;
       default:
         readOther(video, par, fieldName);

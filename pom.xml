@@ -53,14 +53,13 @@
     <findBugsJsr305Version>3.0.1</findBugsJsr305Version>
     <gpg.skip>true</gpg.skip>
     <guavaVersion>19.0</guavaVersion>
-    <!-- Stick to 2.6 for now; 2.7+ breaks SpringFramework and maybe other things. -->
-    <fasterxmlJacksonVersion>2.6.7</fasterxmlJacksonVersion>
+    <fasterxmlJacksonVersion>2.8.2</fasterxmlJacksonVersion>
     <injectVersion>1</injectVersion>
     <junitVersion>4.12</junitVersion>
     <metricsVersion>3.0.2</metricsVersion>
     <protobufVersion>2.6.1</protobufVersion>
     <slf4jVersion>1.7.21</slf4jVersion>
-    <truthVersion>0.28</truthVersion>
+    <truthVersion>0.30</truthVersion>
 
     <!-- Plugin versions -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -107,12 +106,12 @@
 
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.0.1</version>
+        <version>3.0.2</version>
       </plugin>
 
       <plugin>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.1</version>
       </plugin>
 
       <plugin>
@@ -143,7 +142,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.10</version>
+        <version>1.12</version>
       </plugin>
 
       <plugin>

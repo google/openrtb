@@ -27,10 +27,8 @@ import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.TestUtil;
-
-import org.junit.Test;
-
 import java.util.List;
+import org.junit.Test;
 
 /**
  * Tests for {@link SnippetProcessor}.

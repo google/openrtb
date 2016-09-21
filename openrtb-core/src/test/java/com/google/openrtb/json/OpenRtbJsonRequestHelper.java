@@ -19,11 +19,9 @@ package com.google.openrtb.json;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.openrtb.OpenRtb;
 import com.google.openrtb.TestExt;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 
 /**
@@ -208,13 +206,13 @@ class OpenRtbJsonRequestHelper {
             .setHmax(100)
             .setHmin(50)
             .setId("banner1")
-            .setPos(OpenRtb.BidRequest.Imp.AdPosition.ABOVE_THE_FOLD)
-            .addBtype(OpenRtb.BidRequest.Imp.Banner.BannerAdType.JAVASCRIPT_AD)
+            .setPos(OpenRtb.AdPosition.ABOVE_THE_FOLD)
+            .addBtype(OpenRtb.BannerAdType.JAVASCRIPT_AD)
             .addBattr(OpenRtb.CreativeAttribute.TEXT_ONLY)
             .addMimes("image/gif")
             .setTopframe(true)
-            .addExpdir(OpenRtb.BidRequest.Imp.Banner.ExpandableDirection.RIGHT)
-            .addApi(OpenRtb.BidRequest.Imp.APIFramework.MRAID_1)
+            .addExpdir(OpenRtb.ExpandableDirection.RIGHT)
+            .addApi(OpenRtb.APIFramework.MRAID_1)
             .setExtension(TestExt.testBanner, OpenRtbJsonFactoryHelper.test1))
         .setDisplaymanager("dm1")
         .setDisplaymanagerver("1.0")
@@ -232,7 +230,7 @@ class OpenRtbJsonRequestHelper {
                 .setBidfloorcur("USD")
                 .addWseat("seat2")
                 .addWadomain("goodadv1")
-                .setAt(OpenRtb.BidRequest.AuctionType.SECOND_PRICE)
+                .setAt(OpenRtb.AuctionType.SECOND_PRICE)
                 .setExtension(TestExt.testDeal, OpenRtbJsonFactoryHelper.test1))
             .setExtension(TestExt.testPmp, OpenRtbJsonFactoryHelper.test1))
         .setExtension(TestExt.testImp, OpenRtbJsonFactoryHelper.test1);
@@ -240,40 +238,42 @@ class OpenRtbJsonRequestHelper {
     OpenRtb.BidRequest.Imp.Builder imp2 = OpenRtb.BidRequest.Imp.newBuilder()
         .setId("imp2")
         .setVideo(OpenRtb.BidRequest.Imp.Video.newBuilder()
+            // Video/Audio common
             .addMimes("video/vp9")
-            .setLinearity(OpenRtb.BidRequest.Imp.Video.VideoLinearity.LINEAR)
             .setMinduration(15)
             .setMaxduration(60)
-            .setProtocol(OpenRtb.BidRequest.Imp.Video.VideoBidResponseProtocol.VAST_3_0)
-            .addProtocols(OpenRtb.BidRequest.Imp.Video.VideoBidResponseProtocol.VAST_2_0)
-            .setW(200)
-            .setH(50)
+            .addProtocols(OpenRtb.Protocol.VAST_2_0)
             .setStartdelay(0)
             .setSequence(1)
             .addBattr(OpenRtb.CreativeAttribute.TEXT_ONLY)
             .setMaxextended(120)
             .setMinbitrate(1000)
             .setMaxbitrate(2000)
-            .setBoxingallowed(false)
-            .addPlaybackmethod(OpenRtb.BidRequest.Imp.Video.VideoPlaybackMethod.CLICK_TO_PLAY)
-            .addDelivery(OpenRtb.BidRequest.Imp.Video.ContentDeliveryMethod.STREAMING)
-            .setPos(OpenRtb.BidRequest.Imp.AdPosition.ABOVE_THE_FOLD)
+            .addDelivery(OpenRtb.ContentDeliveryMethod.STREAMING)
             .addCompanionad(OpenRtb.BidRequest.Imp.Banner.newBuilder()
                 .setId("compad1")
                 .setW(100)
                 .setH(50))
+            .addApi(OpenRtb.APIFramework.VPAID_2)
+            .addCompaniontype(OpenRtb.CompanionType.HTML)
+            // Video specific
+            .setLinearity(OpenRtb.VideoLinearity.LINEAR)
+            .setProtocol(OpenRtb.Protocol.VAST_3_0)
+            .setW(200)
+            .setH(50)
+            .setBoxingallowed(false)
+            .addPlaybackmethod(OpenRtb.PlaybackMethod.CLICK_TO_PLAY)
+            .setPos(OpenRtb.AdPosition.ABOVE_THE_FOLD)
             .setCompanionad21(OpenRtb.BidRequest.Imp.Video.CompanionAd.newBuilder()
                 .addBanner(OpenRtb.BidRequest.Imp.Banner.newBuilder()
                     .setId("compad2")
                     .setW(110)
                     .setH(60)))
-            .addApi(OpenRtb.BidRequest.Imp.APIFramework.VPAID_2)
-            .addCompaniontype(OpenRtb.BidRequest.Imp.Video.VASTCompanionType.HTML)
             .setExtension(TestExt.testVideo, OpenRtbJsonFactoryHelper.test1));
 
     OpenRtb.BidRequest.Imp.Native.Builder nativ = OpenRtb.BidRequest.Imp.Native.newBuilder()
         .setVer("1.0")
-        .addApi(OpenRtb.BidRequest.Imp.APIFramework.MRAID_1)
+        .addApi(OpenRtb.APIFramework.MRAID_1)
         .addBattr(OpenRtb.CreativeAttribute.TEXT_ONLY)
         .setExtension(TestExt.testNative, OpenRtbJsonFactoryHelper.test1);
     if (isNativeObject) {
@@ -294,7 +294,7 @@ class OpenRtbJsonRequestHelper {
         .setGeo(OpenRtb.BidRequest.Geo.newBuilder()
             .setLat(90.0)
             .setLon(45.0)
-            .setType(OpenRtb.BidRequest.Geo.LocationType.GPS_LOCATION)
+            .setType(OpenRtb.LocationType.GPS_LOCATION)
             .setCountry("USA")
             .setRegion("New York")
             .setRegionfips104("US36")
@@ -307,7 +307,7 @@ class OpenRtbJsonRequestHelper {
         .setLmt(false)
         .setIp("192.168.1.0")
         .setIpv6("1:2:3:4:5:6:0:0")
-        .setDevicetype(OpenRtb.BidRequest.Device.DeviceType.MOBILE)
+        .setDevicetype(OpenRtb.DeviceType.MOBILE)
         .setMake("Motorola")
         .setModel("MotoX")
         .setOs("Android")
@@ -321,7 +321,7 @@ class OpenRtbJsonRequestHelper {
         .setFlashver("11")
         .setLanguage("en")
         .setCarrier("77777")
-        .setConnectiontype(OpenRtb.BidRequest.Device.ConnectionType.CELL_4G)
+        .setConnectiontype(OpenRtb.ConnectionType.CELL_4G)
         .setIfa("999")
         .setDidsha1("1234")
         .setDidmd5("4321")
@@ -361,7 +361,7 @@ class OpenRtbJsonRequestHelper {
         .addImp(imp3)
         .setDevice(device)
         .setUser(user)
-        .setAt(OpenRtb.BidRequest.AuctionType.SECOND_PRICE)
+        .setAt(OpenRtb.AuctionType.SECOND_PRICE)
         .setTmax(100)
         .addWseat("seat1")
         .setAllimps(false)
@@ -379,8 +379,8 @@ class OpenRtbJsonRequestHelper {
   private static OpenRtb.NativeRequest.Builder generateNativeRequest() {
     return OpenRtb.NativeRequest.newBuilder()
         .setVer("1")
-        .setLayout(OpenRtb.NativeRequest.LayoutId.APP_WALL)
-        .setAdunit(OpenRtb.NativeRequest.AdUnitId.IAB_IN_AD_NATIVE)
+        .setLayout(OpenRtb.LayoutId.APP_WALL)
+        .setAdunit(OpenRtb.AdUnitId.IAB_IN_AD_NATIVE)
         .setPlcmtcnt(1)
         .setSeq(1);
   }

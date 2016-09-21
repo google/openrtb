@@ -16,10 +16,8 @@
 
 package com.google.openrtb.json;
 
-import com.google.openrtb.Test.Test2;
-
 import com.fasterxml.jackson.core.JsonGenerator;
-
+import com.google.openrtb.Test.Test2;
 import java.io.IOException;
 
 /**

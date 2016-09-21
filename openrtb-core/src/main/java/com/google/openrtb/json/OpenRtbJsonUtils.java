@@ -16,13 +16,11 @@
 
 package com.google.openrtb.json;
 
-import com.google.protobuf.ProtocolMessageEnum;
-
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-
+import com.google.protobuf.ProtocolMessageEnum;
 import java.io.IOException;
 import java.util.List;
 
@@ -51,7 +49,7 @@ public class OpenRtbJsonUtils {
     if (token == JsonToken.START_OBJECT) {
       par.nextToken();
     } else {
-      throw new JsonParseException("Expected start of object", par.getCurrentLocation());
+      throw new JsonParseException(par, "Expected start of object");
     }
   }
 
@@ -75,7 +73,7 @@ public class OpenRtbJsonUtils {
     if (token == JsonToken.START_ARRAY) {
       par.nextToken();
     } else {
-      throw new JsonParseException("Expected start of array", par.getCurrentLocation());
+      throw new JsonParseException(par, "Expected start of array");
     }
   }
 
@@ -108,7 +106,7 @@ public class OpenRtbJsonUtils {
     if (token.isStructStart()) {
       return token;
     } else {
-      throw new JsonParseException("Expected start of array or object", par.getCurrentLocation());
+      throw new JsonParseException(par, "Expected start of array or object");
     }
   }
 
@@ -228,7 +226,7 @@ public class OpenRtbJsonUtils {
     } else if (currentToken == JsonToken.VALUE_STRING) {
       return par.getText();
     } else {
-      throw new JsonParseException("Expected string or array", par.getCurrentLocation());
+      throw new JsonParseException(par, "Expected string or array");
     }
   }
 }

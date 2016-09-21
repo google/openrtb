@@ -20,11 +20,9 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.endArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.TestExt;
-
-import com.fasterxml.jackson.core.JsonParser;
-
 import java.io.IOException;
 
 /**

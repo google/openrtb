@@ -50,8 +50,17 @@ extend com.google.openrtb.BidRequest.Imp {
 extend com.google.openrtb.BidRequest.Imp.Banner {
   optional Test1 testBanner = 110;
 }
+extend com.google.openrtb.BidRequest.Imp.Banner.Format {
+  optional Test1 testFormat = 110;
+}
 extend com.google.openrtb.BidRequest.Imp.Video {
   optional Test1 testVideo = 110;
+}
+extend com.google.openrtb.BidRequest.Imp.Video.CompanionAd {
+  optional Test1 testCompanionAd = 110;
+}
+extend com.google.openrtb.BidRequest.Imp.Audio {
+  optional Test1 testAudio = 110;
 }
 extend com.google.openrtb.BidRequest.Imp.Native {
   optional Test1 testNative = 110;

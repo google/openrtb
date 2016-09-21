@@ -18,11 +18,9 @@ package com.google.openrtb.json;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.openrtb.OpenRtb;
 import com.google.openrtb.TestExt;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 
 /**
@@ -183,7 +181,7 @@ class OpenRtbJsonResponseHelper {
         .setBidid("bid")
         .setCur("USD")
         .setCustomdata("mydata")
-        .setNbr(OpenRtb.BidResponse.NoBidReason.TECHNICAL_ERROR);
+        .setNbr(OpenRtb.NoBidReason.TECHNICAL_ERROR);
 
     return jsonFactory.newWriter().writeBidResponse(bidResponse.build());
   }
@@ -292,7 +290,7 @@ class OpenRtbJsonResponseHelper {
         .setBidid("bid1")
         .setCur("USD")
         .setCustomdata("mydata")
-        .setNbr(OpenRtb.BidResponse.NoBidReason.TECHNICAL_ERROR)
+        .setNbr(OpenRtb.NoBidReason.TECHNICAL_ERROR)
         .setExtension(TestExt.testResponse1, OpenRtbJsonFactoryHelper.test1)
         .addExtension(TestExt.testResponse2, OpenRtbJsonFactoryHelper.test2)
         .addExtension(TestExt.testResponse2, OpenRtbJsonFactoryHelper.test2)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Google Inc. All Rights Reserved.
+ * Copyright 2014 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,32 @@
  * limitations under the License.
  */
 
-package com.google.openrtb.json;
-
-import com.fasterxml.jackson.core.JsonGenerator;
-import java.io.IOException;
+package com.google.openrtb;
 
 /**
- * Regular extension: {@code "test3": 99}, scalar type {@code Integer}.
+ * Gender.
  */
-class Test3Writer extends OpenRtbJsonExtWriter<Integer> {
+public enum Gender {
+  MALE("M"),
+  FEMALE("F"),
+  OTHER("O");
 
-  @Override protected void write(Integer ext, JsonGenerator gen) throws IOException {
-    gen.writeNumberField("test3", ext);
+  private final String code;
+
+  private Gender(String code) {
+    this.code = code;
+  }
+
+  public String code() {
+    return code;
+  }
+
+  public static Gender forCode(String code) {
+    switch (code) {
+      case "M": return MALE;
+      case "F": return FEMALE;
+      case "O": return OTHER;
+      default: return null;
+    }
   }
 }

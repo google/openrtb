@@ -20,11 +20,9 @@ import com.google.common.base.Predicate;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
-
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
 import javax.annotation.Nullable;
 
 /**
