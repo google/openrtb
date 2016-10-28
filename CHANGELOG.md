@@ -1,7 +1,8 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
-## Version 1.1.1, ??-??-2016
+## Version 1.2.0, 28-10-2016
+* Removed `ObjectMapper` interface.
 
 ## Version 1.1.0, 14-09-2016
 * Support for OpenRTB 2.4 & OpenRTB Native 1.1.
