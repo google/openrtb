@@ -9,7 +9,7 @@
   <groupId>com.google.openrtb</groupId>
   <artifactId>openrtb-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>1.2.1-SNAPSHOT</version>
   <name>Google OpenRTB Libraries</name>
   <description>
     OpenRTB model for Java and other languages via protobuf;
@@ -52,8 +52,8 @@
   <properties>
     <findBugsJsr305Version>3.0.1</findBugsJsr305Version>
     <gpg.skip>true</gpg.skip>
-    <guavaVersion>19.0</guavaVersion>
-    <fasterxmlJacksonVersion>2.8.2</fasterxmlJacksonVersion>
+    <guavaVersion>20.0</guavaVersion>
+    <fasterxmlJacksonVersion>2.8.4</fasterxmlJacksonVersion>
     <injectVersion>1</injectVersion>
     <junitVersion>4.12</junitVersion>
     <metricsVersion>3.0.2</metricsVersion>
@@ -175,7 +175,7 @@
           <groups>
             <group>
               <title>OpenRTB</title>
-              <packages>com.google.openrtb:com.google.openrtb.json:com.google.openrtb.mapper:com.google.openrtb.snippet:com.google.openrtb.util</packages>
+              <packages>com.google.openrtb:com.google.openrtb.json:com.google.openrtb.snippet:com.google.openrtb.util</packages>
             </group>
           </groups>
         </configuration>

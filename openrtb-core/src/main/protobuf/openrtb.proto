@@ -277,7 +277,6 @@ message BidRequest {
       // objects are used with a Video object (Section 3.2.4) to represent
       // an array of companion ads. Values usually start at 1 and increase
       // with each object; should be unique within an impression.
-      // [AdX: BidRequest.AdSlot.id]
       optional string id = 3;
 
       // Ad position on screen.
