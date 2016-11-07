@@ -90,4 +90,12 @@ public abstract class OpenRtbJsonExtWriter<T> {
         + (isJsonObject ? " JSON=object" : " JSON=scalar")
         + (rootName == null ? " regular" : " repeated:" + rootName);
   }
+
+  protected final boolean checkRequired(boolean hasProperty) {
+    return hasProperty;
+  }
+
+  protected final boolean checkRequired(int propertyCount) {
+    return propertyCount != 0;
+  }
 }
