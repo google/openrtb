@@ -1,6 +1,9 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 1.2.1, 09-11-2016
+* Added some utility methods for JSON extensions.
+
 ## Version 1.2.0, 28-10-2016
 * Removed `ObjectMapper` interface.
 
