@@ -53,13 +53,13 @@
     <findBugsJsr305Version>3.0.1</findBugsJsr305Version>
     <gpg.skip>true</gpg.skip>
     <guavaVersion>20.0</guavaVersion>
-    <fasterxmlJacksonVersion>2.8.4</fasterxmlJacksonVersion>
+    <fasterxmlJacksonVersion>2.8.5</fasterxmlJacksonVersion>
     <injectVersion>1</injectVersion>
     <junitVersion>4.12</junitVersion>
     <metricsVersion>3.0.2</metricsVersion>
     <protobufVersion>2.6.1</protobufVersion>
-    <slf4jVersion>1.7.21</slf4jVersion>
-    <truthVersion>0.30</truthVersion>
+    <slf4jVersion>1.7.22</slf4jVersion>
+    <truthVersion>0.31</truthVersion>
 
     <!-- Plugin versions -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -131,12 +131,12 @@
 
       <plugin>
         <artifactId>maven-site-plugin</artifactId>
-        <version>3.5.1</version>
+        <version>3.6</version>
       </plugin>
 
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.10</version>
+        <version>3.0.0</version>
       </plugin>
 
       <plugin>

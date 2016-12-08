@@ -1,21 +1,7 @@
-/*
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 option java_outer_classname = "OpenRtb";
 package com.google.openrtb;
+
+// Copyright 2016 Google Inc. All Rights Reserved.
 
 // OpenRTB extensions ("ext" fields in the spec & JSON representation)
 // are represented here by Protocol Buffer extensions. This proto only
@@ -375,7 +361,7 @@ message BidRequest {
 
       // Array of supported video bid response protocols.
       // At least one supported protocol must be specified.
-      // [AdX: {VAST_2_0, VAST_3_0, VAST_2_0_WRAPPER, VAST_3_0_WRAPPER}]
+      // [AdX: BidRequest.Video.protocols]
       repeated Protocol protocols = 21 [packed = true];
 
       // Width of the video player in device independent pixels (DIPS).
