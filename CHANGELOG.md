@@ -1,6 +1,9 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 1.2.2, 09-01-2016
+* OpenRTB proto update (docs only).
+
 ## Version 1.2.1, 09-11-2016
 * Added some utility methods for JSON extensions.
 
