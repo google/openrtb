@@ -361,7 +361,7 @@ message BidRequest {
 
       // Array of supported video bid response protocols.
       // At least one supported protocol must be specified.
-      // [AdX: BidRequest.Video.protocols]
+      // [AdX: {VAST_2_0, VAST_3_0, VAST_2_0_WRAPPER, VAST_3_0_WRAPPER}]
       repeated Protocol protocols = 21 [packed = true];
 
       // Width of the video player in device independent pixels (DIPS).
@@ -1630,6 +1630,7 @@ message NativeRequest {
       required DataAssetType type = 1;
 
       // Maximum length of the text in the element's response.
+      // Longer strings will be truncated by the publisher during rendering.
       // [AdX: BidRequest.AdSlot.native_ad_template[0] of type:
       //       DESC/BODY: body_max_safe_length
       //       CTATEXT/CALL_TO_ACTION: call_to_action_max_safe_length
@@ -1758,7 +1759,9 @@ message NativeResponse {
 
     // OpenRTB Native 1.0: Corresponds to the Image Object in the request.
     // The Image object to be used for all image elements of the Native ad
-    // such as Icons, Main Image, etc.
+    // such as Icons, Main Image, etc. Images that have aspect ratios
+    // substantially different than those implied by the height and width
+    // may be filtered.
     message Image {
       // URL of the image asset.
       // REQUIRED by the OpenRTB Native specification.
