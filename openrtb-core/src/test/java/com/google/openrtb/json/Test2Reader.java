@@ -22,8 +22,8 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.google.openrtb.Test.Test2;
-import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
 import com.google.protobuf.GeneratedMessage.GeneratedExtension;
+import com.google.protobuf.GeneratedMessageV3.ExtendableBuilder;
 import java.io.IOException;
 
 /**

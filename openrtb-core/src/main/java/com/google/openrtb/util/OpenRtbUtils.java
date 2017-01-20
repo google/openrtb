@@ -30,14 +30,12 @@ import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBidOrBuilder;
 import com.google.openrtb.OpenRtb.ContentCategory;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
 import javax.annotation.Nullable;
 
 /**
@@ -68,7 +66,7 @@ public final class OpenRtbUtils {
     ImmutableMap.Builder<Object, String> catToJson = ImmutableMap.builder();
     ImmutableMap.Builder<String, ContentCategory> nameToCat = ImmutableMap.builder();
     for (ContentCategory cat : ContentCategory.values()) {
-      String json = cat.name().replace('_', '-');
+      String json = cat.name().replace('x', '-');
       catToJson.put(cat.name(), json);
       catToJson.put(cat, json);
       nameToCat.put(cat.name(), cat);
