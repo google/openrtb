@@ -66,7 +66,7 @@ public final class OpenRtbUtils {
     ImmutableMap.Builder<Object, String> catToJson = ImmutableMap.builder();
     ImmutableMap.Builder<String, ContentCategory> nameToCat = ImmutableMap.builder();
     for (ContentCategory cat : ContentCategory.values()) {
-      String json = cat.name().replace('x', '-');
+      String json = cat.name().replace('_', '-');
       catToJson.put(cat.name(), json);
       catToJson.put(cat, json);
       nameToCat.put(cat.name(), cat);

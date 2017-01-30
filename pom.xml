@@ -57,7 +57,7 @@
     <injectVersion>1</injectVersion>
     <junitVersion>4.12</junitVersion>
     <metricsVersion>3.0.2</metricsVersion>
-    <protobufVersion>3.1.0</protobufVersion>
+    <protobufVersion>3.2.0</protobufVersion>
     <slf4jVersion>1.7.22</slf4jVersion>
     <truthVersion>0.31</truthVersion>
 
