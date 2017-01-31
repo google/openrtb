@@ -23,7 +23,7 @@ import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.google.openrtb.util.OpenRtbUtils;
-import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
+import com.google.protobuf.GeneratedMessageV3.ExtendableBuilder;
 import java.io.IOException;
 import java.util.Set;
 import org.slf4j.Logger;

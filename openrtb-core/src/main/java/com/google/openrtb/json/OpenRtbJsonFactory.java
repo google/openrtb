@@ -24,7 +24,7 @@ import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
-import com.google.protobuf.GeneratedMessage.ExtendableBuilder;
+import com.google.protobuf.GeneratedMessageV3.ExtendableBuilder;
 import com.google.protobuf.Message;
 import java.util.LinkedHashMap;
 import java.util.Map;

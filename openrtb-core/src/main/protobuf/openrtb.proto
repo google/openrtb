@@ -1,7 +1,10 @@
+// Protocol version: v.2.4.1
+// LINT: LEGACY_NAMES
+syntax = "proto2";
 option java_outer_classname = "OpenRtb";
 package com.google.openrtb;
 
-// Copyright 2016 Google Inc. All Rights Reserved.
+// Copyright 2017 Google Inc. All Rights Reserved.
 
 // OpenRTB extensions ("ext" fields in the spec & JSON representation)
 // are represented here by Protocol Buffer extensions. This proto only
@@ -978,7 +981,7 @@ message BidRequest {
     //       https://developers.google.com/ad-exchange/rtb/cookie-guide]
     optional bool dnt = 1;
 
-    // Browser user agent string.
+    // Browser user agent string. Certain data may be redacted or replaced.
     // RECOMMENDED by the OpenRTB specification.
     optional string ua = 2;
 

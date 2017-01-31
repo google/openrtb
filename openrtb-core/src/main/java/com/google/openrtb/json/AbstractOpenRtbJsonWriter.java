@@ -19,7 +19,7 @@ package com.google.openrtb.json;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.google.openrtb.util.OpenRtbUtils;
 import com.google.protobuf.Descriptors.FieldDescriptor;
-import com.google.protobuf.GeneratedMessage.ExtendableMessage;
+import com.google.protobuf.GeneratedMessageV3.ExtendableMessage;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
