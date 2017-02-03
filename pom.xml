@@ -9,7 +9,7 @@
   <groupId>com.google.openrtb</groupId>
   <artifactId>openrtb-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.3.0</version>
+  <version>1.3.1-SNAPSHOT</version>
   <name>Google OpenRTB Libraries</name>
   <description>
     OpenRTB model for Java and other languages via protobuf;
@@ -94,7 +94,7 @@
   <scm>
     <connection>scm:git:https://github.com/google/openrtb.git</connection>
     <developerConnection>scm:git:https://github.com/google/openrtb.git</developerConnection>
-    <tag>1.3.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <build>
