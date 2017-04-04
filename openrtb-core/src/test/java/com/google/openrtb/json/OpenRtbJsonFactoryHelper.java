@@ -16,6 +16,7 @@
 
 package com.google.openrtb.json;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.App;
 import com.google.openrtb.OpenRtb.BidRequest.Content;
@@ -28,15 +29,14 @@ import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Native;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Pmp;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Video;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.CompanionAd;
 import com.google.openrtb.OpenRtb.BidRequest.Producer;
 import com.google.openrtb.OpenRtb.BidRequest.Publisher;
 import com.google.openrtb.OpenRtb.BidRequest.Regs;
 import com.google.openrtb.OpenRtb.BidRequest.Site;
+import com.google.openrtb.OpenRtb.BidRequest.Source;
 import com.google.openrtb.OpenRtb.BidRequest.User;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
-import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.NativeRequest;
 import com.google.openrtb.OpenRtb.NativeResponse;
 import com.google.openrtb.Test;
@@ -44,9 +44,6 @@ import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
 import com.google.openrtb.TestExt;
 import com.google.openrtb.TestNExt;
-
-import com.fasterxml.jackson.core.JsonFactory;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -90,16 +87,18 @@ class OpenRtbJsonFactoryHelper {
         .register(new Test1Reader<>(TestExt.testDevice), Device.Builder.class)
         .register(new Test1Reader<>(TestExt.testGeo), Geo.Builder.class)
         .register(new Test1Reader<>(TestExt.testImp), Imp.Builder.class)
+        .register(new Test1Reader<>(TestExt.testMetric), Imp.Metric.Builder.class)
         .register(new Test1Reader<>(TestExt.testBanner), Banner.Builder.class)
         .register(new Test1Reader<>(TestExt.testFormat), Banner.Format.Builder.class)
         .register(new Test1Reader<>(TestExt.testNative), Native.Builder.class)
         .register(new Test1Reader<>(TestExt.testPmp), Pmp.Builder.class)
         .register(new Test1Reader<>(TestExt.testDeal), Pmp.Deal.Builder.class)
         .register(new Test1Reader<>(TestExt.testVideo), Video.Builder.class)
-        .register(new Test1Reader<>(TestExt.testCompanionAd), CompanionAd.Builder.class)
+        .register(new Test1Reader<>(TestExt.testCompanionAd), Video.CompanionAd.Builder.class)
         .register(new Test1Reader<>(TestExt.testAudio), Audio.Builder.class)
         .register(new Test1Reader<>(TestExt.testRegs), Regs.Builder.class)
         .register(new Test1Reader<>(TestExt.testSite), Site.Builder.class)
+        .register(new Test1Reader<>(TestExt.testSource), Source.Builder.class)
         .register(new Test1Reader<>(TestExt.testUser), User.Builder.class)
         .register(new Test1Reader<>(TestExt.testData), Data.Builder.class)
         .register(new Test1Reader<>(TestExt.testSegment), Data.Segment.Builder.class)
@@ -117,17 +116,17 @@ class OpenRtbJsonFactoryHelper {
         .register(new Test1Writer(), Test.Test1.class, Content.class)
         .register(new Test1Writer(), Test.Test1.class, Producer.class)
         .register(new Test1Writer(), Test.Test1.class, Imp.class)
+        .register(new Test1Writer(), Test.Test1.class, Imp.Metric.class)
         .register(new Test1Writer(), Test.Test1.class, Banner.class)
         .register(new Test1Writer(), Test.Test1.class, Banner.Format.class)
         .register(new Test1Writer(), Test.Test1.class, Video.class)
-        .register(new Test1Writer(), Test.Test1.class, CompanionAd.class)
+        .register(new Test1Writer(), Test.Test1.class, Video.CompanionAd.class)
         .register(new Test1Writer(), Test.Test1.class, Audio.class)
         .register(new Test1Writer(), Test.Test1.class, Native.class)
         .register(new Test1Writer(), Test.Test1.class, Pmp.class)
         .register(new Test1Writer(), Test.Test1.class, Pmp.Deal.class)
         .register(new Test1Writer(), Test.Test1.class, Regs.class)
-        .register(new Test1Writer(), Test.Test1.class, SeatBid.class)
-        .register(new Test1Writer(), Test.Test1.class, Bid.class);
+        .register(new Test1Writer(), Test.Test1.class, Source.class);
   }
 
   static OpenRtbJsonFactory registerBidResponseExt(OpenRtbJsonFactory factory) {
@@ -147,7 +146,9 @@ class OpenRtbJsonFactoryHelper {
         .register(new Test2Writer("test2a"), Test.Test2.class, BidResponse.class, "testResponse2a")
         .register(new Test2Writer("test2b"), Test.Test2.class, BidResponse.class, "testResponse2b")
         .register(new Test3Writer(), Integer.class, BidResponse.class, "testResponse3")
-        .register(new Test4Writer(), Integer.class, BidResponse.class, "testResponse4");
+        .register(new Test4Writer(), Integer.class, BidResponse.class, "testResponse4")
+        .register(new Test1Writer(), Test.Test1.class, SeatBid.class)
+        .register(new Test1Writer(), Test.Test1.class, SeatBid.Bid.class);
   }
 
   static OpenRtbJsonFactory registerNativeRequestExt(OpenRtbJsonFactory factory) {

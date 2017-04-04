@@ -53,6 +53,9 @@ extend com.google.openrtb.BidRequest.Imp.Banner {
 extend com.google.openrtb.BidRequest.Imp.Banner.Format {
   optional Test1 testFormat = 110;
 }
+extend com.google.openrtb.BidRequest.Imp.Metric {
+  optional Test1 testMetric = 110;
+}
 extend com.google.openrtb.BidRequest.Imp.Video {
   optional Test1 testVideo = 110;
 }
@@ -82,6 +85,9 @@ extend com.google.openrtb.BidRequest.Regs {
 }
 extend com.google.openrtb.BidRequest.Site {
   optional Test1 testSite = 110;
+}
+extend com.google.openrtb.BidRequest.Source {
+  optional Test1 testSource = 110;
 }
 extend com.google.openrtb.BidRequest.User {
   optional Test1 testUser = 110;

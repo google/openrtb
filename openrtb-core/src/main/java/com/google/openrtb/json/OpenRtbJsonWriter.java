@@ -34,6 +34,7 @@ import com.google.openrtb.OpenRtb.BidRequest.Imp;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Audio;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner.Format;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Metric;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Native;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Pmp;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Pmp.Deal;
@@ -43,6 +44,7 @@ import com.google.openrtb.OpenRtb.BidRequest.Producer;
 import com.google.openrtb.OpenRtb.BidRequest.Publisher;
 import com.google.openrtb.OpenRtb.BidRequest.Regs;
 import com.google.openrtb.OpenRtb.BidRequest.Site;
+import com.google.openrtb.OpenRtb.BidRequest.Source;
 import com.google.openrtb.OpenRtb.BidRequest.User;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
@@ -159,6 +161,12 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
       writeRegs(req.getRegs(), gen);
     }
     writeStrings("bapp", req.getBappList(), gen);
+    writeStrings("bseat", req.getBseatList(), gen);
+    writeStrings("wlang", req.getWlangList(), gen);
+    if (req.hasSource()) {
+      gen.writeFieldName("source");
+      writeSource(req.getSource(), gen);
+    }
   }
 
   public final void writeImp(Imp imp, JsonGenerator gen) throws IOException {
@@ -218,6 +226,32 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     if (imp.hasExp()) {
       gen.writeNumberField("exp", imp.getExp());
     }
+    if (imp.getMetricCount() != 0) {
+      gen.writeArrayFieldStart("metric");
+      for (Metric metric : imp.getMetricList()) {
+        writeMetric(metric, gen);
+      }
+      gen.writeEndArray();
+    }
+  }
+
+  public final void writeMetric(Metric metric, JsonGenerator gen) throws IOException {
+    gen.writeStartObject();
+    writeMetricFields(metric, gen);
+    writeExtensions(metric, gen);
+    gen.writeEndObject();
+  }
+
+  protected void writeMetricFields(Metric metric, JsonGenerator gen) throws IOException {
+    if (metric.hasType()) {
+      gen.writeStringField("type", metric.getType());
+    }
+    if (metric.hasValue()) {
+      gen.writeNumberField("value", metric.getValue());
+    }
+    if (metric.hasVendor()) {
+      gen.writeStringField("vendor", metric.getVendor());
+    }
   }
 
   public final void writeBanner(Banner banner, JsonGenerator gen) throws IOException {
@@ -268,6 +302,9 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
       }
       gen.writeEndArray();
     }
+    if (banner.hasVcm()) {
+      writeIntBoolField("vcm", banner.getVcm(), gen);
+    }
   }
 
   public final void writeFormat(Format format, JsonGenerator gen) throws IOException {
@@ -283,6 +320,15 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     }
     if (format.hasH()) {
       gen.writeNumberField("h", format.getH());
+    }
+    if (format.hasWratio()) {
+      gen.writeNumberField("wratio", format.getWratio());
+    }
+    if (format.hasHratio()) {
+      gen.writeNumberField("hratio", format.getHratio());
+    }
+    if (format.hasWmin()) {
+      gen.writeNumberField("wmin", format.getWmin());
     }
   }
 
@@ -366,6 +412,12 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     }
     if (video.hasSkipafter()) {
       gen.writeNumberField("skipafter", video.getSkipafter());
+    }
+    if (video.hasPlacement()) {
+      gen.writeNumberField("placement", video.getPlacement().getNumber());
+    }
+    if (video.hasPlaybackend()) {
+      gen.writeNumberField("playbackend", video.getPlaybackend().getNumber());
     }
   }
 
@@ -840,6 +892,9 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     if (device.hasGeofetch()) {
       writeIntBoolField("geofetch", device.getGeofetch(), gen);
     }
+    if (device.hasMccmnc()) {
+      gen.writeStringField("mccmnc", device.getMccmnc());
+    }
   }
 
   public final void writeGeo(Geo geo, JsonGenerator gen) throws IOException {
@@ -982,6 +1037,25 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
   protected void writeRegsFields(Regs regs, JsonGenerator gen) throws IOException {
     if (regs.hasCoppa()) {
       writeIntBoolField("coppa", regs.getCoppa(), gen);
+    }
+  }
+
+  public final void writeSource(Source source, JsonGenerator gen) throws IOException {
+    gen.writeStartObject();
+    writeSourceFields(source, gen);
+    writeExtensions(source, gen);
+    gen.writeEndObject();
+  }
+
+  protected void writeSourceFields(Source source, JsonGenerator gen) throws IOException {
+    if (source.hasFd()) {
+      writeIntBoolField("fd", source.getFd(), gen);
+    }
+    if (source.hasTid()) {
+      gen.writeStringField("tid", source.getTid());
+    }
+    if (source.hasPchain()) {
+      gen.writeStringField("pchain", source.getPchain());
     }
   }
 
@@ -1140,6 +1214,24 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     }
     if (bid.hasExp()) {
       gen.writeNumberField("exp", bid.getExp());
+    }
+    if (bid.hasBurl()) {
+      gen.writeStringField("burl", bid.getBurl());
+    }
+    if (bid.hasLurl()) {
+      gen.writeStringField("lurl", bid.getLurl());
+    }
+    if (bid.hasTactic()) {
+      gen.writeStringField("tactic", bid.getTactic());
+    }
+    if (bid.hasLanguage()) {
+      gen.writeStringField("language", bid.getLanguage());
+    }
+    if (bid.hasWratio()) {
+      gen.writeNumberField("wratio", bid.getWratio());
+    }
+    if (bid.hasHratio()) {
+      gen.writeNumberField("hratio", bid.getHratio());
     }
   }
 

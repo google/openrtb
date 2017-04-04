@@ -1,4 +1,4 @@
-// Protocol version: v.2.4.1
+// Protocol version: v.2.5.0
 // LINT: LEGACY_NAMES
 syntax = "proto2";
 option java_outer_classname = "OpenRtb";
@@ -113,8 +113,54 @@ message BidRequest {
   // [AdX: BidRequest.is_test]
   optional bool test = 15 [default = false];
 
+  // Block list of buyer seats (e.g., advertisers, agencies) restricted
+  // from bidding on this impression. IDs of seats and knowledge
+  // of the buyer's customers to which they refer must be
+  // coordinated between bidders and the exchange a priori.
+  // At most, only one of wseat and bseat should be used in the
+  // same request. Omission of both implies no seat restrictions.
+  repeated string bseat = 17;
+
+  // White list of languages for creatives using ISO-639-1-alpha-2.
+  // Omission implies no specific restrictions, but buyers would be
+  // advised to consider language attribute in the Device and/or
+  // Content objects if available.
+  repeated string wlang = 18;
+
+  // A Source object (Section 3.2.2) that provides data about the
+  // inventory source and which entity makes the final decision.
+  optional Source source = 19;
+
   // Extensions.
   extensions 100 to 9999;
+
+  // OpenRTB 2.5: This object describes the nature and behavior of the entity
+  // that is the source of the bid request upstream from the exchange.
+  // The primary purpose of this object is to define post-auction or upstream
+  // decisioning when the exchange itself does not control the final decision.
+  // A common example of this is header bidding, but it can also apply to
+  // upstream server entities such as another RTB exchange, a mediation
+  // platform, or an ad server combines direct campaigns with 3rd party
+  // demand in decisioning.
+  message Source {
+    // Entity responsible for the final impression sale decision,
+    // where 0 = exchange, 1 = upstream source
+    // RECOMMENDED by the OpenRTB specification.
+    optional bool fd = 1;
+
+    // Transaction ID that must be common across all participants in
+    // this bid request (e.g., potentially multiple exchanges).
+    // RECOMMENDED by the OpenRTB specification.
+    optional string tid = 2;
+
+    // Payment ID chain string containing embedded syntax
+    // described in the TAG Payment ID Protocol v1.0.
+    // RECOMMENDED by the OpenRTB specification.
+    optional string pchain = 3;
+
+    // Extensions.
+    extensions 100 to 9999;
+  }
 
   // OpenRTB 2.0: This object describes an ad placement or impression
   // being auctioned.  A single bid request can include multiple Imp objects,
@@ -207,8 +253,39 @@ message BidRequest {
     // between the auction and the actual impression.
     optional int32 exp = 14;
 
+    // An array of Metric object (Section 3.2.5).
+    repeated Metric metric = 17;
+
     // Extensions.
     extensions 100 to 9999;
+
+    // OpenRTB 2.5: This object is associated with an impression as
+    // an array of metrics. These metrics can offer insight into
+    // the impression to assist with decisioning such as average recent
+    // viewability, click-through rate, etc.  Each metric is identified
+    // by its type, reports the value of the metric, and optionally
+    // identifies the source or vendor measuring the value.
+    message Metric {
+      // Type of metric being presented using exchange curated string
+      // names which should be published to bidders a priori.
+      // REQUIRED by the OpenRTB specification.
+      optional string type = 1;
+
+      // Number representing the value of the metric.
+      // Probabilities must be in the range 0.0 – 1.0.
+      // REQUIRED by the OpenRTB specification.
+      optional double value = 2;
+
+      // Source of the value using exchange curated string names
+      // which should be published to bidders a priori.
+      // If the exchange itself is the source versus a third party,
+      // "EXCHANGE" is recommended.
+      // RECOMMENDED by the OpenRTB specification.
+      optional string vendor = 3;
+
+      // Extensions.
+      extensions 100 to 9999;
+    }
 
     // OpenRTB 2.0: This object represents the most general type of
     // impression.  Although the term "banner" may have very specific meaning
@@ -303,6 +380,12 @@ message BidRequest {
       // [AdX: BidRequest.AdSlot.excluded_attribute / MRAID_1_0]
       repeated APIFramework api = 10 [packed = true];
 
+      // Relevant only for Banner objects used with a Video object
+      // (Section 3.2.7) in an array of companion ads. Indicates the
+      // companion banner rendering mode relative to the associated
+      // video, where 0 = concurrent, 1 = end-card.
+      optional bool vcm = 16;
+
       // Extensions.
       extensions 100 to 9999;
 
@@ -316,6 +399,16 @@ message BidRequest {
 
         // Height in device independent pixels (DIPS).
         optional int32 h = 2;
+
+        // Relative width when expressing size as a ratio.
+        optional int32 wratio = 3;
+
+        // Relative height when expressing size as a ratio.
+        optional int32 hratio = 4;
+
+        // The minimum width in device independent pixels (DIPS) at
+        // which the ad will be displayed when the size is expressed as a ratio.
+        optional int32 wmin = 5;
 
         // Extensions.
         extensions 100 to 9999;
@@ -436,7 +529,8 @@ message BidRequest {
       // Playback methods that may be in use. If none are specified, any
       // method may be used. Only one method is typically used in practice.
       // As a result, this array may be converted to an integer in a future
-      // version of the specification.
+      // version of the specification. It is strongly advised to use only
+      // the first element of this array in preparation for this change.
       // [AdX: BidRequest.Video.playback_method]
       repeated PlaybackMethod playbackmethod = 15 [packed = true];
 
@@ -465,6 +559,12 @@ message BidRequest {
       // objects are included via the companionad array.
       // [AdX: BidRequest.Video.companion_slot.creative_format]
       repeated CompanionType companiontype = 20 [packed = true];
+
+      // Placement type for the impression.
+      optional VideoPlacementType placement = 26;
+
+      // The event that causes playback to end.
+      optional PlaybackCessationMode playbackend = 27;
 
       // Extensions.
       extensions 100 to 9999;
@@ -1018,9 +1118,8 @@ message BidRequest {
     //     - AdX truncates to first 6 octets; OpenRTB is "X:X:X:::::"]
     optional string ipv6 = 9;
 
-    // Carrier or ISP, e.g. "VERIZON", specified using Mobile Network Code (MNC).
-    // "WIFI" is often used in mobile to indicate high bandwidth
-    // (e.g., video friendly vs. cellular).
+    // Carrier or ISP (e.g., "VERIZON") using exchange curated string
+    // names which should be published to bidders a priori.
     // [AdX: BidRequest.Device.carrier_id
     //     - IDs will be the same Criterion IDs as in AdX protocol, see:
     // https://developers.google.com/adwords/api/docs/appendix/mobilecarriers]
@@ -1100,6 +1199,13 @@ message BidRequest {
     // commercial guidelines.
     // RECOMMENDED by the OpenRTB specification.
     optional bool lmt = 23;
+
+    // Mobile carrier as the concatenated MCC-MNC code (e.g.,
+    // "310-005" identifies Verizon Wireless CDMA in the USA).
+    // Refer to https://en.wikipedia.org/wiki/Mobile_country_code
+    // for further examples. Note that the dash between the MCC
+    // and MNC parts is required to remove parsing ambiguity.
+    optional string mccmnc = 30;
 
     // Extensions.
     extensions 100 to 9999;
@@ -1462,6 +1568,39 @@ message BidResponse {
       // Advisory as to the number of seconds the bidder is willing to
       // wait between the auction and the actual impression.
       optional int32 exp = 21;
+
+      // Billing notice URL called by the exchange when a winning bid
+      // becomes billable based on exchange-specific business policy
+      // (e.g., typically delivered, viewed, etc.). Substitution macros
+      // (Section 4.4) may be included.
+      optional string burl = 22;
+
+      // Loss notice URL called by the exchange when a bid is known to
+      // have been lost. Substitution macros (Section 4.4) may be
+      // included. Exchange-specific policy may preclude support for
+      // loss notices or the disclosure of winning clearing prices
+      // resulting in ${AUCTION_PRICE} macros being removed (i.e.,
+      // replaced with a zero-length string).
+      optional string lurl = 23;
+
+      // Tactic ID to enable buyers to label bids for reporting to the
+      // exchange the tactic through which their bid was submitted.
+      // The specific usage and meaning of the tactic ID should be
+      // communicated between buyer and exchanges a priori.
+      optional string tactic = 24;
+
+      // Language of the creative using ISO-639-1-alpha-2. The nonstandard
+      // code "xx" may also be used if the creative has no
+      // linguistic content (e.g., a banner with just a company logo).
+      optional string language = 25;
+
+      // Relative width of the creative when expressing size as a ratio.
+      // Required for Flex Ads.
+      optional int32 wratio = 26;
+
+      // Relative height of the creative when expressing size as a ratio.
+      // Required for Flex Ads.
+      optional int32 hratio = 27;
 
       // Extensions.
       extensions 100 to 9999;
@@ -2315,6 +2454,8 @@ enum APIFramework {
 
   // [AdX: attribute 32/MRAID (OpenRTB 2.3+)]
   MRAID_2 = 5;
+
+  MRAID_3 = 6;
 };
 
 // OpenRTB 2.0: The following table specifies the position of the ad as a
@@ -2390,16 +2531,26 @@ enum Protocol {
 
 // OpenRTB 2.0: The following table lists the various playback methods.
 enum PlaybackMethod {
+  // Initiates on Page Load with Sound On.
   // [AdX: VideoPlaybackMethod.AUTO_PLAY_SOUND_ON]
   AUTO_PLAY_SOUND_ON = 1;
 
+  // Initiates on Page Load with Sound Off by Default.
   // [AdX: VideoPlaybackMethod.AUTO_PLAY_SOUND_OFF]
   AUTO_PLAY_SOUND_OFF = 2;
 
+  // Initiates on Click with Sound On.
   // [AdX: VideoPlaybackMethod.CLICK_TO_PLAY]
   CLICK_TO_PLAY = 3;
 
+  // Initiates on Mouse-Over with Sound On.
   MOUSE_OVER = 4;
+
+  // Initiates on Entering Viewport with Sound On.
+  ENTER_SOUND_ON = 5;
+
+  // Initiates on Entering Viewport with Sound Off by Default.
+  ENTER_SOUND_OFF = 6;
 }
 
 // OpenRTB 2.0: The following table lists the various options for the
@@ -2409,6 +2560,54 @@ enum StartDelay {
   PRE_ROLL = 0;
   GENERIC_MID_ROLL = -1;
   GENERIC_POST_ROLL = -2;
+}
+
+// OpenRTB 2.5: The following table lists the various types of video placements
+// derived largely from the IAB Digital Video Guidelines.
+enum VideoPlacementType {
+  // The video placement is not defined.
+  // Default value.
+  UNDEFINED_VIDEO_PLACEMENT = 0;
+
+  // Played before, during or after the streaming video content
+  // that the consumer has requested.
+  // E.G.: Pre-roll, Mid-roll, Post-roll.
+  IN_STREAM_PLACEMENT = 1;
+
+  // Exists within a web banner that leverages the banner space
+  // to deliver a video experience as opposed to another static
+  // or rich media format.
+  // The format relies on the existence of display ad inventory
+  // on the page for its delivery.
+  IN_BANNER_PLACEMENT = 2;
+
+  // Loads and plays dynamically between paragraphs of editorial content;
+  // existing as a standalone branded message.
+  IN_ARTICLE_PLACEMENT = 3;
+
+  // In-Feed - Found in content, social, or product feeds.
+  IN_FEED_PLACEMENT = 4;
+
+  // Interstitial/Slider/Floating.
+  // Covers the entire or a portion of screen area,
+  // but is always on screen while displayed
+  // (i.e. cannot be scrolled out of view).
+  // Note that a full-screen interstitial (e.g., in mobile)
+  // can be distinguished from a floating/slider unit by the imp.instl field.
+  FLOATING_PLACEMENT = 5;
+}
+
+// OpenRTB 2.5: The various modes for when playback terminates.
+enum PlaybackCessationMode {
+  // On Video Completion or when Terminated by User
+  COMPLETION_OR_USER = 1;
+
+  // On Leaving Viewport or when Terminated by User
+  LEAVING_OR_USER = 2;
+
+  // On Leaving Viewport Continues as a Floating/Slider Unit until
+  // Video Completion or when Terminated by User
+  LEAVING_CONTINUES_OR_USER = 3;
 }
 
 // OpenRTB 2.0: The following table lists the various options for the
@@ -2565,6 +2764,43 @@ enum NoBidReason {
   UNSUPPORTED_DEVICE = 6;
   BLOCKED_PUBLISHER = 7;
   UNMATCHED_USER = 8;
+  DAILY_READER_CAP = 9;
+  DAILY_DOMAIN_CAP = 10;
+}
+
+// OpenRTB 2.5: The following table lists the options for an exchange
+// to inform a bidder as to the reason why they did not win an impression.
+enum LossReason {
+  BID_WON = 0;
+  INTERNAL_ERROR = 1;
+  IMP_EXPIRED = 2;
+  INVALID_BID = 3;
+  INVALID_DEAL_ID = 4;
+  INVALID_AUCTION_ID = 5;
+  INVALID_ADOMAIN = 6;
+  MISSING_MARKUP = 7;
+  MISSING_CREATIVE_ID = 8;
+  MISSING_PRICE = 9;
+  MISSING_MIN_CREATIVE_APPROVAL_DATA = 10;
+  BID_BELOW_FLOOR = 100;
+  BID_BELOW_DEAL_FLOOR = 101;
+  LOST_HIGHER_BID = 102;
+  LOST_PMP_DEAL = 103;
+  SEAT_BLOCKED = 104;
+  CREATIVE_REASON_UNKNOWN = 200;
+  CREATIVE_PENDING = 201;
+  CREATIVE_DISAPPROVED = 202;
+  CREATIVE_SIZE = 203;
+  CREATIVE_FORMAT = 204;
+  CREATIVE_ADVERTISER_EXCLUSION = 205;
+  CREATIVE_APP_EXCLUSION = 206;
+  CREATIVE_NOT_SECURE = 207;
+  CREATIVE_LANGUAGE_EXCLUSION = 208;
+  CREATIVE_CATEGORY_EXCLUSION = 209;
+  CREATIVE_ATTRIBUTE_EXCLUSION = 210;
+  CREATIVE_ADTYPE_EXCLUSION = 211;
+  CREATIVE_ANIMATION_LONG = 212;
+  CREATIVE_NOT_ALLOWED_PMP = 213;
 }
 
 // OpenRTB 2.4: The following table lists the types of feeds,
