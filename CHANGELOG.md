@@ -1,6 +1,9 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 1.4.0, ??-04-2017
+* Support for OpenRTB 2.5!
+
 ## Version 1.3.0, 03-02-2017
 * Updated Protocol Buffers to v3.2.0!  You will need to install this
   exact version of protobuf, have it in the PATH, rebuild everything.

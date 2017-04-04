@@ -20,6 +20,11 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.openrtb.json.OpenRtbJsonFactoryHelper.newJsonFactory;
 import static java.util.Arrays.asList;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.openrtb.OpenRtb;
 import com.google.openrtb.OpenRtb.APIFramework;
 import com.google.openrtb.OpenRtb.AdPosition;
@@ -35,12 +40,10 @@ import com.google.openrtb.OpenRtb.BidRequest.Geo;
 import com.google.openrtb.OpenRtb.BidRequest.Imp;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Audio;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner.Format;
+import com.google.openrtb.OpenRtb.BidRequest.Imp.Metric;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Native;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Pmp;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Pmp.Deal;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Video;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Video.CompanionAd;
 import com.google.openrtb.OpenRtb.BidRequest.Producer;
 import com.google.openrtb.OpenRtb.BidRequest.Publisher;
 import com.google.openrtb.OpenRtb.BidRequest.Regs;
@@ -62,28 +65,22 @@ import com.google.openrtb.OpenRtb.LocationType;
 import com.google.openrtb.OpenRtb.NativeRequest;
 import com.google.openrtb.OpenRtb.NativeResponse;
 import com.google.openrtb.OpenRtb.NoBidReason;
+import com.google.openrtb.OpenRtb.PlaybackCessationMode;
 import com.google.openrtb.OpenRtb.PlaybackMethod;
 import com.google.openrtb.OpenRtb.ProductionQuality;
 import com.google.openrtb.OpenRtb.Protocol;
 import com.google.openrtb.OpenRtb.QAGMediaRating;
 import com.google.openrtb.OpenRtb.VideoLinearity;
+import com.google.openrtb.OpenRtb.VideoPlacementType;
 import com.google.openrtb.OpenRtb.VolumeNormalizationMode;
 import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
 import com.google.openrtb.TestExt;
 import com.google.openrtb.TestUtil;
-
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
+import java.io.IOException;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
 
 /**
  * Tests for {@link OpenRtbJsonFactory}, {@link OpenRtbJsonReader}, {@link OpenRtbJsonWriter}.
@@ -149,7 +146,7 @@ public class OpenRtbJsonTest {
             .setPmp(Pmp.newBuilder()))
         .addImp(Imp.newBuilder().setId("0")
             .setBanner(Banner.newBuilder()
-                .addFormat(Format.newBuilder())))
+                .addFormat(Banner.Format.newBuilder())))
         .setDevice(Device.newBuilder().setGeo(Geo.newBuilder()))
         .setSite(Site.newBuilder())
         .setUser(User.newBuilder().addData(Data.newBuilder()))
@@ -158,9 +155,9 @@ public class OpenRtbJsonTest {
         .addImp(Imp.newBuilder().setId("0")
             .setVideo(Video.newBuilder())
             .setAudio(Audio.newBuilder())
-            .setPmp(Pmp.newBuilder().addDeals(Deal.newBuilder().setId("0"))))
+            .setPmp(Pmp.newBuilder().addDeals(Pmp.Deal.newBuilder().setId("0"))))
         .addImp(Imp.newBuilder().setId("0")
-            .setVideo(Video.newBuilder().setCompanionad21(CompanionAd.newBuilder())))
+            .setVideo(Video.newBuilder().setCompanionad21(Video.CompanionAd.newBuilder())))
         .setSite(Site.newBuilder()
             .setContent(Content.newBuilder())
             .setPublisher(Publisher.newBuilder()))
@@ -535,9 +532,13 @@ public class OpenRtbJsonTest {
                 .setTopframe(true)
                 .addExpdir(ExpandableDirection.RIGHT)
                 .addApi(APIFramework.MRAID_1)
-                .addFormat(Format.newBuilder()
+                .setVcm(true)
+                .addFormat(Banner.Format.newBuilder()
                     .setW(100)
                     .setH(80)
+                    .setWratio(120)
+                    .setHratio(80)
+                    .setWmin(50)
                     .setExtension(TestExt.testFormat, test1))
                 .setExtension(TestExt.testBanner, test1))
             .setDisplaymanager("dm1")
@@ -550,7 +551,7 @@ public class OpenRtbJsonTest {
             .addIframebuster("buster1")
             .setPmp(Pmp.newBuilder()
                 .setPrivateAuction(false)
-                .addDeals(Deal.newBuilder()
+                .addDeals(Pmp.Deal.newBuilder()
                     .setId("deal1")
                     .setBidfloor(200.0)
                     .setBidfloorcur("USD")
@@ -561,6 +562,11 @@ public class OpenRtbJsonTest {
                 .setExtension(TestExt.testPmp, test1))
             .setClickbrowser(true)
             .setExp(120)
+            .addMetric(Metric.newBuilder()
+                .setType("coolness")
+                .setValue(1.0)
+                .setVendor("Google")
+                .setExtension(TestExt.testMetric, test1))
             .setExtension(TestExt.testImp, test1))
         .addImp(Imp.newBuilder()
             .setId("imp2")
@@ -587,7 +593,7 @@ public class OpenRtbJsonTest {
                     .setId("compad1")
                     .setW(100)
                     .setH(50))
-                .setCompanionad21(CompanionAd.newBuilder()
+                .setCompanionad21(Video.CompanionAd.newBuilder()
                     .addBanner(Banner.newBuilder()
                     .setId("compad2")
                     .setW(110)
@@ -598,6 +604,8 @@ public class OpenRtbJsonTest {
                 .setSkip(true)
                 .setSkipmin(45)
                 .setSkipafter(10)
+                .setPlacement(VideoPlacementType.IN_FEED_PLACEMENT)
+                .setPlaybackend(PlaybackCessationMode.LEAVING_OR_USER)
                 .setExtension(TestExt.testVideo, test1)))
         .addImp(Imp.newBuilder()
             .setId("imp3")
@@ -678,6 +686,7 @@ public class OpenRtbJsonTest {
             .setMacsha1("abc")
             .setMacmd5("xyz")
             .setGeofetch(true)
+            .setMccmnc("310-005")
             .setExtension(TestExt.testDevice, test1))
         .setUser(User.newBuilder()
             .setId("user1")
@@ -709,6 +718,13 @@ public class OpenRtbJsonTest {
             .setExtension(TestExt.testRegs, test1))
         .setTest(false)
         .addAllBapp(asList("app1", "app2"))
+        .addAllBseat(asList("seat3", "seat4"))
+        .addAllWlang(asList("en", "pt"))
+        .setSource(OpenRtb.BidRequest.Source.newBuilder()
+            .setFd(true)
+            .setTid("tid1")
+            .setPchain("XYZ01234:ABCD56789")
+            .setExtension(TestExt.testSource, test1))
         .setExtension(TestExt.testRequest2, test2)
         .setExtension(TestExt.testRequest1, test1);
   }
@@ -807,6 +823,12 @@ public class OpenRtbJsonTest {
         .setProtocol(Protocol.VAST_4_0)
         .setQagmediarating(QAGMediaRating.EVERYONE_OVER_12)
         .setExp(250)
+        .setBurl("http://billing.com/")
+        .setLurl("http://losing.com/")
+        .setTactic("abc")
+        .setLanguage("en")
+        .setWratio(100)
+        .setHratio(85)
         .setExtension(TestExt.testBid, test1);
     if (admNative) {
       bid.setAdmNative(NativeResponse.newBuilder()

@@ -22,6 +22,8 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.google.common.io.CharSource;
 import com.google.common.io.Closeables;
 import com.google.openrtb.OpenRtb.AdUnitId;
@@ -35,10 +37,6 @@ import com.google.openrtb.OpenRtb.NativeResponse;
 import com.google.openrtb.OpenRtb.PlacementType;
 import com.google.openrtb.util.ProtoUtils;
 import com.google.protobuf.ByteString;
-
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -127,14 +125,14 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         req.setVer(par.getText());
         break;
       case "layout": {
-          LayoutId value = LayoutId.valueOf(par.getIntValue());
+          LayoutId value = LayoutId.forNumber(par.getIntValue());
           if (checkEnum(value)) {
             req.setLayout(value);
           }
         }
         break;
       case "adunit": {
-          AdUnitId value = AdUnitId.valueOf(par.getIntValue());
+          AdUnitId value = AdUnitId.forNumber(par.getIntValue());
           if (checkEnum(value)) {
             req.setAdunit(value);
           }
@@ -152,21 +150,21 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         }
         break;
       case "context": {
-          ContextType value = ContextType.valueOf(par.getIntValue());
+          ContextType value = ContextType.forNumber(par.getIntValue());
           if (checkEnum(value)) {
             req.setContext(value);
           }
         }
         break;
       case "contextsubtype": {
-          ContextSubtype value = ContextSubtype.valueOf(par.getIntValue());
+          ContextSubtype value = ContextSubtype.forNumber(par.getIntValue());
           if (checkEnum(value)) {
             req.setContextsubtype(value);
           }
         }
         break;
       case "plcmttype": {
-          PlacementType value = PlacementType.valueOf(par.getIntValue());
+          PlacementType value = PlacementType.forNumber(par.getIntValue());
           if (checkEnum(value)) {
             req.setPlcmttype(value);
           }
@@ -255,7 +253,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       throws IOException {
     switch (fieldName) {
       case "type": {
-          ImageAssetType value = ImageAssetType.valueOf(par.getIntValue());
+          ImageAssetType value = ImageAssetType.forNumber(par.getIntValue());
           if (checkEnum(value)) {
             image.setType(value);
           }
@@ -298,7 +296,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       JsonParser par, NativeRequest.Asset.Data.Builder data, String fieldName) throws IOException {
     switch (fieldName) {
       case "type": {
-          DataAssetType value = DataAssetType.valueOf(par.getIntValue());
+          DataAssetType value = DataAssetType.forNumber(par.getIntValue());
           if (checkEnum(value)) {
             data.setType(value);
           }
