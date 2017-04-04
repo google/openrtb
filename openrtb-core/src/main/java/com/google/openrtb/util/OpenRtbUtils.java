@@ -379,17 +379,17 @@ public final class OpenRtbUtils {
    *     more efficient execution when you want to filter none/all impressions.
    * @return Immutable or unmodifiable view for the filtered impressions
    */
-  public static Iterable<Imp> impsWith(BidRequest request, final Predicate<Imp> impFilter) {
+  public static Iterable<Imp> impsWith(BidRequest request, Predicate<Imp> impFilter) {
     checkNotNull(impFilter);
 
-    final List<Imp> imps = request.getImpList();
+    List<Imp> imps = request.getImpList();
     if (imps.isEmpty() || impFilter == IMP_ALL) {
       return imps;
     } else if (impFilter == IMP_NONE) {
       return ImmutableList.of();
     }
 
-    final boolean included = impFilter.test(imps.get(0));
+    boolean included = impFilter.test(imps.get(0));
     int size = imps.size(), i;
 
     for (i = 1; i < size; ++i) {
@@ -404,10 +404,10 @@ public final class OpenRtbUtils {
           : ImmutableList.<Imp>of();
     }
 
-    final int headingSize = i;
+    int headingSize = i;
     return new FluentIterable<Imp>() {
       @Override public Iterator<Imp> iterator() {
-        final Iterator<Imp> unfiltered = imps.iterator();
+        Iterator<Imp> unfiltered = imps.iterator();
         return new AbstractIterator<Imp>() {
           private int heading = 0;
           @Override protected Imp computeNext() {
