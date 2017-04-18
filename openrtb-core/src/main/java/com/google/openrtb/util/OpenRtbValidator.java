@@ -16,6 +16,8 @@
 
 package com.google.openrtb.util;
 
+import com.codahale.metrics.Counter;
+import com.codahale.metrics.MetricRegistry;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.openrtb.OpenRtb.BidRequest;
@@ -24,19 +26,13 @@ import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
-
-import com.codahale.metrics.Counter;
-import com.codahale.metrics.MetricRegistry;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Validates a pair of {@link BidRequest} and its corresponding
@@ -67,7 +63,7 @@ public class OpenRtbValidator {
         invalidAdv);
   }
 
-  public boolean validate(final BidRequest request, final BidResponse.Builder response) {
+  public boolean validate(BidRequest request, BidResponse.Builder response) {
     return !OpenRtbUtils.removeBids(response, bid -> validate(request, bid));
   }
 
