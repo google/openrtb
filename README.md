@@ -10,6 +10,8 @@ Use the Github issue tracker for bugs, RFEs or any support. Check the
 [changelog](CHANGELOG.md) for detailed release notes.
 
 
+*French version is avaible in ''/locale/fr_FR/README.md'*
+
 BUILDING NOTES
 ----------------------------------------------------------------------
 
