@@ -1571,6 +1571,10 @@ message BidResponse {
       // becomes billable based on exchange-specific business policy
       // (e.g., typically delivered, viewed, etc.). Substitution macros
       // (Section 4.4) may be included.
+      //
+      // [AdX: Note that BidExt.impression_tracking_url accepts a repeated list
+      // of billing notice URLs. If your use case requires more than one billing
+      // URL, use that extension instead of burl.]
       optional string burl = 22;
 
       // Loss notice URL called by the exchange when a bid is known to
