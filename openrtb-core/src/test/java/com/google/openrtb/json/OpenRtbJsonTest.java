@@ -129,6 +129,7 @@ public class OpenRtbJsonTest {
         newBidRequest().build());
   }
 
+  @SuppressWarnings("deprecation")
   @Test
   public void testRequest_emptyMessages() throws IOException {
     OpenRtbJsonFactory jsonFactory = newJsonFactory();
@@ -729,6 +730,7 @@ public class OpenRtbJsonTest {
         .setExtension(TestExt.testRequest1, test1);
   }
 
+  @SuppressWarnings("deprecation")
   static Site.Builder newSite() {
     return Site.newBuilder()
         .setId("88")

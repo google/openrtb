@@ -1,6 +1,9 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 1.4.1, 23-05-2017
+- Now using Protobuf 3.3.1.
+
 ## Version 1.4.0, 18-04-2017
 * Support for OpenRTB 2.5!
 

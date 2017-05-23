@@ -457,7 +457,7 @@ message BidRequest {
 
       // Array of supported video bid response protocols.
       // At least one supported protocol must be specified.
-      // [AdX: {VAST_2_0, VAST_3_0, VAST_2_0_WRAPPER, VAST_3_0_WRAPPER}]
+      // [AdX: BidRequest.Video.protocols]
       repeated Protocol protocols = 21 [packed = true];
 
       // Width of the video player in device independent pixels (DIPS).
@@ -1306,12 +1306,9 @@ message BidRequest {
     optional string buyeruid = 2;
 
     // Year of birth as a 4-digit integer.
-    // [AdX: BidRequest.UserDemographic.age_high if present, if not
-    //       BidRequest.UserDemographic.age_low; subtracted from current year]
     optional int32 yob = 3;
 
     // Gender as "M" male, "F" female, "O" Other. (Null indicates unknown)
-    // [AdX: BidRequest.UserDemographic.gender]
     optional string gender = 4;
 
     // Comma separated list of keywords, interests, or intent.
@@ -1489,7 +1486,8 @@ message BidResponse {
       // of serving ad markup.
       // [AdX: BidResponse.Ad.impression_tracking_url
       //     - DoubleClick doesn't support win notices;
-      //       use %%WINNING_PRICE%% in snippet's impression URL.]
+      //       use %%WINNING_PRICE%% or ${AUCTION_PRICE} in snippet's impression
+      //       URL.]
       optional string nurl = 5;
 
       oneof adm_oneof {
@@ -1504,7 +1502,7 @@ message BidResponse {
 
         // Native ad response.
         // For native ad bids, exactly one of {adm, adm_native} should be used;
-        // this is an alternate field preferred for Protobuf serialization.
+        // this is the field used for Protobuf serialization.
         // [AdX: BidResponse.Ad.native_ad]
         NativeResponse adm_native = 50;
       }
@@ -1573,6 +1571,10 @@ message BidResponse {
       // becomes billable based on exchange-specific business policy
       // (e.g., typically delivered, viewed, etc.). Substitution macros
       // (Section 4.4) may be included.
+      //
+      // [AdX: Note that BidExt.impression_tracking_url accepts a repeated list
+      // of billing notice URLs. If your use case requires more than one billing
+      // URL, use that extension instead of burl.]
       optional string burl = 22;
 
       // Loss notice URL called by the exchange when a bid is known to
@@ -1771,8 +1773,9 @@ message NativeRequest {
       // [AdX: BidRequest.AdSlot.native_ad_template[0] field type]
       required DataAssetType type = 1;
 
-      // Maximum length of the text in the element's response.
-      // Longer strings will be truncated by the publisher during rendering.
+      // Maximum length of the text in the element's response. Longer strings
+      // may be truncated and ellipsized by Ad Exchange or the publisher during
+      // rendering.
       // [AdX: BidRequest.AdSlot.native_ad_template[0] of type:
       //       DESC/BODY: body_max_safe_length
       //       CTATEXT/CALL_TO_ACTION: call_to_action_max_safe_length

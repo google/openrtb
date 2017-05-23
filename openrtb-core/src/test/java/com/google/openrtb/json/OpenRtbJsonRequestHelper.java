@@ -198,6 +198,7 @@ class OpenRtbJsonRequestHelper {
     OpenRtbJsonFactory jsonFactory =
         OpenRtbJsonFactoryHelper.newJsonFactory(isRootNative, isNativeObject);
 
+    @SuppressWarnings("deprecation")
     OpenRtb.BidRequest.Imp.Builder imp1 = OpenRtb.BidRequest.Imp.newBuilder()
         .setId("imp1")
         .setBanner(OpenRtb.BidRequest.Imp.Banner.newBuilder()
@@ -235,6 +236,7 @@ class OpenRtbJsonRequestHelper {
             .setExtension(TestExt.testPmp, OpenRtbJsonFactoryHelper.test1))
         .setExtension(TestExt.testImp, OpenRtbJsonFactoryHelper.test1);
 
+    @SuppressWarnings("deprecation")
     OpenRtb.BidRequest.Imp.Builder imp2 = OpenRtb.BidRequest.Imp.newBuilder()
         .setId("imp2")
         .setVideo(OpenRtb.BidRequest.Imp.Video.newBuilder()
