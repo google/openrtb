@@ -89,7 +89,7 @@ public abstract class OpenRtbJsonExtComplexReader<
     boolean extRead = false;
     JsonToken tokLast = par.getCurrentToken();
     JsonLocation locLast = par.getCurrentLocation();
-    while (endObject(par)) {
+    while (endObject(par) && (isJsonObject || filter(par))) {
       read(ext, par);
       if (par.getCurrentToken() != tokLast || !par.getCurrentLocation().equals(locLast)) {
         extRead = true;
