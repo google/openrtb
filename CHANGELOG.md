@@ -1,6 +1,9 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 1.4.3, 27-06-2017
+- Fixed very minor bug in JSON support.
+
 ## Version 1.4.1, 23-05-2017
 - Now using Protobuf 3.3.1.
 
