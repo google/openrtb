@@ -1,6 +1,9 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 1.4.5, 07-08-2017
+- Only dependency updates.
+
 ## Version 1.4.3, 27-06-2017
 - Fixed very minor bug in JSON support.
 

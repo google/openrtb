@@ -169,7 +169,7 @@
                 <id>compile-protoc-test</id>
                 <phase>generate-test-sources</phase>
                 <configuration>
-                  <tasks>
+                  <target>
                     <mkdir dir="${testProtobufGenerated}" />
                     <path id="proto.path">
                       <fileset dir="${testProtobufSource}">
@@ -183,7 +183,7 @@
                       <arg value="-I${testProtobufSource}" />
                       <arg line="${proto.files}" />
                     </exec>
-                  </tasks>
+                  </target>
                 </configuration>
                 <goals>
                   <goal>run</goal>
