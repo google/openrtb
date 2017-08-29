@@ -1,6 +1,9 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 1.4.6, 29-08-2017
+- Now using Protobuf 3.4.0.
+
 ## Version 1.4.5, 07-08-2017
 - Only dependency updates.
 
