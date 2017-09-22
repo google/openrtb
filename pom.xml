@@ -53,13 +53,13 @@
     <findBugsJsr305Version>3.0.2</findBugsJsr305Version>
     <gpg.skip>true</gpg.skip>
     <guavaVersion>23.0</guavaVersion>
-    <fasterxmlJacksonVersion>2.9.0</fasterxmlJacksonVersion>
+    <fasterxmlJacksonVersion>2.9.1</fasterxmlJacksonVersion>
     <injectVersion>1</injectVersion>
     <junitVersion>4.12</junitVersion>
     <metricsVersion>3.0.2</metricsVersion>
     <protobufVersion>3.4.0</protobufVersion>
     <slf4jVersion>1.7.25</slf4jVersion>
-    <truthVersion>0.35</truthVersion>
+    <truthVersion>0.36</truthVersion>
 
     <!-- Plugin versions -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -136,7 +136,7 @@
 
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>3.0.1</version>
+        <version>3.0.2</version>
       </plugin>
 
       <plugin>
@@ -147,7 +147,7 @@
 
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.20</version>
+        <version>2.20.1</version>
         <configuration>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
           <argLine>-Djava.util.logging.config.file=src/test/resources/logging.properties</argLine>
@@ -204,7 +204,7 @@
 
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.6.2</version>
+        <version>3.7.0</version>
         <configuration>
           <source>1.8</source>
           <target>1.8</target>

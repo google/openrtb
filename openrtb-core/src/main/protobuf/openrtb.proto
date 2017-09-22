@@ -197,6 +197,7 @@ message BidRequest {
     // Name of ad mediation partner, SDK technology, or player responsible
     // for rendering ad (typically video or mobile). Used by some ad servers
     // to customize ad code by partner. Recommended for video and/or apps.
+    // [AdX: BidRequest.AdSlot.renderer]
     optional string displaymanager = 4;
 
     // Version of ad mediation partner, SDK technology, or player responsible
@@ -346,7 +347,7 @@ message BidRequest {
       optional string id = 3;
 
       // Ad position on screen.
-      // [AdX: BidRequest.AdSlot.slot_visibility]
+      // [AdX: BidRequest.AdSlot.slot_visibility, BidRequest.StickySettings]
       optional AdPosition pos = 4;
 
       // Blocked banner ad types.
@@ -858,7 +859,8 @@ message BidRequest {
     // RECOMMENDED by the OpenRTB specification.
     optional string id = 1;
 
-    // Application name (may be aliased at publisher's request).
+    // Application name (may be aliased at publisher's request). App names for
+    // connected TV apps are provided by the publisher directly.
     // [AdX: BidRequest.Mobile.app_name]
     optional string name = 2;
 
@@ -885,7 +887,8 @@ message BidRequest {
     // A platform-specific application identifier intended to be
     // unique to the app and independent of the exchange. On Android,
     // this should be a bundle or package name (e.g., com.foo.mygame).
-    // On iOS, it is a numeric ID.
+    // On iOS, it is a numeric ID. For connected TV devices, the
+    // publisher-provided app ID of their app per device.
     // [AdX: BidRequest.Mobile.app_id]
     optional string bundle = 8;
 
@@ -918,7 +921,7 @@ message BidRequest {
   // in an OpenRTB transaction.
   message Publisher {
     // Exchange-specific publisher ID.
-    // [AdX: BidRequest.seller_network_id]
+    // [AdX: BidRequest.publisher_id]
     optional string id = 1;
 
     // Publisher name (may be aliased at publisher's request).
