@@ -190,6 +190,14 @@ public class OpenRtbJsonUtils {
   }
 
   /**
+   * Writes a enum value as an int, using its Protobuf number.
+   */
+  protected static void writeEnumField(
+      String fieldName, ProtocolMessageEnum e, JsonGenerator gen) throws IOException {
+    gen.writeNumberField(fieldName, e.getNumber());
+  }
+
+  /**
    * Writes a enum array if not empty.
    *
    * @see #writeEnum(ProtocolMessageEnum, JsonGenerator)

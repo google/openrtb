@@ -164,7 +164,7 @@ class OpenRtbJsonResponseHelper {
 
     OpenRtb.NativeResponse.Builder nativeResponse = OpenRtb.NativeResponse.newBuilder()
         .setVer("1.0")
-        .setLink(OpenRtb.NativeResponse.Link.newBuilder())
+        .setLink(OpenRtb.NativeResponse.Link.newBuilder().setUrl("http://go.there.com"))
         .addImptrackers("http://my.imp.tracker");
 
     if (isNativeObject) {
@@ -211,7 +211,7 @@ class OpenRtbJsonResponseHelper {
 
     OpenRtb.NativeResponse.Builder nativeResponse1 = OpenRtb.NativeResponse.newBuilder()
         .setVer("1.0")
-        .setLink(OpenRtb.NativeResponse.Link.newBuilder())
+        .setLink(OpenRtb.NativeResponse.Link.newBuilder().setUrl("http://go.there.com"))
         .addImptrackers("http://my.first.imp.tracker");
 
     OpenRtb.BidResponse.SeatBid.Bid.Builder seatBid2 = OpenRtb.BidResponse.SeatBid.Bid.newBuilder()
@@ -234,7 +234,7 @@ class OpenRtbJsonResponseHelper {
 
     OpenRtb.NativeResponse.Builder nativeResponse2 = OpenRtb.NativeResponse.newBuilder()
         .setVer("2.0")
-        .setLink(OpenRtb.NativeResponse.Link.newBuilder())
+        .setLink(OpenRtb.NativeResponse.Link.newBuilder().setUrl("http://go.there.com"))
         .addImptrackers("http://my.second.imp.tracker");
 
     OpenRtb.BidResponse.SeatBid.Bid.Builder seatBid3 = OpenRtb.BidResponse.SeatBid.Bid.newBuilder()
@@ -257,7 +257,7 @@ class OpenRtbJsonResponseHelper {
 
     OpenRtb.NativeResponse.Builder nativeResponse3 = OpenRtb.NativeResponse.newBuilder()
         .setVer("3.0")
-        .setLink(OpenRtb.NativeResponse.Link.newBuilder())
+        .setLink(OpenRtb.NativeResponse.Link.newBuilder().setUrl("http://go.there.com"))
         .addImptrackers("http://my.third.imp.tracker");
 
     if (isNativeObject) {

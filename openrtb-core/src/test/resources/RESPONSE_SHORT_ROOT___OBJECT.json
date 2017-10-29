@@ -10,7 +10,9 @@
       "adm" : {
         "native" : {
           "ver" : "1.0",
-          "link" : { },
+          "link" : {
+            "url" : "http://go.there.com"
+          },
           "imptrackers" : [ "http://my.imp.tracker" ]
         }
       },

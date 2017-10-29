@@ -10,7 +10,9 @@
       "adm" : {
         "native" : {
           "ver" : "1.0",
-          "link" : { },
+          "link" : {
+            "url" : "http://go.there.com"
+          },
           "imptrackers" : [ "http://my.first.imp.tracker" ]
         }
       },
@@ -43,7 +45,9 @@
       "adm" : {
         "native" : {
           "ver" : "2.0",
-          "link" : { },
+          "link" : {
+            "url" : "http://go.there.com"
+          },
           "imptrackers" : [ "http://my.second.imp.tracker" ]
         }
       },
@@ -69,7 +73,9 @@
       "adm" : {
         "native" : {
           "ver" : "3.0",
-          "link" : { },
+          "link" : {
+            "url" : "http://go.there.com"
+          },
           "imptrackers" : [ "http://my.third.imp.tracker" ]
         }
       },

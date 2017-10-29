@@ -7,7 +7,7 @@
       "price" : 19.95,
       "adid" : "adid",
       "nurl" : "http://iwon.com",
-      "adm" : "{\"native\":{\"ver\":\"1.0\",\"link\":{},\"imptrackers\":[\"http://my.imp.tracker\"]}}",
+      "adm" : "{\"native\":{\"ver\":\"1.0\",\"link\":{\"url\":\"http://go.there.com\"},\"imptrackers\":[\"http://my.imp.tracker\"]}}",
       "adomain" : [ "http://myads.com" ],
       "bundle" : "com.google.testapp",
       "iurl" : "http://mycdn.com/ad.gif",

@@ -79,8 +79,7 @@ public class OpenRtbJsonFactory {
     this.forceNativeAsObject = config.forceNativeAsObject;
     this.extReaders = ImmutableSetMultimap.copyOf(config.extReaders);
     this.extWriters = ImmutableMap.copyOf(Maps.transformValues(config.extWriters,
-        (Map<String, Map<String, OpenRtbJsonExtWriter<?>>> map) ->
-            ImmutableMap.copyOf(Maps.transformValues(map, map2 -> ImmutableMap.copyOf(map2)))));
+        map -> ImmutableMap.copyOf(Maps.transformValues(map, map2 -> ImmutableMap.copyOf(map2)))));
   }
 
   /**

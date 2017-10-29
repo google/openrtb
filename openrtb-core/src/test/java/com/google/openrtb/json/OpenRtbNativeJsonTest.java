@@ -98,13 +98,13 @@ public class OpenRtbNativeJsonTest {
         .addAssets(NativeResponse.Asset.newBuilder()
             .setId(4)
             .setData(NativeResponse.Asset.Data.newBuilder().setValue("v"))
-            .setLink(NativeResponse.Link.newBuilder()))
+            .setLink(NativeResponse.Link.newBuilder().setUrl("http://go.there.com")))
         .addAssets(NativeResponse.Asset.newBuilder()
             .setId(5))
-        .setLink(NativeResponse.Link.newBuilder())
+        .setLink(NativeResponse.Link.newBuilder().setUrl("http://go.there.com"))
         .build());
     testResponse(newJsonFactory(), NativeResponse.newBuilder()
-        .setLink(NativeResponse.Link.newBuilder())
+        .setLink(NativeResponse.Link.newBuilder().setUrl("http://go.there.com"))
         .build());
   }
 
