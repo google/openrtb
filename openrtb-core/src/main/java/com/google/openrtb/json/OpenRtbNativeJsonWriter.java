@@ -21,15 +21,14 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.writeEnums;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeIntBoolField;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeStrings;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.StringWriter;
-import java.io.Writer;
-
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.google.openrtb.OpenRtb.NativeRequest;
 import com.google.openrtb.OpenRtb.NativeResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StringWriter;
+import java.io.Writer;
 
 /**
  * Serializes OpenRTB {@link NativeRequest}/{@link NativeResponse} messages to JSON.
@@ -403,6 +402,9 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
   protected void writeRespImageFields(NativeResponse.Asset.Image image, JsonGenerator gen)
       throws IOException {
     gen.writeStringField("url", image.getUrl());
+    if (image.hasType()) {
+      writeEnumField("type", image.getType(), gen);
+    }
     if (image.hasW()) {
       gen.writeNumberField("w", image.getW());
     }
@@ -438,6 +440,12 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeStringField("label", data.getLabel());
     }
     gen.writeStringField("value", data.getValue());
+    if (data.hasType()) {
+      writeEnumField("type", data.getType(), gen);
+    }
+    if (data.hasLen()) {
+      gen.writeNumberField("len", data.getLen());
+    }
   }
 
   public final void writeRespLink(NativeResponse.Link link, JsonGenerator gen)

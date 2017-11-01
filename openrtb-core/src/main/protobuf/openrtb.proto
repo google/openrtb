@@ -1454,10 +1454,6 @@ message NativeRequest {
   // Version of the Native Markup version in use.
   optional string ver = 1;
 
-  // Version of the Native Markup version in use (floating point version for
-  // exchanges that don't follow the spec properly).
-  optional float ver_float = 10;
-
   // The Layout ID of the native ad unit.
   // RECOMMENDED by OpenRTB Native 1.0; optional in 1.1, DEPRECATED in 1.2.
   optional LayoutId layout = 2;
@@ -1831,7 +1827,7 @@ message NativeResponse {
       // The type of data element being submitted from the DataAssetTypes enum.
       // REQUIRED in 1.2 for assetsurl or dcourl responses.
       // Implemented in 1.2.
-      optional int32 type = 3;
+      optional DataAssetType type = 3;
 
       // The length of the data element being submitted. Where applicable, must
       // comply with the recommended maximum lengths in the DataAssetType enum.

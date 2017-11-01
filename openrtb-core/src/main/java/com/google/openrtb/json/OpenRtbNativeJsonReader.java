@@ -22,10 +22,6 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.getCurrentName;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startArray;
 import static com.google.openrtb.json.OpenRtbJsonUtils.startObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.google.common.io.CharSource;
@@ -43,6 +39,9 @@ import com.google.openrtb.OpenRtb.NativeResponse;
 import com.google.openrtb.OpenRtb.PlacementType;
 import com.google.openrtb.util.ProtoUtils;
 import com.google.protobuf.ByteString;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 
 /**
  * Desserializes OpenRTB {@link NativeRequest}/{@link NativeResponse} messages from JSON.
@@ -178,6 +177,9 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "durlsupport":
         req.setDurlsupport(par.getValueAsBoolean());
+        break;
+      case "privacy":
+        req.setPrivacy(par.getValueAsBoolean());
         break;
       case "eventtrackers":
         for (startArray(par); endArray(par); par.nextToken()) {
@@ -552,6 +554,13 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       case "url":
         image.setUrl(par.getText());
         break;
+      case "type": {
+          ImageAssetType value = ImageAssetType.forNumber(par.getIntValue());
+          if (checkEnum(value)) {
+            image.setType(value);
+          }
+        }
+        break;
       case "w":
         image.setW(par.getIntValue());
         break;
@@ -606,6 +615,16 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "value":
         data.setValue(par.getText());
+        break;
+      case "type": {
+          DataAssetType value = DataAssetType.forNumber(par.getIntValue());
+          if (checkEnum(value)) {
+            data.setType(value);
+          }
+        }
+        break;
+      case "len":
+        data.setLen(par.getIntValue());
         break;
       default:
         readOther(data, par, fieldName);
