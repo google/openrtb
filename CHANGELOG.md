@@ -1,12 +1,12 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
-## Version 1.5.0, ??-11-2017
+## Version 1.5.0, 01-11-2017
 * Support for OpenRTB Native 1.2!
 * Removed all DoubleClick Ad Exchange-specific mapping documentation
   that was present in [AdX:...] comments in the proto.  People using
-  the library for AdX should refer to the [OpenRTB Integration Guide]
-  (https://developers.google.com/ad-exchange/rtb/openrtb-guide).
+  the library for AdX should refer to the [OpenRTB Integration Guide](
+  https://developers.google.com/ad-exchange/rtb/openrtb-guide).
 * The library now builds correctly, and is supported, on JDK 9.
 
 ## Version 1.4.7, 22-09-2017

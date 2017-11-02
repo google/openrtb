@@ -21,11 +21,6 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.writeEnums;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeIntBoolField;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeStrings;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.StringWriter;
-import java.io.Writer;
-
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.google.openrtb.Gender;
@@ -55,6 +50,10 @@ import com.google.openrtb.OpenRtb.BidRequest.User;
 import com.google.openrtb.OpenRtb.BidResponse;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
 import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StringWriter;
+import java.io.Writer;
 
 /**
  * Serializes OpenRTB {@link BidRequest}/{@link BidResponse} messages to JSON.
