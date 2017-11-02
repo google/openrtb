@@ -19,6 +19,7 @@ package com.google.openrtb.util;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
 
+import com.codahale.metrics.MetricRegistry;
 import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.BidRequest.Imp;
 import com.google.openrtb.OpenRtb.BidRequest.Imp.Audio;
@@ -30,9 +31,6 @@ import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.OpenRtb.CreativeAttribute;
 import com.google.openrtb.OpenRtb.Protocol;
 import com.google.openrtb.OpenRtb.VideoLinearity;
-
-import com.codahale.metrics.MetricRegistry;
-
 import org.junit.Before;
 import org.junit.Test;
 

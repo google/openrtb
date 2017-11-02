@@ -9,7 +9,9 @@
       "nurl" : "http://iwon.com",
       "adm" : {
         "ver" : "1.0",
-        "link" : { },
+        "link" : {
+          "url" : "http://go.there.com"
+        },
         "imptrackers" : [ "http://my.first.imp.tracker" ]
       },
       "adomain" : [ "http://myads.com" ],
@@ -40,7 +42,9 @@
       "nurl" : "http://iwon.com",
       "adm" : {
         "ver" : "2.0",
-        "link" : { },
+        "link" : {
+          "url" : "http://go.there.com"
+        },
         "imptrackers" : [ "http://my.second.imp.tracker" ]
       },
       "adomain" : [ "http://myads.com" ],
@@ -64,7 +68,9 @@
       "nurl" : "http://iwon.com",
       "adm" : {
         "ver" : "3.0",
-        "link" : { },
+        "link" : {
+          "url" : "http://go.there.com"
+        },
         "imptrackers" : [ "http://my.third.imp.tracker" ]
       },
       "adomain" : [ "http://myads.com" ],

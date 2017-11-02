@@ -9,7 +9,9 @@
       "nurl" : "http://iwon.com",
       "adm" : {
         "ver" : "1.0",
-        "link" : { },
+        "link" : {
+          "url" : "http://go.there.com"
+        },
         "imptrackers" : [ "http://my.imp.tracker" ]
       },
       "adomain" : [ "http://myads.com" ],

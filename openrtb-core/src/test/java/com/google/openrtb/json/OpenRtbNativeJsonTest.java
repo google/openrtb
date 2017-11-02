@@ -25,6 +25,8 @@ import com.google.openrtb.OpenRtb.BidRequest;
 import com.google.openrtb.OpenRtb.ContextSubtype;
 import com.google.openrtb.OpenRtb.ContextType;
 import com.google.openrtb.OpenRtb.DataAssetType;
+import com.google.openrtb.OpenRtb.EventTrackingMethod;
+import com.google.openrtb.OpenRtb.EventType;
 import com.google.openrtb.OpenRtb.ImageAssetType;
 import com.google.openrtb.OpenRtb.LayoutId;
 import com.google.openrtb.OpenRtb.NativeRequest;
@@ -98,13 +100,13 @@ public class OpenRtbNativeJsonTest {
         .addAssets(NativeResponse.Asset.newBuilder()
             .setId(4)
             .setData(NativeResponse.Asset.Data.newBuilder().setValue("v"))
-            .setLink(NativeResponse.Link.newBuilder()))
+            .setLink(NativeResponse.Link.newBuilder().setUrl("http://go.there.com")))
         .addAssets(NativeResponse.Asset.newBuilder()
             .setId(5))
-        .setLink(NativeResponse.Link.newBuilder())
+        .setLink(NativeResponse.Link.newBuilder().setUrl("http://go.there.com"))
         .build());
     testResponse(newJsonFactory(), NativeResponse.newBuilder()
-        .setLink(NativeResponse.Link.newBuilder())
+        .setLink(NativeResponse.Link.newBuilder().setUrl("http://go.there.com"))
         .build());
   }
 
@@ -170,6 +172,12 @@ public class OpenRtbNativeJsonTest {
                 .setType(DataAssetType.SPONSORED)
                 .setLen(10)
                 .setExtension(TestNExt.testNReqData, test1)))
+        .setAurlsupport(true)
+        .setDurlsupport(true)
+        .setPrivacy(true)
+        .addEventtrackers(NativeRequest.EventTrackers.newBuilder()
+            .setEvent(EventType.IMPRESSION)
+            .addAllMethods(asList(EventTrackingMethod.IMG, EventTrackingMethod.JS)))
         .setExtension(TestNExt.testNRequest1, test1)
         .setExtension(TestNExt.testNRequest2, test2);
   }
@@ -182,6 +190,7 @@ public class OpenRtbNativeJsonTest {
             .setRequired(true)
             .setTitle(NativeResponse.Asset.Title.newBuilder()
                 .setText("title")
+                .setLen(10)
                 .setExtension(TestNExt.testNRespTitle, test1))
             .setLink(NativeResponse.Link.newBuilder()
                 .setUrl("url")
@@ -193,6 +202,7 @@ public class OpenRtbNativeJsonTest {
             .setId(2)
             .setImg(NativeResponse.Asset.Image.newBuilder()
                 .setUrl("url")
+                .setType(ImageAssetType.MAIN)
                 .setW(2)
                 .setH(3)
                 .setExtension(TestNExt.testNRespImage, test1)))
@@ -204,6 +214,8 @@ public class OpenRtbNativeJsonTest {
         .addAssets(NativeResponse.Asset.newBuilder()
             .setId(2)
             .setData(NativeResponse.Asset.Data.newBuilder()
+                .setType(DataAssetType.CTATEXT)
+                .setLen(15)
                 .setLabel("l")
                 .setValue("v")
                 .setExtension(TestNExt.testNRespData, test1)))
@@ -214,6 +226,13 @@ public class OpenRtbNativeJsonTest {
             .setExtension(TestNExt.testNRespLink, test1))
         .addAllImptrackers(asList("a"))
         .setJstracker("b")
+        .setAssetsurl("http://assets.com")
+        .setDcourl("http://dyncontent.com")
+        .setPrivacy("http://privacy.com")
+        .addEventtrackers(NativeResponse.EventTracker.newBuilder()
+            .setEvent(EventType.VIEWABLE_MRC_50)
+            .setMethod(EventTrackingMethod.IMG)
+            .setUrl("http://bidder.com/impression"))
     .setExtension(TestNExt.testNResponse1, test1)
     .setExtension(TestNExt.testNResponse2, test2);
   }
