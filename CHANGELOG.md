@@ -1,6 +1,9 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 1.5.1, 22-11-2017
+- Now using Protobuf 3.5.0.
+
 ## Version 1.5.0, 01-11-2017
 * Support for OpenRTB Native 1.2!
 * Removed all DoubleClick Ad Exchange-specific mapping documentation
