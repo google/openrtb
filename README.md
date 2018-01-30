@@ -13,7 +13,7 @@ Use the Github issue tracker for bugs, RFEs or any support. Check the
 BUILDING NOTES
 ----------------------------------------------------------------------
 
-You need: JDK 7, Maven 3.2, Protocol buffers (protoc) 2.6.1.
+You need: JDK 8, Maven 3.2, Protocol buffers (protoc) 3.5.1.
 Building is supported from the command line with Maven and
 from any IDE that can load Maven projects.
 
