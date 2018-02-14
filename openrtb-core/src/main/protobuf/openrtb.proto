@@ -1769,7 +1769,7 @@ message NativeResponse {
     // with the value filled in.
     // If using assetsurl or dcourl response rather than embedded asset
     // response, it is recommended that three title objects be provided, the
-    // length of each is less than or equal to the three recommeded maximum
+    // length of each is less than or equal to the three recommended maximum
     // title lengths (25,90,140).
     message Title {
       // The text associated with the text element.
@@ -1789,7 +1789,7 @@ message NativeResponse {
     // The Image object to be used for all image elements of the Native ad
     // such as Icons, Main Image, etc.
     // It is recommended that if assetsurl/dcourl is being used rather than
-    // embbedded assets, that an image of each recommeneded aspect ratio
+    // embbedded assets, that an image of each recommended aspect ratio
     // (per ImageType enum) be provided for image type 3 (MAIN_IMAGE).
     message Image {
       // The type of image element being submitted from the ImageType enum.
