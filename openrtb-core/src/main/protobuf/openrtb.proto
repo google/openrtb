@@ -1,7 +1,7 @@
 option java_outer_classname = "OpenRtb";
 package com.google.openrtb;
 
-// Copyright 2017 Google Inc. All Rights Reserved.
+// Copyright 2018 Google Inc. All Rights Reserved.
 
 // OpenRTB extensions ("ext" fields in the spec & JSON representation)
 // are represented here by Protocol Buffer extensions. This proto only
@@ -779,7 +779,8 @@ message BidRequest {
     optional string id = 1;
 
     // Application name (may be aliased at publisher's request). App names for
-    // connected TV apps are provided by the publisher directly.
+    // SDK-less requests (mostly from connected TVs) can be provided by the
+    // publisher directly in the request.
     optional string name = 2;
 
     // Domain of the application. For example, "mygame.foo.com".
@@ -805,8 +806,8 @@ message BidRequest {
     // A platform-specific application identifier intended to be
     // unique to the app and independent of the exchange. On Android,
     // this should be a bundle or package name (e.g., com.foo.mygame).
-    // On iOS, it is a numeric ID. For connected TV devices, the
-    // publisher-provided app ID of their app per device.
+    // On iOS, it is a numeric ID. For SDK-less requests (mostly from connected
+    // TVs), it can be provided by the publisher directly in the request.
     optional string bundle = 8;
 
     // Indicates if the app has a privacy policy, where 0 = no, 1 = yes.
