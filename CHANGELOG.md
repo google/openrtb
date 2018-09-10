@@ -1,6 +1,11 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 1.5.4, 10-09-2018
+* OpenRtbSnippetProcessor now supports macro expansion in the fields
+  `Bid.burl` and `Bid.lurl` (introduced in OpenRTB 2.5).
+- Now using Protobuf 3.6.1.
+
 ## Version 1.5.3, 20-06-2018
 - Now using Protobuf 3.6.0.
 
