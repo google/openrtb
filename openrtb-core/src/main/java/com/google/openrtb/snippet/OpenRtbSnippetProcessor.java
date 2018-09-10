@@ -149,6 +149,9 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
     }
 
     if (extendedFields) {
+      if (bid.hasBurl()) {
+        bid.setBurl(process(bidCtx, bid.getBurl()));
+      }
       if (bid.hasCid()) {
         bid.setCid(process(bidCtx, bid.getCid()));
       }
@@ -161,6 +164,9 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
       bid.setImpid(process(bidCtx, bid.getImpid()));
       if (bid.hasIurl()) {
         bid.setIurl(process(bidCtx, bid.getIurl()));
+      }
+      if (bid.hasLurl()) {
+        bid.setIurl(process(bidCtx, bid.getLurl()));
       }
       if (bid.hasNurl()) {
         bid.setNurl(process(bidCtx, bid.getNurl()));

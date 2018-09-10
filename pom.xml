@@ -46,20 +46,20 @@
   </modules>
 
   <prerequisites>
-    <maven>3.0</maven>
+    <maven>3.0.5</maven>
   </prerequisites>
 
   <properties>
     <findBugsJsr305Version>3.0.2</findBugsJsr305Version>
     <gpg.skip>true</gpg.skip>
-    <guavaVersion>25.1-jre</guavaVersion>
+    <guavaVersion>26.0-jre</guavaVersion>
     <fasterxmlJacksonVersion>2.9.6</fasterxmlJacksonVersion>
     <injectVersion>1</injectVersion>
     <junitVersion>4.12</junitVersion>
     <metricsVersion>3.0.2</metricsVersion>
-    <protobufVersion>3.6.0</protobufVersion>
+    <protobufVersion>3.6.1</protobufVersion>
     <slf4jVersion>1.7.25</slf4jVersion>
-    <truthVersion>0.41</truthVersion>
+    <truthVersion>0.42</truthVersion>
 
     <!-- Plugin versions -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -204,7 +204,7 @@
 
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.7.0</version>
+        <version>3.8.0</version>
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
