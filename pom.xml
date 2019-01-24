@@ -52,8 +52,8 @@
   <properties>
     <findBugsJsr305Version>3.0.2</findBugsJsr305Version>
     <gpg.skip>true</gpg.skip>
-    <guavaVersion>26.0-jre</guavaVersion>
-    <fasterxmlJacksonVersion>2.9.6</fasterxmlJacksonVersion>
+    <guavaVersion>27.0.1-jre</guavaVersion>
+    <fasterxmlJacksonVersion>2.9.8</fasterxmlJacksonVersion>
     <injectVersion>1</injectVersion>
     <junitVersion>4.12</junitVersion>
     <metricsVersion>3.0.2</metricsVersion>
@@ -106,7 +106,7 @@
 
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.0</version>
+        <version>3.1.1</version>
       </plugin>
 
       <plugin>

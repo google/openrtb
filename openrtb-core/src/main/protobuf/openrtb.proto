@@ -1204,9 +1204,14 @@ message BidRequest {
   // OpenRTB 2.0: The data and segment objects together allow additional data
   // about the user to be specified. This data may be from multiple sources
   // whether from the exchange itself or third party providers as specified by
-  // the id field. A bid request can mix data objects from multiple providers.
+  // the id field. A bid request can mix data objects from multiple providers or
+  // can have multiple data objects.
   // The specific data providers in use should be published by the exchange
   // a priori to its bidders.
+  // This is used to send detected verticals to the buyer.
+  // For exchange bidding, this is also used to send key
+  // value pairs from the publisher to the buyer.
+  // https://support.google.com/admanager/answer/177381
   message Data {
     // Exchange-specific ID for the data provider.
     optional string id = 1;
@@ -1304,6 +1309,9 @@ message BidResponse {
 
     // ID of the buyer seat (e.g., advertiser, agency) on whose behalf
     // this bid is made.
+    //
+    // This ID will be used to breakdown spend and invalid traffic metrics in
+    // IVT transparency reporting, given that it is no longer than 64 bytes.
     optional string seat = 2;
 
     // 0 = impressions can be won individually; 1 = impressions must be won or
@@ -2298,7 +2306,6 @@ enum AuctionType {
 
   FIXED_PRICE = 3;
 }
-
 // OpenRTB 2.0: types of ads that can be accepted by the exchange unless
 // restricted by publisher site settings.
 enum BannerAdType {
@@ -2362,8 +2369,9 @@ enum APIFramework {
   MRAID_2 = 5;
 
   MRAID_3 = 6;
-};
 
+  OMID_1 = 7;
+};
 // OpenRTB 2.0: The following table specifies the position of the ad as a
 // relative measure of visibility or prominence.
 //
