@@ -50,7 +50,7 @@ public enum OpenRtbMacros implements SnippetMacroType {
   AUCTION_BID_ID("${AUCTION_BID_ID}"),
   /**
    * The currency used in the bid (explicit or implied); for confirmation only.
-   * WARNING: May not be supported by all exchanges.
+   * <p>WARNING: May not be supported by all exchanges.
    */
   AUCTION_CURRENCY("${AUCTION_CURRENCY}"),
   /**
@@ -59,18 +59,29 @@ public enum OpenRtbMacros implements SnippetMacroType {
   AUCTION_ID("${AUCTION_ID}"),
   /**
    * ID of the impression just won; from "impid" attribute.
-   * WARNING: May not be supported by all exchanges.
+   * <p>WARNING: May not be supported by all exchanges.
    */
   AUCTION_IMP_ID("${AUCTION_IMP_ID}"),
   /**
    * Settlement price using the same currency and units as the bid.
-   * WARNING: May not be supported by all exchanges.
+   * <p>WARNING: May not be supported by all exchanges.
    */
   AUCTION_PRICE("${AUCTION_PRICE}"),
   /**
    * ID of the bidder's seat for whom the bid was made.
    */
   AUCTION_SEAT_ID("${AUCTION_SEAT_ID}"),
+  /**
+   * Loss reason codes, for loss notices.
+   * <p>WARNING: May not be supported by all exchanges.
+   */
+  AUCTION_LOSS("${AUCTION_LOSS}"),
+  /**
+   * Market Bid Ratio, defined as: (clearance price / bid price).
+   * <p>WARNING: May not be supported by all exchanges.
+   */
+  AUCTION_MBR("${AUCTION_MBR}"),
+
   ;
 
   private static final ImmutableMap<String, OpenRtbMacros> LOOKUP_KEY;
