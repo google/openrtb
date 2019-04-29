@@ -105,10 +105,11 @@ public class OpenRtbSnippetProcessor extends SnippetProcessor {
 
         // "Server-side" macros: keep the macro untouched, so it will be
         // expanded by the exchange or other system that receives the message.
-        case AUCTION_PRICE: {
+        case AUCTION_PRICE:
+        case AUCTION_MBR:
+        case AUCTION_LOSS:
           ctx.builder().append(((OpenRtbMacros) macroDef).key());
           return true;
-        }
       }
     }
 
