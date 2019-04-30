@@ -48,10 +48,10 @@ public class ProtoUtilsTest {
         .setExtension(TestExt.testRequest2, test2)
         .build();
     assertThat(ProtoUtils.filter(reqExt, true, fd -> true))
-        .isSameAs(reqExt);
+        .isSameInstanceAs(reqExt);
     assertThat(ProtoUtils.filter(reqExt, true, fd -> false)).isNull();
     assertThat(ProtoUtils.filter(reqExt, false, fd -> false))
-        .isSameAs(BidRequest.getDefaultInstance());
+        .isSameInstanceAs(BidRequest.getDefaultInstance());
 
     BidRequest reqPlainClear = BidRequest.newBuilder()
         .setId("0")
@@ -77,7 +77,7 @@ public class ProtoUtilsTest {
         .containsExactly(reqPlainClear);
     assertThat(ProtoUtils.filter(list, req -> "0".equals(req.getId())))
         .containsExactly(reqPlainClear);
-    assertThat(ProtoUtils.filter(list, req -> true)).isSameAs(list);
+    assertThat(ProtoUtils.filter(list, req -> true)).isSameInstanceAs(list);
     assertThat(ProtoUtils.filter(list, req -> false)).isEmpty();
   }
 
@@ -88,7 +88,7 @@ public class ProtoUtilsTest {
       reqBuilder.setAt(AuctionType.FIRST_PRICE);
       return true;
     });
-    assertThat(req.getAt()).isSameAs(AuctionType.FIRST_PRICE);
+    assertThat(req.getAt()).isSameInstanceAs(AuctionType.FIRST_PRICE);
   }
 
   @Test
@@ -96,11 +96,11 @@ public class ProtoUtilsTest {
     BidRequest.Builder reqBuilder = BidRequest.newBuilder().setId("0");
     BidRequest req = reqBuilder.build();
     assertThat(ProtoUtils.<BidRequest.Builder, BidRequest>built(reqBuilder)).isEqualTo(req);
-    assertThat(ProtoUtils.<BidRequest, BidRequest>built(req)).isSameAs(req);
+    assertThat(ProtoUtils.<BidRequest, BidRequest>built(req)).isSameInstanceAs(req);
     assertThat(ProtoUtils.<BidRequest.Builder, BidRequest>built(null)).isNull();
     assertThat(ProtoUtils.builder(req).build()).isEqualTo(reqBuilder.build());
     assertThat(ProtoUtils.<BidRequest.Builder, BidRequest.Builder>builder(reqBuilder))
-        .isSameAs(reqBuilder);
+        .isSameInstanceAs(reqBuilder);
     assertThat(ProtoUtils.<BidRequest, BidRequest.Builder>builder(null)).isNull();
   }
 }

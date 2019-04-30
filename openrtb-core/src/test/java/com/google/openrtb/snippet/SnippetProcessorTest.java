@@ -80,9 +80,9 @@ public class SnippetProcessorTest {
     SnippetProcessorContext ctx = new SnippetProcessorContext(req, resp);
     ctx.setBid(bid);
     TestUtil.testCommonMethods(ctx);
-    assertThat(ctx.request()).isSameAs(req);
-    assertThat(ctx.response()).isSameAs(resp);
-    assertThat(ctx.getBid()).isSameAs(bid);
+    assertThat(ctx.request()).isSameInstanceAs(req);
+    assertThat(ctx.response()).isSameInstanceAs(resp);
+    assertThat(ctx.getBid()).isSameInstanceAs(bid);
   }
 
   @Test
@@ -90,19 +90,19 @@ public class SnippetProcessorTest {
     SnippetProcessorContext ctx = new SnippetProcessorContext(req, resp);
     ctx.setBid(bid);
     String snippet = OpenRtbMacros.AUCTION_ID.key();
-    assertThat(SnippetProcessor.NULL.process(ctx, snippet)).isSameAs(snippet);
+    assertThat(SnippetProcessor.NULL.process(ctx, snippet)).isSameInstanceAs(snippet);
   }
 
   @Test
   public void testUndefinedMacro1() {
     UndefinedMacroException e = new UndefinedMacroException(TestMacros.TEST);
-    assertThat(e.key()).isSameAs(TestMacros.TEST);
+    assertThat(e.key()).isSameInstanceAs(TestMacros.TEST);
   }
 
   @Test
   public void testUndefinedMacro2() {
     UndefinedMacroException e = new UndefinedMacroException(TestMacros.TEST, "msg");
-    assertThat(e.key()).isSameAs(TestMacros.TEST);
+    assertThat(e.key()).isSameInstanceAs(TestMacros.TEST);
   }
 
   @Test
