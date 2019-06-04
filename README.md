@@ -1,11 +1,12 @@
-Google OpenRTB Libraries
+OpenRTB Libraries
 ----------------------------------------------------------------------
 
-This library supports the OpenRTB specification, providing
-bindings for all protobuf-supported languages, and additional
-support for Java such as JSON serialization and validation.
+This library was originally created by Google. It supports the OpenRTB
+2.x specification, providing bindings for all protobuf-supported
+languages, and additional support for Java such as JSON serialization
+and validation.
 
-See our [wiki](https://github.com/google/openrtb/wiki) to get started!
+See the [wiki](https://github.com/google/openrtb/wiki) to get started!
 Use the Github issue tracker for bugs, RFEs or any support. Check the
 [changelog](CHANGELOG.md) for detailed release notes.
 
