@@ -171,7 +171,7 @@ public class TestUtil {
       e.toString();
       throw e;
     } catch (Exception ee) {
-      assertThat(e).isSameAs(ee);
+      assertThat(e).isSameInstanceAs(ee);
     }
   }
 
