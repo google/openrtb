@@ -41,8 +41,8 @@ public class OpenRtbUtilsTest {
 
   @Test
   public void testCatUtils() {
-    assertThat(OpenRtbUtils.categoryFromName("IAB10_1")).isSameAs(ContentCategory.IAB10_1);
-    assertThat(OpenRtbUtils.categoryFromName("IAB10-1")).isSameAs(ContentCategory.IAB10_1);
+    assertThat(OpenRtbUtils.categoryFromName("IAB10_1")).isSameInstanceAs(ContentCategory.IAB10_1);
+    assertThat(OpenRtbUtils.categoryFromName("IAB10-1")).isSameInstanceAs(ContentCategory.IAB10_1);
     assertThat(OpenRtbUtils.categoryToJsonName("IAB10-1")).isEqualTo("IAB10-1");
     assertThat(OpenRtbUtils.categoryToJsonName("IAB10_1")).isEqualTo("IAB10-1");
     assertThat(OpenRtbUtils.categoryToJsonName(ContentCategory.IAB10_1)).isEqualTo("IAB10-1");
@@ -125,11 +125,11 @@ public class OpenRtbUtilsTest {
   @Test
   public void testAddFilter_specialCases() {
     Predicate<Imp> pred = imp -> true;
-    assertThat(OpenRtbUtils.addFilters(pred, false, false, false)).isSameAs(pred);
+    assertThat(OpenRtbUtils.addFilters(pred, false, false, false)).isSameInstanceAs(pred);
     assertThat(OpenRtbUtils.addFilters(OpenRtbUtils.IMP_NONE, true, true, true))
-        .isSameAs(OpenRtbUtils.IMP_NONE);
+        .isSameInstanceAs(OpenRtbUtils.IMP_NONE);
     assertThat(OpenRtbUtils.addFilters(OpenRtbUtils.IMP_ALL, true, true, true))
-        .isNotSameAs(OpenRtbUtils.IMP_ALL);  // Mostly for coverage
+        .isNotSameInstanceAs(OpenRtbUtils.IMP_ALL);  // Mostly for coverage
   }
 
   @Test
@@ -138,10 +138,10 @@ public class OpenRtbUtilsTest {
     OpenRtbUtils.seatBid(response, "unused");
     OpenRtbUtils.seatBid(response); // no seat
     SeatBid.Builder seatbidAnon = OpenRtbUtils.seatBid(response);
-    assertThat(OpenRtbUtils.seatBid(response)).isSameAs(seatbidAnon);
+    assertThat(OpenRtbUtils.seatBid(response)).isSameInstanceAs(seatbidAnon);
     SeatBid.Builder seatbidX = OpenRtbUtils.seatBid(response, "x");
-    assertThat(OpenRtbUtils.seatBid(response, "x")).isSameAs(seatbidX);
-    assertThat(OpenRtbUtils.seatBid(response)).isNotSameAs(seatbidX);
+    assertThat(OpenRtbUtils.seatBid(response, "x")).isSameInstanceAs(seatbidX);
+    assertThat(OpenRtbUtils.seatBid(response)).isNotSameInstanceAs(seatbidX);
     assertThat(OpenRtbUtils.bids(response)).isEmpty();
     Bid bid1 = buildHtmlBid("1", 100).build();
     OpenRtbUtils.seatBid(response).addBid(bid1);

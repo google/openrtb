@@ -100,7 +100,8 @@ public class OpenRtbJsonTest {
   public void testJsonFactory() {
     assertThat(OpenRtbJsonFactory.create().getJsonFactory()).isNotNull();
     JsonFactory jf = new JsonFactory();
-    assertThat(OpenRtbJsonFactory.create().setJsonFactory(jf).getJsonFactory()).isSameAs(jf);
+    assertThat(OpenRtbJsonFactory.create().setJsonFactory(jf).getJsonFactory())
+        .isSameInstanceAs(jf);
     TestUtil.testCommonMethods(new Test2Reader<BidRequest.Builder>(TestExt.testRequest2, "x"));
     TestUtil.testCommonMethods(new Test4Writer());
   }

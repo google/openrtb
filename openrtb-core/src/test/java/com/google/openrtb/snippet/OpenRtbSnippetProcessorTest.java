@@ -43,13 +43,14 @@ public class OpenRtbSnippetProcessorTest {
         .setPrice(10000);
     SnippetProcessorContext ctx = new SnippetProcessorContext(req, resp);
     ctx.setBid(bid);
-    assertThat(OpenRtbSnippetProcessor.ORTB_NULL.process(ctx, macro)).isSameAs(macro);
+    assertThat(OpenRtbSnippetProcessor.ORTB_NULL.process(ctx, macro)).isSameInstanceAs(macro);
   }
 
   @Test
   public void testOpenRtbMacros() {
     TestUtil.testCommonEnum(OpenRtbMacros.values());
-    assertThat(OpenRtbMacros.valueOfKey("${AUCTION_ID}")).isSameAs(OpenRtbMacros.AUCTION_ID);
+    assertThat(OpenRtbMacros.valueOfKey("${AUCTION_ID}"))
+        .isSameInstanceAs(OpenRtbMacros.AUCTION_ID);
     assertThat(OpenRtbMacros.valueOfKey("${UNKNOWN_MACRO}")).isNull();
   }
 
