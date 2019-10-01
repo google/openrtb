@@ -28,8 +28,32 @@ extend com.iabtechlab.openrtb.v2.BidRequest.Regs {
   optional RegsExt regs = 200;
 }
 
+enum AgentType {
+  UNKNOWN = 0;
+  WEB = 1;
+  APP = 2;
+  PERSON_BASED = 3;
+}
+
+message UniversalId {
+  optional string id = 1;
+  optional int32 atype = 2;
+
+  // Extensions.
+  extensions 100 to 9999;
+}
+
+message ExtendedId {
+  optional string source = 1;
+  repeated UniversalId uids = 2;
+
+  // Extensions.
+  extensions 100 to 9999;
+}
+
 message UserExt {
   optional string consent = 1;
+  repeated ExtendedId eids = 2;
 }
 
 extend com.iabtechlab.openrtb.v2.BidRequest.User {
@@ -41,6 +65,9 @@ message SupplyChain {
   optional bool complete = 1;
   optional string ver = 2;
   repeated SupplyChainNode nodes = 3;
+
+  // Extensions.
+  extensions 100 to 9999;
 }
  
 message SupplyChainNode {
@@ -50,6 +77,9 @@ message SupplyChainNode {
   optional string name = 4;
   optional string domain = 5;
   optional bool hp = 6;
+
+  // Extensions.
+  extensions 100 to 9999;
 }
 
 message SourceExt {
