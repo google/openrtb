@@ -57,6 +57,6 @@ message SourceExt {
 }
 
 extend com.iabtechlab.openrtb.v2.BidRequest.Source {
-  // Extension key for User standard extensions.
+  // Extension key for Source standard extensions.
   optional SourceExt source = 202;
 }
