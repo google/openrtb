@@ -171,7 +171,10 @@
         <configuration>
           <windowtitle>${project.name}</windowtitle>
           <notimestamp>true</notimestamp>
-          <excludePackageNames />
+          <excludePackageNames/>
+          <additionalOptions>
+            <additionalOption>-Xdoclint:none</additionalOption>
+          </additionalOptions>
           <groups>
             <group>
               <title>OpenRTB</title>
