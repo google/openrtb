@@ -1,7 +1,7 @@
 option java_outer_classname = "OpenRtb";
 package com.google.openrtb;
 
-// Copyright 2018 Google Inc. All Rights Reserved.
+// Copyright 2019 Google Inc. All Rights Reserved.
 
 // OpenRTB extensions ("ext" fields in the spec & JSON representation)
 // are represented here by Protocol Buffer extensions. This proto only
@@ -521,7 +521,7 @@ message BidRequest {
     //
     // The presence of a Audio as a subordinate of the Imp object indicates
     // that this impression is offered as an audio type impression.
-    // At the publisher’s discretion, that same impression may also be offered
+    // At the publisher's discretion, that same impression may also be offered
     // as banner, video, and/or native by also including as Imp subordinates
     // objects of those types. However, any given bid for the impression must
     // conform to one of the offered types.
@@ -1135,7 +1135,7 @@ message BidRequest {
     optional LocationType type = 9;
 
     // Estimated location accuracy in meters; recommended when lat/lon
-    // are specified and derived from a device’s location services
+    // are specified and derived from a device's location services
     // (i.e., type = 1). Note that this is the accuracy as reported
     // from the device. Consult OS specific documentation
     // (e.g., Android, iOS) for exact interpretation.
@@ -1873,7 +1873,7 @@ message NativeResponse {
   // specifies the types of events the bidder wishes to track and the
   // URLs/information to track them. Bidder must only respond with methods
   // indicated as available in the request. Note that most javascript trackers
-  // expect to be loaded at impression time, so it’s not generally recommended
+  // expect to be loaded at impression time, so it's not generally recommended
   // for the buyer to respond with javascript trackers on other events, but the
   // appropriateness of this is up to each buyer.
   message EventTracker {
@@ -2306,6 +2306,7 @@ enum AuctionType {
 
   FIXED_PRICE = 3;
 }
+
 // OpenRTB 2.0: types of ads that can be accepted by the exchange unless
 // restricted by publisher site settings.
 enum BannerAdType {
@@ -2371,7 +2372,8 @@ enum APIFramework {
   MRAID_3 = 6;
 
   OMID_1 = 7;
-};
+}
+
 // OpenRTB 2.0: The following table specifies the position of the ad as a
 // relative measure of visibility or prominence.
 //
@@ -2920,5 +2922,4 @@ enum EventTrackingMethod {
   // Javascript-based tracking - URL provided will be insterted as a js tag at
   // the time of the event.
   JS = 2;
-
 }
