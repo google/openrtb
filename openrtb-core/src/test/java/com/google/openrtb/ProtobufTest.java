@@ -18,20 +18,20 @@ package com.google.openrtb;
 
 import static java.util.Arrays.asList;
 
-import com.google.openrtb.OpenRtb.AdPosition;
-import com.google.openrtb.OpenRtb.AuctionType;
-import com.google.openrtb.OpenRtb.BidRequest;
-import com.google.openrtb.OpenRtb.BidRequest.Content;
-import com.google.openrtb.OpenRtb.BidRequest.Device;
-import com.google.openrtb.OpenRtb.BidRequest.Imp;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
-import com.google.openrtb.OpenRtb.BidRequest.Publisher;
-import com.google.openrtb.OpenRtb.BidRequest.Site;
-import com.google.openrtb.OpenRtb.BidRequest.User;
-import com.google.openrtb.OpenRtb.BidResponse;
-import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
-import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
-import com.google.openrtb.OpenRtb.CreativeAttribute;
+import com.iabtechlab.openrtb.v2.OpenRtb.AdPosition;
+import com.iabtechlab.openrtb.v2.OpenRtb.AuctionType;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Content;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Device;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp.Banner;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Publisher;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Site;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.User;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
+import com.iabtechlab.openrtb.v2.OpenRtb.CreativeAttribute;
 import org.junit.Test;
 
 /**

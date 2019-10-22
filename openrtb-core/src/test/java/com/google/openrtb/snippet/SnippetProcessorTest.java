@@ -21,11 +21,11 @@ import static java.util.Arrays.asList;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.openrtb.OpenRtb.BidRequest;
-import com.google.openrtb.OpenRtb.BidRequest.Imp;
-import com.google.openrtb.OpenRtb.BidResponse;
-import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
-import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.TestUtil;
 import java.util.List;
 import org.junit.Test;

@@ -22,14 +22,14 @@ import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.openrtb.OpenRtb.BidRequest;
-import com.google.openrtb.OpenRtb.BidRequest.Imp;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
-import com.google.openrtb.OpenRtb.BidResponse;
-import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
-import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
-import com.google.openrtb.OpenRtb.BidResponse.SeatBidOrBuilder;
-import com.google.openrtb.OpenRtb.ContentCategory;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp.Banner;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBidOrBuilder;
+import com.iabtechlab.openrtb.v2.OpenRtb.ContentCategory;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
@@ -40,7 +40,7 @@ import javax.annotation.Nullable;
 
 /**
  * Utilities to manipulate {@link BidRequest} and
- * {@link com.google.openrtb.OpenRtb.BidResponse.Builder}.
+ * {@link com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.Builder}.
  */
 public final class OpenRtbUtils {
   /**
@@ -104,7 +104,7 @@ public final class OpenRtbUtils {
    * @return The OpenRTB SeatBid with the specified ID; will be created if not existent.
    *     The ID should be present in the request's wseat.
    *
-   * @see #seatBid(com.google.openrtb.OpenRtb.BidResponse.Builder)
+   * @see #seatBid(com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.Builder)
    * Use for the anonymous seat
    */
   public static SeatBid.Builder seatBid(BidResponse.Builder response, String seat) {
@@ -434,11 +434,11 @@ public final class OpenRtbUtils {
    *
    * @param baseFilter base filter for impressions
    * @param banner {@code true} to include impressions with
-   * {@link com.google.openrtb.OpenRtb.BidRequest.Imp.Banner}s
+   * {@link com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp.Banner}s
    * @param video {@code true} to include impressions with
-   * {@link com.google.openrtb.OpenRtb.BidRequest.Imp.Video}s
+   * {@link com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp.Video}s
    * @param nativ {@code true} to include impressions with
-   * {@link com.google.openrtb.OpenRtb.BidRequest.Imp.Native}s
+   * {@link com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp.Native}s
    * @return A filter in the form: {@code baseFilter AND (banner OR video OR native)}
    */
   public static Predicate<Imp> addFilters(

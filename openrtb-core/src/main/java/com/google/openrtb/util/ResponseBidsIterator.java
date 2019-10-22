@@ -16,9 +16,9 @@
 
 package com.google.openrtb.util;
 
-import com.google.openrtb.OpenRtb.BidResponse;
-import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
-import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -26,8 +26,8 @@ import java.util.function.Predicate;
 import javax.annotation.Nullable;
 
 /**
- * Iterates all {@link com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid.Builder}s
- * in a {@link com.google.openrtb.OpenRtb.BidResponse.Builder},
+ * Iterates all {@link com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid.Builder}s
+ * in a {@link com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.Builder},
  * dealing with the intermediate layer of seats transparently.
  */
 class ResponseBidsIterator implements Iterator<Bid.Builder>, Iterable<Bid.Builder> {

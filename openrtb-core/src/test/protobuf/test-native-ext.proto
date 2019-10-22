@@ -21,42 +21,42 @@ option java_outer_classname = "TestNExt";
 import "openrtb.proto";
 import "test-common.proto";
 
-extend com.google.openrtb.NativeRequest {
+extend com.iabtechlab.openrtb.v2.NativeRequest {
   optional Test1 testNRequest1 = 110;
   optional Test2 testNRequest2 = 111;
 }
-extend com.google.openrtb.NativeRequest.Asset {
+extend com.iabtechlab.openrtb.v2.NativeRequest.Asset {
   optional Test1 testNReqAsset = 110;
 }
-extend com.google.openrtb.NativeRequest.Asset.Title {
+extend com.iabtechlab.openrtb.v2.NativeRequest.Asset.Title {
   optional Test1 testNReqTitle = 110;
 }
-extend com.google.openrtb.NativeRequest.Asset.Image {
+extend com.iabtechlab.openrtb.v2.NativeRequest.Asset.Image {
   optional Test1 testNReqImage = 110;
 }
-extend com.google.openrtb.NativeRequest.Asset.Data {
+extend com.iabtechlab.openrtb.v2.NativeRequest.Asset.Data {
   optional Test1 testNReqData = 110;
 }
 
-extend com.google.openrtb.NativeResponse {
+extend com.iabtechlab.openrtb.v2.NativeResponse {
   optional Test1 testNResponse1 = 110;
   optional Test2 testNResponse2 = 111;
 }
-extend com.google.openrtb.NativeResponse.Asset {
+extend com.iabtechlab.openrtb.v2.NativeResponse.Asset {
   optional Test1 testNRespAsset = 110;
 }
-extend com.google.openrtb.NativeResponse.Asset.Title {
+extend com.iabtechlab.openrtb.v2.NativeResponse.Asset.Title {
   optional Test1 testNRespTitle = 110;
 }
-extend com.google.openrtb.NativeResponse.Asset.Image {
+extend com.iabtechlab.openrtb.v2.NativeResponse.Asset.Image {
   optional Test1 testNRespImage = 110;
 }
-extend com.google.openrtb.NativeResponse.Asset.Video {
+extend com.iabtechlab.openrtb.v2.NativeResponse.Asset.Video {
   optional Test1 testNRespVideo = 110;
 }
-extend com.google.openrtb.NativeResponse.Asset.Data {
+extend com.iabtechlab.openrtb.v2.NativeResponse.Asset.Data {
   optional Test1 testNRespData = 110;
 }
-extend com.google.openrtb.NativeResponse.Link {
+extend com.iabtechlab.openrtb.v2.NativeResponse.Link {
   optional Test1 testNRespLink = 110;
 }

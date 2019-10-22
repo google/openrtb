@@ -20,7 +20,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.openrtb.OpenRtb;
+import com.iabtechlab.openrtb.v2.OpenRtb;
 import com.google.openrtb.TestExt;
 import java.io.IOException;
 

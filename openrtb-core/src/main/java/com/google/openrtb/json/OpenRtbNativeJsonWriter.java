@@ -23,8 +23,8 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.writeStrings;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.google.openrtb.OpenRtb.NativeRequest;
-import com.google.openrtb.OpenRtb.NativeResponse;
+import com.iabtechlab.openrtb.v2.OpenRtb.NativeRequest;
+import com.iabtechlab.openrtb.v2.OpenRtb.NativeResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;

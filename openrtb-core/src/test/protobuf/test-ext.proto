@@ -21,79 +21,79 @@ option java_outer_classname = "TestExt";
 import "openrtb.proto";
 import "test-common.proto";
 
-extend com.google.openrtb.BidRequest {
+extend com.iabtechlab.openrtb.v2.BidRequest {
   optional Test1 testRequest1 = 110;
   optional Test2 testRequest2 = 111;
   optional string crtype = 112;
 }
-extend com.google.openrtb.BidRequest.App {
+extend com.iabtechlab.openrtb.v2.BidRequest.App {
   optional Test1 testApp = 110;
 }
-extend com.google.openrtb.BidRequest.Content {
+extend com.iabtechlab.openrtb.v2.BidRequest.Content {
   optional Test1 testContent = 110;
 }
-extend com.google.openrtb.BidRequest.Data {
+extend com.iabtechlab.openrtb.v2.BidRequest.Data {
   optional Test1 testData = 110;
 }
-extend com.google.openrtb.BidRequest.Data.Segment {
+extend com.iabtechlab.openrtb.v2.BidRequest.Data.Segment {
   optional Test1 testSegment = 110;
 }
-extend com.google.openrtb.BidRequest.Device {
+extend com.iabtechlab.openrtb.v2.BidRequest.Device {
   optional Test1 testDevice = 110;
 }
-extend com.google.openrtb.BidRequest.Geo {
+extend com.iabtechlab.openrtb.v2.BidRequest.Geo {
   optional Test1 testGeo = 110;
 }
-extend com.google.openrtb.BidRequest.Imp {
+extend com.iabtechlab.openrtb.v2.BidRequest.Imp {
   optional Test1 testImp = 110;
 }
-extend com.google.openrtb.BidRequest.Imp.Banner {
+extend com.iabtechlab.openrtb.v2.BidRequest.Imp.Banner {
   optional Test1 testBanner = 110;
 }
-extend com.google.openrtb.BidRequest.Imp.Banner.Format {
+extend com.iabtechlab.openrtb.v2.BidRequest.Imp.Banner.Format {
   optional Test1 testFormat = 110;
 }
-extend com.google.openrtb.BidRequest.Imp.Metric {
+extend com.iabtechlab.openrtb.v2.BidRequest.Imp.Metric {
   optional Test1 testMetric = 110;
 }
-extend com.google.openrtb.BidRequest.Imp.Video {
+extend com.iabtechlab.openrtb.v2.BidRequest.Imp.Video {
   optional Test1 testVideo = 110;
 }
-extend com.google.openrtb.BidRequest.Imp.Video.CompanionAd {
+extend com.iabtechlab.openrtb.v2.BidRequest.Imp.Video.CompanionAd {
   optional Test1 testCompanionAd = 110;
 }
-extend com.google.openrtb.BidRequest.Imp.Audio {
+extend com.iabtechlab.openrtb.v2.BidRequest.Imp.Audio {
   optional Test1 testAudio = 110;
 }
-extend com.google.openrtb.BidRequest.Imp.Native {
+extend com.iabtechlab.openrtb.v2.BidRequest.Imp.Native {
   optional Test1 testNative = 110;
 }
-extend com.google.openrtb.BidRequest.Imp.Pmp {
+extend com.iabtechlab.openrtb.v2.BidRequest.Imp.Pmp {
   optional Test1 testPmp = 110;
 }
-extend com.google.openrtb.BidRequest.Imp.Pmp.Deal {
+extend com.iabtechlab.openrtb.v2.BidRequest.Imp.Pmp.Deal {
   optional Test1 testDeal = 110;
 }
-extend com.google.openrtb.BidRequest.Producer {
+extend com.iabtechlab.openrtb.v2.BidRequest.Producer {
   optional Test1 testProducer = 110;
 }
-extend com.google.openrtb.BidRequest.Publisher {
+extend com.iabtechlab.openrtb.v2.BidRequest.Publisher {
   optional Test1 testPublisher = 110;
 }
-extend com.google.openrtb.BidRequest.Regs {
+extend com.iabtechlab.openrtb.v2.BidRequest.Regs {
   optional Test1 testRegs = 110;
 }
-extend com.google.openrtb.BidRequest.Site {
+extend com.iabtechlab.openrtb.v2.BidRequest.Site {
   optional Test1 testSite = 110;
 }
-extend com.google.openrtb.BidRequest.Source {
+extend com.iabtechlab.openrtb.v2.BidRequest.Source {
   optional Test1 testSource = 110;
 }
-extend com.google.openrtb.BidRequest.User {
+extend com.iabtechlab.openrtb.v2.BidRequest.User {
   optional Test1 testUser = 110;
 }
 
-extend com.google.openrtb.BidResponse {
+extend com.iabtechlab.openrtb.v2.BidResponse {
   optional Test1 testResponse1 = 110;
   repeated Test2 testResponse2 = 111;
   optional Test2 testResponse2a = 112;
@@ -101,9 +101,9 @@ extend com.google.openrtb.BidResponse {
   optional int32 testResponse3 = 114;
   repeated int32 testResponse4 = 115;
 }
-extend com.google.openrtb.BidResponse.SeatBid {
+extend com.iabtechlab.openrtb.v2.BidResponse.SeatBid {
   optional Test1 testSeat = 110;
 }
-extend com.google.openrtb.BidResponse.SeatBid.Bid {
+extend com.iabtechlab.openrtb.v2.BidResponse.SeatBid.Bid {
   optional Test1 testBid = 110;
 }
