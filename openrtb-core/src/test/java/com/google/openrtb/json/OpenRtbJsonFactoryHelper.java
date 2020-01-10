@@ -210,7 +210,8 @@ class OpenRtbJsonFactoryHelper {
 
   static String readFile(String fileName) {
     try (InputStream is = OpenRtbJsonFactoryHelper.class.getResourceAsStream("/" + fileName);
-        Scanner scanner = new Scanner(is, StandardCharsets.UTF_8.name()).useDelimiter("\\A")) {
+        Scanner scanner = new Scanner(is, StandardCharsets.UTF_8.name())) {
+      scanner.useDelimiter("\\A");
       return scanner.hasNext() ? scanner.next() : "";
     } catch (IOException e) {
       throw new IllegalStateException(e);
