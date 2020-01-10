@@ -1,6 +1,10 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 1.5.10, 10-01-2020
+* Proto updates (documentation only).
+* Build/dependency updates.
+
 ## Version 1.5.9, 15-10-2019
 * Proto updates (documentation only).
 * Build/dependency updates.
