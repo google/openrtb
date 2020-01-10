@@ -1,7 +1,7 @@
 option java_outer_classname = "OpenRtb";
 package com.google.openrtb;
 
-// Copyright 2019 Google Inc. All Rights Reserved.
+// Copyright 2020 Google Inc. All Rights Reserved.
 
 // OpenRTB extensions ("ext" fields in the spec & JSON representation)
 // are represented here by Protocol Buffer extensions. This proto only
@@ -246,7 +246,7 @@ message BidRequest {
       optional string type = 1;
 
       // Number representing the value of the metric.
-      // Probabilities must be in the range 0.0 – 1.0.
+      // Probabilities must be in the range 0.0 - 1.0.
       // REQUIRED by the OpenRTB specification.
       optional double value = 2;
 
@@ -1163,12 +1163,12 @@ message BidRequest {
   // privacy policies. However, this user ID must be stable long enough to serve
   // reasonably as the basis for frequency capping and retargeting.
   message User {
-    // Exchange-specific ID for the user. At least one of id or buyeruid
+    // Exchange-specific ID for the user. At least one of id or buyerid
     // is recommended.
     optional string id = 1;
 
     // Buyer-specific ID for the user as mapped by the exchange for the buyer.
-    // At least one of buyeruid or id is recommended.
+    // At least one of buyerid or id is recommended.
     optional string buyeruid = 2;
 
     // Year of birth as a 4-digit integer.
