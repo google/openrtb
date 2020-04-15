@@ -1163,12 +1163,12 @@ message BidRequest {
   // privacy policies. However, this user ID must be stable long enough to serve
   // reasonably as the basis for frequency capping and retargeting.
   message User {
-    // Exchange-specific ID for the user. At least one of id or buyerid
+    // Exchange-specific ID for the user. At least one of id or buyeruid
     // is recommended.
     optional string id = 1;
 
     // Buyer-specific ID for the user as mapped by the exchange for the buyer.
-    // At least one of buyerid or id is recommended.
+    // At least one of buyeruid or id is recommended.
     optional string buyeruid = 2;
 
     // Year of birth as a 4-digit integer.
@@ -2594,7 +2594,7 @@ enum LocationService {
   IP2LOCATION = 1;
   NEUSTAR = 2;
   MAXMIND = 3;
-  NETAQUITY = 4;
+  NETACUITY = 4;
 }
 
 // OpenRTB 2.0: The following table lists the type of device from which the
