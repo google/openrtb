@@ -65,8 +65,9 @@ message BidRequest {
   optional User user = 6;
 
   // Auction type, where 1 = First Price, 2 = Second Price Plus.
+  // Refer to enum AuctionType for generic values.
   // Exchange-specific auction types can be defined using values > 500.
-  optional AuctionType at = 7 [default = SECOND_PRICE];
+  optional int32 at = 7 [default = SECOND_PRICE];
 
   // Maximum time in milliseconds to submit a bid to avoid timeout.
   // This value is commonly communicated offline.
@@ -323,13 +324,16 @@ message BidRequest {
       optional string id = 3;
 
       // Ad position on screen.
-      optional AdPosition pos = 4;
+      // Refer to enum Position for generic values.
+      optional int32 pos = 4;
 
       // Blocked banner ad types.
-      repeated BannerAdType btype = 5 [packed = true];
+      // Refer to enum BannerAdType for generic values.
+      repeated int32 btype = 5 [packed = true];
 
       // Blocked creative attributes.
-      repeated CreativeAttribute battr = 6 [packed = true];
+      // Refer to enum CreativeAttribute for generic values.
+      repeated int32 battr = 6 [packed = true];
 
       // Whitelist of content MIME types supported. Popular MIME types include,
       // but are not limited to "image/jpg", "image/gif" and
@@ -341,11 +345,13 @@ message BidRequest {
       optional bool topframe = 8;
 
       // Directions in which the banner may expand.
-      repeated ExpandableDirection expdir = 9 [packed = true];
+      // Refer to enum ExpandableDirection for generic values.
+      repeated int32 expdir = 9 [packed = true];
 
       // List of supported API frameworks for this impression.
       // If an API is not explicitly listed, it is assumed not to be supported.
-      repeated APIFramework api = 10 [packed = true];
+      // Refer to enum APIFramework for generic values.
+      repeated int32 api = 10 [packed = true];
 
       // Relevant only for Banner objects used with a Video object
       // (Section 3.2.7) in an array of companion ads. Indicates the
@@ -405,7 +411,8 @@ message BidRequest {
 
       // Indicates if the impression must be linear, nonlinear, etc.
       // If none specified, assume all are allowed.
-      optional VideoLinearity linearity = 2;
+      // Refer to enum VideoLinearity for generic values.
+      optional int32 linearity = 2;
 
       // Minimum video ad duration in seconds.
       // RECOMMENDED by the OpenRTB specification.
@@ -416,11 +423,13 @@ message BidRequest {
       optional int32 maxduration = 4;
 
       // Deprecated; use protocols.
-      optional Protocol protocol = 5 [deprecated = true];
+      // Refer to enum Protocol for generic values.
+      optional int32 protocol = 5 [deprecated = true];
 
       // Array of supported video bid response protocols.
       // At least one supported protocol must be specified.
-      repeated Protocol protocols = 21 [packed = true];
+      // Refer to enum Protocol for generic values.
+      repeated int32 protocols = 21 [packed = true];
 
       // Width of the video player in device independent pixels (DIPS).
       // RECOMMENDED by the OpenRTB specification.
@@ -457,7 +466,8 @@ message BidRequest {
       optional int32 sequence = 9 [default = 1];
 
       // Blocked creative attributes.
-      repeated CreativeAttribute battr = 10 [packed = true];
+      // Refer to enum CreativeAttribute for generic values.
+      repeated int32 battr = 10 [packed = true];
 
       // Maximum extended video ad duration, if extension is allowed.
       // If blank or 0, extension is not allowed. If -1, extension is allowed,
@@ -481,14 +491,17 @@ message BidRequest {
       // As a result, this array may be converted to an integer in a future
       // version of the specification. It is strongly advised to use only
       // the first element of this array in preparation for this change.
-      repeated PlaybackMethod playbackmethod = 15 [packed = true];
+      // Refer to enum PlaybackMethod for generic values.
+      repeated int32 playbackmethod = 15 [packed = true];
 
       // Supported delivery methods (e.g., streaming, progressive).
       // If none specified, assume all are supported.
-      repeated ContentDeliveryMethod delivery = 16 [packed = true];
+      // Refer to enum ContentDeliveryMethod for generic values.
+      repeated int32 delivery = 16 [packed = true];
 
       // Ad position on screen.
-      optional AdPosition pos = 17;
+      // Refer to enum AdPosition for generic values.
+      optional int32 pos = 17;
 
       // Array of Banner objects (Section 3.2.3) if companion ads are available.
       repeated Banner companionad = 18;
@@ -499,17 +512,21 @@ message BidRequest {
 
       // List of supported API frameworks for this impression.
       // If an API is not explicitly listed, it is assumed not to be supported.
-      repeated APIFramework api = 19 [packed = true];
+      // Refer to enum APIFramework for generic values.
+      repeated int32 api = 19 [packed = true];
 
       // Supported VAST companion ad types.  Recommended if companion Banner
       // objects are included via the companionad array.
-      repeated CompanionType companiontype = 20 [packed = true];
+      // Refer to enum CompanionType for generic values.
+      repeated int32 companiontype = 20 [packed = true];
 
       // Placement type for the impression.
-      optional VideoPlacementType placement = 26;
+      // Refer to enum VideoPlacementType for generic values.
+      optional int32 placement = 26;
 
       // The event that causes playback to end.
-      optional PlaybackCessationMode playbackend = 27;
+      // Refer to enum PlaybackCessationMode for generic values.
+      optional int32 playbackend = 27;
 
       // Extensions.
       extensions 100 to 9999;
@@ -548,8 +565,9 @@ message BidRequest {
       optional int32 maxduration = 3;
 
       // Array of supported audio protocols.
+      // Refer to enum Protocol for generic values.
       // RECOMMENDED by the OpenRTB specification.
-      repeated Protocol protocols = 4 [packed = true];
+      repeated int32 protocols = 4 [packed = true];
 
       // Indicates the start delay in seconds for pre-roll, mid-roll, or
       // post-roll ad placements.
@@ -563,7 +581,8 @@ message BidRequest {
       optional int32 sequence = 6 [default = 1];
 
       // Blocked creative attributes.
-      repeated CreativeAttribute battr = 7 [packed = true];
+      // Refer to enum CreativeAttribute for generic values.
+      repeated int32 battr = 7 [packed = true];
 
       // Maximum extended video ad duration, if extension is allowed.
       // If blank or 0, extension is not allowed. If -1, extension is allowed,
@@ -580,31 +599,36 @@ message BidRequest {
 
       // Supported delivery methods (e.g., streaming, progressive).
       // If none specified, assume all are supported.
-      repeated ContentDeliveryMethod delivery = 11 [packed = true];
+      // Refer to enum ContentDeliveryMethod for generic values.
+      repeated int32 delivery = 11 [packed = true];
 
       // Array of Banner objects if companion ads are available.
       repeated Banner companionad = 12;
 
       // List of supported API frameworks for this impression.
       // If an API is not explicitly listed, it is assumed not to be supported.
-      repeated APIFramework api = 13 [packed = true];
+      // Refer to enum APIFramework for generic values.
+      repeated int32 api = 13 [packed = true];
 
       // Supported DAAST companion ad types.  Recommended if companion Banner
       // objects are included via the companionad array.
-      repeated CompanionType companiontype = 20 [packed = true];
+      // Refer to enum CompanionType for generic values.
+      repeated int32 companiontype = 20 [packed = true];
 
       // The maximum number of ads that can be played in an ad pod.
       optional int32 maxseq = 21;
 
       // Type of audio feed.
-      optional FeedType feed = 22;
+      // Refer to enum FeedType for generic values.
+      optional int32 feed = 22;
 
       // Indicates if the ad is stitched with audio content or delivered
       // independently, where 0 = no, 1 = yes.
       optional bool stitched = 23;
 
       // Volume normalization mode.
-      optional VolumeNormalizationMode nvol = 24;
+      // Refer to enum VolumeNormalizationMode for generic values.
+      optional int32 nvol = 24;
 
       // Extensions.
       extensions 100 to 9999;
@@ -649,10 +673,12 @@ message BidRequest {
 
       // List of supported API frameworks for this impression.
       // If an API is not explicitly listed, it is assumed not to be supported.
-      repeated APIFramework api = 3 [packed = true];
+      // Refer to enum APIFramework for generic values.
+      repeated int32 api = 3 [packed = true];
 
       // Blocked creative attributes.
-      repeated CreativeAttribute battr = 4 [packed = true];
+      // Refer to enum CreativeAttribute for generic values.
+      repeated int32 battr = 4 [packed = true];
 
       // Extensions.
       extensions 100 to 9999;
@@ -706,7 +732,8 @@ message BidRequest {
         // where 1 = First Price, 2 = Second Price Plus, 3 = the value passed
         // in bidfloor is the agreed upon deal price. Additional auction types
         // can be defined by the exchange.
-        optional AuctionType at = 6;
+        // Refer to enum AuctionType for generic values.
+        optional int32 at = 6;
 
         // Extensions.
         extensions 100 to 9999;
@@ -913,11 +940,13 @@ message BidRequest {
     repeated string cat = 7;
 
     // Production quality.
-    optional ProductionQuality prodq = 25;
+    // Refer to enum ProductionQuality for generic values.
+    optional int32 prodq = 25;
 
     // NOTE: Deprecated in favor of prodq.
     // Video quality per IAB's classification.
-    optional ProductionQuality videoquality = 8 [deprecated = true];
+    // Refer to enum ProductionQuality for generic values.
+    optional int32 videoquality = 8 [deprecated = true];
 
     // Comma separated list of keywords describing the content.
     // Note: OpenRTB 2.2 allowed an array-of-strings as alternate implementation
@@ -930,10 +959,11 @@ message BidRequest {
     optional string contentrating = 10;
 
     // User rating of the content (e.g., number of stars, likes, etc.).
+    // Refer to enum ContentContext for generic values.
     optional string userrating = 11;
 
     // Type of content (game, video, text, etc.).
-    optional ContentContext context = 20;
+    optional int32 context = 20;
 
     // OpenRTB <= 2.2 compatibility; use context for 2.3+.
     optional string context_22 = 12;
@@ -951,7 +981,8 @@ message BidRequest {
     optional int32 len = 16;
 
     // Media rating per QAG guidelines.
-    optional QAGMediaRating qagmediarating = 17;
+    // Refer to enum QAGMediaRating for generic values.
+    optional int32 qagmediarating = 17;
 
     // Indicator of whether or not the content is embeddable (e.g., an
     // embeddable video player), where 0 = no, 1 = yes.
@@ -1067,10 +1098,12 @@ message BidRequest {
     optional bool geofetch = 29;
 
     // Network connection type.
-    optional ConnectionType connectiontype = 17;
+    // Refer to enum ConnectionType for generic values.
+    optional int32 connectiontype = 17;
 
     // The general type of device.
-    optional DeviceType devicetype = 18;
+    // Refer to enum DeviceType for generic values.
+    optional int32 devicetype = 18;
 
     // Version of Flash supported by the browser.
     optional string flashver = 19;
@@ -1141,7 +1174,8 @@ message BidRequest {
     optional string zip = 8;
 
     // Source of location data; recommended when passing lat/lon.
-    optional LocationType type = 9;
+    // Refer to enum LocationType for generic values.
+    optional int32 type = 9;
 
     // Estimated location accuracy in meters; recommended when lat/lon
     // are specified and derived from a device’s location services
@@ -1157,7 +1191,8 @@ message BidRequest {
 
     // Service or provider used to determine geolocation from IP
     // address if applicable (i.e., type = 2).
-    optional LocationService ipservice = 13;
+    // Refer to enum LocationService for generic values.
+    optional int32 ipservice = 13;
 
     // Local time as the number +/- of minutes from UTC.
     optional int32 utcoffset = 10;
@@ -1300,7 +1335,8 @@ message BidResponse {
   optional string customdata = 5;
 
   // Reason for not bidding.
-  optional NoBidReason nbr = 6;
+  // Refer to enum NoBidReason for generic values.
+  optional int32 nbr = 6;
 
   // Extensions.
   extensions 100 to 9999;
@@ -1396,16 +1432,20 @@ message BidResponse {
       repeated string cat = 15;
 
       // Set of attributes describing the creative.
-      repeated CreativeAttribute attr = 11 [packed = true];
+      // Refer to enum CreativeAttribute for generic values.
+      repeated int32 attr = 11 [packed = true];
 
       // API required by the markup if applicable.
-      optional APIFramework api = 18;
+      // Refer to enum APIFramework for generic values.
+      optional int32 api = 18;
 
       // Video response protocol of the markup if applicable.
-      optional Protocol protocol = 19;
+      // Refer to enum Protocol for generic values.
+      optional int32 protocol = 19;
 
       // Creative media rating per QAG guidelines.
-      optional QAGMediaRating qagmediarating = 20;
+      // Refer to enum QAGMediaRating for generic values.
+      optional int32 qagmediarating = 20;
 
       // Reference to the deal.id from the bid request if this bid pertains to a
       // private marketplace direct deal.
@@ -1473,24 +1513,29 @@ message NativeRequest {
   optional string ver = 1;
 
   // The Layout ID of the native ad unit.
+  // Refer to enum LayoutId for generic values.
   // RECOMMENDED by OpenRTB Native 1.0; optional in 1.1, DEPRECATED in 1.2.
-  optional LayoutId layout = 2;
+  optional int32 layout = 2;
 
   // The Ad unit ID of the native ad unit.
   // This corresponds to one of IAB Core-6 native ad units.
+  // Refer to enum AdUnitId for generic values.
   // RECOMMENDED by OpenRTB Native 1.0; optional in 1.1, DEPRECATED in 1.2.
-  optional AdUnitId adunit = 3;
+  optional int32 adunit = 3;
 
   // The context in which the ad appears.
+  // Refer to enum ContextType for generic values.
   // RECOMMENDED in 1.2.
-  optional ContextType context = 7;
+  optional int32 context = 7;
 
   // A more detailed context in which the ad appears.
-  optional ContextSubtype contextsubtype = 8;
+  // Refer to enum ContextSubtype for generic values.
+  optional int32 contextsubtype = 8;
 
   // The design/format/layout of the ad unit being offered.
+  // Refer to enum PlacementType for generic values.
   // RECOMMENDED by the OpenRTB Native specification.
-  optional PlacementType plcmttype = 9;
+  optional int32 plcmttype = 9;
 
   // The number of identical placements in this Layout.
   optional int32 plcmtcnt = 4 [default = 1];
@@ -1585,7 +1630,8 @@ message NativeRequest {
     message Image {
       // Type ID of the image element supported by the publisher.
       // The publisher can display this information in an appropriate format.
-      optional ImageAssetType type = 1;
+      // Refer to enum ImageAssetType for generic values.
+      optional int32 type = 1;
 
       // Width of the image in pixels.
       optional int32 w = 2;
@@ -1625,8 +1671,9 @@ message NativeRequest {
     message Data {
       // Type ID of the element supported by the publisher. The publisher can
       // display this information in an appropriate format.
+      // Refer to enum DataAssetType for generic values.
       // REQUIRED by the OpenRTB Native specification.
-      required DataAssetType type = 1;
+      required int32 type = 1;
 
       // Maximum length of the text in the element's response. Longer strings
       // may be truncated and ellipsized by Ad Exchange or the publisher during
@@ -1644,12 +1691,14 @@ message NativeRequest {
   // in the request.
   message EventTrackers {
     // Type of event available for tracking.
+    // Refer to enum EventType for generic values.
     // REQUIRED by the OpenRTB Native specification.
-    required EventType event = 1;
+    required int32 event = 1;
 
     // Array of types of tracking available for the given event.
+    // Refer to enum EventTrackingMethod for generic values.
     // REQUIRED by the OpenRTB Native specification.
-    repeated EventTrackingMethod methods = 2;
+    repeated int32 methods = 2;
 
     // Extensions.
     extensions 100 to 9999;
@@ -1811,10 +1860,11 @@ message NativeResponse {
     // (per ImageType enum) be provided for image type 3 (MAIN_IMAGE).
     message Image {
       // The type of image element being submitted from the ImageType enum.
+      // Refer to enum ImageAssetType for generic values.
       // REQUIRED for assetsurl or dcourl responses,
       // not required to embedded asset responses.
       // Implemented in 1.2
-      optional ImageAssetType type = 4;
+      optional int32 type = 4;
 
       // URL of the image asset.
       // REQUIRED by the OpenRTB Native specification.
@@ -1843,9 +1893,10 @@ message NativeResponse {
     // not contemplated at the time of the writing of this document.
     message Data {
       // The type of data element being submitted from the DataAssetTypes enum.
+      // Refer to enum DataAssetType for generic values.
       // REQUIRED in 1.2 for assetsurl or dcourl responses.
       // Implemented in 1.2.
-      optional DataAssetType type = 3;
+      optional int32 type = 3;
 
       // The length of the data element being submitted. Where applicable, must
       // comply with the recommended maximum lengths in the DataAssetType enum.
@@ -1887,12 +1938,14 @@ message NativeResponse {
   // appropriateness of this is up to each buyer.
   message EventTracker {
     // Type of event to track.
+    // Refer to enum EventType for generic values.
     // REQUIRED if embedded asset is being used.
-    optional EventType event = 1;
+    optional int32 event = 1;
 
     // Type of tracking requested.
+    // Refer to enum EventTrackingMethod for generic values.
     // REQUIRED if embedded asset is being used.
-    required EventTrackingMethod method = 2;
+    required int32 method = 2;
 
     // The URL of the image or js.
     // REQUIRED for image or js, optional for custom.
@@ -2533,6 +2586,7 @@ enum ConnectionType {
   CELL_2G = 4;
   CELL_3G = 5;
   CELL_4G = 6;
+  CELL_5G = 7;
 }
 
 // OpenRTB 2.0: The following table lists the directions in which an
@@ -2597,7 +2651,7 @@ enum LocationService {
   IP2LOCATION = 1;
   NEUSTAR = 2;
   MAXMIND = 3;
-  NETAQUITY = 4;
+  NETACUITY = 4;
 }
 
 // OpenRTB 2.0: The following table lists the type of device from which the
