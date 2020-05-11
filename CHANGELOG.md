@@ -1,6 +1,26 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
+## Version 1.5.10, 10-01-2020
+* Proto updates (documentation only).
+* Build/dependency updates.
+
+## Version 1.5.9, 15-10-2019
+* Proto updates (documentation only).
+* Build/dependency updates.
+
+## Version 1.5.8, 14-10-2019
+* Build/dependency updates.
+
+## Version 1.5.7, 09-07-2019
+* Build/dependency updates, code cleanups.
+
+## Version 1.5.6, 29-04-2019
+* Add new macros: `${AUCTION_LOSS}`, `${AUCTION_MBR}`.
+
+## Version 1.5.5, 23-01-2019
+* Proto updates (documentation only).
+
 ## Version 1.5.4, 10-09-2018
 * OpenRtbSnippetProcessor now supports macro expansion in the fields
   `Bid.burl` and `Bid.lurl` (introduced in OpenRTB 2.5).

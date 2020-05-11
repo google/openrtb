@@ -1,7 +1,7 @@
 option java_outer_classname = "OpenRtb";
 package com.iabtechlab.openrtb.v2;
 
-// Copyright 2019 IAB Tech Lab
+// Copyright 2020 IAB Tech Lab
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -255,7 +255,7 @@ message BidRequest {
       optional string type = 1;
 
       // Number representing the value of the metric.
-      // Probabilities must be in the range 0.0 – 1.0.
+      // Probabilities must be in the range 0.0 - 1.0.
       // REQUIRED by the OpenRTB specification.
       optional double value = 2;
 
@@ -530,7 +530,7 @@ message BidRequest {
     //
     // The presence of a Audio as a subordinate of the Imp object indicates
     // that this impression is offered as an audio type impression.
-    // At the publisher’s discretion, that same impression may also be offered
+    // At the publisher's discretion, that same impression may also be offered
     // as banner, video, and/or native by also including as Imp subordinates
     // objects of those types. However, any given bid for the impression must
     // conform to one of the offered types.
@@ -1144,7 +1144,7 @@ message BidRequest {
     optional LocationType type = 9;
 
     // Estimated location accuracy in meters; recommended when lat/lon
-    // are specified and derived from a device’s location services
+    // are specified and derived from a device's location services
     // (i.e., type = 1). Note that this is the accuracy as reported
     // from the device. Consult OS specific documentation
     // (e.g., Android, iOS) for exact interpretation.
@@ -1172,12 +1172,12 @@ message BidRequest {
   // privacy policies. However, this user ID must be stable long enough to serve
   // reasonably as the basis for frequency capping and retargeting.
   message User {
-    // Exchange-specific ID for the user. At least one of id or buyerid
+    // Exchange-specific ID for the user. At least one of id or buyeruid
     // is recommended.
     optional string id = 1;
 
     // Buyer-specific ID for the user as mapped by the exchange for the buyer.
-    // At least one of buyerid or id is recommended.
+    // At least one of buyeruid or id is recommended.
     optional string buyeruid = 2;
 
     // Year of birth as a 4-digit integer.
@@ -1882,7 +1882,7 @@ message NativeResponse {
   // specifies the types of events the bidder wishes to track and the
   // URLs/information to track them. Bidder must only respond with methods
   // indicated as available in the request. Note that most javascript trackers
-  // expect to be loaded at impression time, so it’s not generally recommended
+  // expect to be loaded at impression time, so it's not generally recommended
   // for the buyer to respond with javascript trackers on other events, but the
   // appropriateness of this is up to each buyer.
   message EventTracker {
@@ -2315,6 +2315,7 @@ enum AuctionType {
 
   FIXED_PRICE = 3;
 }
+
 // OpenRTB 2.0: types of ads that can be accepted by the exchange unless
 // restricted by publisher site settings.
 enum BannerAdType {
@@ -2380,7 +2381,8 @@ enum APIFramework {
   MRAID_3 = 6;
 
   OMID_1 = 7;
-};
+}
+
 // OpenRTB 2.0: The following table specifies the position of the ad as a
 // relative measure of visibility or prominence.
 //
@@ -2597,7 +2599,7 @@ enum LocationService {
   IP2LOCATION = 1;
   NEUSTAR = 2;
   MAXMIND = 3;
-  NETAQUITY = 4;
+  NETACUITY = 4;
 }
 
 // OpenRTB 2.0: The following table lists the type of device from which the
@@ -2925,5 +2927,4 @@ enum EventTrackingMethod {
   // Javascript-based tracking - URL provided will be insterted as a js tag at
   // the time of the event.
   JS = 2;
-
 }
