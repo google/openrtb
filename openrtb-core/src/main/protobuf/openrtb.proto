@@ -2530,6 +2530,7 @@ enum ConnectionType {
   CELL_2G = 4;
   CELL_3G = 5;
   CELL_4G = 6;
+  CELL_5G = 7;
 }
 
 // OpenRTB 2.0: The following table lists the directions in which an
