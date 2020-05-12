@@ -67,7 +67,7 @@ message BidRequest {
   // Auction type, where 1 = First Price, 2 = Second Price Plus.
   // Refer to enum AuctionType for generic values.
   // Exchange-specific auction types can be defined using values > 500.
-  optional int32 at = 7 [default = SECOND_PRICE];
+  optional int32 at = 7 [default = 2];
 
   // Maximum time in milliseconds to submit a bid to avoid timeout.
   // This value is commonly communicated offline.
