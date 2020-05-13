@@ -9,7 +9,8 @@ package com.google.openrtb;
 // Reserved ranges:
 //   100-199: Reserved for Google, including the openrtb-doubleclick
 //            library (DcExt) and Open Bidder project (ObExt).
-//   200-999: Free for use with other exchanges or projects.
+//   200-299: Reserved for formal standard extensions
+//   300-999: Free for use with other exchanges or projects.
 //   1000-1999: Reserved for Google.
 //   2000-9999: Free for use with other exchanges or projects.
 
