@@ -30,10 +30,6 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.google.common.io.CharSource;
 import com.google.common.io.Closeables;
 import com.google.openrtb.Gender;
-import com.iabtechlab.openrtb.v2.OpenRtb.APIFramework;
-import com.iabtechlab.openrtb.v2.OpenRtb.AdPosition;
-import com.iabtechlab.openrtb.v2.OpenRtb.AuctionType;
-import com.iabtechlab.openrtb.v2.OpenRtb.BannerAdType;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.App;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Content;
@@ -60,25 +56,6 @@ import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.User;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
-import com.iabtechlab.openrtb.v2.OpenRtb.CompanionType;
-import com.iabtechlab.openrtb.v2.OpenRtb.ConnectionType;
-import com.iabtechlab.openrtb.v2.OpenRtb.ContentContext;
-import com.iabtechlab.openrtb.v2.OpenRtb.ContentDeliveryMethod;
-import com.iabtechlab.openrtb.v2.OpenRtb.CreativeAttribute;
-import com.iabtechlab.openrtb.v2.OpenRtb.DeviceType;
-import com.iabtechlab.openrtb.v2.OpenRtb.ExpandableDirection;
-import com.iabtechlab.openrtb.v2.OpenRtb.FeedType;
-import com.iabtechlab.openrtb.v2.OpenRtb.LocationService;
-import com.iabtechlab.openrtb.v2.OpenRtb.LocationType;
-import com.iabtechlab.openrtb.v2.OpenRtb.NoBidReason;
-import com.iabtechlab.openrtb.v2.OpenRtb.PlaybackCessationMode;
-import com.iabtechlab.openrtb.v2.OpenRtb.PlaybackMethod;
-import com.iabtechlab.openrtb.v2.OpenRtb.ProductionQuality;
-import com.iabtechlab.openrtb.v2.OpenRtb.Protocol;
-import com.iabtechlab.openrtb.v2.OpenRtb.QAGMediaRating;
-import com.iabtechlab.openrtb.v2.OpenRtb.VideoLinearity;
-import com.iabtechlab.openrtb.v2.OpenRtb.VideoPlacementType;
-import com.iabtechlab.openrtb.v2.OpenRtb.VolumeNormalizationMode;
 import com.google.openrtb.util.ProtoUtils;
 import com.google.protobuf.ByteString;
 import java.io.CharArrayReader;
@@ -174,12 +151,8 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "test":
         req.setTest(par.getValueAsBoolean());
         break;
-      case "at": {
-          AuctionType value = AuctionType.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            req.setAt(value);
-          }
-        }
+      case "at":
+        req.setAt(par.getIntValue());
         break;
       case "tmax":
         req.setTmax(par.getIntValue());
@@ -415,18 +388,12 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "api":
         for (startArray(par); endArray(par); par.nextToken()) {
-          APIFramework value = APIFramework.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            nativ.addApi(value);
-          }
+          nativ.addApi(par.getIntValue());
         }
         break;
       case "battr":
         for (startArray(par); endArray(par); par.nextToken()) {
-          CreativeAttribute value = CreativeAttribute.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            nativ.addBattr(value);
-          }
+            nativ.addBattr(par.getIntValue());
         }
         break;
       default:
@@ -494,12 +461,8 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
           deal.addWadomain(par.getText());
         }
         break;
-      case "at": {
-          AuctionType value = AuctionType.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            deal.setAt(value);
-          }
-        }
+      case "at":
+        deal.setAt(par.getIntValue());
         break;
       default:
         readOther(deal, par, fieldName);
@@ -532,19 +495,12 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "maxduration":
         video.setMaxduration(par.getIntValue());
         break;
-      case "protocol": {
-          Protocol value = Protocol.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            video.setProtocol(value);
-          }
-        }
+      case "protocol":
+        video.setProtocol(par.getIntValue());
         break;
       case "protocols":
         for (startArray(par); endArray(par); par.nextToken()) {
-          Protocol value = Protocol.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            video.addProtocols(value);
-          }
+          video.addProtocols(par.getIntValue());
         }
         break;
       case "w":
@@ -556,22 +512,15 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "startdelay":
         video.setStartdelay(par.getIntValue());
         break;
-      case "linearity": {
-          VideoLinearity value = VideoLinearity.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            video.setLinearity(value);
-          }
-        }
+      case "linearity":
+        video.setLinearity(par.getIntValue());
         break;
       case "sequence":
         video.setSequence(par.getIntValue());
         break;
       case "battr":
         for (startArray(par); endArray(par); par.nextToken()) {
-          CreativeAttribute value = CreativeAttribute.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            video.addBattr(value);
-          }
+          video.addBattr(par.getIntValue());
         }
         break;
       case "maxextended":
@@ -588,26 +537,16 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "playbackmethod":
         for (startArray(par); endArray(par); par.nextToken()) {
-          PlaybackMethod value = PlaybackMethod.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            video.addPlaybackmethod(value);
-          }
+          video.addPlaybackmethod(par.getIntValue());
         }
         break;
       case "delivery":
         for (startArray(par); endArray(par); par.nextToken()) {
-          ContentDeliveryMethod value = ContentDeliveryMethod.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            video.addDelivery(value);
-          }
+          video.addDelivery(par.getIntValue());
         }
         break;
-      case "pos": {
-          AdPosition value = AdPosition.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            video.setPos(value);
-          }
-        }
+      case "pos":
+        video.setPos(par.getIntValue());
         break;
       case "companionad":
         if (peekStructStart(par) == JsonToken.START_ARRAY) {
@@ -622,18 +561,12 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "api":
         for (startArray(par); endArray(par); par.nextToken()) {
-          APIFramework value = APIFramework.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            video.addApi(value);
-          }
+          video.addApi(par.getIntValue());
         }
         break;
       case "companiontype":
         for (startArray(par); endArray(par); par.nextToken()) {
-          CompanionType value = CompanionType.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            video.addCompaniontype(value);
-          }
+          video.addCompaniontype(par.getIntValue());
         }
         break;
       case "skip":
@@ -646,10 +579,10 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         video.setSkipafter(par.getIntValue());
         break;
       case "placement":
-        video.setPlacement(VideoPlacementType.forNumber(par.getIntValue()));
+        video.setPlacement(par.getIntValue());
         break;
       case "playbackend":
-        video.setPlaybackend(PlaybackCessationMode.forNumber(par.getIntValue()));
+        video.setPlaybackend(par.getIntValue());
         break;
       default:
         readOther(video, par, fieldName);
@@ -709,10 +642,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "protocols":
         for (startArray(par); endArray(par); par.nextToken()) {
-          Protocol value = Protocol.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            audio.addProtocols(value);
-          }
+          audio.addProtocols(par.getIntValue());
         }
         break;
       case "startdelay":
@@ -723,10 +653,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "battr":
         for (startArray(par); endArray(par); par.nextToken()) {
-          CreativeAttribute value = CreativeAttribute.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            audio.addBattr(value);
-          }
+          audio.addBattr(par.getIntValue());
         }
         break;
       case "maxextended":
@@ -740,10 +667,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "delivery":
         for (startArray(par); endArray(par); par.nextToken()) {
-          ContentDeliveryMethod value = ContentDeliveryMethod.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            audio.addDelivery(value);
-          }
+          audio.addDelivery(par.getIntValue());
         }
         break;
       case "companionad":
@@ -756,18 +680,12 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "api":
         for (startArray(par); endArray(par); par.nextToken()) {
-          APIFramework value = APIFramework.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            audio.addApi(value);
-          }
+          audio.addApi(par.getIntValue());
         }
         break;
       case "companiontype":
         for (startArray(par); endArray(par); par.nextToken()) {
-          CompanionType value = CompanionType.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            audio.addCompaniontype(value);
-          }
+          audio.addCompaniontype(par.getIntValue());
         }
         break;
 
@@ -776,22 +694,14 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "maxseq":
         audio.setMaxseq(par.getIntValue());
         break;
-      case "feed": {
-          FeedType feed = FeedType.forNumber(par.getIntValue());
-          if (checkEnum(feed)) {
-            audio.setFeed(feed);
-          }
-        }
+      case "feed":
+        audio.setFeed(par.getIntValue());
         break;
       case "stitched":
         audio.setStitched(par.getValueAsBoolean());
         break;
-      case "nvol": {
-          VolumeNormalizationMode value = VolumeNormalizationMode.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            audio.setNvol(value);
-          }
-        }
+      case "nvol":
+        audio.setNvol(par.getIntValue());
         break;
 
       default:
@@ -837,26 +747,16 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "btype":
         for (startArray(par); endArray(par); par.nextToken()) {
-          BannerAdType value = BannerAdType.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            banner.addBtype(value);
-          }
+          banner.addBtype(par.getIntValue());
         }
         break;
       case "battr":
         for (startArray(par); endArray(par); par.nextToken()) {
-          CreativeAttribute value = CreativeAttribute.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            banner.addBattr(value);
-          }
+          banner.addBattr(par.getIntValue());
         }
         break;
-      case "pos": {
-          AdPosition value = AdPosition.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            banner.setPos(value);
-          }
-        }
+      case "pos":
+        banner.setPos(par.getIntValue());
         break;
       case "mimes":
         for (startArray(par); endArray(par); par.nextToken()) {
@@ -868,18 +768,12 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "expdir":
         for (startArray(par); endArray(par); par.nextToken()) {
-          ExpandableDirection value = ExpandableDirection.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            banner.addExpdir(value);
-          }
+          banner.addExpdir(par.getIntValue());
         }
         break;
       case "api":
         for (startArray(par); endArray(par); par.nextToken()) {
-          APIFramework value = APIFramework.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            banner.addApi(value);
-          }
+          banner.addApi(par.getIntValue());
         }
         break;
       case "format":
@@ -1125,21 +1019,14 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
           }
         }
         break;
-      case "videoquality": {
-          ProductionQuality value = ProductionQuality.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            content.setVideoquality(value);
-          }
-        }
+      case "videoquality":
+        content.setVideoquality(par.getIntValue());
         break;
       case "context":
         try {
           // JsonParseException may be thrown because value is string in
           // 2.2 and earlier, this allows for backwards compatibility.
-          ContentContext value = ContentContext.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            content.setContext(value);
-          }
+          content.setContext(par.getIntValue());
         } catch (JsonParseException jpe) {
         }
         break;
@@ -1149,12 +1036,8 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "userrating":
         content.setUserrating(par.getText());
         break;
-      case "qagmediarating": {
-          QAGMediaRating value = QAGMediaRating.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            content.setQagmediarating(value);
-          }
-        }
+      case "qagmediarating":
+        content.setQagmediarating(par.getIntValue());
         break;
       case "keywords":
         content.setKeywords(readCsvString(par));
@@ -1186,13 +1069,9 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "isrc":
         content.setIsrc(par.getText());
         break;
-      case "prodq": {
-        ProductionQuality value = ProductionQuality.forNumber(par.getIntValue());
-        if (checkEnum(value)) {
-          content.setProdq(value);
-        }
-      }
-      break;
+      case "prodq":
+        content.setProdq(par.getIntValue());
+        break;
       default:
         readOther(content, par, fieldName);
     }
@@ -1302,12 +1181,8 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "ipv6":
         device.setIpv6(par.getText());
         break;
-      case "devicetype": {
-          DeviceType value = DeviceType.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            device.setDevicetype(value);
-          }
-        }
+      case "devicetype":
+        device.setDevicetype(par.getIntValue());
         break;
       case "make":
         device.setMake(par.getText());
@@ -1348,12 +1223,8 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "carrier":
         device.setCarrier(par.getText());
         break;
-      case "connectiontype": {
-          ConnectionType value = ConnectionType.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            device.setConnectiontype(value);
-          }
-        }
+      case "connectiontype":
+        device.setConnectiontype(par.getIntValue());
         break;
       case "ifa":
         device.setIfa(par.getText());
@@ -1407,12 +1278,8 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "lon":
         geo.setLon(par.getValueAsDouble());
         break;
-      case "type": {
-          LocationType value = LocationType.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            geo.setType(value);
-          }
-        }
+      case "type":
+        geo.setType(par.getIntValue());
         break;
       case "country":
         geo.setCountry(par.getText());
@@ -1441,12 +1308,8 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "lastfix":
         geo.setLastfix(par.getIntValue());
         break;
-      case "ipservice": {
-          LocationService value = LocationService.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            geo.setIpservice(value);
-          }
-        }
+      case "ipservice":
+        geo.setIpservice(par.getIntValue());
         break;
       default:
         readOther(geo, par, fieldName);
@@ -1631,12 +1494,8 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "customdata":
         resp.setCustomdata(par.getText());
         break;
-      case "nbr": {
-          NoBidReason value = NoBidReason.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            resp.setNbr(value);
-          }
-        }
+      case "nbr":
+        resp.setNbr(par.getIntValue());
         break;
       default:
         readOther(resp, par, fieldName);
@@ -1741,10 +1600,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "attr":
         for (startArray(par); endArray(par); par.nextToken()) {
-          CreativeAttribute value = CreativeAttribute.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            bid.addAttr(value);
-          }
+          bid.addAttr(par.getIntValue());
         }
         break;
       case "dealid":
@@ -1756,26 +1612,14 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "h":
         bid.setH(par.getIntValue());
         break;
-      case "api": {
-          APIFramework value = APIFramework.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            bid.setApi(value);
-          }
-        }
+      case "api":
+        bid.setApi(par.getIntValue());
         break;
-      case "protocol": {
-          Protocol value = Protocol.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            bid.setProtocol(value);
-          }
-        }
+      case "protocol":
+        bid.setProtocol(par.getIntValue());
         break;
-      case "qagmediarating": {
-          QAGMediaRating value = QAGMediaRating.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            bid.setQagmediarating(value);
-          }
-        }
+      case "qagmediarating":
+        bid.setQagmediarating(par.getIntValue());
         break;
       case "exp":
         bid.setExp(par.getIntValue());

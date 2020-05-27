@@ -25,7 +25,6 @@ import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp.Banner;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
-import com.iabtechlab.openrtb.v2.OpenRtb.CreativeAttribute;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -104,7 +103,7 @@ public class OpenRtbValidator {
     return goodBid;
   }
 
-  protected boolean validateCreats(Bid.Builder bid, List<CreativeAttribute> badCreats) {
+  protected boolean validateCreats(Bid.Builder bid, List<Integer> badCreats) {
     if (badCreats.isEmpty()) {
       return true;
     }
@@ -118,7 +117,7 @@ public class OpenRtbValidator {
 
   protected boolean validateCompanions(Bid.Builder bid, List<Banner> companions) {
     for (Banner companion : companions) {
-      List<CreativeAttribute> badCompCreats =
+      List<Integer> badCompCreats =
           check(companion.getBattrList(), bid.getAttrList());
       if (!badCompCreats.isEmpty()) {
         if (logger.isDebugEnabled()) {
