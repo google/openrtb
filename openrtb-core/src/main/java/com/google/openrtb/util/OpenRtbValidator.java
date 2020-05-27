@@ -104,7 +104,7 @@ public class OpenRtbValidator {
     return goodBid;
   }
 
-  protected boolean validateCreats(Bid.Builder bid, List<CreativeAttribute> badCreats) {
+  protected boolean validateCreats(Bid.Builder bid, List<Integer> badCreats) {
     if (badCreats.isEmpty()) {
       return true;
     }
@@ -118,7 +118,7 @@ public class OpenRtbValidator {
 
   protected boolean validateCompanions(Bid.Builder bid, List<Banner> companions) {
     for (Banner companion : companions) {
-      List<CreativeAttribute> badCompCreats =
+      List<Integer> badCompCreats =
           check(companion.getBattrList(), bid.getAttrList());
       if (!badCompCreats.isEmpty()) {
         if (logger.isDebugEnabled()) {
