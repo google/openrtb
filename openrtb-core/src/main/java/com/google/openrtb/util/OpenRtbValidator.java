@@ -25,7 +25,6 @@ import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp.Banner;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
-import com.iabtechlab.openrtb.v2.OpenRtb.CreativeAttribute;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

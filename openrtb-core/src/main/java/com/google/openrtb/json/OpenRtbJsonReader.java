@@ -520,7 +520,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "battr":
         for (startArray(par); endArray(par); par.nextToken()) {
-            video.addBattr(par.getIntValue());
+          video.addBattr(par.getIntValue());
         }
         break;
       case "maxextended":
@@ -653,7 +653,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "battr":
         for (startArray(par); endArray(par); par.nextToken()) {
-            audio.addBattr(par.getIntValue());
+          audio.addBattr(par.getIntValue());
         }
         break;
       case "maxextended":
@@ -752,7 +752,7 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       case "battr":
         for (startArray(par); endArray(par); par.nextToken()) {
-            banner.addBattr(par.getIntValue());
+          banner.addBattr(par.getIntValue());
         }
         break;
       case "pos":
