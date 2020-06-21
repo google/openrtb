@@ -158,7 +158,17 @@ message SupplyChainNode {
 
 // Ad Exchange extensions for the Source object.
 message SourceExt {
+  // The SupplyChain object enables buyers to see all parties who are selling or
+  // reselling a given bid request.
   optional SupplyChain schain = 1;
+
+  // Identifier of the OM SDK integration. This is the same as the "name"
+  // parameter of the OMID Partner object.
+  optional string omidpn = 2;
+
+  // Version of the OM SDK integration. This is the same as the "versionString"
+  // parameter of the OMID Partner object.
+  optional string omidpv = 3;
 }
 
 extend com.iabtechlab.openrtb.v2.BidRequest.Source {
