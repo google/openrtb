@@ -9,7 +9,7 @@
   <groupId>com.google.openrtb</groupId>
   <artifactId>openrtb-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.5.8-SNAPSHOT</version>
+  <version>1.5.12-SNAPSHOT</version>
   <name>Google OpenRTB Libraries</name>
   <description>
     OpenRTB model for Java and other languages via protobuf;
@@ -52,14 +52,14 @@
   <properties>
     <findBugsJsr305Version>3.0.2</findBugsJsr305Version>
     <gpg.skip>true</gpg.skip>
-    <guavaVersion>28.0-jre</guavaVersion>
-    <fasterxmlJacksonVersion>2.9.9</fasterxmlJacksonVersion>
+    <guavaVersion>29.0-jre</guavaVersion>
+    <fasterxmlJacksonVersion>2.10.2</fasterxmlJacksonVersion>
     <injectVersion>1</injectVersion>
-    <junitVersion>4.12</junitVersion>
-    <metricsVersion>3.0.2</metricsVersion>
-    <protobufVersion>3.8.0</protobufVersion>
-    <slf4jVersion>1.7.25</slf4jVersion>
-    <truthVersion>1.0</truthVersion>
+    <junitVersion>4.13</junitVersion>
+    <metricsVersion>4.1.6</metricsVersion>
+    <protobufVersion>3.11.1</protobufVersion>
+    <slf4jVersion>1.7.30</slf4jVersion>
+    <truthVersion>1.0.1</truthVersion>
 
     <!-- Plugin versions -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -106,12 +106,12 @@
 
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.2</version>
+        <version>3.2.0</version>
       </plugin>
 
       <plugin>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.1.0</version>
+        <version>3.2.1</version>
       </plugin>
 
       <plugin>
@@ -131,7 +131,7 @@
 
       <plugin>
         <artifactId>maven-site-plugin</artifactId>
-        <version>3.7.1</version>
+        <version>3.8.2</version>
       </plugin>
 
       <plugin>
@@ -147,7 +147,7 @@
 
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.0</version>
+        <version>2.22.2</version>
         <configuration>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
           <argLine>-Djava.util.logging.config.file=src/test/resources/logging.properties</argLine>
@@ -172,6 +172,9 @@
           <windowtitle>${project.name}</windowtitle>
           <notimestamp>true</notimestamp>
           <excludePackageNames />
+          <additionalOptions>
+            <additionalOption>-Xdoclint:none</additionalOption>
+          </additionalOptions>
           <groups>
             <group>
               <title>OpenRTB</title>

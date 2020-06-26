@@ -29,7 +29,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.google.common.io.CharSource;
 import com.google.common.io.Closeables;
-import com.google.openrtb.Gender;
+import com.iabtechlab.openrtb.v2.Gender;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.App;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Content;

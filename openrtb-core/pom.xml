@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.google.openrtb</groupId>
     <artifactId>openrtb-parent</artifactId>
-    <version>1.5.8-SNAPSHOT</version>
+    <version>1.5.12-SNAPSHOT</version>
   </parent>
 
   <dependencies>
@@ -33,7 +33,7 @@
       <version>${guavaVersion}</version>
     </dependency>
     <dependency>
-      <groupId>com.codahale.metrics</groupId>
+      <groupId>io.dropwizard.metrics</groupId>
       <artifactId>metrics-core</artifactId>
       <version>${metricsVersion}</version>
     </dependency>

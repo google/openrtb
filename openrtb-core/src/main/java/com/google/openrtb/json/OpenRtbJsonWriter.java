@@ -22,7 +22,7 @@ import static com.google.openrtb.json.OpenRtbJsonUtils.writeStrings;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.google.openrtb.Gender;
+import com.iabtechlab.openrtb.v2.Gender;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.App;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Content;
