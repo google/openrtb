@@ -22,7 +22,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.google.common.collect.SetMultimap;
-import com.google.openrtb.OpenRtb.BidRequest;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
 import com.google.openrtb.TestExt;
 import java.io.IOException;
 import java.util.Map;

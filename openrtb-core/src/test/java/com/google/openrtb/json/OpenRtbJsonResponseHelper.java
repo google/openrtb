@@ -19,7 +19,7 @@ package com.google.openrtb.json;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.openrtb.OpenRtb;
+import com.iabtechlab.openrtb.v2.OpenRtb;
 import com.google.openrtb.TestExt;
 import java.io.IOException;
 

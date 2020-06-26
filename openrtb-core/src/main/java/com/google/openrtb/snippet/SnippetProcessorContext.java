@@ -17,9 +17,9 @@
 package com.google.openrtb.snippet;
 
 import com.google.common.base.MoreObjects;
-import com.google.openrtb.OpenRtb.BidRequestOrBuilder;
-import com.google.openrtb.OpenRtb.BidResponse;
-import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequestOrBuilder;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
 import com.google.openrtb.util.ProtoUtils;
 
 /**

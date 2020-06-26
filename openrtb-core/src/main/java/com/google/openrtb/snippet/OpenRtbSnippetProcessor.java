@@ -17,11 +17,11 @@
 package com.google.openrtb.snippet;
 
 import com.google.common.collect.ImmutableList;
-import com.google.openrtb.OpenRtb.BidRequest.ImpOrBuilder;
-import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
-import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
-import com.google.openrtb.OpenRtb.BidResponse.SeatBid.BidOrBuilder;
-import com.google.openrtb.OpenRtb.BidResponse.SeatBidOrBuilder;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.ImpOrBuilder;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.BidOrBuilder;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBidOrBuilder;
 import java.util.List;
 import javax.inject.Singleton;
 

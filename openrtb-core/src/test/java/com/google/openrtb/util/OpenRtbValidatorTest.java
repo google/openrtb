@@ -20,17 +20,17 @@ import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
 
 import com.codahale.metrics.MetricRegistry;
-import com.google.openrtb.OpenRtb.BidRequest;
-import com.google.openrtb.OpenRtb.BidRequest.Imp;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Audio;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Video;
-import com.google.openrtb.OpenRtb.BidResponse;
-import com.google.openrtb.OpenRtb.BidResponse.SeatBid;
-import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
-import com.google.openrtb.OpenRtb.CreativeAttribute;
-import com.google.openrtb.OpenRtb.Protocol;
-import com.google.openrtb.OpenRtb.VideoLinearity;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp.Audio;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp.Banner;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp.Video;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
+import com.iabtechlab.openrtb.v2.OpenRtb.CreativeAttribute;
+import com.iabtechlab.openrtb.v2.OpenRtb.Protocol;
+import com.iabtechlab.openrtb.v2.OpenRtb.VideoLinearity;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -20,12 +20,12 @@ import com.codahale.metrics.Counter;
 import com.codahale.metrics.MetricRegistry;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.openrtb.OpenRtb.BidRequest;
-import com.google.openrtb.OpenRtb.BidRequest.Imp;
-import com.google.openrtb.OpenRtb.BidRequest.Imp.Banner;
-import com.google.openrtb.OpenRtb.BidResponse;
-import com.google.openrtb.OpenRtb.BidResponse.SeatBid.Bid;
-import com.google.openrtb.OpenRtb.CreativeAttribute;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp.Banner;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
+import com.iabtechlab.openrtb.v2.OpenRtb.CreativeAttribute;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Validates a pair of {@link BidRequest} and its corresponding
- * {@link com.google.openrtb.OpenRtb.BidResponse.Builder}.
+ * {@link com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.Builder}.
  * Bids with any validation problems will cause debug logs and metric updates.
  * Fatal validation errors (that would likely cause the bid to be rejected by the exchange)
  * will also be removed from the response.
