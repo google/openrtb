@@ -154,7 +154,7 @@ class OpenRtbJsonResponseHelper {
         .setIurl("http://mycdn.com/ad.gif")
         .setCid("cid")
         .setCrid("crid")
-        .addAttr(OpenRtb.CreativeAttribute.TEXT_ONLY)
+        .addAttr(OpenRtb.CreativeAttribute.TEXT_ONLY.getNumber())
         .setDealid("deal")
         .setW(100)
         .setH(80)
@@ -181,7 +181,7 @@ class OpenRtbJsonResponseHelper {
         .setBidid("bid")
         .setCur("USD")
         .setCustomdata("mydata")
-        .setNbr(OpenRtb.NoBidReason.TECHNICAL_ERROR);
+        .setNbr(OpenRtb.NoBidReason.TECHNICAL_ERROR.getNumber());
 
     return jsonFactory.newWriter().writeBidResponse(bidResponse.build());
   }
@@ -201,7 +201,7 @@ class OpenRtbJsonResponseHelper {
         .setIurl("http://mycdn.com/ad.gif")
         .setCid("cid1")
         .setCrid("crid1")
-        .addAttr(OpenRtb.CreativeAttribute.TEXT_ONLY)
+        .addAttr(OpenRtb.CreativeAttribute.TEXT_ONLY.getNumber())
         .setDealid("deal1")
         .setW(100)
         .setH(80)
@@ -224,7 +224,7 @@ class OpenRtbJsonResponseHelper {
         .setIurl("http://mycdn.com/ad.gif")
         .setCid("cid2")
         .setCrid("crid2")
-        .addAttr(OpenRtb.CreativeAttribute.TEXT_ONLY)
+        .addAttr(OpenRtb.CreativeAttribute.TEXT_ONLY.getNumber())
         .setDealid("deal2")
         .setW(100)
         .setH(80)
@@ -247,7 +247,7 @@ class OpenRtbJsonResponseHelper {
         .setIurl("http://mycdn.com/ad.gif")
         .setCid("cid3")
         .setCrid("crid3")
-        .addAttr(OpenRtb.CreativeAttribute.TEXT_ONLY)
+        .addAttr(OpenRtb.CreativeAttribute.TEXT_ONLY.getNumber())
         .setDealid("deal3")
         .setW(100)
         .setH(80)
@@ -290,7 +290,7 @@ class OpenRtbJsonResponseHelper {
         .setBidid("bid1")
         .setCur("USD")
         .setCustomdata("mydata")
-        .setNbr(OpenRtb.NoBidReason.TECHNICAL_ERROR)
+        .setNbr(OpenRtb.NoBidReason.TECHNICAL_ERROR.getNumber())
         .setExtension(TestExt.testResponse1, OpenRtbJsonFactoryHelper.test1)
         .addExtension(TestExt.testResponse2, OpenRtbJsonFactoryHelper.test2)
         .addExtension(TestExt.testResponse2, OpenRtbJsonFactoryHelper.test2)

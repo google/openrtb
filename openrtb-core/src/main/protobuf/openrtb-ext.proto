@@ -45,7 +45,7 @@ message UniversalId {
     APP = 2;
     PERSON_BASED = 3;
   }
-  optional int atype = 2;
+  optional int32 atype = 2;
 
   // Extensions.
   extensions 100 to 9999;

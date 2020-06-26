@@ -85,10 +85,10 @@ public class ProtoUtilsTest {
   public void testUpdate() {
     BidRequest.Builder req = BidRequest.newBuilder().setId("0");
     ProtoUtils.update(ImmutableList.of(req), reqBuilder -> {
-      reqBuilder.setAt(AuctionType.FIRST_PRICE);
+      reqBuilder.setAt(AuctionType.FIRST_PRICE.getNumber());
       return true;
     });
-    assertThat(req.getAt()).isSameInstanceAs(AuctionType.FIRST_PRICE);
+    assertThat(req.getAt()).isSameInstanceAs(AuctionType.FIRST_PRICE.getNumber());
   }
 
   @Test

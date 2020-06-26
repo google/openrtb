@@ -16,9 +16,8 @@
 
 package com.google.openrtb.json;
 
-import static com.google.openrtb.json.OpenRtbJsonUtils.writeEnumField;
-import static com.google.openrtb.json.OpenRtbJsonUtils.writeEnums;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeIntBoolField;
+import static com.google.openrtb.json.OpenRtbJsonUtils.writeInts;
 import static com.google.openrtb.json.OpenRtbJsonUtils.writeStrings;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -98,10 +97,10 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeStringField("ver", req.getVer());
     }
     if (req.hasLayout()) {
-      writeEnumField("layout", req.getLayout(), gen);
+      gen.writeNumberField("layout", req.getLayout());
     }
     if (req.hasAdunit()) {
-      writeEnumField("adunit", req.getAdunit(), gen);
+      gen.writeNumberField("adunit", req.getAdunit());
     }
     if (req.hasPlcmtcnt()) {
       gen.writeNumberField("plcmtcnt", req.getPlcmtcnt());
@@ -117,13 +116,13 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeEndArray();
     }
     if (req.hasContext()) {
-      writeEnumField("context", req.getContext(), gen);
+      gen.writeNumberField("context", req.getContext());
     }
     if (req.hasContextsubtype()) {
-      writeEnumField("contextsubtype", req.getContextsubtype(), gen);
+      gen.writeNumberField("contextsubtype", req.getContextsubtype());
     }
     if (req.hasPlcmttype()) {
-      writeEnumField("plcmttype", req.getPlcmttype(), gen);
+      gen.writeNumberField("plcmttype", req.getPlcmttype());
     }
     if (req.hasAurlsupport()) {
       writeIntBoolField("aurlsupport", req.getAurlsupport(), gen);
@@ -202,7 +201,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
   protected void writeReqImageFields(NativeRequest.Asset.Image image, JsonGenerator gen)
       throws IOException {
     if (image.hasType()) {
-      writeEnumField("type", image.getType(), gen);
+      gen.writeNumberField("type", image.getType());
     }
     if (image.hasW()) {
       gen.writeNumberField("w", image.getW());
@@ -231,7 +230,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
 
   protected void writeReqDataFields(NativeRequest.Asset.Data data, JsonGenerator gen)
       throws IOException {
-    writeEnumField("type", data.getType(), gen);
+    gen.writeNumberField("type", data.getType());
     if (data.hasLen()) {
       gen.writeNumberField("len", data.getLen());
     }
@@ -247,8 +246,8 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
 
   protected void writeReqEventTrackersFields(
       NativeRequest.EventTrackers tracker, JsonGenerator gen) throws IOException {
-    writeEnumField("event", tracker.getEvent(), gen);
-    writeEnums("methods", tracker.getMethodsList(), gen);
+    gen.writeNumberField("event", tracker.getEvent());
+    writeInts("methods", tracker.getMethodsList(), gen);
   }
 
   /**
@@ -403,7 +402,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       throws IOException {
     gen.writeStringField("url", image.getUrl());
     if (image.hasType()) {
-      writeEnumField("type", image.getType(), gen);
+      gen.writeNumberField("type", image.getType());
     }
     if (image.hasW()) {
       gen.writeNumberField("w", image.getW());
@@ -441,7 +440,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     }
     gen.writeStringField("value", data.getValue());
     if (data.hasType()) {
-      writeEnumField("type", data.getType(), gen);
+      gen.writeNumberField("type", data.getType());
     }
     if (data.hasLen()) {
       gen.writeNumberField("len", data.getLen());
@@ -477,8 +476,8 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
 
   protected void writeRespEventTrackerFields(
       NativeResponse.EventTracker tracker, JsonGenerator gen) throws IOException {
-    writeEnumField("event", tracker.getEvent(), gen);
-    writeEnumField("method", tracker.getMethod(), gen);
+    gen.writeNumberField("event", tracker.getEvent());
+    gen.writeNumberField("method", tracker.getMethod());
     if (tracker.hasUrl()) {
       gen.writeStringField("url", tracker.getUrl());
     }

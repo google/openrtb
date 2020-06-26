@@ -26,17 +26,8 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.google.common.io.CharSource;
 import com.google.common.io.Closeables;
-import com.iabtechlab.openrtb.v2.OpenRtb.AdUnitId;
-import com.iabtechlab.openrtb.v2.OpenRtb.ContextSubtype;
-import com.iabtechlab.openrtb.v2.OpenRtb.ContextType;
-import com.iabtechlab.openrtb.v2.OpenRtb.DataAssetType;
-import com.iabtechlab.openrtb.v2.OpenRtb.EventTrackingMethod;
-import com.iabtechlab.openrtb.v2.OpenRtb.EventType;
-import com.iabtechlab.openrtb.v2.OpenRtb.ImageAssetType;
-import com.iabtechlab.openrtb.v2.OpenRtb.LayoutId;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeResponse;
-import com.iabtechlab.openrtb.v2.OpenRtb.PlacementType;
 import com.google.openrtb.util.ProtoUtils;
 import com.google.protobuf.ByteString;
 import java.io.IOException;
@@ -126,19 +117,11 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       case "ver":
         req.setVer(par.getText());
         break;
-      case "layout": {
-          LayoutId value = LayoutId.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            req.setLayout(value);
-          }
-        }
+      case "layout":
+        req.setLayout(par.getIntValue());
         break;
-      case "adunit": {
-          AdUnitId value = AdUnitId.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            req.setAdunit(value);
-          }
-        }
+      case "adunit":
+        req.setAdunit(par.getIntValue());
         break;
       case "plcmtcnt":
         req.setPlcmtcnt(par.getIntValue());
@@ -151,26 +134,14 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
           req.addAssets(readReqAsset(par));
         }
         break;
-      case "context": {
-          ContextType value = ContextType.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            req.setContext(value);
-          }
-        }
+      case "context":
+        req.setContext(par.getIntValue());
         break;
-      case "contextsubtype": {
-          ContextSubtype value = ContextSubtype.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            req.setContextsubtype(value);
-          }
-        }
+      case "contextsubtype":
+        req.setContextsubtype(par.getIntValue());
         break;
-      case "plcmttype": {
-          PlacementType value = PlacementType.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            req.setPlcmttype(value);
-          }
-        }
+      case "plcmttype":
+        req.setPlcmttype(par.getIntValue());
         break;
       case "aurlsupport":
         req.setAurlsupport(par.getValueAsBoolean());
@@ -268,12 +239,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       JsonParser par, NativeRequest.Asset.Image.Builder image, String fieldName)
       throws IOException {
     switch (fieldName) {
-      case "type": {
-          ImageAssetType value = ImageAssetType.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            image.setType(value);
-          }
-        }
+      case "type":
+        image.setType(par.getIntValue());
         break;
       case "w":
         image.setW(par.getIntValue());
@@ -311,12 +278,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
   protected void readReqDataField(
       JsonParser par, NativeRequest.Asset.Data.Builder data, String fieldName) throws IOException {
     switch (fieldName) {
-      case "type": {
-          DataAssetType value = DataAssetType.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            data.setType(value);
-          }
-        }
+      case "type":
+        data.setType(par.getIntValue());
         break;
       case "len":
         data.setLen(par.getIntValue());
@@ -342,19 +305,12 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       JsonParser par, NativeRequest.EventTrackers.Builder trackers, String fieldName)
           throws IOException {
     switch (fieldName) {
-      case "event": {
-          EventType value = EventType.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            trackers.setEvent(value);
-          }
-        }
+      case "event":
+        trackers.setEvent(par.getIntValue());
         break;
       case "methods":
         for (startArray(par); endArray(par); par.nextToken()) {
-          EventTrackingMethod value = EventTrackingMethod.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            trackers.addMethods(value);
-          }
+          trackers.addMethods(par.getIntValue());
         }
         break;
       default:
@@ -554,12 +510,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       case "url":
         image.setUrl(par.getText());
         break;
-      case "type": {
-          ImageAssetType value = ImageAssetType.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            image.setType(value);
-          }
-        }
+      case "type":
+        image.setType(par.getIntValue());
         break;
       case "w":
         image.setW(par.getIntValue());
@@ -616,12 +568,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       case "value":
         data.setValue(par.getText());
         break;
-      case "type": {
-          DataAssetType value = DataAssetType.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            data.setType(value);
-          }
-        }
+      case "type":
+        data.setType(par.getIntValue());
         break;
       case "len":
         data.setLen(par.getIntValue());
@@ -677,19 +625,11 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
       JsonParser par, NativeResponse.EventTracker.Builder tracker, String fieldName)
           throws IOException {
     switch (fieldName) {
-      case "event": {
-          EventType value = EventType.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            tracker.setEvent(value);
-          }
-        }
+      case "event":
+        tracker.setEvent(par.getIntValue());
         break;
-      case "method": {
-          EventTrackingMethod value = EventTrackingMethod.forNumber(par.getIntValue());
-          if (checkEnum(value)) {
-            tracker.setMethod(value);
-          }
-        }
+      case "method":
+        tracker.setMethod(par.getIntValue());
         break;
       case "url":
         tracker.setUrl(par.getText());
