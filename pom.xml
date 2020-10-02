@@ -9,7 +9,7 @@
   <groupId>com.google.openrtb</groupId>
   <artifactId>openrtb-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.5.12-SNAPSHOT</version>
+  <version>1.5.14-SNAPSHOT</version>
   <name>Google OpenRTB Libraries</name>
   <description>
     OpenRTB model for Java and other languages via protobuf;
@@ -53,11 +53,11 @@
     <findBugsJsr305Version>3.0.2</findBugsJsr305Version>
     <gpg.skip>true</gpg.skip>
     <guavaVersion>29.0-jre</guavaVersion>
-    <fasterxmlJacksonVersion>2.10.2</fasterxmlJacksonVersion>
+    <fasterxmlJacksonVersion>2.11.2</fasterxmlJacksonVersion>
     <injectVersion>1</injectVersion>
     <junitVersion>4.13</junitVersion>
-    <metricsVersion>4.1.6</metricsVersion>
-    <protobufVersion>3.11.1</protobufVersion>
+    <metricsVersion>4.1.12.1</metricsVersion>
+    <protobufVersion>3.13.0</protobufVersion>
     <slf4jVersion>1.7.30</slf4jVersion>
     <truthVersion>1.0.1</truthVersion>
 
@@ -126,23 +126,23 @@
 
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.8</version>
+        <version>3.0.0</version>
       </plugin>
 
       <plugin>
         <artifactId>maven-site-plugin</artifactId>
-        <version>3.8.2</version>
+        <version>3.9.0</version>
       </plugin>
 
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>3.1.1</version>
+        <version>3.1.2</version>
       </plugin>
 
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.1.0</version>
       </plugin>
 
       <plugin>
@@ -167,7 +167,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.1</version>
+        <version>3.2.0</version>
         <configuration>
           <windowtitle>${project.name}</windowtitle>
           <notimestamp>true</notimestamp>

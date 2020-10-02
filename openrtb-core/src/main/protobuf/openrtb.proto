@@ -2642,8 +2642,11 @@ enum ProductionQuality {
 // OpenRTB 2.0: The following table lists the options to indicate how the
 // geographic information was determined.
 enum LocationType {
+  // GPS / Location Services.
   GPS_LOCATION = 1;
+  // IP Geolocation.
   IP = 2;
+  // User-provided, e.g. registration data.
   USER_PROVIDED = 3;
 }
 
