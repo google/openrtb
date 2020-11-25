@@ -106,7 +106,7 @@ message SupplyChain {
   // Extensions.
   extensions 100 to 9999;
 }
- 
+
 // This object is associated with a SupplyChain object as an array of nodes.
 // These nodes define the identity of an entity participating in the supply
 // chain of a bid request.
@@ -174,4 +174,60 @@ message SourceExt {
 extend com.iabtechlab.openrtb.v2.BidRequest.Source {
   // Extension key for Source standard extensions.
   optional SourceExt source = 203;
+}
+
+// Ad Exchange extensions for the Imp object.
+message ImpExt {
+  // Publisher's SKAdNetwork information to support app installation
+  // attribution for iOS 14 and later. Apple's SKAdNetwork API helps
+  // advertisers measure ad-driven app installation by sending a postback
+  // to the ad network after a successful install. Publishers will need
+  // to configure supported ad networks in their app's property list
+  // (Info.plist) to allow an install to be attributed to the ad impression.
+  // For more info visit:
+  // https://developer.apple.com/documentation/storekit/skadnetwork
+  message SKAdNetworkRequest {
+    // Version of SKAdNetwork supported. Dependent on both the OS version
+    // and the SDK version.
+    optional string version = 1;
+
+    // ID of publisher app in Apple's App Store. Should match app.bundle in
+    // OpenRTB 2.x and app.storeid in AdCOM 1.x.
+    optional string sourceapp = 2;
+
+    // A subset of SKAdNetworkItem entries in the publisher app’s Info.plist
+    // that are relevant to the DSP. Recommended that this list not exceed 10.
+    repeated string skadnetids = 3;
+
+    // Extensions.
+    extensions 100 to 9999;
+  }
+
+  // Publisher's SKAdNetwork information.
+  optional SKAdNetworkRequest skadn = 1;
+}
+
+extend com.iabtechlab.openrtb.v2.BidRequest.Imp {
+  // Extension key for Imp standard extensions.
+  optional ImpExt imp = 204;
+}
+
+// Ad Exchange extensions for the Device object.
+message DeviceExt {
+  // (iOS Only) An integer passed to represent the app's app tracking
+  // authorization status, where
+  // 0 = not determined
+  // 1 = restricted
+  // 2 = denied
+  // 3 = authorized
+  optional uint32 atts = 1;
+
+  // IDFV of the device in that publisher. Listed as ifv to match ifa field
+  // format.
+  optional string ifv = 2;
+}
+
+extend com.iabtechlab.openrtb.v2.BidRequest.Device {
+  // Extension key for Device standard extensions.
+  optional DeviceExt device = 205;
 }
