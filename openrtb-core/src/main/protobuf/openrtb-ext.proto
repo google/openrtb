@@ -176,33 +176,33 @@ extend com.iabtechlab.openrtb.v2.BidRequest.Source {
   optional SourceExt source = 203;
 }
 
+// Publisher's SKAdNetwork information to support app installation
+// attribution for iOS 14 and later. Apple's SKAdNetwork API helps
+// advertisers measure ad-driven app installation by sending a postback
+// to the ad network after a successful install. Publishers will need
+// to configure supported ad networks in their app's property list
+// (Info.plist) to allow an install to be attributed to the ad impression.
+// For more info visit:
+// https://developer.apple.com/documentation/storekit/skadnetwork
+message SKAdNetworkRequest {
+  // Version of SKAdNetwork supported. Dependent on both the OS version
+  // and the SDK version.
+  optional string version = 1;
+
+  // ID of publisher app in Apple's App Store. Should match app.bundle in
+  // OpenRTB 2.x and app.storeid in AdCOM 1.x.
+  optional string sourceapp = 2;
+
+  // A subset of SKAdNetworkItem entries in the publisher app’s Info.plist
+  // that are relevant to the DSP. Recommended that this list not exceed 10.
+  repeated string skadnetids = 3;
+
+  // Extensions.
+  extensions 100 to 9999;
+}
+
 // Ad Exchange extensions for the Imp object.
 message ImpExt {
-  // Publisher's SKAdNetwork information to support app installation
-  // attribution for iOS 14 and later. Apple's SKAdNetwork API helps
-  // advertisers measure ad-driven app installation by sending a postback
-  // to the ad network after a successful install. Publishers will need
-  // to configure supported ad networks in their app's property list
-  // (Info.plist) to allow an install to be attributed to the ad impression.
-  // For more info visit:
-  // https://developer.apple.com/documentation/storekit/skadnetwork
-  message SKAdNetworkRequest {
-    // Version of SKAdNetwork supported. Dependent on both the OS version
-    // and the SDK version.
-    optional string version = 1;
-
-    // ID of publisher app in Apple's App Store. Should match app.bundle in
-    // OpenRTB 2.x and app.storeid in AdCOM 1.x.
-    optional string sourceapp = 2;
-
-    // A subset of SKAdNetworkItem entries in the publisher app’s Info.plist
-    // that are relevant to the DSP. Recommended that this list not exceed 10.
-    repeated string skadnetids = 3;
-
-    // Extensions.
-    extensions 100 to 9999;
-  }
-
   // Publisher's SKAdNetwork information.
   optional SKAdNetworkRequest skadn = 1;
 }
@@ -232,50 +232,50 @@ extend com.iabtechlab.openrtb.v2.BidRequest.Device {
   optional DeviceExt device = 205;
 }
 
+// Advertiser's SKAdNetwork information to support app installation
+// attribution for iOS 14 and later.  Apple's SKAdNetwork API helps
+// advertisers measure ad-driven app installation by sending a postback
+// to the ad network after a successful install. Ad networks will need
+// to send their network ID and signed advertiser information to allow
+// an install to be attributed to the ad impression.
+// For more info visit:
+// https://developer.apple.com/documentation/storekit/skadnetwork
+message SKAdNetworkResponse {
+  // Version of SKAdNetwork desired. Must be 2.0 or above.
+  optional string version = 1;
+
+  // Ad network identifier used in signature. Should match one of the items
+  // in the skadnetids array in the request.
+  optional string network = 2;
+
+  // Campaign ID compatible with Apple's spec. As of 2.0, should be an
+  // integer between 1 and 100, expressed as a string.
+  optional string campaign = 3;
+
+  // ID of advertiser's app in Apple's app store. Should match
+  // BidResponse.seatbid.bid.bundle.
+  optional string itunesitem = 4;
+
+  // An id unique to each ad response. Refer to Apple’s documentation for
+  // the proper UUID format requirements.
+  optional string nonce = 5;
+
+  // ID of publisher’s app in Apple’s app store. Should match
+  // BidRequest.imp.ext.skad.sourceapp.
+  optional string sourceapp = 6;
+
+  // Unix time in millis used at the time of signature generation.
+  optional string timestamp = 7;
+
+  // SKAdNetwork signature as specified by Apple.
+  optional string signature = 8;
+
+  // Extensions.
+  extensions 100 to 9999;
+}
+
 // Ad Exchange extensions for the Bid object.
 message BidExt {
-  // Advertiser's SKAdNetwork information to support app installation
-  // attribution for iOS 14 and later.  Apple's SKAdNetwork API helps
-  // advertisers measure ad-driven app installation by sending a postback
-  // to the ad network after a successful install. Ad networks will need
-  // to send their network ID and signed advertiser information to allow
-  // an install to be attributed to the ad impression.
-  // For more info visit:
-  // https://developer.apple.com/documentation/storekit/skadnetwork
-  message SKAdNetworkResponse {
-    // Version of SKAdNetwork desired. Must be 2.0 or above.
-    optional string version = 1;
-
-    // Ad network identifier used in signature. Should match one of the items
-    // in the skadnetids array in the request.
-    optional string network = 2;
-
-    // Campaign ID compatible with Apple's spec. As of 2.0, should be an
-    // integer between 1 and 100, expressed as a string.
-    optional string campaign = 3;
-
-    // ID of advertiser's app in Apple's app store. Should match
-    // BidResponse.seatbid.bid.bundle.
-    optional string itunesitem = 4;
-
-    // An id unique to each ad response. Refer to Apple’s documentation for
-    // the proper UUID format requirements.
-    optional string nonce = 5;
-
-    // ID of publisher’s app in Apple’s app store. Should match
-    // BidRequest.imp.ext.skad.sourceapp.
-    optional string sourceapp = 6;
-
-    // Unix time in millis used at the time of signature generation.
-    optional string timestamp = 7;
-
-    // SKAdNetwork signature as specified by Apple.
-    optional string signature = 8;
-
-    // Extensions.
-    extensions 100 to 9999;
-  }
-
   // Advertiser's SKAdNetwork information.
   optional SKAdNetworkResponse skadn = 1;
 }
