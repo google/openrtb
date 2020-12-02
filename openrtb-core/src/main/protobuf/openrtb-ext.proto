@@ -215,11 +215,13 @@ extend com.iabtechlab.openrtb.v2.BidRequest.Imp {
 // Ad Exchange extensions for the Device object.
 message DeviceExt {
   // (iOS Only) An integer passed to represent the app's app tracking
-  // authorization status, where
-  // 0 = not determined
-  // 1 = restricted
-  // 2 = denied
-  // 3 = authorized
+  // authorization status.
+  enum Atts {
+    NOT_DETERMINED = 0;
+    RESTRICTED = 1;
+    DENIED = 2;
+    AUTHORIZED = 3;
+  }
   optional uint32 atts = 1;
 
   // IDFV of the device in that publisher. Listed as ifv to match ifa field
