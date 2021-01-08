@@ -6,19 +6,19 @@
     <artifactId>oss-parent</artifactId>
     <version>7</version>
   </parent>
-  <groupId>com.google.openrtb</groupId>
+  <groupId>com.iabtechlab</groupId>
   <artifactId>openrtb-parent</artifactId>
   <packaging>pom</packaging>
   <version>1.5.14-SNAPSHOT</version>
-  <name>Google OpenRTB Libraries</name>
+  <name>IAB OpenRTB Libraries</name>
   <description>
     OpenRTB model for Java and other languages via protobuf;
     Helper OpenRTB libraries for Java including JSON serialization
   </description>
-  <url>https://github.com/google/openrtb</url>
+  <url>https://github.com/InteractiveAdvertisingBureau/openrtb-proto-v2</url>
   <organization>
-    <name>Google, Inc.</name>
-    <url>http://www.google.com</url>
+    <name>IAB techlab</name>
+    <url>https://iabtechlab.com/</url>
   </organization>
 
   <licenses>
@@ -31,7 +31,7 @@
 
   <issueManagement>
     <system>Github</system>
-    <url>https://github.com/google/openrtb/issues</url>
+    <url>https://github.com/InteractiveAdvertisingBureau/openrtb-proto-v2/issues</url>
   </issueManagement>
 
   <distributionManagement>
@@ -92,8 +92,8 @@
   </reporting>
 
   <scm>
-    <connection>scm:git:https://github.com/google/openrtb.git</connection>
-    <developerConnection>scm:git:https://github.com/google/openrtb.git</developerConnection>
+    <connection>scm:git:https://github.com/InteractiveAdvertisingBureau/openrtb-proto-v2.git</connection>
+    <developerConnection>scm:git:https://github.com/InteractiveAdvertisingBureau/openrtb-proto-v2.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
