@@ -6,7 +6,7 @@
   <name>IAB OpenRTB Core</name>
 
   <parent>
-    <groupId>com.iabtechlab</groupId>
+    <groupId>com.iabtechlab.openrtb</groupId>
     <artifactId>openrtb-parent</artifactId>
     <version>1.5.14-SNAPSHOT</version>
   </parent>
