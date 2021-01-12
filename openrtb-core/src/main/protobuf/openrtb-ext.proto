@@ -176,6 +176,24 @@ extend com.iabtechlab.openrtb.v2.BidRequest.Source {
   optional SourceExt source = 203;
 }
 
+// SKAdNetwork object list attributes.
+message SKAdNetworkList {
+  // Implies a list of SKAdNetwork IDs up to and including this value.
+  optional int32 max = 1;
+
+  // List of registration IDs to be excluded from the IABTL shared list.
+  repeated int32 excl = 2;
+
+  // List of string SKAdNetwork IDs not included in the IABTL shared list.
+  // The intention of addl is to be the permanent home for raw SKAdNetwork
+  // IDs, migrating away from BidRequest.imp.ext.skadn.skadnetids.
+  // Recommended that this list not exceed 10.
+  repeated string addl = 3;
+
+  // Extensions.
+  extensions 100 to 9999;
+}
+
 // Publisher's SKAdNetwork information to support app installation
 // attribution for iOS 14 and later. Apple's SKAdNetwork API helps
 // advertisers measure ad-driven app installation by sending a postback
@@ -195,7 +213,12 @@ message SKAdNetworkRequest {
 
   // A subset of SKAdNetworkItem entries in the publisher app’s Info.plist
   // that are relevant to the DSP. Recommended that this list not exceed 10.
+  // Note: BidRequest.imp.ext.skadn.skadnetlist.addl is the preferred method
+  // to express raw SKAdNetwork IDs.
   repeated string skadnetids = 3;
+
+  // Object containing the IABTL list definition.
+  SKAdNetworkList skadnetlist = 4;
 
   // Extensions.
   extensions 100 to 9999;
