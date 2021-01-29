@@ -3,10 +3,10 @@
 
   <artifactId>openrtb-core</artifactId>
   <packaging>jar</packaging>
-  <name>Google OpenRTB Core</name>
+  <name>IAB OpenRTB Core</name>
 
   <parent>
-    <groupId>com.google.openrtb</groupId>
+    <groupId>com.iabtechlab.openrtb</groupId>
     <artifactId>openrtb-parent</artifactId>
     <version>1.5.14-SNAPSHOT</version>
   </parent>
