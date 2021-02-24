@@ -218,7 +218,7 @@ message SKAdNetworkRequest {
   repeated string skadnetids = 3;
 
   // Object containing the IABTL list definition.
-  SKAdNetworkList skadnetlist = 4;
+  optional SKAdNetworkList skadnetlist = 4;
 
   // Extensions.
   extensions 100 to 9999;
