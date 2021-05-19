@@ -220,6 +220,10 @@ message SKAdNetworkRequest {
   // Object containing the IABTL list definition.
   optional SKAdNetworkList skadnetlist = 4;
 
+  // Array of strings containing the supported SKAdNetwork versions. Always
+  // "2.0" or higher. Dependent on both the OS version and the SDK version.
+  repeated string versions = 5;
+
   // Extensions.
   extensions 100 to 9999;
 }
@@ -255,6 +259,30 @@ message DeviceExt {
 extend com.iabtechlab.openrtb.v2.BidRequest.Device {
   // Extension key for Device standard extensions.
   optional DeviceExt device = 205;
+}
+
+// SKAdNetwork fidelity attributes.
+message SKAdNetworkFidelity {
+  // The fidelity-type of the attribution to track.
+  enum Fidelity {
+    VIEW_THROUGH = 0;
+    STOREKIT_RENDERED = 1;
+  }
+  optional uint32 fidelity = 1;
+
+  // An id unique to each ad response. Refer to Apple’s documentation for the
+  // proper UUID format requirements:
+  // https://developer.apple.com/documentation/storekit/skstoreproductparameteradnetworknonce
+  optional string nonce = 2;
+
+  // Unix time in millis string used at the time of signature.
+  optional string timestamp = 3;
+
+  // SKAdNetwork signature as specified by Apple.
+  optional string signature = 4;
+
+  // Extensions.
+  extensions 100 to 9999;
 }
 
 // Advertiser's SKAdNetwork information to support app installation
@@ -294,6 +322,9 @@ message SKAdNetworkResponse {
 
   // SKAdNetwork signature as specified by Apple.
   optional string signature = 8;
+
+  // Supports multiple fidelity types introduced in SKAdNetwork v2.2.
+  repeated SKAdNetworkFidelity fidelities = 9;
 
   // Extensions.
   extensions 100 to 9999;
