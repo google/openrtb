@@ -205,6 +205,9 @@ message SKAdNetworkList {
 message SKAdNetworkRequest {
   // Version of SKAdNetwork supported. Dependent on both the OS version
   // and the SDK version.
+  // Note: With the release of SKAdNetwork 2.1, this field is deprecated in
+  // favor of the BidRequest.imp.ext.skadn.versions to support an array of
+  // version numbers.
   optional string version = 1;
 
   // ID of publisher app in Apple's App Store. Should match app.bundle in
@@ -311,6 +314,9 @@ message SKAdNetworkResponse {
 
   // An id unique to each ad response. Refer to Apple’s documentation for
   // the proper UUID format requirements.
+  // Note: With the release of SKAdNetwork v2.2, this field is deprecated in
+  // favor of the BidResponse.seatbid.bid.ext.skadn.fidelities.nonce to support
+  // multiple fidelity-types.
   optional string nonce = 5;
 
   // ID of publisher’s app in Apple’s app store. Should match
@@ -318,9 +324,15 @@ message SKAdNetworkResponse {
   optional string sourceapp = 6;
 
   // Unix time in millis used at the time of signature generation.
+  // Note: With the release of SKAdNetwork 2.2, this field is deprecated in
+  // favor of the BidResponse.seatbid.bid.ext.skadn.fidelities.timestamp to
+  // support multiple fidelity-types.
   optional string timestamp = 7;
 
   // SKAdNetwork signature as specified by Apple.
+  // Note: With the release of SKAdNetwork 2.2, this field is deprecated in
+  // favor of the BidResponse.seatbid.bid.ext.skadn.fidelities.signature to
+  // support multiple fidelity-types.
   optional string signature = 8;
 
   // Supports multiple fidelity types introduced in SKAdNetwork v2.2.
