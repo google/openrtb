@@ -252,7 +252,7 @@ message DeviceExt {
     DENIED = 2;
     AUTHORIZED = 3;
   }
-  optional uint32 atts = 1;
+  optional int32 atts = 1;
 
   // IDFV of the device in that publisher. Listed as ifv to match ifa field
   // format.
@@ -271,7 +271,7 @@ message SKAdNetworkFidelity {
     VIEW_THROUGH = 0;
     STOREKIT_RENDERED = 1;
   }
-  optional uint32 fidelity = 1;
+  optional int32 fidelity = 1;
 
   // An id unique to each ad response. Refer to Apple’s documentation for the
   // proper UUID format requirements:
