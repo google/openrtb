@@ -21,7 +21,7 @@ package com.iabtechlab.openrtb.v2.prebid;
 // Prebid extensions for the Data object.
 message DataExt {
   // Taxonomy for the segments in this Data object.
-  // Refer to enum SegmentTaxonomy for generic values.
+  // Refer to enum SegmentTaxonomy (to be added) for generic values.
   optional int32 segtax = 1;
 }
 
