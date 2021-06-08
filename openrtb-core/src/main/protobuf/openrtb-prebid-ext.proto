@@ -28,5 +28,5 @@ message UniversalIdExt {
 
 extend com.iabtechlab.openrtb.v2.UniversalId {
   // Extension key for Data standard extensions.
-  optional UniversalIdExt uids = 301;
+  optional UniversalIdExt prebid_uids = 301;
 }
