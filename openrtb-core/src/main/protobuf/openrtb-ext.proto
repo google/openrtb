@@ -354,3 +354,15 @@ extend com.iabtechlab.openrtb.v2.BidResponse.SeatBid.Bid {
   // Extension key for Bid standard extensions.
   optional BidExt bid = 206;
 }
+
+// Ad Exchange extensions for the Data object.
+message DataExt {
+  // Taxonomy for the segments in this Data object.
+  // Refer to enum SegmentTaxonomy (to be added) for generic values.
+  optional int32 segtax = 1;
+}
+
+extend com.iabtechlab.openrtb.v2.BidRequest.Data {
+  // Extension key for Data standard extensions.
+  optional DataExt data = 207;
+}
