@@ -1,9 +1,6 @@
 RELEASE NOTES
 ----------------------------------------------------------------------
 
-## Version 2.0.0, 03-12-2020
-* Removed support for JSON serialization.
-
 ## Version 1.5.12, 22-07-2020
 * Proto updates (documentation only).
 * Build/dependency updates.
