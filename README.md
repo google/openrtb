@@ -1,4 +1,4 @@
-Google OpenRTB Libraries
+Google OpenRTB Libraries - SOVRN fork
 ----------------------------------------------------------------------
 
 This library supports the OpenRTB specification, providing
@@ -20,3 +20,9 @@ from any IDE that can load Maven projects.
 On Eclipse, the latest m2e is recommended but it can't run the code
 generation step, so you need to run a "mvn install" from the command
 line after checkout or after any mvn clean.
+
+ARTIFACT NOTES
+----------------------------------------------------------------------
+
+Currently, there is no CI/CD pipeline for this fork as it hopefully won't change until very short period of time when it is removed. 
+Please, publish the artifact manually.

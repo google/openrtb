@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.google.openrtb</groupId>
     <artifactId>openrtb-parent</artifactId>
-    <version>1.5.13</version>
+    <version>1.5.13-sovrn-1</version>
   </parent>
 
   <dependencies>
