@@ -1072,6 +1072,11 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "prodq":
         content.setProdq(par.getIntValue());
         break;
+      case "data":
+        for (startArray(par); endArray(par); par.nextToken()) {
+          content.addData(readData(par));
+        }
+        break;
       default:
         readOther(content, par, fieldName);
     }
