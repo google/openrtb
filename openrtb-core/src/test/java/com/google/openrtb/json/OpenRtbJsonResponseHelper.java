@@ -19,6 +19,7 @@ package com.google.openrtb.json;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.iabtechlab.adcom.v1.enums.Enums.Creative.Attribute;
 import com.iabtechlab.openrtb.v2.OpenRtb;
 import com.google.openrtb.TestExt;
 import java.io.IOException;
@@ -154,7 +155,7 @@ class OpenRtbJsonResponseHelper {
         .setIurl("http://mycdn.com/ad.gif")
         .setCid("cid")
         .setCrid("crid")
-        .addAttr(OpenRtb.CreativeAttribute.TEXT_ONLY.getNumber())
+        .addAttr(Attribute.TEXT_ONLY.getNumber())
         .setDealid("deal")
         .setW(100)
         .setH(80)
@@ -201,7 +202,7 @@ class OpenRtbJsonResponseHelper {
         .setIurl("http://mycdn.com/ad.gif")
         .setCid("cid1")
         .setCrid("crid1")
-        .addAttr(OpenRtb.CreativeAttribute.TEXT_ONLY.getNumber())
+        .addAttr(Attribute.TEXT_ONLY.getNumber())
         .setDealid("deal1")
         .setW(100)
         .setH(80)
@@ -224,7 +225,7 @@ class OpenRtbJsonResponseHelper {
         .setIurl("http://mycdn.com/ad.gif")
         .setCid("cid2")
         .setCrid("crid2")
-        .addAttr(OpenRtb.CreativeAttribute.TEXT_ONLY.getNumber())
+        .addAttr(Attribute.TEXT_ONLY.getNumber())
         .setDealid("deal2")
         .setW(100)
         .setH(80)
@@ -247,7 +248,7 @@ class OpenRtbJsonResponseHelper {
         .setIurl("http://mycdn.com/ad.gif")
         .setCid("cid3")
         .setCrid("crid3")
-        .addAttr(OpenRtb.CreativeAttribute.TEXT_ONLY.getNumber())
+        .addAttr(Attribute.TEXT_ONLY.getNumber())
         .setDealid("deal3")
         .setW(100)
         .setH(80)

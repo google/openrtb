@@ -20,6 +20,8 @@ import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
 
 import com.codahale.metrics.MetricRegistry;
+import com.iabtechlab.adcom.v1.enums.Enums.Creative.Attribute;
+import com.iabtechlab.adcom.v1.enums.Enums.LinearityMode;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp.Audio;
@@ -28,9 +30,7 @@ import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp.Video;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
-import com.iabtechlab.openrtb.v2.OpenRtb.CreativeAttribute;
 import com.iabtechlab.openrtb.v2.OpenRtb.Protocol;
-import com.iabtechlab.openrtb.v2.OpenRtb.VideoLinearity;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -46,21 +46,21 @@ public class OpenRtbValidatorTest {
           .setId("1")
           .setBanner(Banner.newBuilder()
               .setId("1")
-              .addAllBattr(asList(CreativeAttribute.ANNOYING.getNumber(), CreativeAttribute.POP.getNumber()))))
+              .addAllBattr(asList(Attribute.ANNOYING.getNumber(), Attribute.POP.getNumber()))))
       .build();
   private static BidRequest requestVideo = BidRequest.newBuilder()
       .setId("1")
       .addImp(Imp.newBuilder()
           .setId("1")
           .setVideo(Video.newBuilder()
-              .setLinearity(VideoLinearity.LINEAR.getNumber())
+              .setLinearity(LinearityMode.LINEAR.getNumber())
               .addProtocols(Protocol.VAST_3_0.getNumber())
               .setMinduration(0)
               .setMaxduration(0)
-              .addAllBattr(asList(CreativeAttribute.ANNOYING.getNumber(), CreativeAttribute.POP.getNumber()))
+              .addAllBattr(asList(Attribute.ANNOYING.getNumber(), Attribute.POP.getNumber()))
               .addCompanionad(Banner.newBuilder()
                   .setId("1")
-                  .addAllBattr(asList(CreativeAttribute.TEXT_ONLY.getNumber())))))
+                  .addAllBattr(asList(Attribute.TEXT_ONLY.getNumber())))))
       .build();
   private static BidRequest requestAudio = BidRequest.newBuilder()
       .setId("1")
@@ -70,10 +70,10 @@ public class OpenRtbValidatorTest {
               .addProtocols(Protocol.VAST_3_0.getNumber())
               .setMinduration(0)
               .setMaxduration(0)
-              .addAllBattr(asList(CreativeAttribute.ANNOYING.getNumber(), CreativeAttribute.POP.getNumber()))
+              .addAllBattr(asList(Attribute.ANNOYING.getNumber(), Attribute.POP.getNumber()))
               .addCompanionad(Banner.newBuilder()
                   .setId("1")
-                  .addAllBattr(asList(CreativeAttribute.TEXT_ONLY.getNumber())))))
+                  .addAllBattr(asList(Attribute.TEXT_ONLY.getNumber())))))
       .build();
 
   private MetricRegistry metricRegistry;
@@ -89,7 +89,7 @@ public class OpenRtbValidatorTest {
   public void testBannerGoodAttrs() {
     BidResponse.Builder response = testResponse(testBid()
         .addAllAdomain(asList("adv0.com", "adv3.com"))
-        .addAllAttr(asList(CreativeAttribute.SURVEYS.getNumber())));
+        .addAllAttr(asList(Attribute.SURVEYS.getNumber())));
     validator.validate(requestBanner, response);
     assertThat(OpenRtbUtils.bids(response)).isNotEmpty();
   }
@@ -105,16 +105,16 @@ public class OpenRtbValidatorTest {
   public void testBannerBlockedAdvertiser() {
     BidResponse.Builder response = testResponse(testBid()
         .addAllAdomain(asList("adv0.com", "adv2.com", "adv3.com"))
-        .addAllAttr(asList(CreativeAttribute.SURVEYS.getNumber())));
+        .addAllAttr(asList(Attribute.SURVEYS.getNumber())));
     validator.validate(requestBanner, response);
     assertThat(OpenRtbUtils.bids(response)).isEmpty();
   }
 
   @Test
-  public void testBannerBlockedCreativeAttribute() {
+  public void testBannerBlockedAttribute() {
     BidResponse.Builder response = testResponse(testBid()
         .addAllAdomain(asList("adv0.com", "adv2.com", "adv3.com"))
-        .addAllAttr(asList(CreativeAttribute.SURVEYS.getNumber(), CreativeAttribute.ANNOYING.getNumber())));
+        .addAllAttr(asList(Attribute.SURVEYS.getNumber(), Attribute.ANNOYING.getNumber())));
     validator.validate(requestBanner, response);
     assertThat(OpenRtbUtils.bids(response)).isEmpty();
   }
@@ -123,7 +123,7 @@ public class OpenRtbValidatorTest {
   public void testVideoAudioOk() {
     BidResponse.Builder response = testResponse(testBid()
         .addAllAdomain(asList("adv0.com", "adv3.com"))
-        .addAllAttr(asList(CreativeAttribute.SURVEYS.getNumber())));
+        .addAllAttr(asList(Attribute.SURVEYS.getNumber())));
     validator.validate(requestVideo, response);
     assertThat(OpenRtbUtils.bids(response)).isNotEmpty();
     validator.validate(requestAudio, response);
@@ -131,37 +131,37 @@ public class OpenRtbValidatorTest {
   }
 
   @Test
-  public void testVideoBlockedCreativeAttribute() {
+  public void testVideoBlockedAttribute() {
     BidResponse.Builder response = testResponse(testBid()
         .addAllAdomain(asList("adv0.com", "adv2.com", "adv3.com"))
-        .addAllAttr(asList(CreativeAttribute.SURVEYS.getNumber(), CreativeAttribute.ANNOYING.getNumber())));
+        .addAllAttr(asList(Attribute.SURVEYS.getNumber(), Attribute.ANNOYING.getNumber())));
     validator.validate(requestVideo, response);
     assertThat(OpenRtbUtils.bids(response)).isEmpty();
   }
 
   @Test
-  public void testAudioBlockedCreativeAttribute() {
+  public void testAudioBlockedAttribute() {
     BidResponse.Builder response = testResponse(testBid()
         .addAllAdomain(asList("adv0.com", "adv2.com", "adv3.com"))
-        .addAllAttr(asList(CreativeAttribute.SURVEYS.getNumber(), CreativeAttribute.ANNOYING.getNumber())));
+        .addAllAttr(asList(Attribute.SURVEYS.getNumber(), Attribute.ANNOYING.getNumber())));
     validator.validate(requestAudio, response);
     assertThat(OpenRtbUtils.bids(response)).isEmpty();
   }
 
   @Test
-  public void testVideoCompanionBlockedCreativeAttribute() {
+  public void testVideoCompanionBlockedAttribute() {
     BidResponse.Builder response = testResponse(testBid()
         .addAllAdomain(asList("adv0.com", "adv2.com", "adv3.com"))
-        .addAllAttr(asList(CreativeAttribute.SURVEYS.getNumber(), CreativeAttribute.TEXT_ONLY.getNumber())));
+        .addAllAttr(asList(Attribute.SURVEYS.getNumber(), Attribute.TEXT_ONLY.getNumber())));
     validator.validate(requestVideo, response);
     assertThat(OpenRtbUtils.bids(response)).isEmpty();
   }
 
   @Test
-  public void testAudioCompanionBlockedCreativeAttribute() {
+  public void testAudioCompanionBlockedAttribute() {
     BidResponse.Builder response = testResponse(testBid()
         .addAllAdomain(asList("adv0.com", "adv2.com", "adv3.com"))
-        .addAllAttr(asList(CreativeAttribute.SURVEYS.getNumber(), CreativeAttribute.TEXT_ONLY.getNumber())));
+        .addAllAttr(asList(Attribute.SURVEYS.getNumber(), Attribute.TEXT_ONLY.getNumber())));
     validator.validate(requestAudio, response);
     assertThat(OpenRtbUtils.bids(response)).isEmpty();
   }

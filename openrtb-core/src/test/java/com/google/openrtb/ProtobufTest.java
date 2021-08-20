@@ -18,7 +18,8 @@ package com.google.openrtb;
 
 import static java.util.Arrays.asList;
 
-import com.iabtechlab.openrtb.v2.OpenRtb.AdPosition;
+import com.iabtechlab.adcom.v1.enums.Enums.Creative.Attribute;
+import com.iabtechlab.adcom.v1.enums.Enums.PlacementPosition;
 import com.iabtechlab.openrtb.v2.OpenRtb.AuctionType;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Content;
@@ -31,7 +32,6 @@ import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.User;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
-import com.iabtechlab.openrtb.v2.OpenRtb.CreativeAttribute;
 import org.junit.Test;
 
 /**
@@ -50,8 +50,8 @@ public class ProtobufTest {
             .setBanner(Banner.newBuilder()
                 .setW(300)
                 .setH(250)
-                .setPos(AdPosition.ABOVE_THE_FOLD.getNumber())
-                .addBattr(CreativeAttribute.USER_INTERACTIVE.getNumber())))
+                .setPos(PlacementPosition.ATF.getNumber())
+                .addBattr(Attribute.USER_INTERACTIVE.getNumber())))
          .addBadv("company1.com")
          .addBadv("company2.com")
          .setSite(Site.newBuilder()
@@ -101,7 +101,7 @@ public class ProtobufTest {
                 .setIurl("http://adserver.com/pathtosampleimage")
                 .setCid("campaign111")
                 .setCrid("creative112")
-                .addAllAttr(asList(CreativeAttribute.ANNOYING.getNumber(), CreativeAttribute.AUDIO_AUTO_PLAY.getNumber())))
+                .addAllAttr(asList(Attribute.ANNOYING.getNumber(), Attribute.AUDIO_AUTOPLAY.getNumber())))
             .setSeat("512"))
         .setBidid("abc1123")
         .setCur("USD")

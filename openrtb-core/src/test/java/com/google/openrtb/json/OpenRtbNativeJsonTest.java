@@ -20,18 +20,18 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.openrtb.json.OpenRtbJsonFactoryHelper.newJsonFactory;
 import static java.util.Arrays.asList;
 
+import com.iabtechlab.adcom.v1.enums.Enums.DisplayContextType;
+import com.iabtechlab.adcom.v1.enums.Enums.DisplayPlacementType;
+import com.iabtechlab.adcom.v1.enums.Enums.EventTrackingMethod;
+import com.iabtechlab.adcom.v1.enums.Enums.EventType;
+import com.iabtechlab.adcom.v1.enums.Enums.NativeDataAssetType;
+import com.iabtechlab.adcom.v1.enums.Enums.NativeImageAssetType;
 import com.iabtechlab.openrtb.v2.OpenRtb.AdUnitId;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
-import com.iabtechlab.openrtb.v2.OpenRtb.ContextSubtype;
 import com.iabtechlab.openrtb.v2.OpenRtb.ContextType;
-import com.iabtechlab.openrtb.v2.OpenRtb.DataAssetType;
-import com.iabtechlab.openrtb.v2.OpenRtb.EventTrackingMethod;
-import com.iabtechlab.openrtb.v2.OpenRtb.EventType;
-import com.iabtechlab.openrtb.v2.OpenRtb.ImageAssetType;
 import com.iabtechlab.openrtb.v2.OpenRtb.LayoutId;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeResponse;
-import com.iabtechlab.openrtb.v2.OpenRtb.PlacementType;
 import com.iabtechlab.openrtb.v2.OpenRtb.Protocol;
 import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
@@ -72,7 +72,7 @@ public class OpenRtbNativeJsonTest {
                 .setMaxduration(200)))
         .addAssets(NativeRequest.Asset.newBuilder()
             .setId(4)
-            .setData(NativeRequest.Asset.Data.newBuilder().setType(DataAssetType.SPONSORED.getNumber())))
+            .setData(NativeRequest.Asset.Data.newBuilder().setType(NativeDataAssetType.SPONSORED.getNumber())))
         .addAssets(NativeRequest.Asset.newBuilder()
             .setId(5))
         .build());
@@ -139,8 +139,8 @@ public class OpenRtbNativeJsonTest {
         .setPlcmtcnt(4)
         .setSeq(5)
         .setContext(ContextType.PRODUCT.getNumber())
-        .setContextsubtype(ContextSubtype.CONTENT_AUDIO.getNumber())
-        .setPlcmttype(PlacementType.IN_FEED.getNumber())
+        .setContextsubtype(DisplayContextType.AUDIO.getNumber())
+        .setPlcmttype(DisplayPlacementType.FEED_CONTENT.getNumber())
         .addAssets(NativeRequest.Asset.newBuilder()
             .setId(1)
             .setRequired(true)
@@ -151,7 +151,7 @@ public class OpenRtbNativeJsonTest {
         .addAssets(NativeRequest.Asset.newBuilder()
             .setId(2)
             .setImg(NativeRequest.Asset.Image.newBuilder()
-                .setType(ImageAssetType.ICON.getNumber())
+                .setType(NativeImageAssetType.ICON.getNumber())
                 .setW(2)
                 .setWmin(2)
                 .setH(3)
@@ -169,7 +169,7 @@ public class OpenRtbNativeJsonTest {
         .addAssets(NativeRequest.Asset.newBuilder()
             .setId(4)
             .setData(NativeRequest.Asset.Data.newBuilder()
-                .setType(DataAssetType.SPONSORED.getNumber())
+                .setType(NativeDataAssetType.SPONSORED.getNumber())
                 .setLen(10)
                 .setExtension(TestNExt.testNReqData, test1)))
         .setAurlsupport(true)
@@ -177,7 +177,7 @@ public class OpenRtbNativeJsonTest {
         .setPrivacy(true)
         .addEventtrackers(NativeRequest.EventTrackers.newBuilder()
             .setEvent(EventType.IMPRESSION.getNumber())
-            .addAllMethods(asList(EventTrackingMethod.IMG.getNumber(), EventTrackingMethod.JS.getNumber())))
+            .addAllMethods(asList(EventTrackingMethod.IMAGE_PIXEL.getNumber(), EventTrackingMethod.JAVASCRIPT.getNumber())))
         .setExtension(TestNExt.testNRequest1, test1)
         .setExtension(TestNExt.testNRequest2, test2);
   }
@@ -202,7 +202,7 @@ public class OpenRtbNativeJsonTest {
             .setId(2)
             .setImg(NativeResponse.Asset.Image.newBuilder()
                 .setUrl("url")
-                .setType(ImageAssetType.MAIN.getNumber())
+                .setType(NativeImageAssetType.MAIN.getNumber())
                 .setW(2)
                 .setH(3)
                 .setExtension(TestNExt.testNRespImage, test1)))
@@ -214,7 +214,7 @@ public class OpenRtbNativeJsonTest {
         .addAssets(NativeResponse.Asset.newBuilder()
             .setId(2)
             .setData(NativeResponse.Asset.Data.newBuilder()
-                .setType(DataAssetType.CTATEXT.getNumber())
+                .setType(NativeDataAssetType.CTA_TEXT.getNumber())
                 .setLen(15)
                 .setLabel("l")
                 .setValue("v")
@@ -230,8 +230,8 @@ public class OpenRtbNativeJsonTest {
         .setDcourl("http://dyncontent.com")
         .setPrivacy("http://privacy.com")
         .addEventtrackers(NativeResponse.EventTracker.newBuilder()
-            .setEvent(EventType.VIEWABLE_MRC_50.getNumber())
-            .setMethod(EventTrackingMethod.IMG.getNumber())
+            .setEvent(EventType.VIEWABLE_MRC50.getNumber())
+            .setMethod(EventTrackingMethod.IMAGE_PIXEL.getNumber())
             .setUrl("http://bidder.com/impression"))
     .setExtension(TestNExt.testNResponse1, test1)
     .setExtension(TestNExt.testNResponse2, test2);

@@ -140,6 +140,30 @@
       <build>
         <plugins>
           <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.2.0</version>
+            <executions>
+              <execution>
+                <id>copy-resources</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${adcomProtobufTarget}</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>${adcomProtobufSource}</directory>
+                      <includes>
+                        <include>**/*.proto</include>
+                      </includes>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
               <execution>
@@ -152,11 +176,15 @@
                       <fileset dir="${protobufSource}">
                         <include name="**/*.proto" />
                       </fileset>
+                      <fileset dir="${adcomProtobufTarget}">
+                        <include name="**/*.proto" />
+                      </fileset>
                     </path>
                     <pathconvert pathsep=" " property="proto.files" refid="proto.path" />
                     <exec executable="protoc" failonerror="true">
                       <arg value="--java_out=${protobufGenerated}" />
                       <arg value="-I${protobufSource}" />
+                      <arg value="-I${adcomProtobufTarget}" />
                       <arg line="${proto.files}" />
                     </exec>
                   </target>
@@ -180,6 +208,7 @@
                     <exec executable="protoc" failonerror="true">
                       <arg value="--java_out=${testProtobufGenerated}" />
                       <arg value="-I${protobufSource}" />
+                      <arg value="-I${adcomProtobufTarget}" />
                       <arg value="-I${testProtobufSource}" />
                       <arg line="${proto.files}" />
                     </exec>

@@ -334,7 +334,7 @@ message BidRequest {
       repeated int32 btype = 5 [packed = true];
 
       // Blocked creative attributes.
-      // Refer to enum CreativeAttribute for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.enums.Creative.Attribute for generic values.
       repeated int32 battr = 6 [packed = true];
 
       // Whitelist of content MIME types supported. Popular MIME types include,
@@ -347,12 +347,12 @@ message BidRequest {
       optional bool topframe = 8;
 
       // Directions in which the banner may expand.
-      // Refer to enum ExpandableDirection for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.enums.ExpandableDirection for generic values.
       repeated int32 expdir = 9 [packed = true];
 
       // List of supported API frameworks for this impression.
       // If an API is not explicitly listed, it is assumed not to be supported.
-      // Refer to enum APIFramework for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.enums.APIFramework for generic values.
       repeated int32 api = 10 [packed = true];
 
       // Relevant only for Banner objects used with a Video object
@@ -413,7 +413,7 @@ message BidRequest {
 
       // Indicates if the impression must be linear, nonlinear, etc.
       // If none specified, assume all are allowed.
-      // Refer to enum VideoLinearity for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.enums.LinearityMode for generic values.
       optional int32 linearity = 2;
 
       // Minimum video ad duration in seconds.
@@ -468,7 +468,7 @@ message BidRequest {
       optional int32 sequence = 9 [default = 1];
 
       // Blocked creative attributes.
-      // Refer to enum CreativeAttribute for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.enums.Creative.Attribute for generic values.
       repeated int32 battr = 10 [packed = true];
 
       // Maximum extended video ad duration, if extension is allowed.
@@ -493,16 +493,16 @@ message BidRequest {
       // As a result, this array may be converted to an integer in a future
       // version of the specification. It is strongly advised to use only
       // the first element of this array in preparation for this change.
-      // Refer to enum PlaybackMethod for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.PlaybackMethod for generic values.
       repeated int32 playbackmethod = 15 [packed = true];
 
       // Supported delivery methods (e.g., streaming, progressive).
       // If none specified, assume all are supported.
-      // Refer to enum ContentDeliveryMethod for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.enums.DeliveryMethod for generic values.
       repeated int32 delivery = 16 [packed = true];
 
       // Ad position on screen.
-      // Refer to enum AdPosition for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.PlacementPosition for generic values.
       optional int32 pos = 17;
 
       // Array of Banner objects (Section 3.2.3) if companion ads are available.
@@ -514,20 +514,20 @@ message BidRequest {
 
       // List of supported API frameworks for this impression.
       // If an API is not explicitly listed, it is assumed not to be supported.
-      // Refer to enum APIFramework for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.enums.APIFramework for generic values.
       repeated int32 api = 19 [packed = true];
 
       // Supported VAST companion ad types.  Recommended if companion Banner
       // objects are included via the companionad array.
-      // Refer to enum CompanionType for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.CompanionType for generic values.
       repeated int32 companiontype = 20 [packed = true];
 
       // Placement type for the impression.
-      // Refer to enum VideoPlacementType for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.VideoPlacementSubtype for generic values.
       optional int32 placement = 26;
 
       // The event that causes playback to end.
-      // Refer to enum PlaybackCessationMode for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.PlaybackCessationMode for generic values.
       optional int32 playbackend = 27;
 
       // Extensions.
@@ -583,7 +583,7 @@ message BidRequest {
       optional int32 sequence = 6 [default = 1];
 
       // Blocked creative attributes.
-      // Refer to enum CreativeAttribute for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.enums.Creative.Attribute for generic values.
       repeated int32 battr = 7 [packed = true];
 
       // Maximum extended video ad duration, if extension is allowed.
@@ -601,7 +601,7 @@ message BidRequest {
 
       // Supported delivery methods (e.g., streaming, progressive).
       // If none specified, assume all are supported.
-      // Refer to enum ContentDeliveryMethod for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.enums.DeliveryMethod for generic values.
       repeated int32 delivery = 11 [packed = true];
 
       // Array of Banner objects if companion ads are available.
@@ -609,19 +609,19 @@ message BidRequest {
 
       // List of supported API frameworks for this impression.
       // If an API is not explicitly listed, it is assumed not to be supported.
-      // Refer to enum APIFramework for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.enums.APIFramework for generic values.
       repeated int32 api = 13 [packed = true];
 
       // Supported DAAST companion ad types.  Recommended if companion Banner
       // objects are included via the companionad array.
-      // Refer to enum CompanionType for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.CompanionType for generic values.
       repeated int32 companiontype = 20 [packed = true];
 
       // The maximum number of ads that can be played in an ad pod.
       optional int32 maxseq = 21;
 
       // Type of audio feed.
-      // Refer to enum FeedType for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.enums.FeedType for generic values.
       optional int32 feed = 22;
 
       // Indicates if the ad is stitched with audio content or delivered
@@ -629,7 +629,7 @@ message BidRequest {
       optional bool stitched = 23;
 
       // Volume normalization mode.
-      // Refer to enum VolumeNormalizationMode for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.VolumeNormalizationMode for generic values.
       optional int32 nvol = 24;
 
       // Extensions.
@@ -675,11 +675,11 @@ message BidRequest {
 
       // List of supported API frameworks for this impression.
       // If an API is not explicitly listed, it is assumed not to be supported.
-      // Refer to enum APIFramework for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.enums.APIFramework for generic values.
       repeated int32 api = 3 [packed = true];
 
       // Blocked creative attributes.
-      // Refer to enum CreativeAttribute for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.enums.Creative.Attribute for generic values.
       repeated int32 battr = 4 [packed = true];
 
       // Extensions.
@@ -942,12 +942,12 @@ message BidRequest {
     repeated string cat = 7;
 
     // Production quality.
-    // Refer to enum ProductionQuality for generic values.
+    // Refer to enum com.iabtechlab.adcom.v1.ProductionQuality for generic values.
     optional int32 prodq = 25;
 
     // NOTE: Deprecated in favor of prodq.
     // Video quality per IAB's classification.
-    // Refer to enum ProductionQuality for generic values.
+    // Refer to enum com.iabtechlab.adcom.v1.ProductionQuality for generic values.
     optional int32 videoquality = 8 [deprecated = true];
 
     // Comma separated list of keywords describing the content.
@@ -961,7 +961,7 @@ message BidRequest {
     optional string contentrating = 10;
 
     // User rating of the content (e.g., number of stars, likes, etc.).
-    // Refer to enum ContentContext for generic values.
+    // Refer to enum com.iabtechlab.adcom.v1.enums.ContentContext for generic values.
     optional string userrating = 11;
 
     // Type of content (game, video, text, etc.).
@@ -983,7 +983,7 @@ message BidRequest {
     optional int32 len = 16;
 
     // Media rating per QAG guidelines.
-    // Refer to enum QAGMediaRating for generic values.
+    // Refer to enum com.iabtechlab.adcom.v1.MediaRating for generic values.
     optional int32 qagmediarating = 17;
 
     // Indicator of whether or not the content is embeddable (e.g., an
@@ -1104,11 +1104,11 @@ message BidRequest {
     optional bool geofetch = 29;
 
     // Network connection type.
-    // Refer to enum ConnectionType for generic values.
+    // Refer to enum com.iabtechlab.adcom.v1.enums.ConnectionType for generic values.
     optional int32 connectiontype = 17;
 
     // The general type of device.
-    // Refer to enum DeviceType for generic values.
+    // Refer to enum com.iabtechlab.adcom.v1.enums.DeviceType for generic values.
     optional int32 devicetype = 18;
 
     // Version of Flash supported by the browser.
@@ -1180,7 +1180,7 @@ message BidRequest {
     optional string zip = 8;
 
     // Source of location data; recommended when passing lat/lon.
-    // Refer to enum LocationType for generic values.
+    // Refer to enum com.iabtechlab.adcom.v1.enums.LocationType for generic values.
     optional int32 type = 9;
 
     // Estimated location accuracy in meters; recommended when lat/lon
@@ -1197,7 +1197,7 @@ message BidRequest {
 
     // Service or provider used to determine geolocation from IP
     // address if applicable (i.e., type = 2).
-    // Refer to enum LocationService for generic values.
+    // Refer to enum com.iabtechlab.adcom.v1.enums.LocationService for generic values.
     optional int32 ipservice = 13;
 
     // Local time as the number +/- of minutes from UTC.
@@ -1438,11 +1438,11 @@ message BidResponse {
       repeated string cat = 15;
 
       // Set of attributes describing the creative.
-      // Refer to enum CreativeAttribute for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.enums.Creative.Attribute for generic values.
       repeated int32 attr = 11 [packed = true];
 
       // API required by the markup if applicable.
-      // Refer to enum APIFramework for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.enums.APIFramework for generic values.
       optional int32 api = 18;
 
       // Video response protocol of the markup if applicable.
@@ -1450,7 +1450,7 @@ message BidResponse {
       optional int32 protocol = 19;
 
       // Creative media rating per QAG guidelines.
-      // Refer to enum QAGMediaRating for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.MediaRating for generic values.
       optional int32 qagmediarating = 20;
 
       // Reference to the deal.id from the bid request if this bid pertains to a
@@ -1535,11 +1535,11 @@ message NativeRequest {
   optional int32 context = 7;
 
   // A more detailed context in which the ad appears.
-  // Refer to enum ContextSubtype for generic values.
+  // Refer to enum com.iabtechlab.adcom.v1.enums.DisplayContextType for generic values.
   optional int32 contextsubtype = 8;
 
   // The design/format/layout of the ad unit being offered.
-  // Refer to enum PlacementType for generic values.
+  // Refer to enum com.iabtechlab.adcom.v1.enums.DisplayPlacementType for generic values.
   // RECOMMENDED by the OpenRTB Native specification.
   optional int32 plcmttype = 9;
 
@@ -1632,11 +1632,11 @@ message NativeRequest {
 
     // OpenRTB Native 1.0: The Image object to be used for all image elements
     // of the Native ad such as Icons, Main Image, etc.
-    // RECOMMENDED sizes and aspect ratios are included in ImageAssetType.
+    // RECOMMENDED sizes and aspect ratios are included in com.iabtechlab.adcom.v1.NativeImageAssetType.
     message Image {
       // Type ID of the image element supported by the publisher.
       // The publisher can display this information in an appropriate format.
-      // Refer to enum ImageAssetType for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.NativeImageAssetType for generic values.
       optional int32 type = 1;
 
       // Width of the image in pixels.
@@ -1677,7 +1677,7 @@ message NativeRequest {
     message Data {
       // Type ID of the element supported by the publisher. The publisher can
       // display this information in an appropriate format.
-      // Refer to enum DataAssetType for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.NativeDataAssetType for generic values.
       // REQUIRED by the OpenRTB Native specification.
       required int32 type = 1;
 
@@ -1697,12 +1697,12 @@ message NativeRequest {
   // in the request.
   message EventTrackers {
     // Type of event available for tracking.
-    // Refer to enum EventType for generic values.
+    // Refer to enum com.iabtechlab.adcom.v1.EventType for generic values.
     // REQUIRED by the OpenRTB Native specification.
     required int32 event = 1;
 
     // Array of types of tracking available for the given event.
-    // Refer to enum EventTrackingMethod for generic values.
+    // Refer to enum com.iabtechlab.adcom.v1.enums.EventTrackingMethod for generic values.
     // REQUIRED by the OpenRTB Native specification.
     repeated int32 methods = 2;
 
@@ -1866,7 +1866,7 @@ message NativeResponse {
     // (per ImageType enum) be provided for image type 3 (MAIN_IMAGE).
     message Image {
       // The type of image element being submitted from the ImageType enum.
-      // Refer to enum ImageAssetType for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.NativeImageAssetType for generic values.
       // REQUIRED for assetsurl or dcourl responses,
       // not required to embedded asset responses.
       // Implemented in 1.2
@@ -1898,14 +1898,14 @@ message NativeResponse {
     // Stars, Downloads, etc. It is also generic for future of native elements
     // not contemplated at the time of the writing of this document.
     message Data {
-      // The type of data element being submitted from the DataAssetTypes enum.
-      // Refer to enum DataAssetType for generic values.
+      // The type of data element being submitted from the com.iabtechlab.adcom.v1.NativeDataAssetType enum.
+      // Refer to enum com.iabtechlab.adcom.v1.NativeDataAssetType for generic values.
       // REQUIRED in 1.2 for assetsurl or dcourl responses.
       // Implemented in 1.2.
       optional int32 type = 3;
 
       // The length of the data element being submitted. Where applicable, must
-      // comply with the recommended maximum lengths in the DataAssetType enum.
+      // comply with the recommended maximum lengths in the com.iabtechlab.adcom.v1.NativeDataAssetType enum.
       // REQUIRED in 1.2 for assetsurl or dcourl responses.
       // Implemented in 1.2.
       optional int32 len = 4;
@@ -1944,12 +1944,12 @@ message NativeResponse {
   // appropriateness of this is up to each buyer.
   message EventTracker {
     // Type of event to track.
-    // Refer to enum EventType for generic values.
+    // Refer to enum com.iabtechlab.adcom.v1.EventType for generic values.
     // REQUIRED if embedded asset is being used.
     optional int32 event = 1;
 
     // Type of tracking requested.
-    // Refer to enum EventTrackingMethod for generic values.
+    // Refer to enum com.iabtechlab.adcom.v1.enums.EventTrackingMethod for generic values.
     // REQUIRED if embedded asset is being used.
     required int32 method = 2;
 
@@ -2388,109 +2388,6 @@ enum BannerAdType {
   IFRAME = 4;
 }
 
-// OpenRTB 2.0: The following table specifies a standard list of creative
-// attributes that can describe an ad being served or serve as restrictions
-// of thereof.
-enum CreativeAttribute {
-  AUDIO_AUTO_PLAY = 1;
-  AUDIO_USER_INITIATED = 2;
-  EXPANDABLE_AUTOMATIC = 3;
-  EXPANDABLE_CLICK_INITIATED = 4;
-
-  EXPANDABLE_ROLLOVER_INITIATED = 5;
-
-  VIDEO_IN_BANNER_AUTO_PLAY = 6;
-
-  VIDEO_IN_BANNER_USER_INITIATED = 7;
-
-  POP = 8;  // Pop (e.g., Over, Under, or upon Exit).
-  PROVOCATIVE_OR_SUGGESTIVE = 9;
-
-  // Defined as "Shaky, Flashing, Flickering, Extreme Animation, Smileys".
-  ANNOYING = 10;
-
-  SURVEYS = 11;
-  TEXT_ONLY = 12;
-  USER_INTERACTIVE = 13;  // Eg, embedded games.
-
-  WINDOWS_DIALOG_OR_ALERT_STYLE = 14;
-  HAS_AUDIO_ON_OFF_BUTTON = 15;
-  AD_CAN_BE_SKIPPED = 16;
-
-  FLASH = 17;
-}
-
-// OpenRTB 2.0: The following table is a list of API frameworks supported
-// by the publisher.  Note that MRAID-1 is a subset of MRAID-2.
-// In OpenRTB 2.1 and prior, value "3" was "MRAID".  However, not all
-// MRAID capable APIs understand MRAID-2 features and as such the only
-// safe interpretation of value "3" is MRAID-1. In OpenRTB 2.2, this was
-// made explicit and MRAID-2 has been added as value "5".
-enum APIFramework {
-  VPAID_1 = 1;
-
-  VPAID_2 = 2;
-
-  MRAID_1 = 3;
-
-  ORMMA = 4;
-
-  MRAID_2 = 5;
-
-  MRAID_3 = 6;
-
-  OMID_1 = 7;
-}
-
-// OpenRTB 2.0: The following table specifies the position of the ad as a
-// relative measure of visibility or prominence.
-//
-// This OpenRTB table has values derived from the IAB Quality Assurance
-// Guidelines (QAG). Practitioners should keep in sync with updates to the
-// QAG values as published on IAB.net. Values "3" - "6" apply to apps
-// per the mobile addendum to QAG version 1.5.
-enum AdPosition {
-  UNKNOWN = 0;
-
-  ABOVE_THE_FOLD = 1;
-
-  // May or may not be immediately visible depending on screen size and
-  // resolution.
-  // @deprecated
-  DEPRECATED_LIKELY_BELOW_THE_FOLD = 2;
-
-  BELOW_THE_FOLD = 3;
-
-  HEADER = 4;
-
-  FOOTER = 5;
-
-  SIDEBAR = 6;
-
-  AD_POSITION_FULLSCREEN = 7;
-}
-
-// OpenRTB 2.0: The following table indicates the options for video
-// linearity. "In-stream" or "linear" video refers to pre-roll, post-roll,
-// or mid-roll video ads where the user is forced to watch ad in order to
-// see the video content. "Overlay" or "non-linear" refer to ads that are
-// shown on top of the video content.
-//
-// This field is optional. The following is the interpretation of the
-// bidder based upon presence or absence of the field in the bid request:
-// - If no value is set, any ad (linear or not) can be present
-//   in the response.
-// - If a value is set, only ads of the corresponding type can be present
-//   in the response.
-//
-// This OpenRTB table has values derived from the IAB Quality Assurance
-// Guidelines (QAG). Practitioners should keep in sync with updates to the
-// QAG values as published on IAB.net.
-enum VideoLinearity {
-  LINEAR = 1;      // Linear/In-stream
-  NON_LINEAR = 2;  // Non-linear/Overlay
-}
-
 // OpenRTB 2.0: The following table lists the options for the various
 // bid response protocols that could be supported by an exchange.
 enum Protocol {
@@ -2506,27 +2403,6 @@ enum Protocol {
   DAAST_1_0_WRAPPER = 10;
 }
 
-// OpenRTB 2.0: The following table lists the various playback methods.
-enum PlaybackMethod {
-  // Initiates on Page Load with Sound On.
-  AUTO_PLAY_SOUND_ON = 1;
-
-  // Initiates on Page Load with Sound Off by Default.
-  AUTO_PLAY_SOUND_OFF = 2;
-
-  // Initiates on Click with Sound On.
-  CLICK_TO_PLAY = 3;
-
-  // Initiates on Mouse-Over with Sound On.
-  MOUSE_OVER = 4;
-
-  // Initiates on Entering Viewport with Sound On.
-  ENTER_SOUND_ON = 5;
-
-  // Initiates on Entering Viewport with Sound Off by Default.
-  ENTER_SOUND_OFF = 6;
-}
-
 // OpenRTB 2.0: The following table lists the various options for the
 // audio/video start delay.  If the start delay value is greater than 0,
 // then the position is mid-roll and the value indicates the start delay.
@@ -2534,188 +2410,6 @@ enum StartDelay {
   PRE_ROLL = 0;
   GENERIC_MID_ROLL = -1;
   GENERIC_POST_ROLL = -2;
-}
-
-// OpenRTB 2.5: The following table lists the various types of video placements
-// derived largely from the IAB Digital Video Guidelines.
-enum VideoPlacementType {
-  // The video placement is not defined.
-  // Default value.
-  UNDEFINED_VIDEO_PLACEMENT = 0;
-
-  // Played before, during or after the streaming video content
-  // that the consumer has requested.
-  // E.G.: Pre-roll, Mid-roll, Post-roll.
-  IN_STREAM_PLACEMENT = 1;
-
-  // Exists within a web banner that leverages the banner space
-  // to deliver a video experience as opposed to another static
-  // or rich media format.
-  // The format relies on the existence of display ad inventory
-  // on the page for its delivery.
-  IN_BANNER_PLACEMENT = 2;
-
-  // Loads and plays dynamically between paragraphs of editorial content;
-  // existing as a standalone branded message.
-  IN_ARTICLE_PLACEMENT = 3;
-
-  // In-Feed - Found in content, social, or product feeds.
-  IN_FEED_PLACEMENT = 4;
-
-  // Interstitial/Slider/Floating.
-  // Covers the entire or a portion of screen area,
-  // but is always on screen while displayed
-  // (i.e. cannot be scrolled out of view).
-  // Note that a full-screen interstitial (e.g., in mobile)
-  // can be distinguished from a floating/slider unit by the imp.instl field.
-  FLOATING_PLACEMENT = 5;
-}
-
-// OpenRTB 2.5: The various modes for when playback terminates.
-enum PlaybackCessationMode {
-  // On Video Completion or when Terminated by User
-  COMPLETION_OR_USER = 1;
-
-  // On Leaving Viewport or when Terminated by User
-  LEAVING_OR_USER = 2;
-
-  // On Leaving Viewport Continues as a Floating/Slider Unit until
-  // Video Completion or when Terminated by User
-  LEAVING_CONTINUES_OR_USER = 3;
-}
-
-// OpenRTB 2.0: The following table lists the various options for the
-// type of device connectivity.
-enum ConnectionType {
-  CONNECTION_UNKNOWN = 0;
-  ETHERNET = 1;
-  WIFI = 2;
-  CELL_UNKNOWN = 3;
-  CELL_2G = 4;
-  CELL_3G = 5;
-  CELL_4G = 6;
-  CELL_5G = 7;
-}
-
-// OpenRTB 2.0: The following table lists the directions in which an
-// expandable ad may expand, given the positioning of the ad unit on the
-// page and constraints imposed by the content.
-enum ExpandableDirection {
-  LEFT = 1;
-
-  RIGHT = 2;
-
-  UP = 3;
-
-  DOWN = 4;
-
-  EXPANDABLE_FULLSCREEN = 5;
-}
-
-// OpenRTB 2.0: The following table lists the various options for the
-// delivery of video content.
-enum ContentDeliveryMethod {
-  STREAMING = 1;
-  PROGRESSIVE = 2;
-}
-
-// OpenRTB 2.0: The following table lists the various options for
-// indicating the type of content in which the impression will appear.
-//
-// This OpenRTB table has values derived from the IAB Quality Assurance
-// Guidelines (QAG). Practitioners should keep in sync with updates to the
-// QAG values as published on IAB.net.
-enum ContentContext {
-  VIDEO = 1;
-  GAME = 2;
-  MUSIC = 3;
-  APPLICATION = 4;
-  TEXT = 5;
-  OTHER = 6;
-  CONTEXT_UNKNOWN = 7;
-}
-
-// OpenRTB 2.0: The following table lists the options for content quality.
-// These values are defined by the IAB -
-// http://www.iab.net/media/file/long-form-video-final.pdf.
-enum ProductionQuality {
-  QUALITY_UNKNOWN = 0;
-  PROFESSIONAL = 1;
-  PROSUMER = 2;
-  USER_GENERATED = 3;
-}
-
-// OpenRTB 2.0: The following table lists the options to indicate how the
-// geographic information was determined.
-enum LocationType {
-  // GPS / Location Services.
-  GPS_LOCATION = 1;
-  // IP Geolocation.
-  IP = 2;
-  // User-provided, e.g. registration data.
-  USER_PROVIDED = 3;
-}
-
-// OpenRTB 2.4: The following table lists the services and/or vendors used for
-// resolving IP addresses to geolocations.
-enum LocationService {
-  IP2LOCATION = 1;
-  NEUSTAR = 2;
-  MAXMIND = 3;
-  NETACUITY = 4;
-}
-
-// OpenRTB 2.0: The following table lists the type of device from which the
-// impression originated.
-//
-// OpenRTB version 2.2 of the specification added distinct values for Mobile
-// and Tablet. It is recommended that any bidder adding support for 2.2
-// treat a value of 1 as an acceptable alias of 4 & 5.
-//
-// This OpenRTB table has values derived from the IAB Quality Assurance
-// Guidelines (QAG). Practitioners should keep in sync with updates to the
-// QAG values as published on IAB.net.
-enum DeviceType {
-  // Mobile (OpenRTB 2.2+: obsolete, alias for PHONE or TABLET).
-  MOBILE = 1;
-
-  // Personal Computer.
-  PERSONAL_COMPUTER = 2;
-
-  // Connected TV.
-  CONNECTED_TV = 3;
-
-  // Phone.
-  HIGHEND_PHONE = 4;
-
-  // Tablet.
-  TABLET = 5;
-
-  // Connected device.
-  CONNECTED_DEVICE = 6;
-
-  // Set top box.
-  SET_TOP_BOX = 7;
-}
-
-// OpenRTB 2.1: The following table lists the options for the
-// video quality. These values are defined by the IAB -
-// http://www.iab.net/media/file/long-form-video-final.pdf.
-enum CompanionType {
-  STATIC = 1;
-
-  HTML = 2;
-
-  COMPANION_IFRAME = 3;
-}
-
-// OpenRTB 2.1: The following table lists the media ratings used in
-// describing content based on the QAG categorization.
-// Refer to http://www.iab.net/ne_guidelines for more information.
-enum QAGMediaRating {
-  ALL_AUDIENCES = 1;
-  EVERYONE_OVER_12 = 2;
-  MATURE = 3;
 }
 
 // OpenRTB 2.2: The following table lists the options for a bidder to signal
@@ -2769,24 +2463,6 @@ enum LossReason {
   CREATIVE_NOT_ALLOWED_PMP = 213;
 }
 
-// OpenRTB 2.4: The following table lists the types of feeds,
-// typically for audio.
-enum FeedType {
-  MUSIC_SERVICE = 1;
-  BROADCAST = 2;
-  PODCAST = 3;
-}
-
-// OpenRTB 2.4: The following table lists the types of volume normalization
-// modes, typically for audio.
-enum VolumeNormalizationMode {
-  NONE = 0;
-  AVERAGE_VOLUME = 1;
-  PEAK_VOLUME = 2;
-  LOUDNESS = 3;
-  CUSTOM_VOLUME = 4;
-}
-
 // ***** OpenRTB Native enums **************************************************
 
 // OpenRTB Native 1.0: Core layouts. An implementing exchange may not
@@ -2835,159 +2511,4 @@ enum ContextType {
   // Product context such as product listings, details, recommendations,
   // reviews, or similar.
   PRODUCT = 3;
-}
-
-// OpenRTB Native 1.1: Next-level context in which the ad appears.
-// Again this reflects the primary context, and does not imply no presence
-// of other elements. For example, an article is likely to contain images
-// but is still first and foremost an article. SubType should only be
-// combined with the primary context type as indicated (ie for a context
-// type of 1, only context subtypes that start with 1 are valid).
-enum ContextSubtype {
-  CONTENT_GENERAL_OR_MIXED = 10;
-  CONTENT_ARTICLE = 11;
-  CONTENT_VIDEO = 12;
-  CONTENT_AUDIO = 13;
-  CONTENT_IMAGE = 14;
-  CONTENT_USER_GENERATED = 15;
-
-  SOCIAL_GENERAL = 20;
-  SOCIAL_EMAIL = 21;
-  SOCIAL_CHAT_IM = 22;
-
-  PRODUCT_SELLING = 30;
-  PRODUCT_MARKETPLACE = 31;
-  PRODUCT_REVIEW = 32;
-}
-
-// OpenRTB Native 1.1: The FORMAT of the ad you are purchasing,
-// separate from the surrounding context.
-enum PlacementType {
-  // In the feed of content - for example as an item inside the organic
-  // feed/grid/listing/carousel.
-  IN_FEED = 1;
-  // In the atomic unit of the content - IE in the article page
-  // or single image page.
-  ATOMIC_UNIT = 2;
-  // Outside the core content - for example in the ads section on the
-  // right rail, as a banner-style placement near the content, etc.
-  OUTSIDE = 3;
-  // Recommendation widget, most commonly presented below
-  // the article content.
-  RECOMMENDATION = 4;
-}
-
-// OpenRTB Native 1.0: Common asset element types of native advertising.
-// This list is non-exhaustive and intended to be extended by the buyers
-// and sellers as the format evolves. An implementing exchange may not
-// support all asset variants or introduce new ones unique to that system.
-enum DataAssetType {
-  // Sponsored By message where response should contain the brand name
-  // of the sponsor.
-  // Format: Text; Max length: 25 or longer.
-  SPONSORED = 1;
-
-  // Descriptive text associated with the product or service being advertised.
-  // Format: Text; Max length: 140 or longer.
-  DESC = 2;
-
-  // Rating of the product being offered to the user.
-  // For example an app's rating in an app store from 0-5.
-  // Format: Number (1-5 digits) formatted as string.
-  RATING = 3;
-
-  // Number of social ratings or "likes" of product being offered to the user.
-  // Format: Number formatted as string.
-  LIKES = 4;
-
-  // Number downloads/installs of this product.
-  // Format: Number formatted as string.
-  DOWNLOADS = 5;
-
-  // Price for product / app / in-app purchase.
-  // Value should include currency symbol in localised format.
-  // Format: Number formatted as string.
-  PRICE = 6;
-
-  // Sale price that can be used together with price to indicate a discounted
-  // price compared to a regular price. Value should include currency symbol
-  // in localised format.
-  // Format: Number formatted as string.
-  SALEPRICE = 7;
-
-  // Phone number.
-  // Format: Formatted string.
-  PHONE = 8;
-
-  // Address.
-  // Format: Text.
-  ADDRESS = 9;
-
-  // Additional descriptive text associated with the product or service
-  // being advertised.
-  // Format: Text.
-  DESC2 = 10;
-
-  // Display URL for the text ad.
-  // Format: Text.
-  DISPLAYURL = 11;
-
-  // Text describing a 'call to action' button for the destination URL.
-  // Format: Text.
-  CTATEXT = 12;
-
-  // Exchange-specific values above 500.
-}
-
-// OpenRTB Native 1.0: Common image asset element types of native advertising
-// at the time of writing this spec. This list is non-exhaustive and intended
-// to be extended by the buyers and sellers as the format evolves.
-enum ImageAssetType {
-  // Icon image.
-  // Max height: at least 50; Aspect ratio: 1:1.
-  ICON = 1;
-
-  // Logo image for the brand/app.
-  // To be deprecated in a future version - use type 1 / ICON.
-  // DEPRECATED in 1.2
-  LOGO = 2;
-
-  // Large image preview for the ad.
-  // At least one of 2 size variants required:
-  // Small Variant: max height: 200+, max width: 200+, 267, or 382,
-  //                aspect ratio: 1:1, 4:3, or 1.91:1.
-  // Large Variant: max height: 627+, max width: 627+, 836, or 1198,
-  //                aspect ratio: 1:1, 4:3, or 1.91:1.
-  MAIN = 3;
-
-  // Exchange-specific values above 500.
-}
-
-// OpenRTB Native 1.2.
-enum EventType {
-  // Impression
-  IMPRESSION = 1;
-
-  // Visible impression using MRC definition at 50% in view for 1 second.
-  VIEWABLE_MRC_50 = 2;
-
-  // 100% in view for 1 second (ie GroupM standard).
-  VIEWABLE_MRC_100 = 3;
-
-  // Visible impression for video using MRC definition at 50% in view
-  // for 2 seconds.
-  VIEWABLE_VIDEO_50 = 4;
-
-  // Exchange-specific values above 500.
-}
-
-// OpenRTB Native 1.2.
-enum EventTrackingMethod {
-  // Image-pixel tracking - URL provided will be insterted as a 1x1 pixel at the
-  // time of the event.
-  IMG = 1;
-
-  // Javascript-based tracking - URL provided will be insterted as a js tag at
-  // the time of the event.
-  JS = 2;
 }
