@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-syntax = "proto2";
-package com.iabtechlab.openrtb.v2;
-option java_outer_classname = "Test";
+package com.iabtechlab.openrtb.v2.snippet;
 
-message Test1 {
-  required string test1 = 1;
-}
-message Test2 {
-  optional string test2 = 1;
-  repeated string test3 = 2;
+/**
+ * Macros for snippet generation. Enum types will implement this interface and provide
+ * groups of macros supported by some implementation of {@link SnippetProcessor}.
+ */
+public interface SnippetMacroType {
+
+  /**
+   * Returns the macro key (value that will be substituted).
+   */
+  String key();
 }

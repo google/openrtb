@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-syntax = "proto2";
-package com.iabtechlab.openrtb.v2;
-option java_outer_classname = "Test";
+package com.iabtechlab.openrtb.v2.json;
 
-message Test1 {
-  required string test1 = 1;
-}
-message Test2 {
-  optional string test2 = 1;
-  repeated string test3 = 2;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.iabtechlab.openrtb.v2.Test;
+
+import java.io.IOException;
+
+/**
+ * Regular extension: {@code "test1": "data1"}, message type {@code Test1}.
+ */
+class Test1Writer extends OpenRtbJsonExtWriter<Test.Test1> {
+
+  @Override protected void write(Test.Test1 ext, JsonGenerator gen) throws IOException {
+    gen.writeStringField("test1", ext.getTest1());
+  }
 }

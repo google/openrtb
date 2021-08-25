@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-syntax = "proto2";
-package com.iabtechlab.openrtb.v2;
-option java_outer_classname = "Test";
-
-message Test1 {
-  required string test1 = 1;
-}
-message Test2 {
-  optional string test2 = 1;
-  repeated string test3 = 2;
-}
+/**
+ * General utilities.
+ *
+ * <p>Warning: These utilities are intended in part for internal use, in part as
+ * building blocks for higher-level libraries.  They are stable and supported, but
+ * designed for efficiency and power above ease-of-use or convenience.
+ */
+@javax.annotation.ParametersAreNonnullByDefault
+package com.iabtechlab.openrtb.v2.util;

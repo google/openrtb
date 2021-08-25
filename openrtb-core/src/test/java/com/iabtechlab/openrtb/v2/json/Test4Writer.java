@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Google Inc. All Rights Reserved.
+ * Copyright 2015 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,21 @@
  * limitations under the License.
  */
 
-syntax = "proto2";
-package com.iabtechlab.openrtb.v2;
-option java_outer_classname = "Test";
+package com.iabtechlab.openrtb.v2.json;
 
-message Test1 {
-  required string test1 = 1;
-}
-message Test2 {
-  optional string test2 = 1;
-  repeated string test3 = 2;
+import com.fasterxml.jackson.core.JsonGenerator;
+import java.io.IOException;
+
+/**
+ * Repeated extension: {@code "test4arr": [10, 20]}, scalar type {@code Integer}.
+ */
+class Test4Writer extends OpenRtbJsonExtWriter<Integer> {
+
+  public Test4Writer() {
+    super("test4arr", false);
+  }
+
+  @Override protected void write(Integer ext, JsonGenerator gen) throws IOException {
+    gen.writeNumber(ext);
+  }
 }
