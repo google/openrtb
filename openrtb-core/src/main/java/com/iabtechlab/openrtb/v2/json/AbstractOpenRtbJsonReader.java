@@ -27,6 +27,9 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.endObject;
+import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.startObject;
+
 /**
  * Desserializes OpenRTB messages from JSON.
  */
@@ -68,7 +71,7 @@ public abstract class AbstractOpenRtbJsonReader {
       return;
     }
 
-    OpenRtbJsonUtils.startObject(par);
+    startObject(par);
     JsonToken tokLast = par.getCurrentToken();
     JsonLocation locLast = par.getCurrentLocation();
 
@@ -82,7 +85,7 @@ public abstract class AbstractOpenRtbJsonReader {
           boolean advanced = tokNew != tokLast || !locNew.equals(locLast);
           extRead |= advanced;
 
-          if (!OpenRtbJsonUtils.endObject(par)) {
+          if (!endObject(par)) {
             return;
           } else if (advanced && par.getCurrentToken() != JsonToken.FIELD_NAME) {
             tokLast = par.nextToken();
@@ -94,7 +97,7 @@ public abstract class AbstractOpenRtbJsonReader {
         }
       }
 
-      if (!OpenRtbJsonUtils.endObject(par)) {
+      if (!endObject(par)) {
         // Can't rely on this exit condition inside the for loop because no readers may filter.
         return;
       }

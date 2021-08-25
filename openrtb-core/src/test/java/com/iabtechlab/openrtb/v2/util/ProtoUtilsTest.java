@@ -23,6 +23,8 @@ import com.iabtechlab.openrtb.v2.OpenRtb.AuctionType;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp.Banner;
+import com.iabtechlab.openrtb.v2.Test.Test1;
+import com.iabtechlab.openrtb.v2.Test.Test2;
 import com.iabtechlab.openrtb.v2.TestExt;
 
 import org.junit.Test;
@@ -34,8 +36,8 @@ public class ProtoUtilsTest {
 
   @Test
   public void testFilter() {
-    com.iabtechlab.openrtb.v2.Test.Test1 test1 = com.iabtechlab.openrtb.v2.Test.Test1.newBuilder().setTest1("test1").build();
-    com.iabtechlab.openrtb.v2.Test.Test2 test2 = com.iabtechlab.openrtb.v2.Test.Test2.newBuilder().setTest2("test2").build();
+    Test1 test1 = Test1.newBuilder().setTest1("test1").build();
+    Test2 test2 = Test2.newBuilder().setTest2("test2").build();
     BidRequest reqExt = BidRequest.newBuilder()
         .setId("0")
         .addImp(Imp.newBuilder()

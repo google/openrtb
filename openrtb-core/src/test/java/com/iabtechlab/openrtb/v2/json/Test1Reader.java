@@ -21,7 +21,7 @@ import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.getCurrentName;
 import com.fasterxml.jackson.core.JsonParser;
 import com.google.protobuf.GeneratedMessage.GeneratedExtension;
 import com.google.protobuf.GeneratedMessageV3.ExtendableBuilder;
-import com.iabtechlab.openrtb.v2.Test;
+import com.iabtechlab.openrtb.v2.Test.Test1;
 
 import java.io.IOException;
 
@@ -35,13 +35,13 @@ import java.io.IOException;
  *     you can bind this to a specific message builder type, see {@link Test3Reader}.
  */
 class Test1Reader<EB extends ExtendableBuilder<?, EB>>
-    extends OpenRtbJsonExtComplexReader<EB, Test.Test1.Builder> {
+    extends OpenRtbJsonExtComplexReader<EB, Test1.Builder> {
 
   public Test1Reader(GeneratedExtension<?, ?> key) {
     super(key, false, "test1");
   }
 
-  @Override protected void read(Test.Test1.Builder ext, JsonParser par) throws IOException {
+  @Override protected void read(Test1.Builder ext, JsonParser par) throws IOException {
     if ("test1".equals(getCurrentName(par))) {
       ext.setTest1(par.nextTextValue());
     }

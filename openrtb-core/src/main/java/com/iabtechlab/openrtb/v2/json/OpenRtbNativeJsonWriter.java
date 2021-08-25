@@ -25,6 +25,10 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.writeIntBoolField;
+import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.writeInts;
+import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.writeStrings;
+
 /**
  * Serializes OpenRTB {@link NativeRequest}/{@link NativeResponse} messages to JSON.
  *
@@ -121,10 +125,10 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeNumberField("plcmttype", req.getPlcmttype());
     }
     if (req.hasAurlsupport()) {
-      OpenRtbJsonUtils.writeIntBoolField("aurlsupport", req.getAurlsupport(), gen);
+      writeIntBoolField("aurlsupport", req.getAurlsupport(), gen);
     }
     if (req.hasDurlsupport()) {
-      OpenRtbJsonUtils.writeIntBoolField("durlsupport", req.getDurlsupport(), gen);
+      writeIntBoolField("durlsupport", req.getDurlsupport(), gen);
     }
     if (req.getEventtrackersCount() != 0) {
       gen.writeArrayFieldStart("eventtrackers");
@@ -134,7 +138,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeEndArray();
     }
     if (req.hasPrivacy()) {
-      OpenRtbJsonUtils.writeIntBoolField("privacy", req.getPrivacy(), gen);
+      writeIntBoolField("privacy", req.getPrivacy(), gen);
     }
   }
 
@@ -149,7 +153,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       throws IOException {
     gen.writeNumberField("id", asset.getId());
     if (asset.hasRequired()) {
-      OpenRtbJsonUtils.writeIntBoolField("required", asset.getRequired(), gen);
+      writeIntBoolField("required", asset.getRequired(), gen);
     }
     switch (asset.getAssetOneofCase()) {
       case TITLE:
@@ -212,7 +216,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       gen.writeNumberField("hmin", image.getHmin());
     }
     if (checkRequired(image.getMimesCount())) {
-      OpenRtbJsonUtils.writeStrings("mimes", image.getMimesList(), gen);
+      writeStrings("mimes", image.getMimesList(), gen);
     }
   }
 
@@ -243,7 +247,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
   protected void writeReqEventTrackersFields(
       NativeRequest.EventTrackers tracker, JsonGenerator gen) throws IOException {
     gen.writeNumberField("event", tracker.getEvent());
-    OpenRtbJsonUtils.writeInts("methods", tracker.getMethodsList(), gen);
+    writeInts("methods", tracker.getMethodsList(), gen);
   }
 
   /**
@@ -308,7 +312,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     }
     gen.writeFieldName("link");
     writeRespLink(resp.getLink(), gen);
-    OpenRtbJsonUtils.writeStrings("imptrackers", resp.getImptrackersList(), gen);
+    writeStrings("imptrackers", resp.getImptrackersList(), gen);
     if (resp.hasJstracker()) {
       gen.writeStringField("jstracker", resp.getJstracker());
     }
@@ -342,7 +346,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
       throws IOException {
     gen.writeNumberField("id", asset.getId());
     if (asset.hasRequired()) {
-      OpenRtbJsonUtils.writeIntBoolField("required", asset.getRequired(), gen);
+      writeIntBoolField("required", asset.getRequired(), gen);
     }
     if (asset.hasLink()) {
       gen.writeFieldName("link");
@@ -456,7 +460,7 @@ public class OpenRtbNativeJsonWriter extends AbstractOpenRtbJsonWriter {
     if (link.hasUrl()) {
       gen.writeStringField("url", link.getUrl());
     }
-    OpenRtbJsonUtils.writeStrings("clicktrackers", link.getClicktrackersList(), gen);
+    writeStrings("clicktrackers", link.getClicktrackersList(), gen);
     if (link.hasFallback()) {
       gen.writeStringField("fallback", link.getFallback());
     }

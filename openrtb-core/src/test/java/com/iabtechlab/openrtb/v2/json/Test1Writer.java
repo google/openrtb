@@ -17,16 +17,16 @@
 package com.iabtechlab.openrtb.v2.json;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.iabtechlab.openrtb.v2.Test;
+import com.iabtechlab.openrtb.v2.Test.Test1;
 
 import java.io.IOException;
 
 /**
  * Regular extension: {@code "test1": "data1"}, message type {@code Test1}.
  */
-class Test1Writer extends OpenRtbJsonExtWriter<Test.Test1> {
+class Test1Writer extends OpenRtbJsonExtWriter<Test1> {
 
-  @Override protected void write(Test.Test1 ext, JsonGenerator gen) throws IOException {
+  @Override protected void write(Test1 ext, JsonGenerator gen) throws IOException {
     gen.writeStringField("test1", ext.getTest1());
   }
 }

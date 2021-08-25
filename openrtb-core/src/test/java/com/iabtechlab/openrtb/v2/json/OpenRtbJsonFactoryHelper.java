@@ -40,6 +40,8 @@ import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeResponse;
 import com.iabtechlab.openrtb.v2.Test;
+import com.iabtechlab.openrtb.v2.Test.Test1;
+import com.iabtechlab.openrtb.v2.Test.Test2;
 import com.iabtechlab.openrtb.v2.TestExt;
 import com.iabtechlab.openrtb.v2.TestNExt;
 
@@ -102,30 +104,30 @@ class OpenRtbJsonFactoryHelper {
         .register(new Test1Reader<>(TestExt.testData), Data.Builder.class)
         .register(new Test1Reader<>(TestExt.testSegment), Data.Segment.Builder.class)
         // Writers
-        .register(new Test1Writer(), Test.Test1.class, BidRequest.class)
-        .register(new Test2Writer("test2ext"), Test.Test2.class, BidRequest.class)
-        .register(new Test1Writer(), Test.Test1.class, App.class)
-        .register(new Test1Writer(), Test.Test1.class, Device.class)
-        .register(new Test1Writer(), Test.Test1.class, Site.class)
-        .register(new Test1Writer(), Test.Test1.class, User.class)
-        .register(new Test1Writer(), Test.Test1.class, Geo.class)
-        .register(new Test1Writer(), Test.Test1.class, Data.class)
-        .register(new Test1Writer(), Test.Test1.class, Data.Segment.class)
-        .register(new Test1Writer(), Test.Test1.class, Publisher.class)
-        .register(new Test1Writer(), Test.Test1.class, Content.class)
-        .register(new Test1Writer(), Test.Test1.class, Producer.class)
-        .register(new Test1Writer(), Test.Test1.class, Imp.class)
-        .register(new Test1Writer(), Test.Test1.class, Imp.Metric.class)
-        .register(new Test1Writer(), Test.Test1.class, Banner.class)
-        .register(new Test1Writer(), Test.Test1.class, Banner.Format.class)
-        .register(new Test1Writer(), Test.Test1.class, Video.class)
-        .register(new Test1Writer(), Test.Test1.class, Video.CompanionAd.class)
-        .register(new Test1Writer(), Test.Test1.class, Audio.class)
-        .register(new Test1Writer(), Test.Test1.class, Native.class)
-        .register(new Test1Writer(), Test.Test1.class, Pmp.class)
-        .register(new Test1Writer(), Test.Test1.class, Pmp.Deal.class)
-        .register(new Test1Writer(), Test.Test1.class, Regs.class)
-        .register(new Test1Writer(), Test.Test1.class, Source.class);
+        .register(new Test1Writer(), Test1.class, BidRequest.class)
+        .register(new Test2Writer("test2ext"), Test2.class, BidRequest.class)
+        .register(new Test1Writer(), Test1.class, App.class)
+        .register(new Test1Writer(), Test1.class, Device.class)
+        .register(new Test1Writer(), Test1.class, Site.class)
+        .register(new Test1Writer(), Test1.class, User.class)
+        .register(new Test1Writer(), Test1.class, Geo.class)
+        .register(new Test1Writer(), Test1.class, Data.class)
+        .register(new Test1Writer(), Test1.class, Data.Segment.class)
+        .register(new Test1Writer(), Test1.class, Publisher.class)
+        .register(new Test1Writer(), Test1.class, Content.class)
+        .register(new Test1Writer(), Test1.class, Producer.class)
+        .register(new Test1Writer(), Test1.class, Imp.class)
+        .register(new Test1Writer(), Test1.class, Imp.Metric.class)
+        .register(new Test1Writer(), Test1.class, Banner.class)
+        .register(new Test1Writer(), Test1.class, Banner.Format.class)
+        .register(new Test1Writer(), Test1.class, Video.class)
+        .register(new Test1Writer(), Test1.class, Video.CompanionAd.class)
+        .register(new Test1Writer(), Test1.class, Audio.class)
+        .register(new Test1Writer(), Test1.class, Native.class)
+        .register(new Test1Writer(), Test1.class, Pmp.class)
+        .register(new Test1Writer(), Test1.class, Pmp.Deal.class)
+        .register(new Test1Writer(), Test1.class, Regs.class)
+        .register(new Test1Writer(), Test1.class, Source.class);
   }
 
   static OpenRtbJsonFactory registerBidResponseExt(OpenRtbJsonFactory factory) {
@@ -166,14 +168,14 @@ class OpenRtbJsonFactoryHelper {
         .register(new Test1Reader<Video.Builder>(TestExt.testVideo), Video.Builder.class)
         .register(new Test1Reader<NativeRequest.Asset.Data.Builder>(TestNExt.testNReqData),
             NativeRequest.Asset.Data.Builder.class)
-        .register(new Test2Writer("test2ext"), Test.Test2.class, NativeRequest.class)
+        .register(new Test2Writer("test2ext"), Test2.class, NativeRequest.class)
         // Writers
-        .register(new Test1Writer(), Test.Test1.class, NativeRequest.class)
-        .register(new Test1Writer(), Test.Test1.class, NativeRequest.Asset.class)
-        .register(new Test1Writer(), Test.Test1.class, NativeRequest.Asset.Title.class)
-        .register(new Test1Writer(), Test.Test1.class, NativeRequest.Asset.Image.class)
-        .register(new Test1Writer(), Test.Test1.class, Video.class)
-        .register(new Test1Writer(), Test.Test1.class, NativeRequest.Asset.Data.class);
+        .register(new Test1Writer(), Test1.class, NativeRequest.class)
+        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.class)
+        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Title.class)
+        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Image.class)
+        .register(new Test1Writer(), Test1.class, Video.class)
+        .register(new Test1Writer(), Test1.class, NativeRequest.Asset.Data.class);
   }
 
   static OpenRtbJsonFactory registerNativeResponseExt(OpenRtbJsonFactory factory) {

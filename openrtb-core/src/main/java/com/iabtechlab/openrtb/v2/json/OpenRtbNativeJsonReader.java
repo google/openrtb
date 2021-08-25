@@ -29,6 +29,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 
+import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.endArray;
+import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.endObject;
+import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.getCurrentName;
+import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.startArray;
+import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.startObject;
+
 /**
  * Desserializes OpenRTB {@link NativeRequest}/{@link NativeResponse} messages from JSON.
  *
@@ -84,14 +90,14 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
     NativeRequest.Builder req = NativeRequest.newBuilder();
     boolean rootNativeField = false;
     boolean firstField = true;
-    for (OpenRtbJsonUtils.startObject(par); OpenRtbJsonUtils.endObject(par); par.nextToken()) {
-      String fieldName = OpenRtbJsonUtils.getCurrentName(par);
+    for (startObject(par); endObject(par); par.nextToken()) {
+      String fieldName = getCurrentName(par);
       if (par.nextToken() != JsonToken.VALUE_NULL) {
         if (firstField) {
           firstField = false;
           if ((rootNativeField = "native".equals(fieldName)) == true) {
-            OpenRtbJsonUtils.startObject(par);
-            fieldName = OpenRtbJsonUtils.getCurrentName(par);
+            startObject(par);
+            fieldName = getCurrentName(par);
             par.nextToken();
           }
         }
@@ -100,7 +106,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         }
       }
     }
-    if (rootNativeField && !OpenRtbJsonUtils.endObject(par)) {
+    if (rootNativeField && !endObject(par)) {
       par.nextToken();
     }
     return req;
@@ -125,7 +131,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         req.setSeq(par.getIntValue());
         break;
       case "assets":
-        for (OpenRtbJsonUtils.startArray(par); OpenRtbJsonUtils.endArray(par); par.nextToken()) {
+        for (startArray(par); endArray(par); par.nextToken()) {
           req.addAssets(readReqAsset(par));
         }
         break;
@@ -148,7 +154,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         req.setPrivacy(par.getValueAsBoolean());
         break;
       case "eventtrackers":
-        for (OpenRtbJsonUtils.startArray(par); OpenRtbJsonUtils.endArray(par); par.nextToken()) {
+        for (startArray(par); endArray(par); par.nextToken()) {
           req.addEventtrackers(readReqEventTrackers(par));
         }
         break;
@@ -159,8 +165,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
 
   public final NativeRequest.Asset.Builder readReqAsset(JsonParser par) throws IOException {
     NativeRequest.Asset.Builder asset = NativeRequest.Asset.newBuilder();
-    for (OpenRtbJsonUtils.startObject(par); OpenRtbJsonUtils.endObject(par); par.nextToken()) {
-      String fieldName = OpenRtbJsonUtils.getCurrentName(par);
+    for (startObject(par); endObject(par); par.nextToken()) {
+      String fieldName = getCurrentName(par);
       if (par.nextToken() != JsonToken.VALUE_NULL) {
         readReqAssetField(par, asset, fieldName);
       }
@@ -197,8 +203,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
   public final NativeRequest.Asset.Title.Builder readReqTitle(JsonParser par)
       throws IOException {
     NativeRequest.Asset.Title.Builder title = NativeRequest.Asset.Title.newBuilder();
-    for (OpenRtbJsonUtils.startObject(par); OpenRtbJsonUtils.endObject(par); par.nextToken()) {
-      String fieldName = OpenRtbJsonUtils.getCurrentName(par);
+    for (startObject(par); endObject(par); par.nextToken()) {
+      String fieldName = getCurrentName(par);
       if (par.nextToken() != JsonToken.VALUE_NULL) {
         readReqTitleField(par, title, fieldName);
       }
@@ -221,8 +227,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
   public final NativeRequest.Asset.Image.Builder readReqImage(JsonParser par)
       throws IOException {
     NativeRequest.Asset.Image.Builder req = NativeRequest.Asset.Image.newBuilder();
-    for (OpenRtbJsonUtils.startObject(par); OpenRtbJsonUtils.endObject(par); par.nextToken()) {
-      String fieldName = OpenRtbJsonUtils.getCurrentName(par);
+    for (startObject(par); endObject(par); par.nextToken()) {
+      String fieldName = getCurrentName(par);
       if (par.nextToken() != JsonToken.VALUE_NULL) {
         readReqImageField(par, req, fieldName);
       }
@@ -250,7 +256,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         image.setHmin(par.getIntValue());
         break;
       case "mimes":
-        for (OpenRtbJsonUtils.startArray(par); OpenRtbJsonUtils.endArray(par); par.nextToken()) {
+        for (startArray(par); endArray(par); par.nextToken()) {
           image.addMimes(par.getText());
         }
         break;
@@ -261,8 +267,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
 
   public final NativeRequest.Asset.Data.Builder readReqData(JsonParser par) throws IOException {
     NativeRequest.Asset.Data.Builder data = NativeRequest.Asset.Data.newBuilder();
-    for (OpenRtbJsonUtils.startObject(par); OpenRtbJsonUtils.endObject(par); par.nextToken()) {
-      String fieldName = OpenRtbJsonUtils.getCurrentName(par);
+    for (startObject(par); endObject(par); par.nextToken()) {
+      String fieldName = getCurrentName(par);
       if (par.nextToken() != JsonToken.VALUE_NULL) {
         readReqDataField(par, data, fieldName);
       }
@@ -287,8 +293,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
   public final NativeRequest.EventTrackers.Builder readReqEventTrackers(JsonParser par)
       throws IOException {
     NativeRequest.EventTrackers.Builder trackers = NativeRequest.EventTrackers.newBuilder();
-    for (OpenRtbJsonUtils.startObject(par); OpenRtbJsonUtils.endObject(par); par.nextToken()) {
-      String fieldName = OpenRtbJsonUtils.getCurrentName(par);
+    for (startObject(par); endObject(par); par.nextToken()) {
+      String fieldName = getCurrentName(par);
       if (par.nextToken() != JsonToken.VALUE_NULL) {
         readReqEventTrackersField(par, trackers, fieldName);
       }
@@ -304,7 +310,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         trackers.setEvent(par.getIntValue());
         break;
       case "methods":
-        for (OpenRtbJsonUtils.startArray(par); OpenRtbJsonUtils.endArray(par); par.nextToken()) {
+        for (startArray(par); endArray(par); par.nextToken()) {
           trackers.addMethods(par.getIntValue());
         }
         break;
@@ -356,14 +362,14 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
     NativeResponse.Builder resp = NativeResponse.newBuilder();
     boolean rootNativeField = false;
     boolean firstField = true;
-    for (OpenRtbJsonUtils.startObject(par); OpenRtbJsonUtils.endObject(par); par.nextToken()) {
-      String fieldName = OpenRtbJsonUtils.getCurrentName(par);
+    for (startObject(par); endObject(par); par.nextToken()) {
+      String fieldName = getCurrentName(par);
       if (par.nextToken() != JsonToken.VALUE_NULL) {
         if (firstField) {
           firstField = false;
           if ((rootNativeField = "native".equals(fieldName)) == true) {
-            OpenRtbJsonUtils.startObject(par);
-            fieldName = OpenRtbJsonUtils.getCurrentName(par);
+            startObject(par);
+            fieldName = getCurrentName(par);
             par.nextToken();
           }
         }
@@ -372,7 +378,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         }
       }
     }
-    if (rootNativeField && !OpenRtbJsonUtils.endObject(par)) {
+    if (rootNativeField && !endObject(par)) {
       par.nextToken();
     }
     return resp;
@@ -385,7 +391,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         resp.setVer(par.getText());
         break;
       case "assets":
-        for (OpenRtbJsonUtils.startArray(par); OpenRtbJsonUtils.endArray(par); par.nextToken()) {
+        for (startArray(par); endArray(par); par.nextToken()) {
           resp.addAssets(readRespAsset(par));
         }
         break;
@@ -393,7 +399,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         resp.setLink(readRespLink(par));
         break;
       case "imptrackers":
-        for (OpenRtbJsonUtils.startArray(par); OpenRtbJsonUtils.endArray(par); par.nextToken()) {
+        for (startArray(par); endArray(par); par.nextToken()) {
           resp.addImptrackers(par.getText());
         }
         break;
@@ -407,7 +413,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         resp.setDcourl(par.getText());
         break;
       case "eventtrackers":
-        for (OpenRtbJsonUtils.startArray(par); OpenRtbJsonUtils.endArray(par); par.nextToken()) {
+        for (startArray(par); endArray(par); par.nextToken()) {
           resp.addEventtrackers(readRespEventTracker(par));
         }
         break;
@@ -421,8 +427,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
 
   public final NativeResponse.Asset.Builder readRespAsset(JsonParser par) throws IOException {
     NativeResponse.Asset.Builder asset = NativeResponse.Asset.newBuilder();
-    for (OpenRtbJsonUtils.startObject(par); OpenRtbJsonUtils.endObject(par); par.nextToken()) {
-      String fieldName = OpenRtbJsonUtils.getCurrentName(par);
+    for (startObject(par); endObject(par); par.nextToken()) {
+      String fieldName = getCurrentName(par);
       if (par.nextToken() != JsonToken.VALUE_NULL) {
         readRespAssetField(par, asset, fieldName);
       }
@@ -462,8 +468,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
   public final NativeResponse.Asset.Title.Builder readRespTitle(JsonParser par)
       throws IOException {
     NativeResponse.Asset.Title.Builder title = NativeResponse.Asset.Title.newBuilder();
-    for (OpenRtbJsonUtils.startObject(par); OpenRtbJsonUtils.endObject(par); par.nextToken()) {
-      String fieldName = OpenRtbJsonUtils.getCurrentName(par);
+    for (startObject(par); endObject(par); par.nextToken()) {
+      String fieldName = getCurrentName(par);
       if (par.nextToken() != JsonToken.VALUE_NULL) {
         readRespTitleField(par, title, fieldName);
       }
@@ -489,8 +495,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
   public final NativeResponse.Asset.Image.Builder readRespImage(JsonParser par)
       throws IOException {
     NativeResponse.Asset.Image.Builder image = NativeResponse.Asset.Image.newBuilder();
-    for (OpenRtbJsonUtils.startObject(par); OpenRtbJsonUtils.endObject(par); par.nextToken()) {
-      String fieldName = OpenRtbJsonUtils.getCurrentName(par);
+    for (startObject(par); endObject(par); par.nextToken()) {
+      String fieldName = getCurrentName(par);
       if (par.nextToken() != JsonToken.VALUE_NULL) {
         readRespImageField(par, image, fieldName);
       }
@@ -522,8 +528,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
   public final NativeResponse.Asset.Video.Builder readRespVideo(JsonParser par)
       throws IOException {
     NativeResponse.Asset.Video.Builder video = NativeResponse.Asset.Video.newBuilder();
-    for (OpenRtbJsonUtils.startObject(par); OpenRtbJsonUtils.endObject(par); par.nextToken()) {
-      String fieldName = OpenRtbJsonUtils.getCurrentName(par);
+    for (startObject(par); endObject(par); par.nextToken()) {
+      String fieldName = getCurrentName(par);
       if (par.nextToken() != JsonToken.VALUE_NULL) {
         readRespVideoField(par, video, fieldName);
       }
@@ -545,8 +551,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
 
   public final NativeResponse.Asset.Data.Builder readRespData(JsonParser par) throws IOException {
     NativeResponse.Asset.Data.Builder data = NativeResponse.Asset.Data.newBuilder();
-    for (OpenRtbJsonUtils.startObject(par); OpenRtbJsonUtils.endObject(par); par.nextToken()) {
-      String fieldName = OpenRtbJsonUtils.getCurrentName(par);
+    for (startObject(par); endObject(par); par.nextToken()) {
+      String fieldName = getCurrentName(par);
       if (par.nextToken() != JsonToken.VALUE_NULL) {
         readRespDataField(par, data, fieldName);
       }
@@ -576,8 +582,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
 
   public final NativeResponse.Link.Builder readRespLink(JsonParser par) throws IOException {
     NativeResponse.Link.Builder link = NativeResponse.Link.newBuilder();
-    for (OpenRtbJsonUtils.startObject(par); OpenRtbJsonUtils.endObject(par); par.nextToken()) {
-      String fieldName = OpenRtbJsonUtils.getCurrentName(par);
+    for (startObject(par); endObject(par); par.nextToken()) {
+      String fieldName = getCurrentName(par);
       if (par.nextToken() != JsonToken.VALUE_NULL) {
         readRespLinkField(par, link, fieldName);
       }
@@ -592,7 +598,7 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
         link.setUrl(par.getText());
         break;
       case "clicktrackers":
-        for (OpenRtbJsonUtils.startArray(par); OpenRtbJsonUtils.endArray(par); par.nextToken()) {
+        for (startArray(par); endArray(par); par.nextToken()) {
           link.addClicktrackers(par.getText());
         }
         break;
@@ -607,8 +613,8 @@ public class OpenRtbNativeJsonReader extends AbstractOpenRtbJsonReader {
   public final NativeResponse.EventTracker.Builder readRespEventTracker(JsonParser par)
       throws IOException {
     NativeResponse.EventTracker.Builder tracker = NativeResponse.EventTracker.newBuilder();
-    for (OpenRtbJsonUtils.startObject(par); OpenRtbJsonUtils.endObject(par); par.nextToken()) {
-      String fieldName = OpenRtbJsonUtils.getCurrentName(par);
+    for (startObject(par); endObject(par); par.nextToken()) {
+      String fieldName = getCurrentName(par);
       if (par.nextToken() != JsonToken.VALUE_NULL) {
         readRespEventTrackerField(par, tracker, fieldName);
       }

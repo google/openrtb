@@ -17,7 +17,7 @@
 package com.iabtechlab.openrtb.v2.json;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.iabtechlab.openrtb.v2.Test;
+import com.iabtechlab.openrtb.v2.Test.Test2;
 
 import java.io.IOException;
 
@@ -29,13 +29,13 @@ import java.io.IOException;
  *                                           {"test2": "data4", "test3": ["data5"]}}</code>,
  * message type {@code Test2}.
  */
-class Test2Writer extends OpenRtbJsonExtWriter<Test.Test2> {
+class Test2Writer extends OpenRtbJsonExtWriter<Test2> {
 
   public Test2Writer(String name) {
     super(name, true);
   }
 
-  @Override protected void write(Test.Test2 ext, JsonGenerator gen) throws IOException {
+  @Override protected void write(Test2 ext, JsonGenerator gen) throws IOException {
     gen.writeStringField("test2", ext.getTest2());
     OpenRtbJsonUtils.writeStrings("test3", ext.getTest3List(), gen);
   }

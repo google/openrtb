@@ -23,7 +23,7 @@ import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.startArray;
 import com.fasterxml.jackson.core.JsonParser;
 import com.google.protobuf.GeneratedMessage.GeneratedExtension;
 import com.google.protobuf.GeneratedMessageV3.ExtendableBuilder;
-import com.iabtechlab.openrtb.v2.Test;
+import com.iabtechlab.openrtb.v2.Test.Test2;
 
 import java.io.IOException;
 
@@ -36,13 +36,13 @@ import java.io.IOException;
  * message type {@code Test2}.
  */
 class Test2Reader<EB extends ExtendableBuilder<?, EB>>
-    extends OpenRtbJsonExtComplexReader<EB, Test.Test2.Builder> {
+    extends OpenRtbJsonExtComplexReader<EB, Test2.Builder> {
 
   public Test2Reader(GeneratedExtension<?, ?> key, String name) {
     super(key, true, name);
   }
 
-  @Override protected void read(Test.Test2.Builder ext, JsonParser par) throws IOException {
+  @Override protected void read(Test2.Builder ext, JsonParser par) throws IOException {
     switch (getCurrentName(par)) {
       case "test2":
         ext.setTest2(par.nextTextValue());
