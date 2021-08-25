@@ -39,7 +39,6 @@ import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeResponse;
-import com.iabtechlab.openrtb.v2.Test;
 import com.iabtechlab.openrtb.v2.Test.Test1;
 import com.iabtechlab.openrtb.v2.Test.Test2;
 import com.iabtechlab.openrtb.v2.TestExt;
@@ -57,8 +56,8 @@ import java.util.Scanner;
  * Utilities for JSON tests.
  */
 class OpenRtbJsonFactoryHelper {
-  static final Test.Test1 test1 = Test.Test1.newBuilder().setTest1("data1").build();
-  static final Test.Test2 test2 = Test.Test2.newBuilder().setTest2("data2").build();
+  static final Test1 test1 = Test1.newBuilder().setTest1("data1").build();
+  static final Test2 test2 = Test2.newBuilder().setTest2("data2").build();
 
   static OpenRtbJsonFactory newJsonFactory() {
     return newJsonFactory(false, false);
@@ -142,14 +141,14 @@ class OpenRtbJsonFactoryHelper {
         .register(new Test1Reader<>(TestExt.testSeat), SeatBid.Builder.class)
         .register(new Test1Reader<>(TestExt.testBid), SeatBid.Bid.Builder.class)
         // Writers
-        .register(new Test1Writer(), Test.Test1.class, BidResponse.class, "testResponse1")
-        .register(new Test2Writer("test2arr"), Test.Test2.class, BidResponse.class, "testResponse2")
-        .register(new Test2Writer("test2a"), Test.Test2.class, BidResponse.class, "testResponse2a")
-        .register(new Test2Writer("test2b"), Test.Test2.class, BidResponse.class, "testResponse2b")
+        .register(new Test1Writer(), Test1.class, BidResponse.class, "testResponse1")
+        .register(new Test2Writer("test2arr"), Test2.class, BidResponse.class, "testResponse2")
+        .register(new Test2Writer("test2a"), Test2.class, BidResponse.class, "testResponse2a")
+        .register(new Test2Writer("test2b"), Test2.class, BidResponse.class, "testResponse2b")
         .register(new Test3Writer(), Integer.class, BidResponse.class, "testResponse3")
         .register(new Test4Writer(), Integer.class, BidResponse.class, "testResponse4")
-        .register(new Test1Writer(), Test.Test1.class, SeatBid.class)
-        .register(new Test1Writer(), Test.Test1.class, SeatBid.Bid.class);
+        .register(new Test1Writer(), Test1.class, SeatBid.class)
+        .register(new Test1Writer(), Test1.class, SeatBid.Bid.class);
   }
 
   static OpenRtbJsonFactory registerNativeRequestExt(OpenRtbJsonFactory factory) {
@@ -198,14 +197,14 @@ class OpenRtbJsonFactoryHelper {
         .register(new Test1Reader<NativeResponse.Asset.Data.Builder>(TestNExt.testNRespData),
             NativeResponse.Asset.Data.Builder.class)
         // Writers
-        .register(new Test1Writer(), Test.Test1.class, NativeResponse.class)
-        .register(new Test1Writer(), Test.Test1.class, NativeResponse.Link.class)
-        .register(new Test1Writer(), Test.Test1.class, NativeResponse.Asset.class)
-        .register(new Test1Writer(), Test.Test1.class, NativeResponse.Asset.Title.class)
-        .register(new Test1Writer(), Test.Test1.class, NativeResponse.Asset.Image.class)
-        .register(new Test1Writer(), Test.Test1.class, NativeResponse.Asset.Video.class)
-        .register(new Test1Writer(), Test.Test1.class, NativeResponse.Asset.Data.class)
-        .register(new Test2Writer("test2ext"), Test.Test2.class, NativeResponse.class);
+        .register(new Test1Writer(), Test1.class, NativeResponse.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Link.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Title.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Image.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Video.class)
+        .register(new Test1Writer(), Test1.class, NativeResponse.Asset.Data.class)
+        .register(new Test2Writer("test2ext"), Test2.class, NativeResponse.class);
 
   }
 
