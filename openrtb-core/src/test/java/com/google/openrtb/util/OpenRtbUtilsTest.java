@@ -27,7 +27,6 @@ import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp.Video;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
-import com.iabtechlab.openrtb.v2.OpenRtb.ContentCategory;
 import java.util.Iterator;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -38,15 +37,6 @@ import org.junit.Test;
  * Tests for {@link OpenRtbUtils}.
  */
 public class OpenRtbUtilsTest {
-
-  @Test
-  public void testCatUtils() {
-    assertThat(OpenRtbUtils.categoryFromName("IAB10_1")).isSameInstanceAs(ContentCategory.IAB10_1);
-    assertThat(OpenRtbUtils.categoryFromName("IAB10-1")).isSameInstanceAs(ContentCategory.IAB10_1);
-    assertThat(OpenRtbUtils.categoryToJsonName("IAB10-1")).isEqualTo("IAB10-1");
-    assertThat(OpenRtbUtils.categoryToJsonName("IAB10_1")).isEqualTo("IAB10-1");
-    assertThat(OpenRtbUtils.categoryToJsonName(ContentCategory.IAB10_1)).isEqualTo("IAB10-1");
-  }
 
   @Test
   public void testRequest_imps() {

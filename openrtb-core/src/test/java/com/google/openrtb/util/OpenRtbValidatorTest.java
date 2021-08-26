@@ -21,6 +21,7 @@ import static java.util.Arrays.asList;
 
 import com.codahale.metrics.MetricRegistry;
 import com.iabtechlab.adcom.v1.enums.Enums.Creative.Attribute;
+import com.iabtechlab.adcom.v1.enums.Enums.Creative.AudioVideoType;
 import com.iabtechlab.adcom.v1.enums.Enums.LinearityMode;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp;
@@ -30,7 +31,6 @@ import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp.Video;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
-import com.iabtechlab.openrtb.v2.OpenRtb.Protocol;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,7 +54,7 @@ public class OpenRtbValidatorTest {
           .setId("1")
           .setVideo(Video.newBuilder()
               .setLinearity(LinearityMode.LINEAR.getNumber())
-              .addProtocols(Protocol.VAST_3_0.getNumber())
+              .addProtocols(AudioVideoType.VAST_3_0.getNumber())
               .setMinduration(0)
               .setMaxduration(0)
               .addAllBattr(asList(Attribute.ANNOYING.getNumber(), Attribute.POP.getNumber()))
@@ -67,7 +67,7 @@ public class OpenRtbValidatorTest {
       .addImp(Imp.newBuilder()
           .setId("1")
           .setAudio(Audio.newBuilder()
-              .addProtocols(Protocol.VAST_3_0.getNumber())
+              .addProtocols(AudioVideoType.VAST_3_0.getNumber())
               .setMinduration(0)
               .setMaxduration(0)
               .addAllBattr(asList(Attribute.ANNOYING.getNumber(), Attribute.POP.getNumber()))

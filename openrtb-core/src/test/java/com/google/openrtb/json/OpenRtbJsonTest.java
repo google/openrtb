@@ -30,6 +30,7 @@ import com.iabtechlab.adcom.v1.enums.Enums.CompanionType;
 import com.iabtechlab.adcom.v1.enums.Enums.ConnectionType;
 import com.iabtechlab.adcom.v1.enums.Enums.ContentContext;
 import com.iabtechlab.adcom.v1.enums.Enums.Creative.Attribute;
+import com.iabtechlab.adcom.v1.enums.Enums.Creative.AudioVideoType;
 import com.iabtechlab.adcom.v1.enums.Enums.DeliveryMethod;
 import com.iabtechlab.adcom.v1.enums.Enums.DeviceType;
 import com.iabtechlab.adcom.v1.enums.Enums.ExpandableDirection;
@@ -72,7 +73,6 @@ import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeResponse;
 import com.iabtechlab.openrtb.v2.OpenRtb.NoBidReason;
-import com.iabtechlab.openrtb.v2.OpenRtb.Protocol;
 import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
 import com.google.openrtb.TestExt;
@@ -577,8 +577,8 @@ public class OpenRtbJsonTest {
                 .setLinearity(LinearityMode.LINEAR.getNumber())
                 .setMinduration(15)
                 .setMaxduration(60)
-                .setProtocol(Protocol.VAST_3_0.getNumber())
-                .addProtocols(Protocol.VAST_2_0.getNumber())
+                .setProtocol(AudioVideoType.VAST_3_0.getNumber())
+                .addProtocols(AudioVideoType.VAST_2_0.getNumber())
                 .setW(200)
                 .setH(50)
                 .setStartdelay(0)
@@ -616,7 +616,7 @@ public class OpenRtbJsonTest {
                 .addMimes("video/vp9")
                 .setMinduration(15)
                 .setMaxduration(60)
-                .addProtocols(OpenRtb.Protocol.VAST_2_0.getNumber())
+                .addProtocols(AudioVideoType.VAST_2_0.getNumber())
                 .setStartdelay(0)
                 .setSequence(1)
                 .addBattr(Attribute.TEXT_ONLY.getNumber())
@@ -823,7 +823,7 @@ public class OpenRtbJsonTest {
         .setBundle("com.google.testapp")
         .addCat("IAB10-2")
         .setApi(APIFramework.VPAID_1_0.getNumber())
-        .setProtocol(Protocol.VAST_4_0.getNumber())
+        .setProtocol(AudioVideoType.VAST_4_0.getNumber())
         .setQagmediarating(MediaRating.OVER_12.getNumber())
         .setExp(250)
         .setBurl("http://billing.com/")

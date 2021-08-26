@@ -20,6 +20,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.openrtb.json.OpenRtbJsonFactoryHelper.newJsonFactory;
 import static java.util.Arrays.asList;
 
+import com.iabtechlab.adcom.v1.enums.Enums.Creative.AudioVideoType;
 import com.iabtechlab.adcom.v1.enums.Enums.DisplayContextType;
 import com.iabtechlab.adcom.v1.enums.Enums.DisplayPlacementType;
 import com.iabtechlab.adcom.v1.enums.Enums.EventTrackingMethod;
@@ -32,7 +33,6 @@ import com.iabtechlab.openrtb.v2.OpenRtb.ContextType;
 import com.iabtechlab.openrtb.v2.OpenRtb.LayoutId;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeResponse;
-import com.iabtechlab.openrtb.v2.OpenRtb.Protocol;
 import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
 import com.google.openrtb.TestExt;
@@ -164,7 +164,7 @@ public class OpenRtbNativeJsonTest {
                 .addAllMimes(asList("a", "b"))
                 .setMinduration(100)
                 .setMaxduration(200)
-                .addProtocols(Protocol.VAST_3_0.getNumber())
+                .addProtocols(AudioVideoType.VAST_3_0.getNumber())
                 .setExtension(TestExt.testVideo, test1)))
         .addAssets(NativeRequest.Asset.newBuilder()
             .setId(4)

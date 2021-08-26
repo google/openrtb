@@ -24,6 +24,7 @@ import com.iabtechlab.adcom.v1.enums.Enums.APIFramework;
 import com.iabtechlab.adcom.v1.enums.Enums.CompanionType;
 import com.iabtechlab.adcom.v1.enums.Enums.ConnectionType;
 import com.iabtechlab.adcom.v1.enums.Enums.Creative.Attribute;
+import com.iabtechlab.adcom.v1.enums.Enums.Creative.AudioVideoType;
 import com.iabtechlab.adcom.v1.enums.Enums.DeliveryMethod;
 import com.iabtechlab.adcom.v1.enums.Enums.DeviceType;
 import com.iabtechlab.adcom.v1.enums.Enums.ExpandableDirection;
@@ -255,7 +256,7 @@ class OpenRtbJsonRequestHelper {
             .addMimes("video/vp9")
             .setMinduration(15)
             .setMaxduration(60)
-            .addProtocols(OpenRtb.Protocol.VAST_2_0.getNumber())
+            .addProtocols(AudioVideoType.VAST_2_0.getNumber())
             .setStartdelay(0)
             .setSequence(1)
             .addBattr(Attribute.TEXT_ONLY.getNumber())
@@ -271,7 +272,7 @@ class OpenRtbJsonRequestHelper {
             .addCompaniontype(CompanionType.HTML_RSRC.getNumber())
             // Video specific
             .setLinearity(LinearityMode.LINEAR.getNumber())
-            .setProtocol(OpenRtb.Protocol.VAST_3_0.getNumber())
+            .setProtocol(AudioVideoType.VAST_3_0.getNumber())
             .setW(200)
             .setH(50)
             .setBoxingallowed(false)

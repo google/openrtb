@@ -94,7 +94,6 @@ message BidRequest {
   repeated string cur = 11;
 
   // Blocked advertiser categories using the IAB content categories.
-  // Refer to enum ContentCategory.
   repeated string bcat = 12;
 
   // Block list of advertisers by their domains (e.g., "ford.com").
@@ -425,12 +424,12 @@ message BidRequest {
       optional int32 maxduration = 4;
 
       // Deprecated; use protocols.
-      // Refer to enum Protocol for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.Creative.AudioVideoType for generic values.
       optional int32 protocol = 5 [deprecated = true];
 
       // Array of supported video bid response protocols.
       // At least one supported protocol must be specified.
-      // Refer to enum Protocol for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.Creative.AudioVideoType for generic values.
       repeated int32 protocols = 21 [packed = true];
 
       // Width of the video player in device independent pixels (DIPS).
@@ -443,7 +442,7 @@ message BidRequest {
 
       // Indicates the start delay in seconds for pre-roll, mid-roll, or
       // post-roll ad placements.
-      // Refer to enum StartDelay for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.StartDelayMode for generic values.
       // RECOMMENDED by the OpenRTB specification.
       optional int32 startdelay = 8;
 
@@ -567,13 +566,13 @@ message BidRequest {
       optional int32 maxduration = 3;
 
       // Array of supported audio protocols.
-      // Refer to enum Protocol for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.Creative.AudioVideoType for generic values.
       // RECOMMENDED by the OpenRTB specification.
       repeated int32 protocols = 4 [packed = true];
 
       // Indicates the start delay in seconds for pre-roll, mid-roll, or
       // post-roll ad placements.
-      // Refer to enum StartDelay for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.StartDelayMode for generic values.
       // RECOMMENDED by the OpenRTB specification.
       optional int32 startdelay = 5;
 
@@ -760,17 +759,14 @@ message BidRequest {
     optional string domain = 3;
 
     // Array of IAB content categories of the site.
-    // See enum ContentCategory.
     repeated string cat = 4;
 
     // Array of IAB content categories that describe the current section
     // of the site.
-    // See enum ContentCategory.
     repeated string sectioncat = 5;
 
     // Array of IAB content categories that describe the current page or view
     // of the site.
-    // See enum ContentCategory.
     repeated string pagecat = 6;
 
     // URL of the page where the impression will be shown.
@@ -825,17 +821,14 @@ message BidRequest {
     optional string domain = 3;
 
     // Array of IAB content categories of the app.
-    // See enum ContentCategory.
     repeated string cat = 4;
 
     // Array of IAB content categories that describe the current section
     // of the app.
-    // See enum ContentCategory.
     repeated string sectioncat = 5;
 
     // Array of IAB content categories that describe the current page or view
     // of the app.
-    // See enum ContentCategory.
     repeated string pagecat = 6;
 
     // Application version.
@@ -881,7 +874,6 @@ message BidRequest {
     optional string name = 2;
 
     // Array of IAB content categories that describe the publisher.
-    // See enum ContentCategory.
     repeated string cat = 3;
 
     // Highest level domain of the publisher (e.g., "publisher.com").
@@ -938,7 +930,6 @@ message BidRequest {
     optional string url = 6;
 
     // Array of IAB content categories that describe the content.
-    // See enum ContentCategory.
     repeated string cat = 7;
 
     // Production quality.
@@ -1014,7 +1005,6 @@ message BidRequest {
     optional string name = 2;
 
     // Array of IAB content categories that describe the content producer.
-    // See enum ContentCategory.
     repeated string cat = 3;
 
     // Highest level domain of the content producer (e.g., "producer.com").
@@ -1446,7 +1436,7 @@ message BidResponse {
       optional int32 api = 18;
 
       // Video response protocol of the markup if applicable.
-      // Refer to enum Protocol for generic values.
+      // Refer to enum com.iabtechlab.adcom.v1.Creative.AudioVideoType for generic values.
       optional int32 protocol = 19;
 
       // Creative media rating per QAG guidelines.
@@ -1964,409 +1954,6 @@ message NativeResponse {
 
 // ***** OpenRTB Core enums ****************************************************
 
-// OpenRTB 2.0: The following list represents the IAB's contextual taxonomy for
-// categorization. Standard IDs have been adopted to easily support the
-// communication of primary and secondary categories for various objects.
-//
-// This OpenRTB table has values derived from the IAB Quality Assurance
-// Guidelines (QAG). Practitioners should keep in sync with updates to the
-// QAG values as published on IAB.net.
-enum ContentCategory {
-  UNDEFINED = 0;   // This value is not part of the specification.
-  IAB1 = 1;        // Arts & Entertainment
-  IAB1_1 = 2;      // Books & Literature
-  IAB1_2 = 3;      // Celebrity Fan/Gossip
-  IAB1_3 = 4;      // Fine Art
-  IAB1_4 = 5;      // Humor
-  IAB1_5 = 6;      // Movies
-  IAB1_6 = 7;      // Music
-  IAB1_7 = 8;      // Television
-  IAB2 = 9;        // Automotive
-  IAB2_1 = 10;     // Auto Parts
-  IAB2_2 = 11;     // Auto Repair
-  IAB2_3 = 12;     // Buying/Selling Cars
-  IAB2_4 = 13;     // Car Culture
-  IAB2_5 = 14;     // Certified Pre-Owned
-  IAB2_6 = 15;     // Convertible
-  IAB2_7 = 16;     // Coupe
-  IAB2_8 = 17;     // Crossover
-  IAB2_9 = 18;     // Diesel
-  IAB2_10 = 19;    // Electric Vehicle
-  IAB2_11 = 20;    // Hatchback
-  IAB2_12 = 21;    // Hybrid
-  IAB2_13 = 22;    // Luxury
-  IAB2_14 = 23;    // MiniVan
-  IAB2_15 = 24;    // Motorcycles
-  IAB2_16 = 25;    // Off-Road Vehicles
-  IAB2_17 = 26;    // Performance Vehicles
-  IAB2_18 = 27;    // Pickup
-  IAB2_19 = 28;    // Road-Side Assistance
-  IAB2_20 = 29;    // Sedan
-  IAB2_21 = 30;    // Trucks & Accessories
-  IAB2_22 = 31;    // Vintage Cars
-  IAB2_23 = 32;    // Wagon
-  IAB3 = 33;       // Business
-  IAB3_1 = 34;     // Advertising
-  IAB3_2 = 35;     // Agriculture
-  IAB3_3 = 36;     // Biotech/Biomedical
-  IAB3_4 = 37;     // Business Software
-  IAB3_5 = 38;     // Construction
-  IAB3_6 = 39;     // Forestry
-  IAB3_7 = 40;     // Government
-  IAB3_8 = 41;     // Green Solutions
-  IAB3_9 = 42;     // Human Resources
-  IAB3_10 = 43;    // Logistics
-  IAB3_11 = 44;    // Marketing
-  IAB3_12 = 45;    // Metals
-  IAB4 = 46;       // Careers
-  IAB4_1 = 47;     // Career Planning
-  IAB4_2 = 48;     // College
-  IAB4_3 = 49;     // Financial  Aid
-  IAB4_4 = 50;     // Job Fairs
-  IAB4_5 = 51;     // Job Search
-  IAB4_6 = 52;     // Resume Writing/Advice
-  IAB4_7 = 53;     // Nursing
-  IAB4_8 = 54;     // Scholarships
-  IAB4_9 = 55;     // Telecommuting
-  IAB4_10 = 56;    // U.S. Military
-  IAB4_11 = 57;    // Career Advice
-  IAB5 = 58;       // Education
-  IAB5_1 = 59;     // 7-12 Education
-  IAB5_2 = 60;     // Adult Education
-  IAB5_3 = 61;     // Art History
-  IAB5_4 = 62;     // College Administration
-  IAB5_5 = 63;     // College Life
-  IAB5_6 = 64;     // Distance Learning
-  IAB5_7 = 65;     // English as a 2nd Language
-  IAB5_8 = 66;     // Language Learning
-  IAB5_9 = 67;     // Graduate School
-  IAB5_10 = 68;    // Homeschooling
-  IAB5_11 = 69;    // Homework/Study Tips
-  IAB5_12 = 70;    // K-6 Educators
-  IAB5_13 = 71;    // Private School
-  IAB5_14 = 72;    // Special Education
-  IAB5_15 = 73;    // Studying Business
-  IAB6 = 74;       // Family & Parenting
-  IAB6_1 = 75;     // Adoption
-  IAB6_2 = 76;     // Babies & Toddlers
-  IAB6_3 = 77;     // Daycare/Pre School
-  IAB6_4 = 78;     // Family Internet
-  IAB6_5 = 79;     // Parenting - K-6 Kids
-  IAB6_6 = 80;     // Parenting teens
-  IAB6_7 = 81;     // Pregnancy
-  IAB6_8 = 82;     // Special Needs Kids
-  IAB6_9 = 83;     // Eldercare
-  IAB7 = 84;       // Health & Fitness
-  IAB7_1 = 85;     // Exercise
-  IAB7_2 = 86;     // A.D.D.
-  IAB7_3 = 87;     // AIDS/HIV
-  IAB7_4 = 88;     // Allergies
-  IAB7_5 = 89;     // Alternative Medicine
-  IAB7_6 = 90;     // Arthritis
-  IAB7_7 = 91;     // Asthma
-  IAB7_8 = 92;     // Autism/PDD
-  IAB7_9 = 93;     // Bipolar Disorder
-  IAB7_10 = 94;    // Brain Tumor
-  IAB7_11 = 95;    // Cancer
-  IAB7_12 = 96;    // Cholesterol
-  IAB7_13 = 97;    // Chronic Fatigue Syndrome
-  IAB7_14 = 98;    // Chronic Pain
-  IAB7_15 = 99;    // Cold & Flu
-  IAB7_16 = 100;   // Deafness
-  IAB7_17 = 101;   // Dental Care
-  IAB7_18 = 102;   // Depression
-  IAB7_19 = 103;   // Dermatology
-  IAB7_20 = 104;   // Diabetes
-  IAB7_21 = 105;   // Epilepsy
-  IAB7_22 = 106;   // GERD/Acid Reflux
-  IAB7_23 = 107;   // Headaches/Migraines
-  IAB7_24 = 108;   // Heart Disease
-  IAB7_25 = 109;   // Herbs for Health
-  IAB7_26 = 110;   // Holistic Healing
-  IAB7_27 = 111;   // IBS/Crohn's Disease
-  IAB7_28 = 112;   // Incest/Abuse Support
-  IAB7_29 = 113;   // Incontinence
-  IAB7_30 = 114;   // Infertility
-  IAB7_31 = 115;   // Men's Health
-  IAB7_32 = 116;   // Nutrition
-  IAB7_33 = 117;   // Orthopedics
-  IAB7_34 = 118;   // Panic/Anxiety Disorders
-  IAB7_35 = 119;   // Pediatrics
-  IAB7_36 = 120;   // Physical Therapy
-  IAB7_37 = 121;   // Psychology/Psychiatry
-  IAB7_38 = 122;   // Senor Health
-  IAB7_39 = 123;   // Sexuality
-  IAB7_40 = 124;   // Sleep Disorders
-  IAB7_41 = 125;   // Smoking Cessation
-  IAB7_42 = 126;   // Substance Abuse
-  IAB7_43 = 127;   // Thyroid Disease
-  IAB7_44 = 128;   // Weight Loss
-  IAB7_45 = 129;   // Women's Health
-  IAB8 = 130;      // Food & Drink
-  IAB8_1 = 131;    // American Cuisine
-  IAB8_2 = 132;    // Barbecues & Grilling
-  IAB8_3 = 133;    // Cajun/Creole
-  IAB8_4 = 134;    // Chinese Cuisine
-  IAB8_5 = 135;    // Cocktails/Beer
-  IAB8_6 = 136;    // Coffee/Tea
-  IAB8_7 = 137;    // Cuisine-Specific
-  IAB8_8 = 138;    // Desserts & Baking
-  IAB8_9 = 139;    // Dining Out
-  IAB8_10 = 140;   // Food Allergies
-  IAB8_11 = 141;   // French Cuisine
-  IAB8_12 = 142;   // Health/Lowfat Cooking
-  IAB8_13 = 143;   // Italian Cuisine
-  IAB8_14 = 144;   // Japanese Cuisine
-  IAB8_15 = 145;   // Mexican Cuisine
-  IAB8_16 = 146;   // Vegan
-  IAB8_17 = 147;   // Vegetarian
-  IAB8_18 = 148;   // Wine
-  IAB9 = 149;      // Hobbies & Interests
-  IAB9_1 = 150;    // Art/Technology
-  IAB9_2 = 151;    // Arts & Crafts
-  IAB9_3 = 152;    // Beadwork
-  IAB9_4 = 153;    // Birdwatching
-  IAB9_5 = 154;    // Board Games/Puzzles
-  IAB9_6 = 155;    // Candle & Soap Making
-  IAB9_7 = 156;    // Card Games
-  IAB9_8 = 157;    // Chess
-  IAB9_9 = 158;    // Cigars
-  IAB9_10 = 159;   // Collecting
-  IAB9_11 = 160;   // Comic Books
-  IAB9_12 = 161;   // Drawing/Sketching
-  IAB9_13 = 162;   // Freelance Writing
-  IAB9_14 = 163;   // Geneaology
-  IAB9_15 = 164;   // Getting Published
-  IAB9_16 = 165;   // Guitar
-  IAB9_17 = 166;   // Home Recording
-  IAB9_18 = 167;   // Investors & Patents
-  IAB9_19 = 168;   // Jewelry Making
-  IAB9_20 = 169;   // Magic & Illusion
-  IAB9_21 = 170;   // Needlework
-  IAB9_22 = 171;   // Painting
-  IAB9_23 = 172;   // Photography
-  IAB9_24 = 173;   // Radio
-  IAB9_25 = 174;   // Roleplaying Games
-  IAB9_26 = 175;   // Sci-Fi & Fantasy
-  IAB9_27 = 176;   // Scrapbooking
-  IAB9_28 = 177;   // Screenwriting
-  IAB9_29 = 178;   // Stamps & Coins
-  IAB9_30 = 179;   // Video & Computer Games
-  IAB9_31 = 180;   // Woodworking
-  IAB10 = 181;     // Home & Garden
-  IAB10_1 = 182;   // Appliances
-  IAB10_2 = 183;   // Entertaining
-  IAB10_3 = 184;   // Environmental Safety
-  IAB10_4 = 185;   // Gardening
-  IAB10_5 = 186;   // Home Repair
-  IAB10_6 = 187;   // Home Theater
-  IAB10_7 = 188;   // Interior  Decorating
-  IAB10_8 = 189;   // Landscaping
-  IAB10_9 = 190;   // Remodeling & Construction
-  IAB11 = 191;     // Law, Gov't & Politics
-  IAB11_1 = 192;   // Immigration
-  IAB11_2 = 193;   // Legal Issues
-  IAB11_3 = 194;   // U.S. Government Resources
-  IAB11_4 = 195;   // Politics
-  IAB11_5 = 196;   // Commentary
-  IAB12 = 197;     // News
-  IAB12_1 = 198;   // International News
-  IAB12_2 = 199;   // National News
-  IAB12_3 = 200;   // Local News
-  IAB13 = 201;     // Personal Finance
-  IAB13_1 = 202;   // Beginning Investing
-  IAB13_2 = 203;   // Credit/Debt & Loans
-  IAB13_3 = 204;   // Financial News
-  IAB13_4 = 205;   // Financial Planning
-  IAB13_5 = 206;   // Hedge Fund
-  IAB13_6 = 207;   // Insurance
-  IAB13_7 = 208;   // Investing
-  IAB13_8 = 209;   // Mutual Funds
-  IAB13_9 = 210;   // Options
-  IAB13_10 = 211;  // Retirement Planning
-  IAB13_11 = 212;  // Stocks
-  IAB13_12 = 213;  // Tax Planning
-  IAB14 = 214;     // Society
-  IAB14_1 = 215;   // Dating
-  IAB14_2 = 216;   // Divorce Support
-  IAB14_3 = 217;   // Gay Life
-  IAB14_4 = 218;   // Marriage
-  IAB14_5 = 219;   // Senior Living
-  IAB14_6 = 220;   // Teens
-  IAB14_7 = 221;   // Weddings
-  IAB14_8 = 222;   // Ethnic Specific
-  IAB15 = 223;     // Science
-  IAB15_1 = 224;   // Astrology
-  IAB15_2 = 225;   // Biology
-  IAB15_3 = 226;   // Chemistry
-  IAB15_4 = 227;   // Geology
-  IAB15_5 = 228;   // Paranormal Phenomena
-  IAB15_6 = 229;   // Physics
-  IAB15_7 = 230;   // Space/Astronomy
-  IAB15_8 = 231;   // Geography
-  IAB15_9 = 232;   // Botany
-  IAB15_10 = 233;  // Weather
-  IAB16 = 234;     // Pets
-  IAB16_1 = 235;   // Aquariums
-  IAB16_2 = 236;   // Birds
-  IAB16_3 = 237;   // Cats
-  IAB16_4 = 238;   // Dogs
-  IAB16_5 = 239;   // Large Animals
-  IAB16_6 = 240;   // Reptiles
-  IAB16_7 = 241;   // Veterinary Medicine
-  IAB17 = 242;     // Sports
-  IAB17_1 = 243;   // Auto Racing
-  IAB17_2 = 244;   // Baseball
-  IAB17_3 = 245;   // Bicycling
-  IAB17_4 = 246;   // Bodybuilding
-  IAB17_5 = 247;   // Boxing
-  IAB17_6 = 248;   // Canoeing/Kayaking
-  IAB17_7 = 249;   // Cheerleading
-  IAB17_8 = 250;   // Climbing
-  IAB17_9 = 251;   // Cricket
-  IAB17_10 = 252;  // Figure Skating
-  IAB17_11 = 253;  // Fly Fishing
-  IAB17_12 = 254;  // Football
-  IAB17_13 = 255;  // Freshwater Fishing
-  IAB17_14 = 256;  // Game & Fish
-  IAB17_15 = 257;  // Golf
-  IAB17_16 = 258;  // Horse Racing
-  IAB17_17 = 259;  // Horses
-  IAB17_18 = 260;  // Hunting/Shooting
-  IAB17_19 = 261;  // Inline  Skating
-  IAB17_20 = 262;  // Martial Arts
-  IAB17_21 = 263;  // Mountain Biking
-  IAB17_22 = 264;  // NASCAR Racing
-  IAB17_23 = 265;  // Olympics
-  IAB17_24 = 266;  // Paintball
-  IAB17_25 = 267;  // Power & Motorcycles
-  IAB17_26 = 268;  // Pro Basketball
-  IAB17_27 = 269;  // Pro Ice Hockey
-  IAB17_28 = 270;  // Rodeo
-  IAB17_29 = 271;  // Rugby
-  IAB17_30 = 272;  // Running/Jogging
-  IAB17_31 = 273;  // Sailing
-  IAB17_32 = 274;  // Saltwater Fishing
-  IAB17_33 = 275;  // Scuba Diving
-  IAB17_34 = 276;  // Skateboarding
-  IAB17_35 = 277;  // Skiing
-  IAB17_36 = 278;  // Snowboarding
-  IAB17_37 = 279;  // Surfing/Bodyboarding
-  IAB17_38 = 280;  // Swimming
-  IAB17_39 = 281;  // Table Tennis/Ping-Pong
-  IAB17_40 = 282;  // Tennis
-  IAB17_41 = 283;  // Volleyball
-  IAB17_42 = 284;  // Walking
-  IAB17_43 = 285;  // Waterski/Wakeboard
-  IAB17_44 = 286;  // World Soccer
-  IAB18 = 287;     // Style & Fashion
-  IAB18_1 = 288;   // Beauty
-  IAB18_2 = 289;   // Body Art
-  IAB18_3 = 290;   // Fashion
-  IAB18_4 = 291;   // Jewelry
-  IAB18_5 = 292;   // Clothing
-  IAB18_6 = 293;   // Accessories
-  IAB19 = 294;     // Technology & Computing
-  IAB19_1 = 295;   // 3-D Graphics
-  IAB19_2 = 296;   // Animation
-  IAB19_3 = 297;   // Antivirus Software
-  IAB19_4 = 298;   // C/C++
-  IAB19_5 = 299;   // Cameras & Camcorders
-  IAB19_6 = 300;   // Cell  Phones
-  IAB19_7 = 301;   // Computer Certification
-  IAB19_8 = 302;   // Computer Networking
-  IAB19_9 = 303;   // Computer Peripherals
-  IAB19_10 = 304;  // Computer Reviews
-  IAB19_11 = 305;  // Data Centers
-  IAB19_12 = 306;  // Databases
-  IAB19_13 = 307;  // Desktop Publishing
-  IAB19_14 = 308;  // Desktop Video
-  IAB19_15 = 309;  // Email
-  IAB19_16 = 310;  // Graphics Software
-  IAB19_17 = 311;  // Home Video/DVD
-  IAB19_18 = 312;  // Internet Technology
-  IAB19_19 = 313;  // Java
-  IAB19_20 = 314;  // Javascript
-  IAB19_21 = 315;  // Mac Support
-  IAB19_22 = 316;  // MP3/MIDI
-  IAB19_23 = 317;  // Net Conferencing
-  IAB19_24 = 318;  // Net for Beginners
-  IAB19_25 = 319;  // Network Security
-  IAB19_26 = 320;  // Palmtops/PDAs
-  IAB19_27 = 321;  // PC Support
-  IAB19_28 = 322;  // Portable
-  IAB19_29 = 323;  // Entertainment
-  IAB19_30 = 324;  // Shareware/Freeware
-  IAB19_31 = 325;  // Unix
-  IAB19_32 = 326;  // Visual Basic
-  IAB19_33 = 327;  // Web Clip Art
-  IAB19_34 = 328;  // Web Design/HTML
-  IAB19_35 = 329;  // Web Search
-  IAB19_36 = 330;  // Windows
-  IAB20 = 331;     // Travel
-  IAB20_1 = 332;   // Adventure Travel
-  IAB20_2 = 333;   // Africa
-  IAB20_3 = 334;   // Air Travel
-  IAB20_4 = 335;   // Australia & New Zealand
-  IAB20_5 = 336;   // Bed & Breakfasts
-  IAB20_6 = 337;   // Budget Travel
-  IAB20_7 = 338;   // Business Travel
-  IAB20_8 = 339;   // By US Locale
-  IAB20_9 = 340;   // Camping
-  IAB20_10 = 341;  // Canada
-  IAB20_11 = 342;  // Caribbean
-  IAB20_12 = 343;  // Cruises
-  IAB20_13 = 344;  // Eastern  Europe
-  IAB20_14 = 345;  // Europe
-  IAB20_15 = 346;  // France
-  IAB20_16 = 347;  // Greece
-  IAB20_17 = 348;  // Honeymoons/Getaways
-  IAB20_18 = 349;  // Hotels
-  IAB20_19 = 350;  // Italy
-  IAB20_20 = 351;  // Japan
-  IAB20_21 = 352;  // Mexico & Central America
-  IAB20_22 = 353;  // National Parks
-  IAB20_23 = 354;  // South America
-  IAB20_24 = 355;  // Spas
-  IAB20_25 = 356;  // Theme Parks
-  IAB20_26 = 357;  // Traveling with Kids
-  IAB20_27 = 358;  // United Kingdom
-  IAB21 = 359;     // Real Estate
-  IAB21_1 = 360;   // Apartments
-  IAB21_2 = 361;   // Architects
-  IAB21_3 = 362;   // Buying/Selling Homes
-  IAB22 = 363;     // Shopping
-  IAB22_1 = 364;   // Contests & Freebies
-  IAB22_2 = 365;   // Couponing
-  IAB22_3 = 366;   // Comparison
-  IAB22_4 = 367;   // Engines
-  IAB23 = 368;     // Religion & Spirituality
-  IAB23_1 = 369;   // Alternative Religions
-  IAB23_2 = 370;   // Atheism/Agnosticism
-  IAB23_3 = 371;   // Buddhism
-  IAB23_4 = 372;   // Catholicism
-  IAB23_5 = 373;   // Christianity
-  IAB23_6 = 374;   // Hinduism
-  IAB23_7 = 375;   // Islam
-  IAB23_8 = 376;   // Judaism
-  IAB23_9 = 377;   // Latter-Day Saints
-  IAB23_10 = 378;  // Paga/Wiccan
-  IAB24 = 379;     // Uncategorized
-  IAB25 = 380;     // Non-Standard Content
-  IAB25_1 = 381;   // Unmoderated UGC
-  IAB25_2 = 382;   // Extreme Graphic/Explicit Violence
-  IAB25_3 = 383;   // Pornography
-  IAB25_4 = 384;   // Profane Content
-  IAB25_5 = 385;   // Hate Content
-  IAB25_6 = 386;   // Under Construction
-  IAB25_7 = 387;   // Incentivized
-  IAB26 = 388;     // Illegal Content
-  IAB26_1 = 389;   // Illegal Content
-  IAB26_2 = 390;   // Warez
-  IAB26_3 = 391;   // Spyware/Malware
-  IAB26_4 = 392;   // Copyright Infringement
-}
-
 enum AuctionType {
   FIRST_PRICE = 1;
 
@@ -2386,30 +1973,6 @@ enum BannerAdType {
   JAVASCRIPT_AD = 3;
   // Iframe.
   IFRAME = 4;
-}
-
-// OpenRTB 2.0: The following table lists the options for the various
-// bid response protocols that could be supported by an exchange.
-enum Protocol {
-  VAST_1_0 = 1;
-  VAST_2_0 = 2;
-  VAST_3_0 = 3;
-  VAST_1_0_WRAPPER = 4;
-  VAST_2_0_WRAPPER = 5;
-  VAST_3_0_WRAPPER = 6;
-  VAST_4_0 = 7;
-  VAST_4_0_WRAPPER = 8;
-  DAAST_1_0 = 9;
-  DAAST_1_0_WRAPPER = 10;
-}
-
-// OpenRTB 2.0: The following table lists the various options for the
-// audio/video start delay.  If the start delay value is greater than 0,
-// then the position is mid-roll and the value indicates the start delay.
-enum StartDelay {
-  PRE_ROLL = 0;
-  GENERIC_MID_ROLL = -1;
-  GENERIC_POST_ROLL = -2;
 }
 
 // OpenRTB 2.2: The following table lists the options for a bidder to signal
