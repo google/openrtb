@@ -16,6 +16,10 @@
 
 package com.iabtechlab.openrtb.v2.json;
 
+import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.writeIntBoolField;
+import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.writeInts;
+import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.writeStrings;
+
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.iabtechlab.openrtb.v2.Gender;
@@ -49,10 +53,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
-
-import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.writeIntBoolField;
-import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.writeInts;
-import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.writeStrings;
 
 /**
  * Serializes OpenRTB {@link BidRequest}/{@link BidResponse} messages to JSON.

@@ -16,24 +16,24 @@
 
 package com.iabtechlab.openrtb.v2.json;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.google.common.io.CharSource;
-import com.google.common.io.Closeables;
-import com.iabtechlab.openrtb.v2.OpenRtb.NativeRequest;
-import com.iabtechlab.openrtb.v2.OpenRtb.NativeResponse;
-import com.iabtechlab.openrtb.v2.util.ProtoUtils;
-import com.google.protobuf.ByteString;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-
 import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.endArray;
 import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.endObject;
 import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.getCurrentName;
 import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.startArray;
 import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.startObject;
+
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+import com.google.common.io.CharSource;
+import com.google.common.io.Closeables;
+import com.google.protobuf.ByteString;
+import com.iabtechlab.openrtb.v2.OpenRtb.NativeRequest;
+import com.iabtechlab.openrtb.v2.OpenRtb.NativeResponse;
+import com.iabtechlab.openrtb.v2.util.ProtoUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 
 /**
  * Desserializes OpenRTB {@link NativeRequest}/{@link NativeResponse} messages from JSON.
