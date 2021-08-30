@@ -1,0 +1,3 @@
+[submodule "adcom-proto"]
+	path = adcom-proto
+	url = https://github.com/IABTechLab/adcom-proto

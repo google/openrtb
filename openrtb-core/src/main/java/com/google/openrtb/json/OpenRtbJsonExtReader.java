@@ -85,6 +85,6 @@ public abstract class OpenRtbJsonExtReader<EB extends ExtendableBuilder<?, EB>> 
   }
 
   protected final boolean checkContentCategory(String cat) {
-    return OpenRtbUtils.categoryFromName(cat) != null;
+    return cat != null;
   }
 }

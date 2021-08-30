@@ -73,6 +73,9 @@
     <testProtobufSource>${project.basedir}/src/test/protobuf</testProtobufSource>
     <testProtobufGenerated>${testGeneratedSources}/protobuf</testProtobufGenerated>
 
+    <adcomProtobufSource>${project.basedir}/../adcom-proto/proto</adcomProtobufSource>
+    <adcomProtobufTarget>${project.build.directory}/adcom-proto</adcomProtobufTarget>
+
     <!-- Cobertura properties -->
     <cobertura.maxmem>1G</cobertura.maxmem>
   </properties>

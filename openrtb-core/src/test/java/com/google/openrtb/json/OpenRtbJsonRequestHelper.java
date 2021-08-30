@@ -20,6 +20,18 @@ import static com.google.common.truth.Truth.assertThat;
 import static java.util.Arrays.asList;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.iabtechlab.adcom.v1.enums.Enums.APIFramework;
+import com.iabtechlab.adcom.v1.enums.Enums.CompanionType;
+import com.iabtechlab.adcom.v1.enums.Enums.ConnectionType;
+import com.iabtechlab.adcom.v1.enums.Enums.Creative.Attribute;
+import com.iabtechlab.adcom.v1.enums.Enums.Creative.AudioVideoType;
+import com.iabtechlab.adcom.v1.enums.Enums.DeliveryMethod;
+import com.iabtechlab.adcom.v1.enums.Enums.DeviceType;
+import com.iabtechlab.adcom.v1.enums.Enums.ExpandableDirection;
+import com.iabtechlab.adcom.v1.enums.Enums.LinearityMode;
+import com.iabtechlab.adcom.v1.enums.Enums.LocationType;
+import com.iabtechlab.adcom.v1.enums.Enums.PlacementPosition;
+import com.iabtechlab.adcom.v1.enums.Enums.PlaybackMethod;
 import com.iabtechlab.openrtb.v2.OpenRtb;
 import com.google.openrtb.TestExt;
 import java.io.IOException;
@@ -207,13 +219,13 @@ class OpenRtbJsonRequestHelper {
             .setHmax(100)
             .setHmin(50)
             .setId("banner1")
-            .setPos(OpenRtb.AdPosition.ABOVE_THE_FOLD.getNumber())
+            .setPos(PlacementPosition.ATF.getNumber())
             .addBtype(OpenRtb.BannerAdType.JAVASCRIPT_AD.getNumber())
-            .addBattr(OpenRtb.CreativeAttribute.TEXT_ONLY.getNumber())
+            .addBattr(Attribute.TEXT_ONLY.getNumber())
             .addMimes("image/gif")
             .setTopframe(true)
-            .addExpdir(OpenRtb.ExpandableDirection.RIGHT.getNumber())
-            .addApi(OpenRtb.APIFramework.MRAID_1.getNumber())
+            .addExpdir(ExpandableDirection.RIGHT.getNumber())
+            .addApi(APIFramework.MRAID_1_0.getNumber())
             .setExtension(TestExt.testBanner, OpenRtbJsonFactoryHelper.test1))
         .setDisplaymanager("dm1")
         .setDisplaymanagerver("1.0")
@@ -244,28 +256,28 @@ class OpenRtbJsonRequestHelper {
             .addMimes("video/vp9")
             .setMinduration(15)
             .setMaxduration(60)
-            .addProtocols(OpenRtb.Protocol.VAST_2_0.getNumber())
+            .addProtocols(AudioVideoType.VAST_2_0.getNumber())
             .setStartdelay(0)
             .setSequence(1)
-            .addBattr(OpenRtb.CreativeAttribute.TEXT_ONLY.getNumber())
+            .addBattr(Attribute.TEXT_ONLY.getNumber())
             .setMaxextended(120)
             .setMinbitrate(1000)
             .setMaxbitrate(2000)
-            .addDelivery(OpenRtb.ContentDeliveryMethod.STREAMING.getNumber())
+            .addDelivery(DeliveryMethod.STREAMING.getNumber())
             .addCompanionad(OpenRtb.BidRequest.Imp.Banner.newBuilder()
                 .setId("compad1")
                 .setW(100)
                 .setH(50))
-            .addApi(OpenRtb.APIFramework.VPAID_2.getNumber())
-            .addCompaniontype(OpenRtb.CompanionType.HTML.getNumber())
+            .addApi(APIFramework.VAPID_2_0.getNumber())
+            .addCompaniontype(CompanionType.HTML_RSRC.getNumber())
             // Video specific
-            .setLinearity(OpenRtb.VideoLinearity.LINEAR.getNumber())
-            .setProtocol(OpenRtb.Protocol.VAST_3_0.getNumber())
+            .setLinearity(LinearityMode.LINEAR.getNumber())
+            .setProtocol(AudioVideoType.VAST_3_0.getNumber())
             .setW(200)
             .setH(50)
             .setBoxingallowed(false)
-            .addPlaybackmethod(OpenRtb.PlaybackMethod.CLICK_TO_PLAY.getNumber())
-            .setPos(OpenRtb.AdPosition.ABOVE_THE_FOLD.getNumber())
+            .addPlaybackmethod(PlaybackMethod.CLICK_SOUND_ON.getNumber())
+            .setPos(PlacementPosition.ATF.getNumber())
             .setCompanionad21(OpenRtb.BidRequest.Imp.Video.CompanionAd.newBuilder()
                 .addBanner(OpenRtb.BidRequest.Imp.Banner.newBuilder()
                     .setId("compad2")
@@ -275,8 +287,8 @@ class OpenRtbJsonRequestHelper {
 
     OpenRtb.BidRequest.Imp.Native.Builder nativ = OpenRtb.BidRequest.Imp.Native.newBuilder()
         .setVer("1.0")
-        .addApi(OpenRtb.APIFramework.MRAID_1.getNumber())
-        .addBattr(OpenRtb.CreativeAttribute.TEXT_ONLY.getNumber())
+        .addApi(APIFramework.MRAID_1_0.getNumber())
+        .addBattr(Attribute.TEXT_ONLY.getNumber())
         .setExtension(TestExt.testNative, OpenRtbJsonFactoryHelper.test1);
     if (isNativeObject) {
       nativ.setRequestNative(generateNativeRequest());
@@ -296,7 +308,7 @@ class OpenRtbJsonRequestHelper {
         .setGeo(OpenRtb.BidRequest.Geo.newBuilder()
             .setLat(90.0)
             .setLon(45.0)
-            .setType(OpenRtb.LocationType.GPS_LOCATION.getNumber())
+            .setType(LocationType.GPS_LOC_SERVICE.getNumber())
             .setCountry("USA")
             .setRegion("New York")
             .setRegionfips104("US36")
@@ -309,7 +321,7 @@ class OpenRtbJsonRequestHelper {
         .setLmt(false)
         .setIp("192.168.1.0")
         .setIpv6("1:2:3:4:5:6:0:0")
-        .setDevicetype(OpenRtb.DeviceType.MOBILE.getNumber())
+        .setDevicetype(DeviceType.MOBILE_TABLET.getNumber())
         .setMake("Motorola")
         .setModel("MotoX")
         .setOs("Android")
@@ -323,7 +335,7 @@ class OpenRtbJsonRequestHelper {
         .setFlashver("11")
         .setLanguage("en")
         .setCarrier("77777")
-        .setConnectiontype(OpenRtb.ConnectionType.CELL_4G.getNumber())
+        .setConnectiontype(ConnectionType.CELL_4G.getNumber())
         .setIfa("999")
         .setDidsha1("1234")
         .setDidmd5("4321")

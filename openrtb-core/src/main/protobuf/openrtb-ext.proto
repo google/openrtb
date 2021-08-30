@@ -41,12 +41,7 @@ message UniversalId {
   // Type of user agent the match is from.  It is highly recommended to set
   // this, as many DSPs separate app-native IDs from browser-based IDs and
   // require a type value for ID resolution.
-  enum AgentType {
-    AGENT_TYPE_UNKNOWN = 0;
-    WEB = 1;
-    APP = 2;
-    PERSON_BASED = 3;
-  }
+  // Refer to enum com.iabtechlab.adcom.v1.enums.AgentType for generic values.
   optional int32 atype = 2;
 
   // Extensions.

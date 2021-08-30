@@ -25,9 +25,27 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.iabtechlab.adcom.v1.enums.Enums.APIFramework;
+import com.iabtechlab.adcom.v1.enums.Enums.CompanionType;
+import com.iabtechlab.adcom.v1.enums.Enums.ConnectionType;
+import com.iabtechlab.adcom.v1.enums.Enums.ContentContext;
+import com.iabtechlab.adcom.v1.enums.Enums.Creative.Attribute;
+import com.iabtechlab.adcom.v1.enums.Enums.Creative.AudioVideoType;
+import com.iabtechlab.adcom.v1.enums.Enums.DeliveryMethod;
+import com.iabtechlab.adcom.v1.enums.Enums.DeviceType;
+import com.iabtechlab.adcom.v1.enums.Enums.ExpandableDirection;
+import com.iabtechlab.adcom.v1.enums.Enums.FeedType;
+import com.iabtechlab.adcom.v1.enums.Enums.LinearityMode;
+import com.iabtechlab.adcom.v1.enums.Enums.LocationService;
+import com.iabtechlab.adcom.v1.enums.Enums.LocationType;
+import com.iabtechlab.adcom.v1.enums.Enums.MediaRating;
+import com.iabtechlab.adcom.v1.enums.Enums.PlacementPosition;
+import com.iabtechlab.adcom.v1.enums.Enums.PlaybackCessationMode;
+import com.iabtechlab.adcom.v1.enums.Enums.PlaybackMethod;
+import com.iabtechlab.adcom.v1.enums.Enums.ProductionQuality;
+import com.iabtechlab.adcom.v1.enums.Enums.VideoPlacementSubtype;
+import com.iabtechlab.adcom.v1.enums.Enums.VolumeNormalizationMode;
 import com.iabtechlab.openrtb.v2.OpenRtb;
-import com.iabtechlab.openrtb.v2.OpenRtb.APIFramework;
-import com.iabtechlab.openrtb.v2.OpenRtb.AdPosition;
 import com.iabtechlab.openrtb.v2.OpenRtb.AuctionType;
 import com.iabtechlab.openrtb.v2.OpenRtb.BannerAdType;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
@@ -52,27 +70,9 @@ import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.User;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
-import com.iabtechlab.openrtb.v2.OpenRtb.CompanionType;
-import com.iabtechlab.openrtb.v2.OpenRtb.ConnectionType;
-import com.iabtechlab.openrtb.v2.OpenRtb.ContentContext;
-import com.iabtechlab.openrtb.v2.OpenRtb.ContentDeliveryMethod;
-import com.iabtechlab.openrtb.v2.OpenRtb.CreativeAttribute;
-import com.iabtechlab.openrtb.v2.OpenRtb.DeviceType;
-import com.iabtechlab.openrtb.v2.OpenRtb.ExpandableDirection;
-import com.iabtechlab.openrtb.v2.OpenRtb.FeedType;
-import com.iabtechlab.openrtb.v2.OpenRtb.LocationService;
-import com.iabtechlab.openrtb.v2.OpenRtb.LocationType;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeResponse;
 import com.iabtechlab.openrtb.v2.OpenRtb.NoBidReason;
-import com.iabtechlab.openrtb.v2.OpenRtb.PlaybackCessationMode;
-import com.iabtechlab.openrtb.v2.OpenRtb.PlaybackMethod;
-import com.iabtechlab.openrtb.v2.OpenRtb.ProductionQuality;
-import com.iabtechlab.openrtb.v2.OpenRtb.Protocol;
-import com.iabtechlab.openrtb.v2.OpenRtb.QAGMediaRating;
-import com.iabtechlab.openrtb.v2.OpenRtb.VideoLinearity;
-import com.iabtechlab.openrtb.v2.OpenRtb.VideoPlacementType;
-import com.iabtechlab.openrtb.v2.OpenRtb.VolumeNormalizationMode;
 import com.google.openrtb.Test.Test1;
 import com.google.openrtb.Test.Test2;
 import com.google.openrtb.TestExt;
@@ -527,13 +527,13 @@ public class OpenRtbJsonTest {
                 .setHmax(100)
                 .setHmin(50)
                 .setId("banner1")
-                .setPos(AdPosition.ABOVE_THE_FOLD.getNumber())
+                .setPos(PlacementPosition.ATF.getNumber())
                 .addBtype(BannerAdType.JAVASCRIPT_AD.getNumber())
-                .addBattr(CreativeAttribute.TEXT_ONLY.getNumber())
+                .addBattr(Attribute.TEXT_ONLY.getNumber())
                 .addMimes("image/gif")
                 .setTopframe(true)
                 .addExpdir(ExpandableDirection.RIGHT.getNumber())
-                .addApi(APIFramework.MRAID_1.getNumber())
+                .addApi(APIFramework.MRAID_1_0.getNumber())
                 .setVcm(true)
                 .addFormat(Banner.Format.newBuilder()
                     .setW(100)
@@ -574,23 +574,23 @@ public class OpenRtbJsonTest {
             .setId("imp2")
             .setVideo(Video.newBuilder()
                 .addMimes("video/vp9")
-                .setLinearity(VideoLinearity.LINEAR.getNumber())
+                .setLinearity(LinearityMode.LINEAR.getNumber())
                 .setMinduration(15)
                 .setMaxduration(60)
-                .setProtocol(Protocol.VAST_3_0.getNumber())
-                .addProtocols(Protocol.VAST_2_0.getNumber())
+                .setProtocol(AudioVideoType.VAST_3_0.getNumber())
+                .addProtocols(AudioVideoType.VAST_2_0.getNumber())
                 .setW(200)
                 .setH(50)
                 .setStartdelay(0)
                 .setSequence(1)
-                .addBattr(CreativeAttribute.TEXT_ONLY.getNumber())
+                .addBattr(Attribute.TEXT_ONLY.getNumber())
                 .setMaxextended(120)
                 .setMinbitrate(1000)
                 .setMaxbitrate(2000)
                 .setBoxingallowed(false)
-                .addPlaybackmethod(PlaybackMethod.CLICK_TO_PLAY.getNumber())
-                .addDelivery(ContentDeliveryMethod.STREAMING.getNumber())
-                .setPos(AdPosition.ABOVE_THE_FOLD.getNumber())
+                .addPlaybackmethod(PlaybackMethod.CLICK_SOUND_ON.getNumber())
+                .addDelivery(DeliveryMethod.STREAMING.getNumber())
+                .setPos(PlacementPosition.ATF.getNumber())
                 .addCompanionad(Banner.newBuilder()
                     .setId("compad1")
                     .setW(100)
@@ -601,13 +601,13 @@ public class OpenRtbJsonTest {
                     .setW(110)
                     .setH(60))
                     .setExtension(TestExt.testCompanionAd, test1))
-                .addApi(APIFramework.VPAID_2.getNumber())
-                .addCompaniontype(CompanionType.HTML.getNumber())
+                .addApi(APIFramework.VAPID_2_0.getNumber())
+                .addCompaniontype(CompanionType.HTML_RSRC.getNumber())
                 .setSkip(true)
                 .setSkipmin(45)
                 .setSkipafter(10)
-                .setPlacement(VideoPlacementType.IN_FEED_PLACEMENT.getNumber())
-                .setPlaybackend(PlaybackCessationMode.LEAVING_OR_USER.getNumber())
+                .setPlacement(VideoPlacementSubtype.IN_FEED.getNumber())
+                .setPlaybackend(PlaybackCessationMode.ON_EXIT_FLOAT.getNumber())
                 .setExtension(TestExt.testVideo, test1)))
         .addImp(Imp.newBuilder()
             .setId("imp3")
@@ -616,32 +616,32 @@ public class OpenRtbJsonTest {
                 .addMimes("video/vp9")
                 .setMinduration(15)
                 .setMaxduration(60)
-                .addProtocols(OpenRtb.Protocol.VAST_2_0.getNumber())
+                .addProtocols(AudioVideoType.VAST_2_0.getNumber())
                 .setStartdelay(0)
                 .setSequence(1)
-                .addBattr(OpenRtb.CreativeAttribute.TEXT_ONLY.getNumber())
+                .addBattr(Attribute.TEXT_ONLY.getNumber())
                 .setMaxextended(120)
                 .setMinbitrate(1000)
                 .setMaxbitrate(2000)
-                .addDelivery(OpenRtb.ContentDeliveryMethod.STREAMING.getNumber())
+                .addDelivery(DeliveryMethod.STREAMING.getNumber())
                 .addCompanionad(OpenRtb.BidRequest.Imp.Banner.newBuilder()
                     .setId("compad1")
                     .setW(100)
                     .setH(50))
-                .addApi(OpenRtb.APIFramework.VPAID_2.getNumber())
-                .addCompaniontype(OpenRtb.CompanionType.HTML.getNumber())
+                .addApi(APIFramework.VAPID_2_0.getNumber())
+                .addCompaniontype(CompanionType.HTML_RSRC.getNumber())
                 .setMaxseq(4)
                 .setFeed(FeedType.PODCAST.getNumber())
                 .setStitched(true)
-                .setNvol(VolumeNormalizationMode.LOUDNESS.getNumber())
+                .setNvol(VolumeNormalizationMode.LOUDNESS_NORMALIZATION.getNumber())
                 .setExtension(TestExt.testAudio, OpenRtbJsonFactoryHelper.test1)))
         .addImp(Imp.newBuilder()
             .setId("imp4")
             .setNative(Native.newBuilder()
                 .setRequestNative(NativeRequest.newBuilder().setVer("1"))
                 .setVer("1.0")
-                .addApi(APIFramework.MRAID_1.getNumber())
-                .addBattr(CreativeAttribute.TEXT_ONLY.getNumber())
+                .addApi(APIFramework.MRAID_1_0.getNumber())
+                .addBattr(Attribute.TEXT_ONLY.getNumber())
                 .setExtension(TestExt.testNative, test1))
             .setExtension(TestExt.testImp, test1))
         .setDevice(Device.newBuilder()
@@ -649,7 +649,7 @@ public class OpenRtbJsonTest {
             .setGeo(Geo.newBuilder()
                 .setLat(90.0)
                 .setLon(45.0)
-                .setType(LocationType.GPS_LOCATION.getNumber())
+                .setType(LocationType.GPS_LOC_SERVICE.getNumber())
                 .setCountry("USA")
                 .setRegion("New York")
                 .setRegionfips104("US36")
@@ -665,7 +665,7 @@ public class OpenRtbJsonTest {
             .setLmt(false)
             .setIp("192.168.1.0")
             .setIpv6("1:2:3:4:5:6:0:0")
-            .setDevicetype(DeviceType.MOBILE.getNumber())
+            .setDevicetype(DeviceType.MOBILE_TABLET.getNumber())
             .setMake("Motorola")
             .setModel("MotoX")
             .setOs("Android")
@@ -773,7 +773,7 @@ public class OpenRtbJsonTest {
                 .setDomain("http://bros.com")
                 .setExtension(TestExt.testProducer, test1))
             .setLen(240)
-            .setQagmediarating(QAGMediaRating.MATURE.getNumber())
+            .setQagmediarating(MediaRating.MATURE.getNumber())
             .setEmbeddable(false)
             .setLanguage("en")
             .setArtist("Beethoven")
@@ -816,15 +816,15 @@ public class OpenRtbJsonTest {
         .setIurl("http://mycdn.com/ad.gif")
         .setCid("cid1")
         .setCrid("crid1")
-        .addAttr(CreativeAttribute.TEXT_ONLY.getNumber())
+        .addAttr(Attribute.TEXT_ONLY.getNumber())
         .setDealid("deal1")
         .setW(100)
         .setH(80)
         .setBundle("com.google.testapp")
         .addCat("IAB10-2")
-        .setApi(APIFramework.VPAID_1.getNumber())
-        .setProtocol(Protocol.VAST_4_0.getNumber())
-        .setQagmediarating(QAGMediaRating.EVERYONE_OVER_12.getNumber())
+        .setApi(APIFramework.VPAID_1_0.getNumber())
+        .setProtocol(AudioVideoType.VAST_4_0.getNumber())
+        .setQagmediarating(MediaRating.OVER_12.getNumber())
         .setExp(250)
         .setBurl("http://billing.com/")
         .setLurl("http://losing.com/")
