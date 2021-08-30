@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.google.openrtb.json;
+package com.iabtechlab.openrtb.v2.json;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.openrtb.json.OpenRtbJsonFactoryHelper.newJsonFactory;
+import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonFactoryHelper.newJsonFactory;
 import static java.util.Arrays.asList;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -73,10 +73,10 @@ import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeResponse;
 import com.iabtechlab.openrtb.v2.OpenRtb.NoBidReason;
-import com.google.openrtb.Test.Test1;
-import com.google.openrtb.Test.Test2;
-import com.google.openrtb.TestExt;
-import com.google.openrtb.TestUtil;
+import com.iabtechlab.openrtb.v2.Test.Test1;
+import com.iabtechlab.openrtb.v2.Test.Test2;
+import com.iabtechlab.openrtb.v2.TestExt;
+import com.iabtechlab.openrtb.v2.TestUtil;
 import java.io.IOException;
 import org.junit.Test;
 import org.slf4j.Logger;
