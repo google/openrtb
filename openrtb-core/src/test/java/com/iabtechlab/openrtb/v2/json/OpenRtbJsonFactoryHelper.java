@@ -43,7 +43,6 @@ import com.iabtechlab.openrtb.v2.Test.Test1;
 import com.iabtechlab.openrtb.v2.Test.Test2;
 import com.iabtechlab.openrtb.v2.TestExt;
 import com.iabtechlab.openrtb.v2.TestNExt;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;

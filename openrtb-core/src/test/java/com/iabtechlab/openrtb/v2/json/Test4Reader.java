@@ -23,7 +23,6 @@ import static com.iabtechlab.openrtb.v2.json.OpenRtbJsonUtils.startArray;
 import com.fasterxml.jackson.core.JsonParser;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
 import com.iabtechlab.openrtb.v2.TestExt;
-
 import java.io.IOException;
 
 /**

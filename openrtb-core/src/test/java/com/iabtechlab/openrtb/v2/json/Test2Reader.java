@@ -24,7 +24,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.google.protobuf.GeneratedMessage.GeneratedExtension;
 import com.google.protobuf.GeneratedMessageV3.ExtendableBuilder;
 import com.iabtechlab.openrtb.v2.Test.Test2;
-
 import java.io.IOException;
 
 /**

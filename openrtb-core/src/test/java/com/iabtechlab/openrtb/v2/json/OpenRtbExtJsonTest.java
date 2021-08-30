@@ -24,7 +24,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.google.common.collect.SetMultimap;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
 import com.iabtechlab.openrtb.v2.TestExt;
-
 import java.io.IOException;
 import java.util.Map;
 import javax.annotation.Nullable;

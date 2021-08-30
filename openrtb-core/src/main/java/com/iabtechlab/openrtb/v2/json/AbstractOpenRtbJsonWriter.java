@@ -17,10 +17,8 @@
 package com.iabtechlab.openrtb.v2.json;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.iabtechlab.openrtb.v2.util.OpenRtbUtils;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.GeneratedMessageV3.ExtendableMessage;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;

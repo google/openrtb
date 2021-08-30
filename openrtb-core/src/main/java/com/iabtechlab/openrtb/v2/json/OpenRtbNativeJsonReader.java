@@ -30,7 +30,6 @@ import com.google.protobuf.ByteString;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeResponse;
 import com.iabtechlab.openrtb.v2.util.ProtoUtils;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;

@@ -34,7 +34,6 @@ import com.iabtechlab.adcom.v1.enums.Enums.PlacementPosition;
 import com.iabtechlab.adcom.v1.enums.Enums.PlaybackMethod;
 import com.iabtechlab.openrtb.v2.OpenRtb;
 import com.iabtechlab.openrtb.v2.TestExt;
-
 import java.io.IOException;
 
 /**

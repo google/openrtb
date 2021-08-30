@@ -19,7 +19,6 @@ package com.iabtechlab.openrtb.v2.json;
 import com.fasterxml.jackson.core.JsonParser;
 import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.GeneratedMessageV3.ExtendableBuilder;
-
 import java.io.IOException;
 
 /**

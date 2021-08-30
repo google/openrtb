@@ -18,7 +18,6 @@ package com.iabtechlab.openrtb.v2.json;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.iabtechlab.openrtb.v2.Test.Test2;
-
 import java.io.IOException;
 
 /**
