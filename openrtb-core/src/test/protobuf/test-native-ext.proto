@@ -15,7 +15,7 @@
  */
 
 syntax = "proto2";
-package com.google.openrtb;
+package com.iabtechlab.openrtb.v2;
 option java_outer_classname = "TestNExt";
 
 import "openrtb.proto";

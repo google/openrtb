@@ -14,14 +14,8 @@
  * limitations under the License.
  */
 
-syntax = "proto2";
+/**
+ * OpenRTB model.
+ */
+@javax.annotation.ParametersAreNonnullByDefault
 package com.iabtechlab.openrtb.v2;
-option java_outer_classname = "Test";
-
-message Test1 {
-  required string test1 = 1;
-}
-message Test2 {
-  optional string test2 = 1;
-  repeated string test3 = 2;
-}
