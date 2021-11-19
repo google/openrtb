@@ -46,20 +46,19 @@
   </modules>
 
   <prerequisites>
-    <maven>3.0.5</maven>
+    <maven>3.1.0</maven>
   </prerequisites>
 
   <properties>
     <findBugsJsr305Version>3.0.2</findBugsJsr305Version>
     <gpg.skip>true</gpg.skip>
-    <guavaVersion>29.0-jre</guavaVersion>
-    <fasterxmlJacksonVersion>2.11.2</fasterxmlJacksonVersion>
+    <guavaVersion>30.0-jre</guavaVersion>
     <injectVersion>1</injectVersion>
-    <junitVersion>4.13</junitVersion>
-    <metricsVersion>4.1.12.1</metricsVersion>
-    <protobufVersion>3.13.0</protobufVersion>
+    <junitVersion>4.13.1</junitVersion>
+    <metricsVersion>4.1.16</metricsVersion>
+    <protobufVersion>3.14.0</protobufVersion>
     <slf4jVersion>1.7.30</slf4jVersion>
-    <truthVersion>1.0.1</truthVersion>
+    <truthVersion>1.1</truthVersion>
 
     <!-- Plugin versions -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
