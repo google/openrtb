@@ -755,13 +755,6 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     if (content.hasProdq()) {
       writeEnumField("prodq", content.getProdq(), gen);
     }
-    if (content.getDataCount() != 0) {
-      gen.writeArrayFieldStart("data");
-      for (Data data : content.getDataList()) {
-        writeData(data, gen);
-      }
-      gen.writeEndArray();
-    }
   }
 
   public final void writeProducer(Producer producer, JsonGenerator gen) throws IOException {
