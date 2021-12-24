@@ -1,3 +1,6 @@
 [submodule "adcom-proto"]
 	path = adcom-proto
 	url = https://github.com/IABTechLab/adcom-proto
+[submodule "iab-openrtb-proto"]
+	path = iab-openrtb-proto
+	url = https://github.com/InteractiveAdvertisingBureau/openrtb-proto
