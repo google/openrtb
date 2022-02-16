@@ -1946,9 +1946,18 @@ message NativeResponse {
     // The URL of the image or js.
     // REQUIRED for image or js, optional for custom.
     optional string url = 3;
+    
+    // Array of key:value objects for custom tracking.
+    // To	be agreed individually with the exchange, for example the account number of the DSP with a tracking company. IE {“accountnumber”:”123”}.
+    repeated KeyValuePair customdata = 4;
 
     // Extensions.
     extensions 100 to 9999;
+    
+    message KeyValuePair {
+      optional string key = 1;
+      optional string value = 2;
+    }
   }
 }
 
