@@ -20,7 +20,6 @@ import static java.util.Arrays.asList;
 
 import com.iabtechlab.adcom.v1.enums.Enums.Creative.Attribute;
 import com.iabtechlab.adcom.v1.enums.Enums.PlacementPosition;
-import com.iabtechlab.openrtb.v2.OpenRtb.AuctionType;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Content;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Device;
@@ -32,6 +31,7 @@ import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.User;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
+import com.iabtechlab.openrtb.v3.Enums.AuctionType;
 import org.junit.Test;
 
 /**
@@ -43,7 +43,7 @@ public class ProtobufTest {
   public void testRequest_5_1_1() {
     BidRequest.newBuilder()
         .setId("1234534625254")
-        .setAt(AuctionType.SECOND_PRICE.getNumber())
+        .setAt(AuctionType.SECOND_PRICE_PLUS.getNumber())
         .setTmax(120)
         .addImp(Imp.newBuilder()
             .setId("1")

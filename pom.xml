@@ -76,6 +76,9 @@
     <adcomProtobufSource>${project.basedir}/../adcom-proto/proto</adcomProtobufSource>
     <adcomProtobufTarget>${project.build.directory}/adcom-proto</adcomProtobufTarget>
 
+    <iabOpenRtbProtobufSource>${project.basedir}/../iab-openrtb-proto/proto</iabOpenRtbProtobufSource>
+    <iabOpenRtbProtobufTarget>${project.build.directory}/iab-openrtb-proto</iabOpenRtbProtobufTarget>
+
     <!-- Cobertura properties -->
     <cobertura.maxmem>1G</cobertura.maxmem>
   </properties>

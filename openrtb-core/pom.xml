@@ -144,7 +144,7 @@
             <version>3.2.0</version>
             <executions>
               <execution>
-                <id>copy-resources</id>
+                <id>copy-adcom-resources</id>
                 <phase>initialize</phase>
                 <goals>
                   <goal>copy-resources</goal>
@@ -154,6 +154,24 @@
                   <resources>
                     <resource>
                       <directory>${adcomProtobufSource}</directory>
+                      <includes>
+                        <include>**/*.proto</include>
+                      </includes>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+              <execution>
+                <id>copy-iab-openrtb-resources</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${iabOpenRtbProtobufTarget}</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>${iabOpenRtbProtobufSource}</directory>
                       <includes>
                         <include>**/*.proto</include>
                       </includes>
@@ -179,12 +197,16 @@
                       <fileset dir="${adcomProtobufTarget}">
                         <include name="**/*.proto" />
                       </fileset>
+                      <fileset dir="${iabOpenRtbProtobufTarget}">
+                        <include name="**/*.proto" />
+                      </fileset>
                     </path>
                     <pathconvert pathsep=" " property="proto.files" refid="proto.path" />
                     <exec executable="protoc" failonerror="true">
                       <arg value="--java_out=${protobufGenerated}" />
                       <arg value="-I${protobufSource}" />
                       <arg value="-I${adcomProtobufTarget}" />
+                      <arg value="-I${iabOpenRtbProtobufTarget}" />
                       <arg line="${proto.files}" />
                     </exec>
                   </target>
@@ -209,6 +231,7 @@
                       <arg value="--java_out=${testProtobufGenerated}" />
                       <arg value="-I${protobufSource}" />
                       <arg value="-I${adcomProtobufTarget}" />
+                      <arg value="-I${iabOpenRtbProtobufTarget}" />
                       <arg value="-I${testProtobufSource}" />
                       <arg line="${proto.files}" />
                     </exec>
