@@ -67,7 +67,7 @@ message BidRequest {
   optional User user = 6;
 
   // Auction type, where 1 = First Price, 2 = Second Price Plus.
-  // Refer to enum AuctionType for generic values.
+  // Refer to enum com.iabtechlab.openrtb.v3.AuctionType for generic values.
   // Exchange-specific auction types can be defined using values > 500.
   optional int32 at = 7 [default = 2];
 
@@ -733,7 +733,7 @@ message BidRequest {
         // where 1 = First Price, 2 = Second Price Plus, 3 = the value passed
         // in bidfloor is the agreed upon deal price. Additional auction types
         // can be defined by the exchange.
-        // Refer to enum AuctionType for generic values.
+        // Refer to enum com.iabtechlab.openrtb.v3.AuctionType for generic values.
         optional int32 at = 6;
 
         // Extensions.
@@ -1331,7 +1331,7 @@ message BidResponse {
   optional string customdata = 5;
 
   // Reason for not bidding.
-  // Refer to enum NoBidReason for generic values.
+  // Refer to enum com.iabtechlab.openrtb.v3.NoBidReason for generic values.
   optional int32 nbr = 6;
 
   // Extensions.
@@ -1963,14 +1963,6 @@ message NativeResponse {
 
 // ***** OpenRTB Core enums ****************************************************
 
-enum AuctionType {
-  FIRST_PRICE = 1;
-
-  SECOND_PRICE = 2;
-
-  FIXED_PRICE = 3;
-}
-
 // OpenRTB 2.0: types of ads that can be accepted by the exchange unless
 // restricted by publisher site settings.
 enum BannerAdType {
@@ -1982,57 +1974,6 @@ enum BannerAdType {
   JAVASCRIPT_AD = 3;
   // Iframe.
   IFRAME = 4;
-}
-
-// OpenRTB 2.2: The following table lists the options for a bidder to signal
-// the exchange as to why it did not offer a bid for the impression.
-enum NoBidReason {
-  UNKNOWN_ERROR = 0;
-  TECHNICAL_ERROR = 1;
-  INVALID_REQUEST = 2;
-  KNOWN_WEB_SPIDER = 3;
-  SUSPECTED_NONHUMAN_TRAFFIC = 4;
-  CLOUD_DATACENTER_PROXYIP = 5;
-  UNSUPPORTED_DEVICE = 6;
-  BLOCKED_PUBLISHER = 7;
-  UNMATCHED_USER = 8;
-  DAILY_READER_CAP = 9;
-  DAILY_DOMAIN_CAP = 10;
-}
-
-// OpenRTB 2.5: The following table lists the options for an exchange
-// to inform a bidder as to the reason why they did not win an impression.
-enum LossReason {
-  BID_WON = 0;
-  INTERNAL_ERROR = 1;
-  IMP_EXPIRED = 2;
-  INVALID_BID = 3;
-  INVALID_DEAL_ID = 4;
-  INVALID_AUCTION_ID = 5;
-  INVALID_ADOMAIN = 6;
-  MISSING_MARKUP = 7;
-  MISSING_CREATIVE_ID = 8;
-  MISSING_PRICE = 9;
-  MISSING_MIN_CREATIVE_APPROVAL_DATA = 10;
-  BID_BELOW_FLOOR = 100;
-  BID_BELOW_DEAL_FLOOR = 101;
-  LOST_HIGHER_BID = 102;
-  LOST_PMP_DEAL = 103;
-  SEAT_BLOCKED = 104;
-  CREATIVE_REASON_UNKNOWN = 200;
-  CREATIVE_PENDING = 201;
-  CREATIVE_DISAPPROVED = 202;
-  CREATIVE_SIZE = 203;
-  CREATIVE_FORMAT = 204;
-  CREATIVE_ADVERTISER_EXCLUSION = 205;
-  CREATIVE_APP_EXCLUSION = 206;
-  CREATIVE_NOT_SECURE = 207;
-  CREATIVE_LANGUAGE_EXCLUSION = 208;
-  CREATIVE_CATEGORY_EXCLUSION = 209;
-  CREATIVE_ATTRIBUTE_EXCLUSION = 210;
-  CREATIVE_ADTYPE_EXCLUSION = 211;
-  CREATIVE_ANIMATION_LONG = 212;
-  CREATIVE_NOT_ALLOWED_PMP = 213;
 }
 
 // ***** OpenRTB Native enums **************************************************
