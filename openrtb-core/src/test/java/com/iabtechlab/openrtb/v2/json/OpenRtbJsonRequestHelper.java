@@ -34,6 +34,7 @@ import com.iabtechlab.adcom.v1.enums.Enums.PlacementPosition;
 import com.iabtechlab.adcom.v1.enums.Enums.PlaybackMethod;
 import com.iabtechlab.openrtb.v2.OpenRtb;
 import com.iabtechlab.openrtb.v2.TestExt;
+import com.iabtechlab.openrtb.v3.Enums.AuctionType;
 import java.io.IOException;
 
 /**
@@ -243,7 +244,7 @@ class OpenRtbJsonRequestHelper {
                 .setBidfloorcur("USD")
                 .addWseat("seat2")
                 .addWadomain("goodadv1")
-                .setAt(OpenRtb.AuctionType.SECOND_PRICE.getNumber())
+                .setAt(AuctionType.SECOND_PRICE_PLUS.getNumber())
                 .setExtension(TestExt.testDeal, OpenRtbJsonFactoryHelper.test1))
             .setExtension(TestExt.testPmp, OpenRtbJsonFactoryHelper.test1))
         .setExtension(TestExt.testImp, OpenRtbJsonFactoryHelper.test1);
@@ -375,7 +376,7 @@ class OpenRtbJsonRequestHelper {
         .addImp(imp3)
         .setDevice(device)
         .setUser(user)
-        .setAt(OpenRtb.AuctionType.SECOND_PRICE.getNumber())
+        .setAt(AuctionType.SECOND_PRICE_PLUS.getNumber())
         .setTmax(100)
         .addWseat("seat1")
         .setAllimps(false)
