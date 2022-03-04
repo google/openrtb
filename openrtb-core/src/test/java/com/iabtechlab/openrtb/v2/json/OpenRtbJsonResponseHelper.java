@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iabtechlab.adcom.v1.enums.Enums.Creative.Attribute;
 import com.iabtechlab.openrtb.v2.OpenRtb;
 import com.iabtechlab.openrtb.v2.TestExt;
+import com.iabtechlab.openrtb.v3.Enums.NoBidReason;
 import java.io.IOException;
 
 /**
@@ -182,7 +183,7 @@ class OpenRtbJsonResponseHelper {
         .setBidid("bid")
         .setCur("USD")
         .setCustomdata("mydata")
-        .setNbr(OpenRtb.NoBidReason.TECHNICAL_ERROR.getNumber());
+        .setNbr(NoBidReason.TECHNICAL_ERROR.getNumber());
 
     return jsonFactory.newWriter().writeBidResponse(bidResponse.build());
   }
@@ -291,7 +292,7 @@ class OpenRtbJsonResponseHelper {
         .setBidid("bid1")
         .setCur("USD")
         .setCustomdata("mydata")
-        .setNbr(OpenRtb.NoBidReason.TECHNICAL_ERROR.getNumber())
+        .setNbr(NoBidReason.TECHNICAL_ERROR.getNumber())
         .setExtension(TestExt.testResponse1, OpenRtbJsonFactoryHelper.test1)
         .addExtension(TestExt.testResponse2, OpenRtbJsonFactoryHelper.test2)
         .addExtension(TestExt.testResponse2, OpenRtbJsonFactoryHelper.test2)

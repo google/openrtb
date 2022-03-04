@@ -19,13 +19,13 @@ package com.iabtechlab.openrtb.v2.util;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableList;
-import com.iabtechlab.openrtb.v2.OpenRtb.AuctionType;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Imp.Banner;
 import com.iabtechlab.openrtb.v2.Test.Test1;
 import com.iabtechlab.openrtb.v2.Test.Test2;
 import com.iabtechlab.openrtb.v2.TestExt;
+import com.iabtechlab.openrtb.v3.Enums.AuctionType;
 import org.junit.Test;
 
 /**

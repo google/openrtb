@@ -46,7 +46,6 @@ import com.iabtechlab.adcom.v1.enums.Enums.ProductionQuality;
 import com.iabtechlab.adcom.v1.enums.Enums.VideoPlacementSubtype;
 import com.iabtechlab.adcom.v1.enums.Enums.VolumeNormalizationMode;
 import com.iabtechlab.openrtb.v2.OpenRtb;
-import com.iabtechlab.openrtb.v2.OpenRtb.AuctionType;
 import com.iabtechlab.openrtb.v2.OpenRtb.BannerAdType;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.App;
@@ -72,11 +71,12 @@ import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeResponse;
-import com.iabtechlab.openrtb.v2.OpenRtb.NoBidReason;
 import com.iabtechlab.openrtb.v2.Test.Test1;
 import com.iabtechlab.openrtb.v2.Test.Test2;
 import com.iabtechlab.openrtb.v2.TestExt;
 import com.iabtechlab.openrtb.v2.TestUtil;
+import com.iabtechlab.openrtb.v3.Enums.AuctionType;
+import com.iabtechlab.openrtb.v3.Enums.NoBidReason;
 import java.io.IOException;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -559,7 +559,7 @@ public class OpenRtbJsonTest {
                     .setBidfloorcur("USD")
                     .addWseat("seat2")
                     .addWadomain("goodadv1")
-                    .setAt(AuctionType.SECOND_PRICE.getNumber())
+                    .setAt(AuctionType.SECOND_PRICE_PLUS.getNumber())
                     .setExtension(TestExt.testDeal, test1))
                 .setExtension(TestExt.testPmp, test1))
             .setClickbrowser(true)
@@ -708,7 +708,7 @@ public class OpenRtbJsonTest {
                     .setExtension(TestExt.testSegment, test1))
                 .setExtension(TestExt.testData, test1))
             .setExtension(TestExt.testUser, test1))
-        .setAt(AuctionType.SECOND_PRICE.getNumber())
+        .setAt(AuctionType.SECOND_PRICE_PLUS.getNumber())
         .setTmax(100)
         .addWseat("seat1")
         .setAllimps(false)
