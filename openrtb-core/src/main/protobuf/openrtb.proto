@@ -1,7 +1,7 @@
 option java_outer_classname = "OpenRtb";
 package com.google.openrtb;
 
-// Copyright 2020 Google Inc. All Rights Reserved.
+// Copyright 2021 Google Inc. All Rights Reserved.
 
 // OpenRTB extensions ("ext" fields in the spec & JSON representation)
 // are represented here by Protocol Buffer extensions. This proto only
@@ -63,10 +63,9 @@ message BidRequest {
   // This value is commonly communicated offline.
   optional int32 tmax = 8;
 
-  // Whitelist of buyer seats (e.g., advertisers, agencies) allowed to
-  // bid on this impression. IDs of seats and knowledge of the
-  // buyer's customers to which they refer must be coordinated
-  // between bidders and the exchange a priori.
+  // Allowlist of buyer seats (e.g., advertisers, agencies) that can bid on this
+  // impression. IDs of seats and knowledge of the buyer's customers to which
+  // they refer must be coordinated between bidders and the exchange a priori.
   // Omission implies no seat restrictions.
   repeated string wseat = 9;
 
@@ -106,7 +105,7 @@ message BidRequest {
   // same request. Omission of both implies no seat restrictions.
   repeated string bseat = 17;
 
-  // White list of languages for creatives using ISO-639-1-alpha-2.
+  // Allowlist of languages for creatives using ISO-639-1-alpha-2.
   // Omission implies no specific restrictions, but buyers would be
   // advised to consider language attribute in the Device and/or
   // Content objects if available.
@@ -322,7 +321,7 @@ message BidRequest {
       // Blocked creative attributes.
       repeated CreativeAttribute battr = 6 [packed = true];
 
-      // Whitelist of content MIME types supported. Popular MIME types include,
+      // Allowlist of content MIME types supported. Popular MIME types include,
       // but are not limited to "image/jpg", "image/gif" and
       // "application/x-shockwave-flash".
       repeated string mimes = 7;
@@ -388,7 +387,7 @@ message BidRequest {
     // and/or Native objects, respectively. However, any given bid for the
     // impression must conform to one of the offered types.
     message Video {
-      // Whitelist of content MIME types supported. Popular MIME types include,
+      // Allowlist of content MIME types supported. Popular MIME types include,
       // but are not limited to "image/jpg", "image/gif" and
       // "application/x-shockwave-flash".
       // REQUIRED by the OpenRTB specification: at least 1 element.
@@ -683,10 +682,10 @@ message BidRequest {
         // by the exchange.
         optional string bidfloorcur = 3 [default = "USD"];
 
-        // Whitelist of buyer seats (e.g., advertisers, agencies) allowed to
-        // bid on this deal. IDs of seats and knowledge of the buyer's
-        // customers to which they refer must be coordinated between bidders
-        // and the exchange a priori. Omission implies no seat restrictions.
+        // Allowlist of buyer seats (e.g., advertisers, agencies) that can bid
+        // on this deal. IDs of seats and knowledge of the buyer's customers to
+        // which they refer must be coordinated between bidders and the exchange
+        // a priori. Omission implies no seat restrictions.
         repeated string wseat = 4;
 
         // Array of advertiser domains (e.g., advertiser.com) allowed to
@@ -1598,7 +1597,7 @@ message NativeRequest {
       // RECOMMENDED by the OpenRTB Native specification.
       optional int32 hmin = 5;
 
-      // Whitelist of content MIME types supported. Popular MIME types include,
+      // Allowlist of content MIME types supported. Popular MIME types include,
       // but are not limited to "image/jpg" and "image/gif". Each implementing
       // Exchange should have their own list of supported types in the
       // integration docs. See Wikipedia's MIME page for more information and
@@ -1714,7 +1713,7 @@ message NativeResponse {
 
   // OpenRTB Native 1.0: Used for "call to action" assets, or other links from
   // the Native ad. This Object should be associated to its peer object in the
-  // parent Asset Object or as the master link in the top level NativeResponse
+  // parent Asset Object or as the primary link in the top level NativeResponse
   // object. When that peer object is activated (clicked) the action should take
   // the user to the location of the link.
   message Link {
