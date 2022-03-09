@@ -52,12 +52,12 @@
   <properties>
     <findBugsJsr305Version>3.0.2</findBugsJsr305Version>
     <gpg.skip>true</gpg.skip>
-    <guavaVersion>31.0.1-jre</guavaVersion>
+    <guavaVersion>31.1-jre</guavaVersion>
     <injectVersion>1</injectVersion>
     <junitVersion>4.13.2</junitVersion>
-    <metricsVersion>4.2.4</metricsVersion>
-    <protobufVersion>3.19.1</protobufVersion>
-    <slf4jVersion>1.7.32</slf4jVersion>
+    <metricsVersion>4.2.8</metricsVersion>
+    <protobufVersion>3.19.4</protobufVersion>
+    <slf4jVersion>1.7.36</slf4jVersion>
     <truthVersion>1.1.3</truthVersion>
 
     <!-- Plugin versions -->
