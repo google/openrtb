@@ -55,8 +55,8 @@
     <guavaVersion>31.1-jre</guavaVersion>
     <injectVersion>1</injectVersion>
     <junitVersion>4.13.2</junitVersion>
-    <metricsVersion>4.2.8</metricsVersion>
-    <protobufVersion>3.19.4</protobufVersion>
+    <metricsVersion>4.2.10</metricsVersion>
+    <protobufVersion>3.21.3</protobufVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
     <truthVersion>1.1.3</truthVersion>
 
