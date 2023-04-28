@@ -1296,6 +1296,15 @@ message BidRequest {
     // established by the USA FTC, where 0 = no, 1 = yes.
     optional bool coppa = 1;
 
+    // Global Privacy Platform string containing encoded consumer privacy choices.
+    optional string gpp = 2;
+
+    // Array of GPP string section ID(s) in force for the current transaction.
+    // In most cases, this field should have a single section ID. In rare
+    // occasions where such a single section ID can not be determined, the
+    // field may contain up to 2 values, separated by a comma.
+    repeated int32 gpp_sid = 3;
+
     // Extensions.
     extensions 100 to 9999;
   }
