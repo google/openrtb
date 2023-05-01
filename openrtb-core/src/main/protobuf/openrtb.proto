@@ -1303,7 +1303,7 @@ message BidRequest {
     // In most cases, this field should have a single section ID. In rare
     // occasions where such a single section ID can not be determined, the
     // field may contain up to 2 values, separated by a comma.
-    repeated int32 gpp_sid = 3;
+    repeated int32 gpp_sid = 3 [packed = true];
 
     // Extensions.
     extensions 100 to 9999;
