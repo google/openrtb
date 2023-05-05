@@ -1313,6 +1313,10 @@ message BidRequest {
     // different data source.
     repeated Data data = 8;
 
+    // When GDPR regulations are in effect this attribute contains the
+    // Transparency and Consent Framework’s Consent String data structure.
+    optional string consent = 9;
+
     // Extensions.
     extensions 100 to 9999;
   }
@@ -1380,6 +1384,12 @@ message BidRequest {
     // occasions where such a single section ID can not be determined, the
     // field may contain up to 2 values, separated by a comma.
     repeated int32 gpp_sid = 3 [packed = true];
+
+    // Flag that indicates whether or not the request is subject to GDPR regulations.
+    optional bool gdpr = 4;
+
+    // Communicates signals regarding consumer privacy under US privacy regulation.
+    optional string us_privacy = 5;
 
     // Extensions.
     extensions 100 to 9999;
