@@ -1211,32 +1211,44 @@ message BidRequest {
   message UserAgent {
     // Each BrandVersion object identifies a browser
     // or similar software component. Implementers should send brands and
-    // versions derived from the Sec-CH-UA-Full-Version-List header*.
+    // versions derived from the Sec-CH-UA-Full-Version-List header
+    // or an equivalent JavaScript accessor from NavigatorUAData interface.
+    // This header or accessor are only available for browsers that support User-Agent Client Hints.
     // RECOMMENDED by the OpenRTB specification.
     repeated BrandVersion browsers = 1;
 
     // A BrandVersion object that identifies the
     // user agent’s execution platform / OS. Implementers should send a brand
     // derived from the Sec-CH-UA-Platform header, and version derived
-    // from the Sec-CH-UAPlatform-Version header *.
+    // from the Sec-CH-UAPlatform-Version header
+    // or an equivalent JavaScript accessor from NavigatorUAData interface.
+    // This header or accessor are only available for browsers that support User-Agent Client Hints.
     // RECOMMENDED by the OpenRTB specification.
     optional BrandVersion platform = 2;
 
     // 1 if the agent prefers a “mobile” version of the content, if available,
     // i.e. optimized for small screens or touch input.
     // 0 if the agent prefers the “desktop” or “full” content.
-    // Implementers should derive this value from the Sec-CH-UAMobile header *.
-    optional int32 mobile = 3;
+    // Implementers should derive this value from the Sec-CH-UAMobile header
+    // or an equivalent JavaScript accessor from NavigatorUAData interface.
+    // This header or accessor are only available for browsers that support User-Agent Client Hints.
+    optional bool mobile = 3;
 
     // Device’s major binary architecture, e.g. “x86” or “arm”.
-    // Implementers should retrieve this value from the Sec-CH-UA-Arch header*.
+    // Implementers should retrieve this value from the Sec-CH-UA-Arch header
+    // or an equivalent JavaScript accessor from NavigatorUAData interface.
+    // This header or accessor are only available for browsers that support User-Agent Client Hints.
     optional string architecture = 4;
 
     // Device’s bitness, e.g. “64” for 64-bit architecture.
-    // Implementers should retrieve this value from the Sec-CH-UA-Bitness header*.
+    // Implementers should retrieve this value from the Sec-CH-UA-Bitness header
+    // or an equivalent JavaScript accessor from NavigatorUAData interface.
+    // This header or accessor are only available for browsers that support User-Agent Client Hints.
     optional string bitness = 5;
 
-    // Device model. Implementers should retrieve this value from the Sec-CH-UAModel header*.
+    // Device model. Implementers should retrieve this value from the Sec-CH-UAModel header
+    // or an equivalent JavaScript accessor from NavigatorUAData interface.
+    // This header or accessor are only available for browsers that support User-Agent Client Hints.
     optional string model = 6;
 
     // The source of data used to create this object, List: User-Agent Source in AdCOM 1.0
