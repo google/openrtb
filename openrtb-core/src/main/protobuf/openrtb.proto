@@ -1229,7 +1229,7 @@ message BidRequest {
     // 1 if the agent prefers a “mobile” version of the content, if available,
     // i.e. optimized for small screens or touch input.
     // 0 if the agent prefers the “desktop” or “full” content.
-    // Implementers should derive this value from the Sec-CH-UAMobile header
+    // Implementers should derive this value from the Sec-CH-UA-Mobile header
     // or an equivalent JavaScript accessor from NavigatorUAData interface.
     // This header or accessor are only available for browsers that support User-Agent Client Hints.
     optional bool mobile = 3;
@@ -1246,7 +1246,7 @@ message BidRequest {
     // This header or accessor are only available for browsers that support User-Agent Client Hints.
     optional string bitness = 5;
 
-    // Device model. Implementers should retrieve this value from the Sec-CH-UAModel header
+    // Device model. Implementers should retrieve this value from the Sec-CH-UA-Model header
     // or an equivalent JavaScript accessor from NavigatorUAData interface.
     // This header or accessor are only available for browsers that support User-Agent Client Hints.
     optional string model = 6;
