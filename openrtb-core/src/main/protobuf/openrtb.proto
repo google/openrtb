@@ -1266,7 +1266,7 @@ message BidRequest {
     // from the User-Agent Client Hints headers, representing either the
     // user agent brand (from the Sec-CH-UA-Full-Version header) or
     // the platform brand (from the Sec-CH-UA-Platform header).
-    required string brand = 1;
+    optional string brand = 1;
 
     // A sequence of version components, in descending hierarchical order (major, minor, micro, …)
     repeated string version = 2;
