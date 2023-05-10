@@ -23,10 +23,12 @@ message RegsExt {
   // Callers should fill this field solely based on whether the impression
   // will serve to an EEA user, based on information available to them. It
   // does not constitute legal guidance on GDPR.
-  optional bool gdpr = 1;
+  // Deprecated, recommended to use regs.gdpr instead.
+  optional bool gdpr = 1 [deprecated = true];
 
   // OpenRTB Extension for US Privacy (CCPA)
-  optional string us_privacy = 2;
+  // Deprecated, recommended to use regs.us_privacy instead.
+  optional string us_privacy = 2 [deprecated = true];
 }
 
 extend com.iabtechlab.openrtb.v2.BidRequest.Regs {
@@ -69,7 +71,8 @@ message ExtendedId {
 message UserExt {
   // Consent string as specified in the IAB Transparency and Consent
   // Framework v2.
-  optional string consent = 1;
+  // Deprecated, recommended to use user.consent instead.
+  optional string consent = 1 [deprecated = true];
 
   // Extended (third-party) identifiers for this user.
   repeated ExtendedId eids = 2;
