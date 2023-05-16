@@ -25,6 +25,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.iabtechlab.openrtb.v2.Gender;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.App;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.BrandVersion;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Content;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Data;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Data.Segment;
@@ -46,6 +47,7 @@ import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Regs;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Site;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Source;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.User;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.UserAgent;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
@@ -902,6 +904,10 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     if (device.hasMccmnc()) {
       gen.writeStringField("mccmnc", device.getMccmnc());
     }
+    if (device.hasSua()) {
+      gen.writeFieldName("sua");
+      writeSua(device.getSua(), gen);
+    }
   }
 
   public final void writeGeo(Geo geo, JsonGenerator gen) throws IOException {
@@ -951,6 +957,63 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     if (geo.hasIpservice()) {
       gen.writeNumberField("ipservice", geo.getIpservice());
     }
+  }
+
+  public final void writeSua(UserAgent sua, JsonGenerator gen) throws IOException {
+    gen.writeStartObject();
+    writeSuaFields(sua, gen);
+    writeExtensions(sua, gen);
+    gen.writeEndObject();
+  }
+
+  protected void writeSuaFields(UserAgent sua, JsonGenerator gen) throws IOException {
+    if (sua.getBrowsersCount() != 0) {
+      gen.writeArrayFieldStart("browsers");
+      for (BrandVersion browser : sua.getBrowsersList()) {
+        writeBrowser(browser, gen);
+      }
+      gen.writeEndArray();
+    }
+    if (sua.hasPlatform()) {
+      gen.writeFieldName("platform");
+      writePlatform(sua.getPlatform(), gen);
+    }
+    if (sua.hasMobile()) {
+      writeIntBoolField("mobile", sua.getMobile(), gen);
+    }
+    if (sua.hasArchitecture()) {
+      gen.writeStringField("architecture", sua.getArchitecture());
+    }
+    if (sua.hasBitness()) {
+      gen.writeStringField("bitness", sua.getBitness());
+    }
+    if (sua.hasModel()) {
+      gen.writeStringField("model", sua.getModel());
+    }
+    if (sua.hasSource()) {
+      gen.writeNumberField("source", sua.getSource());
+    }
+  }
+
+  public final void writeBrowser(BrandVersion browser, JsonGenerator gen) throws IOException {
+    gen.writeStartObject();
+    writeBrandVersionFields(browser, gen);
+    writeExtensions(browser, gen);
+    gen.writeEndObject();
+  }
+
+  public final void writePlatform(BrandVersion platform, JsonGenerator gen) throws IOException {
+    gen.writeStartObject();
+    writeBrandVersionFields(platform, gen);
+    writeExtensions(platform, gen);
+    gen.writeEndObject();
+  }
+
+  protected void writeBrandVersionFields(BrandVersion brandVersion, JsonGenerator gen) throws IOException {
+    if (brandVersion.hasBrand()) {
+      gen.writeStringField("brand", brandVersion.getBrand());
+    }
+    writeStrings("version", brandVersion.getVersionList(), gen);
   }
 
   public final void writeUser(User user, JsonGenerator gen) throws IOException {
