@@ -33,6 +33,7 @@ import com.google.protobuf.ByteString;
 import com.iabtechlab.openrtb.v2.Gender;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.App;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.BrandVersion;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Content;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Data;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Data.Segment;
@@ -54,6 +55,7 @@ import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Regs;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Site;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Source;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.User;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.UserAgent;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
@@ -1258,6 +1260,9 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "mccmnc":
         device.setMccmnc(par.getText());
         break;
+      case "sua":
+        device.setSua(readSua(par));
+        break;
       default:
         readOther(device, par, fieldName);
     }
@@ -1318,6 +1323,75 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         break;
       default:
         readOther(geo, par, fieldName);
+    }
+  }
+
+  public final UserAgent.Builder readSua(JsonParser par) throws IOException {
+    UserAgent.Builder userAgent = UserAgent.newBuilder();
+    for (startObject(par); endObject(par); par.nextToken()) {
+      String fieldName = getCurrentName(par);
+      if (par.nextToken() != JsonToken.VALUE_NULL) {
+        readSuaField(par, userAgent, fieldName);
+      }
+    }
+    return userAgent;
+  }
+
+  protected void readSuaField(JsonParser par, UserAgent.Builder userAgent, String fieldName)
+      throws IOException {
+    switch (fieldName) {
+      case "browsers":
+        for (startArray(par); endArray(par); par.nextToken()) {
+          userAgent.addBrowsers(readBrandVersion(par));
+        }
+        break;
+      case "platform":
+        userAgent.setPlatform(readBrandVersion(par));
+        break;
+      case "mobile":
+        userAgent.setMobile(par.getValueAsBoolean());
+        break;
+      case "architecture":
+        userAgent.setArchitecture(par.getText());
+        break;
+      case "bitness":
+        userAgent.setBitness(par.getText());
+        break;
+      case "model":
+        userAgent.setModel(par.getText());
+        break;
+      case "source":
+        userAgent.setSource(par.getIntValue());
+        break;
+      default:
+        readOther(userAgent, par, fieldName);
+    }
+  }
+
+  public final BrandVersion.Builder readBrandVersion(JsonParser par) throws IOException {
+    BrandVersion.Builder brandVersion = BrandVersion.newBuilder();
+    for (startObject(par); endObject(par); par.nextToken()) {
+      String fieldName = getCurrentName(par);
+      if (par.nextToken() != JsonToken.VALUE_NULL) {
+        readBrandVersionField(par, brandVersion, fieldName);
+      }
+    }
+    return brandVersion;
+  }
+
+  protected void readBrandVersionField(JsonParser par, BrandVersion.Builder brandVersion, String fieldName)
+          throws IOException {
+    switch (fieldName) {
+      case "brand":
+        brandVersion.setBrand(par.getText());
+        break;
+      case "version":
+        for (startArray(par); endArray(par); par.nextToken()) {
+          brandVersion.addVersion(par.getText());
+        }
+        break;
+      default:
+        readOther(brandVersion, par, fieldName);
     }
   }
 

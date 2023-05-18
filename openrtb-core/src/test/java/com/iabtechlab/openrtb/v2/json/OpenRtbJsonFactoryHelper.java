@@ -19,6 +19,7 @@ package com.iabtechlab.openrtb.v2.json;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.App;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.BrandVersion;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Content;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Data;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Device;
@@ -35,6 +36,7 @@ import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Regs;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Site;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Source;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.User;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.UserAgent;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeRequest;
@@ -101,6 +103,8 @@ class OpenRtbJsonFactoryHelper {
         .register(new Test1Reader<>(TestExt.testUser), User.Builder.class)
         .register(new Test1Reader<>(TestExt.testData), Data.Builder.class)
         .register(new Test1Reader<>(TestExt.testSegment), Data.Segment.Builder.class)
+        .register(new Test1Reader<>(TestExt.testBrandVersion), BrandVersion.Builder.class)
+        .register(new Test1Reader<>(TestExt.testUserAgent), UserAgent.Builder.class)
         // Writers
         .register(new Test1Writer(), Test1.class, BidRequest.class)
         .register(new Test2Writer("test2ext"), Test2.class, BidRequest.class)
@@ -125,7 +129,9 @@ class OpenRtbJsonFactoryHelper {
         .register(new Test1Writer(), Test1.class, Pmp.class)
         .register(new Test1Writer(), Test1.class, Pmp.Deal.class)
         .register(new Test1Writer(), Test1.class, Regs.class)
-        .register(new Test1Writer(), Test1.class, Source.class);
+        .register(new Test1Writer(), Test1.class, Source.class)
+        .register(new Test1Writer(), Test1.class, BrandVersion.class)
+        .register(new Test1Writer(), Test1.class, UserAgent.class);
   }
 
   static OpenRtbJsonFactory registerBidResponseExt(OpenRtbJsonFactory factory) {
