@@ -49,6 +49,7 @@ import com.iabtechlab.openrtb.v2.OpenRtb;
 import com.iabtechlab.openrtb.v2.OpenRtb.BannerAdType;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.App;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.BrandVersion;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Content;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Data;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Data.Segment;
@@ -66,6 +67,7 @@ import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Publisher;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Regs;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.Site;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.User;
+import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.UserAgent;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
@@ -149,7 +151,10 @@ public class OpenRtbJsonTest {
         .addImp(Imp.newBuilder().setId("0")
             .setBanner(Banner.newBuilder()
                 .addFormat(Banner.Format.newBuilder())))
-        .setDevice(Device.newBuilder().setGeo(Geo.newBuilder()))
+        .setDevice(Device.newBuilder().setGeo(Geo.newBuilder())
+                         .setSua(UserAgent.newBuilder()
+                                          .addBrowsers(BrandVersion.newBuilder())
+                                          .setPlatform(BrandVersion.newBuilder())))
         .setSite(Site.newBuilder())
         .setUser(User.newBuilder().addData(Data.newBuilder()))
         .build());
@@ -689,6 +694,25 @@ public class OpenRtbJsonTest {
             .setMacmd5("xyz")
             .setGeofetch(true)
             .setMccmnc("310-005")
+            .setSua(UserAgent.newBuilder()
+                .addBrowsers(BrandVersion.newBuilder()
+                    .setBrand("Chrome")
+                    .addAllVersion(asList("1", "2"))
+                    .setExtension(TestExt.testBrandVersion, test1))
+                .addBrowsers(BrandVersion.newBuilder()
+                    .setBrand("Windows")
+                    .addAllVersion(asList("1", "2"))
+                    .setExtension(TestExt.testBrandVersion, test1))
+                .setPlatform(BrandVersion.newBuilder()
+                    .setBrand("Chrome")
+                    .addAllVersion(asList("1", "2"))
+                    .setExtension(TestExt.testBrandVersion, test1))
+                .setMobile(true)
+                .setArchitecture("arm")
+                .setBitness("64")
+                .setModel("Pixel 3 XL")
+                .setSource(1)
+                .setExtension(TestExt.testUserAgent, test1))
             .setExtension(TestExt.testDevice, test1))
         .setUser(User.newBuilder()
             .setId("user1")

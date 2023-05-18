@@ -959,53 +959,46 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
     }
   }
 
-  public final void writeSua(UserAgent sua, JsonGenerator gen) throws IOException {
+  public final void writeSua(UserAgent userAgent, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
-    writeSuaFields(sua, gen);
-    writeExtensions(sua, gen);
+    writeSuaFields(userAgent, gen);
+    writeExtensions(userAgent, gen);
     gen.writeEndObject();
   }
 
-  protected void writeSuaFields(UserAgent sua, JsonGenerator gen) throws IOException {
-    if (sua.getBrowsersCount() != 0) {
+  protected void writeSuaFields(UserAgent userAgent, JsonGenerator gen) throws IOException {
+    if (userAgent.getBrowsersCount() != 0) {
       gen.writeArrayFieldStart("browsers");
-      for (BrandVersion browser : sua.getBrowsersList()) {
-        writeBrowser(browser, gen);
+      for (BrandVersion brandVersion : userAgent.getBrowsersList()) {
+        writeBrandVersion(brandVersion, gen);
       }
       gen.writeEndArray();
     }
-    if (sua.hasPlatform()) {
+    if (userAgent.hasPlatform()) {
       gen.writeFieldName("platform");
-      writePlatform(sua.getPlatform(), gen);
+      writeBrandVersion(userAgent.getPlatform(), gen);
     }
-    if (sua.hasMobile()) {
-      writeIntBoolField("mobile", sua.getMobile(), gen);
+    if (userAgent.hasMobile()) {
+      writeIntBoolField("mobile", userAgent.getMobile(), gen);
     }
-    if (sua.hasArchitecture()) {
-      gen.writeStringField("architecture", sua.getArchitecture());
+    if (userAgent.hasArchitecture()) {
+      gen.writeStringField("architecture", userAgent.getArchitecture());
     }
-    if (sua.hasBitness()) {
-      gen.writeStringField("bitness", sua.getBitness());
+    if (userAgent.hasBitness()) {
+      gen.writeStringField("bitness", userAgent.getBitness());
     }
-    if (sua.hasModel()) {
-      gen.writeStringField("model", sua.getModel());
+    if (userAgent.hasModel()) {
+      gen.writeStringField("model", userAgent.getModel());
     }
-    if (sua.hasSource()) {
-      gen.writeNumberField("source", sua.getSource());
+    if (userAgent.hasSource()) {
+      gen.writeNumberField("source", userAgent.getSource());
     }
   }
 
-  public final void writeBrowser(BrandVersion browser, JsonGenerator gen) throws IOException {
+  public final void writeBrandVersion(BrandVersion brandVersion, JsonGenerator gen) throws IOException {
     gen.writeStartObject();
-    writeBrandVersionFields(browser, gen);
-    writeExtensions(browser, gen);
-    gen.writeEndObject();
-  }
-
-  public final void writePlatform(BrandVersion platform, JsonGenerator gen) throws IOException {
-    gen.writeStartObject();
-    writeBrandVersionFields(platform, gen);
-    writeExtensions(platform, gen);
+    writeBrandVersionFields(brandVersion, gen);
+    writeExtensions(brandVersion, gen);
     gen.writeEndObject();
   }
 

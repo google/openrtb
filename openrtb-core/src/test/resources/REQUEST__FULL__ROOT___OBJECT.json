@@ -147,6 +147,36 @@
     "dpidmd5" : "8765",
     "macsha1" : "abc",
     "macmd5" : "xyz",
+    "sua" : {
+      "browsers" : [ {
+        "brand" : "Chrome",
+        "version" : [ "1", "2" ],
+        "ext" : {
+          "test1" : "data1"
+        }
+      }, {
+        "brand" : "Windows",
+        "version" : [ "1", "2" ],
+        "ext" : {
+          "test1" : "data1"
+        }
+      } ],
+      "platform" : {
+        "brand" : "Chrome",
+        "version" : [ "1", "2" ],
+        "ext" : {
+          "test1" : "data1"
+        }
+      },
+      "mobile" : 1,
+      "architecture" : "arm",
+      "bitness" : "64",
+      "model" : "Pixel 3 XL",
+      "source" : 1,
+      "ext" : {
+        "test1" : "data1"
+      }
+    },
     "ext" : {
       "test1" : "data1"
     }
