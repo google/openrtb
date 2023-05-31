@@ -256,6 +256,20 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
       case "coppa":
         reg.setCoppa(par.getValueAsBoolean());
         break;
+      case "gpp":
+        reg.setGpp(par.getText());
+        break;
+      case "gpp_sid":
+        for (startArray(par); endArray(par); par.nextToken()) {
+          reg.addGppSid(par.getIntValue());
+        }
+        break;
+      case "gdpr":
+        reg.setGdpr(par.getValueAsBoolean());
+        break;
+      case "us_privacy":
+        reg.setUsPrivacy(par.getText());
+        break;
       default:
         readOther(reg, par, fieldName);
     }
@@ -1439,6 +1453,9 @@ public class OpenRtbJsonReader extends AbstractOpenRtbJsonReader {
         for (startArray(par); endArray(par); par.nextToken()) {
           user.addData(readData(par));
         }
+        break;
+      case "consent":
+        user.setConsent(par.getText());
         break;
       default:
         readOther(user, par, fieldName);
