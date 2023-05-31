@@ -1046,6 +1046,9 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
       }
       gen.writeEndArray();
     }
+    if (user.hasConsent()) {
+      gen.writeStringField("consent", user.getConsent());
+    }
   }
 
   public final void writeData(Data data, JsonGenerator gen) throws IOException {
@@ -1100,6 +1103,16 @@ public class OpenRtbJsonWriter extends AbstractOpenRtbJsonWriter {
   protected void writeRegsFields(Regs regs, JsonGenerator gen) throws IOException {
     if (regs.hasCoppa()) {
       writeIntBoolField("coppa", regs.getCoppa(), gen);
+    }
+    if (regs.hasGpp()) {
+      gen.writeStringField("gpp", regs.getGpp());
+    }
+    writeInts("gpp_sid", regs.getGppSidList(), gen);
+    if (regs.hasGdpr()) {
+      writeIntBoolField("gdpr", regs.getGdpr(), gen);
+    }
+    if (regs.hasUsPrivacy()) {
+      gen.writeStringField("us_privacy", regs.getUsPrivacy());
     }
   }
 

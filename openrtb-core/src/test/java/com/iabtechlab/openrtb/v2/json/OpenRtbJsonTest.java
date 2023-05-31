@@ -731,6 +731,7 @@ public class OpenRtbJsonTest {
                     .setValue("segval1")
                     .setExtension(TestExt.testSegment, test1))
                 .setExtension(TestExt.testData, test1))
+            .setConsent("consent")
             .setExtension(TestExt.testUser, test1))
         .setAt(AuctionType.SECOND_PRICE_PLUS.getNumber())
         .setTmax(100)
@@ -741,6 +742,11 @@ public class OpenRtbJsonTest {
         .addBadv("badguy")
         .setRegs(Regs.newBuilder()
             .setCoppa(true)
+            .setGpp("gpp")
+            .addGppSid(1)
+            .addGppSid(2)
+            .setGdpr(true)
+            .setUsPrivacy("us_privacy")
             .setExtension(TestExt.testRegs, test1))
         .setTest(false)
         .addAllBapp(asList("app1", "app2"))
@@ -885,4 +891,3 @@ public class OpenRtbJsonTest {
         .addExtension(TestExt.testResponse4, 20);
   }
 }
-
