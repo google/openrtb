@@ -17,6 +17,7 @@
 package com.iabtechlab.openrtb.v2.json;
 
 import com.fasterxml.jackson.core.JsonFactory;
+import com.iabtechlab.openrtb.v2.OpenRtb;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.App;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidRequest.BrandVersion;
@@ -41,6 +42,7 @@ import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeResponse;
+import com.iabtechlab.openrtb.v2.OpenRtbExt;
 import com.iabtechlab.openrtb.v2.Test.Test1;
 import com.iabtechlab.openrtb.v2.Test.Test2;
 import com.iabtechlab.openrtb.v2.TestExt;
@@ -105,6 +107,7 @@ class OpenRtbJsonFactoryHelper {
         .register(new Test1Reader<>(TestExt.testSegment), Data.Segment.Builder.class)
         .register(new Test1Reader<>(TestExt.testBrandVersion), BrandVersion.Builder.class)
         .register(new Test1Reader<>(TestExt.testUserAgent), UserAgent.Builder.class)
+        .register(new OpenRtbRegsExtJsonReader(), OpenRtb.BidRequest.Regs.Builder.class)
         // Writers
         .register(new Test1Writer(), Test1.class, BidRequest.class)
         .register(new Test2Writer("test2ext"), Test2.class, BidRequest.class)
@@ -131,7 +134,8 @@ class OpenRtbJsonFactoryHelper {
         .register(new Test1Writer(), Test1.class, Regs.class)
         .register(new Test1Writer(), Test1.class, Source.class)
         .register(new Test1Writer(), Test1.class, BrandVersion.class)
-        .register(new Test1Writer(), Test1.class, UserAgent.class);
+        .register(new Test1Writer(), Test1.class, UserAgent.class)
+        .register(new OpenRtbRegsExtJsonWriter(), OpenRtbExt.RegsExt.class, OpenRtb.BidRequest.Regs.class);
   }
 
   static OpenRtbJsonFactory registerBidResponseExt(OpenRtbJsonFactory factory) {
