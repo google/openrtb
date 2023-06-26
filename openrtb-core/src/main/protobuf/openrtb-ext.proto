@@ -29,6 +29,14 @@ message RegsExt {
   // OpenRTB Extension for US Privacy (CCPA)
   // Deprecated, recommended to use regs.us_privacy instead.
   optional string us_privacy = 2 [deprecated = true];
+
+  // This is to be populated the value of the `Sec-GPC` HTTP header from
+  // the user agent where the ad will be shown. Vendors with access to that
+  // header must populate this field with that value. Vendors receiving an
+  // OpenRTB request must populate this with the value of the same field 
+  // from the request. No other usage of this field is valid. E.g., vendors 
+  // are not to copy the GPC signal from the GPP string to this field.
+  optional string gpc = 3;
 }
 
 extend com.iabtechlab.openrtb.v2.BidRequest.Regs {
