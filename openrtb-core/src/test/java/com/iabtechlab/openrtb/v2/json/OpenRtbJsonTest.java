@@ -73,6 +73,7 @@ import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid;
 import com.iabtechlab.openrtb.v2.OpenRtb.BidResponse.SeatBid.Bid;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeRequest;
 import com.iabtechlab.openrtb.v2.OpenRtb.NativeResponse;
+import com.iabtechlab.openrtb.v2.OpenRtbExt;
 import com.iabtechlab.openrtb.v2.Test.Test1;
 import com.iabtechlab.openrtb.v2.Test.Test2;
 import com.iabtechlab.openrtb.v2.TestExt;
@@ -747,7 +748,8 @@ public class OpenRtbJsonTest {
             .addGppSid(2)
             .setGdpr(true)
             .setUsPrivacy("us_privacy")
-            .setExtension(TestExt.testRegs, test1))
+            .setExtension(TestExt.testRegs, test1)
+            .setExtension(OpenRtbExt.regs, OpenRtbExt.RegsExt.newBuilder().setGpc("gpcValue").build()))
         .setTest(false)
         .addAllBapp(asList("app1", "app2"))
         .addAllBseat(asList("seat3", "seat4"))
