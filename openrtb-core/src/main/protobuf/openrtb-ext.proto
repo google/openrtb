@@ -44,37 +44,6 @@ extend com.iabtechlab.openrtb.v2.BidRequest.Regs {
   optional RegsExt regs = 201;
 }
 
-message UniversalId {
-  // Cookie or platform-native identifier.
-  optional string id = 1;
-
-  // Type of user agent the match is from.  It is highly recommended to set
-  // this, as many DSPs separate app-native IDs from browser-based IDs and
-  // require a type value for ID resolution.
-  // Refer to enum com.iabtechlab.adcom.v1.enums.AgentType for generic values.
-  optional int32 atype = 2;
-
-  // Extensions.
-  extensions 100 to 9999;
-}
-
-// Extended identifiers support in the OpenRTB specification allows buyers to
-// use audience data in real-time bidding.  The exchange should ensure that
-// business agreements allow for the sending of this data.  Note, it is
-// assumed that exchanges and DSPs will collaborate with the appropriate
-// regulatory agencies and ID vendor(s) to ensure compliance.
-message ExtendedId {
-  // Source or technology provider responsible for the set of included IDs.
-  // Expressed as a top-level domain.
-  optional string source = 1;
-
-  // Array of extended ID UID objects from the given source.
-  repeated UniversalId uids = 2;
-
-  // Extensions.
-  extensions 100 to 9999;
-}
-
 // Ad Exchange extensions for the User object.
 message UserExt {
   // Consent string as specified in the IAB Transparency and Consent
@@ -83,7 +52,7 @@ message UserExt {
   optional string consent = 1 [deprecated = true];
 
   // Extended (third-party) identifiers for this user.
-  repeated ExtendedId eids = 2;
+  repeated com.iabtechlab.openrtb.v2.BidRequest.User.EID eids = 2 [deprecated = true];
 }
 
 extend com.iabtechlab.openrtb.v2.BidRequest.User {
@@ -91,84 +60,11 @@ extend com.iabtechlab.openrtb.v2.BidRequest.User {
   optional UserExt user = 202;
 }
 
-// This object represents both the links in the supply chain as well as an
-// indicator whether or not the supply chain is complete.
-message SupplyChain {
-  // Flag indicating whether the chain contains all nodes involved in the
-  // transaction leading back to the owner of the site, app or other medium of
-  // the inventory, where 0 = no, 1 = yes.
-  optional bool complete = 1;
-
-  // Version of the supply chain specification in use, in the format of
-  // “major.minor”. For example, for version 1.0 of the spec, use the string
-  // “1.0”.
-  optional string ver = 2;
-
-  // Array of SupplyChainNode objects in the order of the chain. In a complete
-  // supply chain, the first node represents the initial advertising system and
-  // seller ID involved in the transaction, i.e. the owner of the site, app, or
-  // other medium. In an incomplete supply chain, it represents the first known
-  // node. The last node represents the entity sending this bid request.
-  repeated SupplyChainNode nodes = 3;
-
-  // Extensions.
-  extensions 100 to 9999;
-}
-
-// This object is associated with a SupplyChain object as an array of nodes.
-// These nodes define the identity of an entity participating in the supply
-// chain of a bid request.
-message SupplyChainNode {
-  // The canonical domain name of the SSP, Exchange, Header Wrapper, etc system
-  // that bidders connect to. This may be the operational domain of the system,
-  // if that is different than the parent corporate domain, to facilitate WHOIS
-  // and reverse IP lookups to establish clear ownership of the delegate system.
-  // This should be the same value as used to identify sellers in an ads.txt
-  // file if one exists.
-  optional string asi = 1;
-
-  // The identifier associated with the seller or reseller account within the
-  // advertising system. This must contain the same value used in transactions
-  // (i.e. OpenRTB bid requests) in the field specified by the SSP/exchange.
-  // Typically, in OpenRTB, this is publisher.id. For OpenDirect it is typically
-  // the publisher’s organization ID. Should be limited to 64 characters in
-  // length.
-  optional string sid = 2;
-
-  // The OpenRTB RequestId of the request as issued by this seller.
-  optional string rid = 3;
-
-  // The name of the company (the legal entity) that is paid for inventory
-  // transacted under the given seller_id. This value is optional and should NOT
-  // be included if it exists in the advertising system’s sellers.json file.
-  optional string name = 4;
-
-  // The business domain name of the entity represented by this node. This value
-  // is optional and should NOT be included if it exists in the advertising
-  // system’s sellers.json file.
-  optional string domain = 5;
-
-  // Indicates whether this node will be involved in the flow of payment for the
-  // inventory. When set to 1, the advertising system in the asi field pays the
-  // seller in the sid field, who is responsible for paying the previous node in
-  // the chain. When set to 0, this node is not involved in the flow of payment
-  // for the inventory. For version 1.0 of SupplyChain, this property should
-  // always be 1. It is explicitly required to be included as it is expected
-  // that future versions of the specification will introduce non-payment
-  // handling nodes. Implementers should ensure that they support this field and
-  // propagate it onwards when constructing SupplyChain objects in bid requests
-  // sent to a downstream advertising system.
-  optional bool hp = 6;
-
-  // Extensions.
-  extensions 100 to 9999;
-}
-
 // Ad Exchange extensions for the Source object.
 message SourceExt {
   // The SupplyChain object enables buyers to see all parties who are selling or
   // reselling a given bid request.
-  optional SupplyChain schain = 1;
+  optional com.iabtechlab.openrtb.v2.BidRequest.Source.SupplyChain schain = 1 [deprecated = true];
 
   // Identifier of the OM SDK integration. This is the same as the "name"
   // parameter of the OMID Partner object.
