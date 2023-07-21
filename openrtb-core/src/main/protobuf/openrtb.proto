@@ -1315,7 +1315,7 @@ message BidRequest {
 
     // When GDPR regulations are in effect this attribute contains the
     // Transparency and Consent Framework’s Consent String data structure.
-    optional string consent = 9;
+    optional string consent = 10;
 
     // Extensions.
     extensions 100 to 9999;
