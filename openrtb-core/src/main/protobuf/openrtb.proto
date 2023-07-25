@@ -986,10 +986,13 @@ message BidRequest {
 
     // Additional content data. Each Data object represents a different
     // data source.
-    repeated Data data = 26;
+    repeated Data data = 28;
 
     // Extensions.
     extensions 100 to 9999;
+
+    // Retired fields.
+    reserved 26;
   }
 
   // OpenRTB 2.0: This object defines the producer of the content in which
