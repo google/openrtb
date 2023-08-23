@@ -52,6 +52,11 @@ message BidRequest {
     // Details via an App object (Section 3.2.7) about the publisher's app
     // (non-browser applications). Only applicable and recommended for apps.
     App app = 4;
+
+    // This object should be included if the ad supported content is a Digital
+    // Out-Of-Home screen. A bid request with a DOOH object must not contain a
+    // site or app object.
+    Dooh dooh = 22;
   }
 
   // Details via a Device object (Section 3.2.11) about the user's
@@ -240,6 +245,19 @@ message BidRequest {
 
     // An array of Metric object (Section 3.2.5).
     repeated Metric metric = 17;
+
+    // A means of passing a multiplier in the bid request, representing the
+    // total quantity of impressions for adverts that display to more than one
+    // person.
+    optional Qty qty = 20;
+
+    // Timestamp when the item is estimated to be fulfilled (e.g. when a DOOH
+    // impression will be displayed) in Unix format (i.e., milliseconds since
+    // the epoch).
+    optional double dt = 21;
+
+    // Details about ad slots being refreshed automatically.
+    optional Refresh refresh = 22;
 
     // Extensions.
     extensions 100 to 9999;
@@ -1396,6 +1414,95 @@ message BidRequest {
 
     // Extensions.
     extensions 100 to 9999;
+  }
+
+  // A programmatic impression is often referred to as a ‘spot’ in digital
+  // out-of-home and CTV, with an impression being a unique member of the
+  // audience viewing it. Therefore, a standard means of passing a multiplier
+  // in the bid request, representing the total quantity of impressions, is
+  // required. This object includes the impression multiplier, and describes
+  // the source of the multiplier value.
+  message Qty {
+    // The quantity of billable events which will be deemed to have occurred if
+    // this item is purchased. For example, a DOOH opportunity may be
+    // considered to be 14.2 impressions. Equivalent to qtyflt in OpenRTB 3.0.
+    optional double multiplier = 1;
+
+    // The source type of the quantity measurement, ie. publisher.
+    // RECOMMENDED by the OpenRTB specification.
+    optional int32 sourcetype = 2;
+
+    // The top level business domain name of the measurement vendor providing
+    // the quantity measurement.
+    // REQUIRED by the OpenRTB specification if sourcetype is equal to 1.
+    optional string vendor = 3;
+
+    // Placeholder for vendor specific extensions to this object.
+    extensions 100 to 9999;
+  }
+
+  // This object should be included if the ad supported content is a Digital
+  // Out-Of-Home screen. A bid request with a DOOH object must not contain a
+  // site or app object. At a minimum, it is useful to provide id and/or
+  // venuetypeid, but this is not strictly required.
+  message Dooh {
+    // Exchange provided id for a placement or logical grouping of placements.
+    optional string id = 1;
+
+    // Name of the DOOH placement.
+    optional string name = 2;
+
+    // The type of out-of-home venue. The taxonomy to be used is defined by the
+    // venuetax field. If no venuetax field is supplied, The OpenOOH Venue
+    // Taxonomy is assumed.
+    repeated string venuetype = 3;
+
+    // The venue taxonomy in use.
+    optional int32 venuetypetax = 4 [default = 1];
+
+    // Details about the publisher of the placement.
+    optional Publisher publisher = 5;
+
+    // Domain of the inventory owner (e.g., "mysite.foo.com").
+    optional string domain = 6;
+
+    // Comma separated list of keywords about the DOOH placement.
+    optional string keywords = 7;
+
+    // Details about the Content within the DOOH placement.
+    optional Content content = 8;
+
+    // Placeholder for vendor specific extensions to this object.
+    extensions 100 to 9999;
+  }
+
+  message Refresh {
+    // A RefSettings object describing the mechanics of how an ad placement
+    // automatically refreshes.
+    repeated RefSettings refsettings = 1;
+
+    // The number of times this ad slot had been refreshed since last page
+    // load.
+    optional int32 count = 2;
+
+    // Placeholder for vendor specific extensions to this object.
+    extensions 100 to 9999;
+
+    // Information on how often and what triggers an ad slot being refreshed.
+    message RefSettings {
+      // The type of the declared auto refresh.
+      optional int32 reftype = 1 [default = 0];
+
+      // The minimum refresh interval in seconds. This applies to all refresh
+      // types. This is the (uninterrupted) time the ad creative will be
+      // rendered before refreshing to the next creative. If the field is
+      // absent, the exposure time is unknown. This field does not account for
+      // viewability or external factors such as a user leaving a page.
+      optional int32 minint = 2;
+
+      // Placeholder for vendor specific extensions to this object.
+      extensions 100 to 9999;
+    }
   }
 }
 
